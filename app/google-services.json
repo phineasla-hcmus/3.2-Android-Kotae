@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "523289205251",
+    "project_id": "android-kotae",
+    "storage_bucket": "android-kotae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:523289205251:android:d7fa2754fa72a2b4cc8c36",
+        "android_client_info": {
+          "package_name": "com.ogif.kotae"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "523289205251-6ojqj0d540oe25vobu6dvq5akonp0055.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAx5ZfciSeHRbKad9UPtk6wxG6ZIUPpkgM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "523289205251-6ojqj0d540oe25vobu6dvq5akonp0055.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
