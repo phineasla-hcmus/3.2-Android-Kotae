@@ -12,8 +12,7 @@ This document are based on [Android Java Code Style](https://source.android.com/
       - [Values files](#values-files)
   * [Style guidelines](#style-guidelines)
     + [Always reformat your code](#always-reformat-your-code)
-    + [Field naming conventions](#field-naming-conventions)
-    + [Treat acronyms as words](#treat-acronyms-as-words)
+    + [Naming conventions](#naming-conventions)
     + [Use TODO comments](#use-todo-comments)
   * [Java language guidelines](#java-language-guidelines)
     + [Don't ignore exceptions](#dont-ignore-exceptions)
@@ -62,31 +61,28 @@ Resource files in the values folder should be  **plural**, e.g.  `strings.xml`, 
 ### Always reformat your code
 
 For Android Studio:
-- Windows:  `Ctrl  +  Alt  +  L`.
-- Linux:  `Ctrl  +  Shift  +  Alt  +  L`.
-- macOS:  `Option  +  Command  +  L`.
+- Windows:  `Ctrl + Alt + L`.
+- Linux:    `Ctrl + Shift + Alt + L`.
+- macOS:    `Option + Command + L`.
 
 See more info [here](https://stackoverflow.com/q/16580171/12405558).
 
-### Field naming conventions
--   Non-public, non-static field names start with `m`.
--   Static field names start with `s`.
--   Other fields start with a lower case letter.
--   Public static final fields (constants) are `ALL_CAPS_WITH_UNDERSCORES`.
+### Naming conventions
+-   **CamelCase** for classes.
+-   **camelCase** for methods, local variables, and instance variables.
+-   **lowercase_underscore** with prefix for resource IDs. Prefix should be abbreviated if possible.
 
-Example:
-```java
-public class MyClass {
-    public static final int SOME_CONSTANT = 42;
-    public int publicField;
-    private static MyClass sSingleton;
-    int mPackagePrivate;
-    private int mPrivate;
-    protected int mProtected;
-}
-```
+Commonly used View classes:
 
-### Treat acronyms as words
+| **Element** | **Prefix** |
+|-------------|------------|
+| `Button`    | `btn`      |
+| `ImageView` | `img`      |
+| `EditText`  | `input`    |
+| `CheckBox`  | `chk`      |
+
+-   Constants should be `ALL_CAPS_WITH_UNDERSCORES`.
+-   Treat acronyms as words.
 
 | Good           | Bad            |
 | -------------- | -------------- |
@@ -94,6 +90,8 @@ public class MyClass {
 | `getCustomerId`  | `getCustomerID`  |
 | `String url`     | `String URL`     |
 | `long id`        | `long ID`        |
+
+A good naming convention can be found [here](https://jeroenmols.com/blog/2016/03/07/resourcenaming), or the cheat sheet version [here](./.github/resourcenaming_cheatsheet.pdf)
 
 ### Use TODO comments
 Use `TODO` comments for code that is temporary, a short-term solution, or good enough but not perfect. These comments should include the string `TODO` in all caps, followed by a colon:
@@ -104,7 +102,7 @@ and
 ```java
 // TODO: Change this to use a flag instead of a constant.  
 ```
-If your  `TODO`  is of the form "At a future date do something" make sure that you either include a specific date ("Fix by November 2005") or a specific event ("Remove this code after all production mixers understand protocol V7.").
+If your `TODO` is of the form "At a future date do something" make sure that you either include a specific date ("Fix by November 2005") or a specific event ("Remove this code after all production mixers understand protocol V7.").
 
 ## Java language guidelines
 
