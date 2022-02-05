@@ -15,8 +15,12 @@ OGIF - Oh God it's Friday.
 ## Contributions
 
 When contributing, please follow the [Coding Style Guide](./GUIDELINE.md).
+If you are new to Android development, [CodePath Android Cliffnotes](https://guides.codepath.com/android) is also a good place.
 
-## Project Idea
+## Credit
+Logo is designed by [Maestro99](https://www.freepik.com/free-vector/professional-letter-k-logo_821645.htm) / [Freepik](http://www.freepik.com).
+
+## Project Ideas
 
 Nêu rõ mục đích tìm hiểu của đề tài, lợi ích khi nắm vững được cách thức xử lý.
 
