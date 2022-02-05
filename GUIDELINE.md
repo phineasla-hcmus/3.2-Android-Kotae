@@ -1,20 +1,22 @@
+<!-- omit in toc -->
 # Coding Style Guide
 
-- [Coding Style Guide](#coding-style-guide)
-	- [Project guidelines](#project-guidelines)
-		- [Package names](#package-names)
-		- [Class names](#class-names)
-		- [Resource files](#resource-files)
-			- [Drawable files](#drawable-files)
-			- [Layout files](#layout-files)
-			- [Values files](#values-files)
-	- [Style guidelines](#style-guidelines)
-		- [Always reformat your code](#always-reformat-your-code)
-		- [Naming conventions](#naming-conventions)
-		- [Use TODO comments](#use-todo-comments)
-	- [Java language guidelines](#java-language-guidelines)
-		- [Don't ignore exceptions](#dont-ignore-exceptions)
-		- [Don't catch generic exceptions](#dont-catch-generic-exceptions)
+- [Naming conventions](#naming-conventions)
+	- [Package names](#package-names)
+	- [Class names](#class-names)
+	- [Field names](#field-names)
+	- [Resource names](#resource-names)
+		- [Drawable files](#drawable-files)
+		- [Layout files](#layout-files)
+		- [Values files](#values-files)
+		- [Prefix your strings.xml](#prefix-your-stringsxml)
+		- [Use colors.xml and dimens.xml as a pallete](#use-colorsxml-and-dimensxml-as-a-pallete)
+- [Split a large style file into other files](#split-a-large-style-file-into-other-files)
+- [Always reformat your code](#always-reformat-your-code)
+- [Use TODO comments](#use-todo-comments)
+- [Java language guidelines](#java-language-guidelines)
+	- [Don't ignore exceptions](#dont-ignore-exceptions)
+	- [Don't catch generic exceptions](#dont-catch-generic-exceptions)
 
 ---
 
@@ -23,9 +25,10 @@ This document are based on:
 -   [Android Java Code Style](https://source.android.com/setup/contribute/code-style)
 -   [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 -   [ribot/android-guidelines](https://github.com/ribot/android-guidelines/blob/master/project_and_code_guidelines.md)
+-   [futurice/android-best-practices](https://github.com/futurice/android-best-practices)
 -   [Naming convention - Jeroen Mols](https://jeroenmols.com/blog/2016/03/07/resourcenaming)
 
-## Project guidelines
+## Naming conventions
 
 ### Package names
 
@@ -37,9 +40,38 @@ Class names are written in [UpperCamelCase](https://google.github.io/styleguide/
 
 For classes that extend an Android component, the name of the class should end with the name of the component; for example: `SignInActivity`, `SignInFragment`, `ImageUploaderService`, `ChangePasswordDialog`.
 
-### Resource files
+### Field names
+
+-   Constants should be `ALL_CAPS_WITH_UNDERSCORES`.
+-   Treat acronyms as words.
+
+| Good             | Bad              |
+| ---------------- | ---------------- |
+| `XmlHttpRequest` | `XMLHTTPRequest` |
+| `getCustomerId`  | `getCustomerID`  |
+| `String url`     | `String URL`     |
+| `long id`        | `long ID`        |
+
+### Resource names
 
 Resources file names are written in **lowercase_underscore**.
+
+Resource IDs should be **lowercase_underscore** with prefix. Prefix should be abbreviated if possible.
+
+Commonly used View classes:
+
+| **Element**      | **Prefix**       |
+| ---------------- | ---------------- |
+| `Button`         | `btn`            |
+| `ImageView`      | `img`            |
+| `EditText`       | `et`             |
+| `TextView`       | `tv`             |
+| `CheckBox`       | `chk`            |
+| `RadioButton`    | `rb`             |
+| `ToggleButton`   | `tb`             |
+| `Menu`           | `menu`           |
+| `LinearLayout`   | `linearlayout`   |
+| `RelativeLayout` | `relativelayout` |
 
 #### Drawable files
 
@@ -59,6 +91,7 @@ Some of these namings already hinted by Android Studio, so I just leave it here 
 | Notification | `notification_` | `notification_bg.9.png`    |
 | Tabs         | `tab_`          | `tab_pressed.9.png`        |
 </details>
+
 <details>
 <summary>Naming conventions for icons</summary>
 
@@ -71,6 +104,7 @@ Some of these namings already hinted by Android Studio, so I just leave it here 
 | Tab icons                       | `ic_tab`         | `ic_tab_recent.png`        |
 | Dialog icons                    | `ic_dialog`      | `ic_dialog_info.png`       |
 </details>
+
 <details>
 <summary>Naming conventions for selector states</summary>
 
@@ -103,9 +137,59 @@ Note that there are cases where these rules will not be possible to apply. For e
 
 Resource files in the values folder should be **plural**, e.g. `strings.xml`, `styles.xml`, `colors.xml`, `dimens.xml`, `attrs.xml`.
 
-## Style guidelines
+#### Prefix your strings.xml
 
-### Always reformat your code
+:thumbsdown: **Not recommended**
+
+```xml
+<string name="network_error">Network error</string>
+<string name="call_failed">Call failed</string>
+<string name="map_failed">Map loading failed</string>
+```
+
+:thumbsup: **Recommended**
+
+```xml
+<string name="error_message_network">Network error</string>
+<string name="error_message_call">Call failed</string>
+<string name="error_message_map">Map loading failed</string>
+```
+
+#### Use colors.xml and dimens.xml as a pallete
+
+:thumbsdown: **Not recommended**
+
+```xml
+<resources>
+    <color name="button_foreground">#FFFFFF</color>
+    <color name="button_background">#2A91BD</color>
+</resources>    
+```
+
+:thumbsup: **Recommended**
+
+```xml
+<resources>
+    <!-- grayscale -->
+    <color name="white">#FFFFFF</color>
+    <!-- basic colors -->
+    <color name="blue">#2A91BD</color>
+</resources>
+```
+
+The names do not need to be plain color names as "green", "blue", etc. Names such as "brand_primary", "brand_secondary", "brand_negative" are totally acceptable as well.
+
+By referencing the color palette from your styles allows you to abstract the underlying colors from their usage in the app, as per:
+
+- `colors.xml` - defines only the color palette.
+- `styles.xml` - defines styles which reference the color palette and reflects the color usage. (e.g. the button foreground is white).
+- `activity_main.xml` - references the appropriate style in `styles.xml` to color the button.
+
+## Split a large style file into other files
+
+You don't need to have a single `styles.xml` file. Android SDK supports other files out of the box, there is nothing magical about the name `styles`, what matters are the XML tags `<style>` inside the file. Hence you can have files `styles.xml`, `styles_home.xml`, `styles_item_details.xml`, `styles_forms.xml`. Unlike resource directory names which carry some meaning for the build system, filenames in `res/values` can be arbitrary.
+
+## Always reformat your code
 
 For Android Studio:
 
@@ -115,32 +199,7 @@ For Android Studio:
 
 See more info [here](https://stackoverflow.com/q/16580171/12405558).
 
-### Naming conventions
-
--   Resource IDs should be **lowercase_underscore** with prefix. Prefix should be abbreviated if possible.
-
-Commonly used View classes:
-
-| **Element**    | **Prefix**     |
-| -------------- | -------------- |
-| `Button`       | `btn`          |
-| `ImageView`    | `img`          |
-| `EditText`     | `input`        |
-| `TextView`     | `label`        |
-| `CheckBox`     | `chk`          |
-| `LinearLayout` | `linearlayout` |
-
--   Constants should be `ALL_CAPS_WITH_UNDERSCORES`.
--   Treat acronyms as words.
-
-| Good             | Bad              |
-| ---------------- | ---------------- |
-| `XmlHttpRequest` | `XMLHTTPRequest` |
-| `getCustomerId`  | `getCustomerID`  |
-| `String url`     | `String URL`     |
-| `long id`        | `long ID`        |
-
-### Use TODO comments
+## Use TODO comments
 
 Use `TODO` comments for code that is temporary, a short-term solution, or good enough but not perfect. These comments should include the string `TODO` in all caps, followed by a colon:
 
