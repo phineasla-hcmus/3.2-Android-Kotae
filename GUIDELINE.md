@@ -2,21 +2,21 @@
 # Coding Style Guide
 
 - [Naming conventions](#naming-conventions)
-	- [Package names](#package-names)
-	- [Class names](#class-names)
-	- [Field names](#field-names)
-	- [Resource names](#resource-names)
-		- [Drawable files](#drawable-files)
-		- [Layout files](#layout-files)
-		- [Values files](#values-files)
-		- [Prefix your strings.xml](#prefix-your-stringsxml)
-		- [Use colors.xml and dimens.xml as a pallete](#use-colorsxml-and-dimensxml-as-a-pallete)
+  - [Package names](#package-names)
+  - [Class names](#class-names)
+  - [Field names](#field-names)
+  - [Resource names](#resource-names)
+    - [Drawable files](#drawable-files)
+    - [Layout files](#layout-files)
+    - [Values files](#values-files)
+    - [Prefix your strings.xml](#prefix-your-stringsxml)
+    - [Use colors.xml and dimens.xml as a pallete](#use-colorsxml-and-dimensxml-as-a-pallete)
 - [Split a large style file into other files](#split-a-large-style-file-into-other-files)
 - [Always reformat your code](#always-reformat-your-code)
 - [Use TODO comments](#use-todo-comments)
 - [Java language guidelines](#java-language-guidelines)
-	- [Don't ignore exceptions](#dont-ignore-exceptions)
-	- [Don't catch generic exceptions](#dont-catch-generic-exceptions)
+  - [Don't ignore exceptions](#dont-ignore-exceptions)
+  - [Don't catch generic exceptions](#dont-catch-generic-exceptions)
 
 ---
 
@@ -192,12 +192,15 @@ You don't need to have a single `styles.xml` file. Android SDK supports other fi
 ## Always reformat your code
 
 For Android Studio:
+-   Reformat code:
+    -   Windows: `Ctrl + Alt + L`.
+    -   Linux: `Ctrl + Shift + Alt + L`.
+    -   macOS: `Option + Command + L`.
+-   Optimize imports:
+    -   Windows: `Ctrl + Alt + O`.
+    -   macOS: `Option + Command + O`.
 
--   Windows: `Ctrl + Alt + L`.
--   Linux: `Ctrl + Shift + Alt + L`.
--   macOS: `Option + Command + L`.
-
-See more info [here](https://stackoverflow.com/q/16580171/12405558).
+See more info [here](https://stackoverflow.com/q/16580171/12405558). If you perfer Visual Studio Code shortcuts then you can see [here](https://stackoverflow.com/a/64284560/12405558).
 
 ## Use TODO comments
 
