@@ -139,12 +139,15 @@ Resource files in the values folder should be **plural**, e.g. `strings.xml`, `s
 
 #### Prefix your strings.xml
 
+Either we use the prefix as *where* the string will be used, or resemble namespaces.
+
 :thumbsdown: **Not recommended**
 
 ```xml
 <string name="network_error">Network error</string>
 <string name="call_failed">Call failed</string>
 <string name="map_failed">Map loading failed</string>
+<string name="sign_up">Don't have an account? Sign up now</string>
 ```
 
 :thumbsup: **Recommended**
@@ -153,6 +156,7 @@ Resource files in the values folder should be **plural**, e.g. `strings.xml`, `s
 <string name="error_message_network">Network error</string>
 <string name="error_message_call">Call failed</string>
 <string name="error_message_map">Map loading failed</string>
+<string name="login_to_sign_up">Don't have an account? Sign up now</string>
 ```
 
 #### Use colors.xml and dimens.xml as a pallete
