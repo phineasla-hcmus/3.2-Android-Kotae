@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Space between each view-->
+    <dimen name="margin_between_y">8dp</dimen>
+    <dimen name="margin_between_y_sm">4dp</dimen>
+
+    <!--Space between a view and an edge of the screen-->
+    <dimen name="margin_x">16dp</dimen>
+    <dimen name="margin_y">16dp</dimen>
+    <dimen name="radius">16dp</dimen>
+</resources>

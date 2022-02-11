@@ -10,6 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="@string/home_fragment" />
+        android:text="Home fragment" />
 
 </FrameLayout>

@@ -1,11 +1,24 @@
 <resources>
-    <string name="app_name">Kotae</string>
-    <string name="content_action_search">Search</string>
-    <string name="content_action_noti">Notification</string>
-    <string name="bottom_nav_home">Home</string>
+    <string name="app_name" translatable="false">Kotae</string>
+
+    <string name="all_email" translatable="false">Email</string>
+    <string name="all_forgot_password">Forgot password</string>
+    <string name="all_full_name">Full name</string>
+    <string name="all_login">Login</string>
+    <string name="all_password">Password</string>
+
     <string name="bottom_nav_favorite">Favorite</string>
-    <string name="bottom_nav_question">My questions</string>
+    <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_profile">Profile</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="home_fragment">Home fragment</string>
+    <string name="bottom_nav_question">My questions</string>
+
+    <string name="content_action_noti">Notification</string>
+    <string name="content_action_search">Search</string>
+
+    <string name="login_header" translatable="false">Already have an account?</string>
+    <string name="login_error">Invalid email or password</string>
+    <string name="login_to_sign_up">New member? Sign up now</string>
+
+    <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
+    <string name="sign_up_to_login">I\'m already a member</string>
 </resources>
