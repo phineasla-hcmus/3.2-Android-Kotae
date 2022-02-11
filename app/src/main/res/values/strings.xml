@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Kotae</string>
+    <string name="content_action_search">Search</string>
+    <string name="content_action_noti">Notification</string>
 </resources>
