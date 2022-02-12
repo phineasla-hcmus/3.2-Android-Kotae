@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans"
         android:text="@string/login_header"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
