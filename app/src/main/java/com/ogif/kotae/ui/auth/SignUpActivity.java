@@ -1,25 +1,35 @@
 package com.ogif.kotae.ui.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.databinding.ActivitySignUpBinding;
 
 public class SignUpActivity extends AppCompatActivity {
+
+    private static final String[] JOBS = {"Student", "Teacher"};
+    private ActivitySignUpBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-    }
+        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-    public void onClickToLogin(View view) {
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-        startActivity(intent);
-        this.finish();
+        binding.tvSignUpToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+            startActivity(intent);
+            finish();
+        });
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
+        binding.etSignUpJob.setAdapter(arrayAdapter);
     }
 }

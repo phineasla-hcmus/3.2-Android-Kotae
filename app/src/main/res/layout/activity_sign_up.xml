@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/margin_x"
     android:paddingVertical="@dimen/margin_y"
-    tools:context=".ui.sign_up.sign_upActivity">
+    tools:context=".ui.auth.SignUpActivity">
 
     <TextView
         android:id="@+id/tv_sign_up_header"
@@ -97,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/all_job"
+            android:inputType="none"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -117,6 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/all_age"
+            android:inputType="numberDecimal"
             android:singleLine="true"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -130,7 +132,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_sign_up_job">
+        app:layout_constraintTop_toBottomOf="@+id/til_sign_up_job"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_sign_up_password"
@@ -162,18 +165,17 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y"
         android:text="@string/all_sign_up"
-        app:layout_constraintBottom_toTopOf="@+id/tv_sign_up_to_sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/tv_sign_up_to_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_sign_up_error" />
 
     <TextView
-        android:id="@+id/tv_sign_up_to_sign_up"
+        android:id="@+id/tv_sign_up_to_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y_sm"
-        android:onClick="onClickToLogin"
         android:text="@string/sign_up_to_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
