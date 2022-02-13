@@ -153,14 +153,14 @@
         android:layout_marginVertical="@dimen/margin_between_y_sm"
         android:textColor="?attr/colorError"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/til_sign_up_password" />
 
     <Button
-        android:id="@+id/sign_up"
+        android:id="@+id/btn_sign_up"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y"
@@ -181,6 +181,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
