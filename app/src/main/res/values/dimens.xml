@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Space between each view-->
+    <dimen name="margin_between_x">8dp</dimen>
     <dimen name="margin_between_y">8dp</dimen>
     <dimen name="margin_between_y_sm">4dp</dimen>
 
