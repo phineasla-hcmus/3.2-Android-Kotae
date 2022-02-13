@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/margin_x"
     android:paddingVertical="@dimen/margin_y"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".ui.auth.LoginActivity">
 
     <TextView
         android:id="@+id/tv_login_header"
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image"
-        app:layout_constraintVertical_bias="0.25"
+        app:layout_constraintVertical_bias="0.15"
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -118,6 +118,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y_sm"
+        android:onClick="onClickToSignUp"
         android:text="@string/login_to_sign_up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
