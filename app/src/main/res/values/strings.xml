@@ -14,6 +14,7 @@
     <string name="bottom_nav_question">My questions</string>
     <string name="content_action_noti">Notification</string>
     <string name="content_action_search">Search</string>
+    <string name="create_question_title_header">Title</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>

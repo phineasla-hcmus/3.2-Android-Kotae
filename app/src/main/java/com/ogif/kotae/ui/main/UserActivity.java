@@ -21,7 +21,7 @@ public class UserActivity extends AppCompatActivity {
         // Initialize home screen
         loadFragment(new HomeFragment());
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         BottomNavigationView bottomNav = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {

@@ -3,12 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_create_question.xml" value="0.21203703703703702" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_question_content.xml" value="0.21203703703703702" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_sign_up.xml" value="0.24444444444444444" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.25" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/sample_edit_text.xml" value="0.21203703703703702" />
         <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/drawable/ic_login.xml" value="0.3453703703703704" />
         <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/drawable/ic_register.xml" value="0.3453703703703704" />
-        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/activity_login.xml" value="0.23390752493200362" />
-        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/activity_sign_up.xml" value="0.3333333333333333" />
-        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.3333333333333333" />
-        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/dropdown_item.xml" value="0.21975203078238564" />
+        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/activity_login.xml" value="0.3333333333333333" />
+        <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.3056861906797777" />
         <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/fragment_favorite.xml" value="0.33101851851851855" />
         <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/fragment_home.xml" value="0.33101851851851855" />
         <entry key="..\:/Code/Android/3.2-Android-Kotae/app/src/main/res/layout/fragment_my_question.xml" value="0.33101851851851855" />
