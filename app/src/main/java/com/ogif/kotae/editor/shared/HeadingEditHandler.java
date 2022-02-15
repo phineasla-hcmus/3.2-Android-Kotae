@@ -13,70 +13,70 @@ import io.noties.markwon.editor.PersistedSpans;
 
 public class HeadingEditHandler implements EditHandler<HeadingSpan> {
 
-  private MarkwonTheme theme;
+    private MarkwonTheme theme;
 
-  @Override
-  public void init(@NonNull Markwon markwon) {
-    this.theme = markwon.configuration().theme();
-  }
-
-  @Override
-  public void configurePersistedSpans(@NonNull PersistedSpans.Builder builder) {
-    builder
-      .persistSpan(Head1.class, () -> new Head1(theme))
-      .persistSpan(Head2.class, () -> new Head2(theme));
-  }
-
-  @Override
-  public void handleMarkdownSpan(
-    @NonNull PersistedSpans persistedSpans,
-    @NonNull Editable editable,
-    @NonNull String input,
-    @NonNull HeadingSpan span,
-    int spanStart,
-    int spanTextLength
-  ) {
-    final Class<?> type;
-    switch (span.getLevel()) {
-      case 1:
-        type = Head1.class;
-        break;
-      case 2:
-        type = Head2.class;
-        break;
-      default:
-        type = null;
+    @Override
+    public void init(@NonNull Markwon markwon) {
+        this.theme = markwon.configuration().theme();
     }
 
-    if (type != null) {
-      final int index = input.indexOf('\n', spanStart + spanTextLength);
-      final int end = index < 0
-        ? input.length()
-        : index;
-      editable.setSpan(
-        persistedSpans.get(type),
-        spanStart,
-        end,
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-      );
+    @Override
+    public void configurePersistedSpans(@NonNull PersistedSpans.Builder builder) {
+        builder
+                .persistSpan(Head1.class, () -> new Head1(theme))
+                .persistSpan(Head2.class, () -> new Head2(theme));
     }
-  }
 
-  @NonNull
-  @Override
-  public Class<HeadingSpan> markdownSpanType() {
-    return HeadingSpan.class;
-  }
+    @Override
+    public void handleMarkdownSpan(
+            @NonNull PersistedSpans persistedSpans,
+            @NonNull Editable editable,
+            @NonNull String input,
+            @NonNull HeadingSpan span,
+            int spanStart,
+            int spanTextLength
+    ) {
+        final Class<?> type;
+        switch (span.getLevel()) {
+            case 1:
+                type = Head1.class;
+                break;
+            case 2:
+                type = Head2.class;
+                break;
+            default:
+                type = null;
+        }
 
-  private static class Head1 extends HeadingSpan {
-    Head1(@NonNull MarkwonTheme theme) {
-      super(theme, 1);
+        if (type != null) {
+            final int index = input.indexOf('\n', spanStart + spanTextLength);
+            final int end = index < 0
+                    ? input.length()
+                    : index;
+            editable.setSpan(
+                    persistedSpans.get(type),
+                    spanStart,
+                    end,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
     }
-  }
 
-  private static class Head2 extends HeadingSpan {
-    Head2(@NonNull MarkwonTheme theme) {
-      super(theme, 2);
+    @NonNull
+    @Override
+    public Class<HeadingSpan> markdownSpanType() {
+        return HeadingSpan.class;
     }
-  }
+
+    private static class Head1 extends HeadingSpan {
+        Head1(@NonNull MarkwonTheme theme) {
+            super(theme, 1);
+        }
+    }
+
+    private static class Head2 extends HeadingSpan {
+        Head2(@NonNull MarkwonTheme theme) {
+            super(theme, 2);
+        }
+    }
 }

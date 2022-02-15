@@ -14,41 +14,41 @@ import io.noties.markwon.editor.PersistedSpans;
 
 public class CodeEditHandler implements EditHandler<CodeSpan> {
 
-  private MarkwonTheme theme;
+    private MarkwonTheme theme;
 
-  @Override
-  public void init(@NonNull Markwon markwon) {
-    this.theme = markwon.configuration().theme();
-  }
-
-  @Override
-  public void configurePersistedSpans(@NonNull PersistedSpans.Builder builder) {
-    builder.persistSpan(CodeSpan.class, () -> new CodeSpan(theme));
-  }
-
-  @Override
-  public void handleMarkdownSpan(
-    @NonNull PersistedSpans persistedSpans,
-    @NonNull Editable editable,
-    @NonNull String input,
-    @NonNull CodeSpan span,
-    int spanStart,
-    int spanTextLength) {
-    final MarkwonEditorUtils.Match match =
-      MarkwonEditorUtils.findDelimited(input, spanStart, "`");
-    if (match != null) {
-      editable.setSpan(
-        persistedSpans.get(CodeSpan.class),
-        match.start(),
-        match.end(),
-        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-      );
+    @Override
+    public void init(@NonNull Markwon markwon) {
+        this.theme = markwon.configuration().theme();
     }
-  }
 
-  @NonNull
-  @Override
-  public Class<CodeSpan> markdownSpanType() {
-    return CodeSpan.class;
-  }
+    @Override
+    public void configurePersistedSpans(@NonNull PersistedSpans.Builder builder) {
+        builder.persistSpan(CodeSpan.class, () -> new CodeSpan(theme));
+    }
+
+    @Override
+    public void handleMarkdownSpan(
+            @NonNull PersistedSpans persistedSpans,
+            @NonNull Editable editable,
+            @NonNull String input,
+            @NonNull CodeSpan span,
+            int spanStart,
+            int spanTextLength) {
+        final MarkwonEditorUtils.Match match =
+                MarkwonEditorUtils.findDelimited(input, spanStart, "`");
+        if (match != null) {
+            editable.setSpan(
+                    persistedSpans.get(CodeSpan.class),
+                    match.start(),
+                    match.end(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+    }
+
+    @NonNull
+    @Override
+    public Class<CodeSpan> markdownSpanType() {
+        return CodeSpan.class;
+    }
 }
