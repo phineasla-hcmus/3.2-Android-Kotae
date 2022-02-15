@@ -22,7 +22,7 @@ public class AdminActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        BottomNavigationView bottomNav = (BottomNavigationView)binding.bottomAdminNavigation;
+        BottomNavigationView bottomNav = (BottomNavigationView) binding.bottomAdminNavigation;
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             switch (item.getItemId()) {
