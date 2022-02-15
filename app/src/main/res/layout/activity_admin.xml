@@ -87,7 +87,7 @@
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_user_navigation"
+        android:id="@+id/bottom_admin_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemActiveIndicatorStyle="@style/Kotae.BottomNavigationView.ActiveIndicator"
@@ -96,5 +96,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_user_navigation_menu" />
+        app:menu="@menu/bottom_admin_navigation_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

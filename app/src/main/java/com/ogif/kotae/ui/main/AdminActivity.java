@@ -4,32 +4,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.R;
-import com.ogif.kotae.databinding.ActivityUserBinding;
+import com.ogif.kotae.databinding.ActivityAdminBinding;
 
-public class UserActivity extends AppCompatActivity {
+public class AdminActivity extends AppCompatActivity {
 
-    private ActivityUserBinding binding;
+    private ActivityAdminBinding binding;
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUserBinding.inflate(getLayoutInflater());
+        binding = ActivityAdminBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
-        // Initialize home screen
-        loadFragment(new HomeFragment());
-
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        BottomNavigationView bottomNav = (BottomNavigationView)binding.bottomUserNavigation;
+        BottomNavigationView bottomNav = (BottomNavigationView)binding.bottomAdminNavigation;
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             switch (item.getItemId()) {
@@ -47,6 +40,10 @@ public class UserActivity extends AppCompatActivity {
                     break;
                 case R.id.page_profile:
                     fragment = new ProfileFragment();
+                    loadFragment(fragment);
+                    break;
+                case R.id.page_admin:
+                    fragment = new AdminFragment();
                     loadFragment(fragment);
                     break;
             }

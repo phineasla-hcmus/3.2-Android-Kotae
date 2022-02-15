@@ -6,15 +6,15 @@
         android:icon="@drawable/ic_outline_home"
         android:title="@string/bottom_nav_home"/>
     <item
-        android:id="@+id/page_favorite"
+        android:id="@+id/page_bookmark"
         android:enabled="true"
-        android:icon="@drawable/ic_outline_favorite"
-        android:title="@string/bottom_nav_favorite"/>
+        android:icon="@drawable/ic_outline_bookmark_border"
+        android:title="@string/bottom_nav_bookmark"/>
     <item
-        android:id="@+id/page_question"
+        android:id="@+id/page_noti"
         android:enabled="true"
-        android:icon="@drawable/ic_outline_question_answer"
-        android:title="@string/bottom_nav_question"/>
+        android:icon="@drawable/ic_noti"
+        android:title="@string/bottom_nav_noti"/>
     <item
         android:id="@+id/page_profile"
         android:enabled="true"
