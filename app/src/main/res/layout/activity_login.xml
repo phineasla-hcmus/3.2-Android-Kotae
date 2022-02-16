@@ -71,7 +71,6 @@
             android:id="@+id/et_login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_between_y"
             android:hint="@string/all_password"
             android:inputType="textPassword"
             android:singleLine="true"

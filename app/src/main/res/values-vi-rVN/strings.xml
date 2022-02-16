@@ -17,10 +17,13 @@
     <string name="et_error_email">Email không hợp lệ</string>
     <string name="et_error_email_existed">Email đã tồn tại</string>
     <string name="et_error_password">Mật khẩu phải từ 6 đến 16 ký tự</string>
-    <string name="et_error_username">Tên người dùng không hợp lệ</string>
+    <string name="et_error_username_first_char">Tên người dùng không hợp lệ</string>
     <string name="login_error">Email hoặc mật khẩu không hợp lệ</string>
     <string name="login_to_sign_up">Đăng ký</string>
     <string name="sign_up_to_login">Đăng nhập</string>
     <string name="all_age">Tuổi</string>
     <string name="all_job">Công việc</string>
+    <string name="et_error_username_invalid_char">Tên người dùng không hợp lệ</string>
+    <string name="et_error_username_length">Tên người dùng phải từ 3 đến 16 ký tự</string>
+    <string name="sign_up_error">Có cái gì đó thiếu thiếu</string>
 </resources>

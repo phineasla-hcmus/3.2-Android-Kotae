@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(v.getContext(), SignUpActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             startActivity(intent);
-            finishAffinity();
+            finish();
         });
     }
 
@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         currentUser.reload().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 // TODO: Launch UserActivity if user, else AdminActivity
+
             }
         });
     }

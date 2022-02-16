@@ -1,4 +1,4 @@
-package com.ogif.kotae.util;
+package com.ogif.kotae.util.text;
 
 import android.text.InputFilter;
 import android.text.Spanned;

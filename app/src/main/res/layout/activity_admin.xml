@@ -70,7 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/btn_filter"
                 app:layout_constraintEnd_toStartOf="@+id/btn_filter"
                 app:layout_constraintTop_toTopOf="@id/btn_filter"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
+                app:shapeAppearanceOverlay="@style/Kotae.ShapeAppearanceOverlay.Button.Circle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
