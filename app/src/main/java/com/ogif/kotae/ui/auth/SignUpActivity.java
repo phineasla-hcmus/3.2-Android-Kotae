@@ -5,28 +5,25 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivitySignUpBinding;
-import com.ogif.kotae.util.text.InputFilterMinMax;
-import com.ogif.kotae.util.text.TextValidator;
-
-import java.util.regex.Pattern;
+import com.ogif.kotae.utils.UserUtils;
+import com.ogif.kotae.utils.text.InputFilterMinMax;
+import com.ogif.kotae.utils.text.TextValidator;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private static final String[] JOBS = {"Student", "Teacher"};
     private ActivitySignUpBinding binding;
-    private FirebaseAuth auth;
+    private AuthViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,28 +31,38 @@ public class SignUpActivity extends AppCompatActivity {
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        auth = FirebaseAuth.getInstance();
+
+        this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        this.viewModel.getUserMutableLiveData().observe(this, user -> {
+            if (user == null) {
+                binding.tvSignUpError.setVisibility(View.VISIBLE);
+                return;
+            }
+            // TODO: complete register, assign role, job and age to Firestore
+        });
 
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
         EditText[] ets = {binding.etSignUpEmail, binding.etSignUpUsername, binding.etSignUpJob, binding.etSignUpAge, binding.etSignUpPassword};
-        Pattern usernamePattern = Pattern.compile("[A-Za-z0-9_]+");
 
         binding.etSignUpUsername.addTextChangedListener(new TextValidator() {
             @Override
-            public void validate(Editable editable) {
+            public void validate(Editable username) {
                 TextInputLayout til = binding.tilSignUpUsername;
-                String username = editable.toString();
-                if (username.length() < Global.USERNAME_MIN || username.length() > Global.USERNAME_MAX) {
-                    til.setErrorEnabled(true);
-                    til.setError(getResources().getString(R.string.et_error_username_first_char));
-                } else if (Character.isDigit(username.charAt(0))) {
-                    til.setErrorEnabled(true);
-                    til.setError(getResources().getString(R.string.et_error_username_first_char));
-                } else if (!usernamePattern.matcher(username).matches()) {
-                    til.setErrorEnabled(true);
-                    til.setError(getResources().getString(R.string.et_error_username_invalid_char));
-                } else {
-                    til.setErrorEnabled(false);
+                switch (UserUtils.isUsernameValid(username)) {
+                    case UserUtils.INVALID_USERNAME_LENGTH:
+                        til.setErrorEnabled(true);
+                        til.setError(getResources().getString(R.string.et_error_username_length));
+                        break;
+                    case UserUtils.INVALID_USERNAME_FIRST_CHAR:
+                        til.setErrorEnabled(true);
+                        til.setError(getResources().getString(R.string.et_error_username_first_char));
+                        break;
+                    case UserUtils.INVALID_USERNAME_CHAR:
+                        til.setErrorEnabled(true);
+                        til.setError(getResources().getString(R.string.et_error_username_invalid_char));
+                        break;
+                    default:
+                        til.setErrorEnabled(false);
                 }
             }
         });
@@ -63,9 +70,9 @@ public class SignUpActivity extends AppCompatActivity {
         binding.etSignUpAge.setFilters(new InputFilter[]{new InputFilterMinMax(1, 100)});
         binding.etSignUpPassword.addTextChangedListener(new TextValidator() {
             @Override
-            public void validate(Editable editable) {
+            public void validate(Editable password) {
                 TextInputLayout til = binding.tilSignUpPassword;
-                if (editable.length() < Global.PASSWORD_MIN || editable.length() > Global.PASSWORD_MAX) {
+                if (UserUtils.isPasswordValid(password) != UserUtils.OK) {
                     til.setErrorEnabled(true);
                     til.setError(getResources().getString(R.string.et_error_password));
                 } else {
@@ -75,19 +82,19 @@ public class SignUpActivity extends AppCompatActivity {
         });
         binding.btnSignUp.setOnClickListener(v -> {
             for (EditText et : ets) {
-                if (TextUtils.isEmpty(et.getText().toString())) {
+                if (TextUtils.isEmpty(et.getText())) {
                     binding.tvSignUpError.setVisibility(View.VISIBLE);
                     return;
                 }
             }
-            int usernameLength = binding.etSignUpUsername.length();
-            int passwordLength = binding.etSignUpPassword.length();
-            if (usernameLength < Global.USERNAME_MIN || usernameLength > Global.USERNAME_MAX
-                    || passwordLength < Global.PASSWORD_MIN || passwordLength > Global.PASSWORD_MAX) {
+            CharSequence username = binding.etSignUpUsername.getText();
+            CharSequence password = binding.etSignUpPassword.getText();
+            if (username == null || password == null
+                    || UserUtils.isUsernameValid(username) != UserUtils.OK
+                    || UserUtils.isPasswordValid(password) != UserUtils.OK) {
                 return;
             }
-
-
+            this.viewModel.createUser(username.toString(), password.toString());
         });
         binding.tvSignUpToLogin.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), LoginActivity.class);

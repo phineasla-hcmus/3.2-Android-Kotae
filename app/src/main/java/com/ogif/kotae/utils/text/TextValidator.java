@@ -1,4 +1,4 @@
-package com.ogif.kotae.util.text;
+package com.ogif.kotae.utils.text;
 
 import android.text.Editable;
 import android.text.TextWatcher;
