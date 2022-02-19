@@ -9,20 +9,27 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.R;
-import com.ogif.kotae.databinding.ActivityAdminBinding;
+import com.ogif.kotae.databinding.ActivityMainBinding;
 
-public class AdminActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
-    private ActivityAdminBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAdminBinding.inflate(getLayoutInflater());
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
         setContentView(view);
 
-        BottomNavigationView bottomNav = (BottomNavigationView) binding.bottomAdminNavigation;
+        // Initialize home screen
+        loadFragment(new HomeFragment());
+
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        BottomNavigationView bottomNav = (BottomNavigationView) binding.bottomNavigation;
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             switch (item.getItemId()) {
@@ -42,17 +49,13 @@ public class AdminActivity extends AppCompatActivity {
                     fragment = new ProfileFragment();
                     loadFragment(fragment);
                     break;
-                case R.id.page_admin:
-                    fragment = new AdminFragment();
-                    loadFragment(fragment);
-                    break;
             }
             return true;
         });
     }
 
     private void loadFragment(Fragment fragment) {
-        // load fragment
+        // Load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);

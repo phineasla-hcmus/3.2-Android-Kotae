@@ -9,12 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.databinding.ActivityLoginBinding;
-import com.ogif.kotae.ui.main.UserActivity;
+import com.ogif.kotae.ui.main.MainActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             // TODO: check role
-            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         });
@@ -73,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     private void reload(@NonNull FirebaseUser currentUser) {
         currentUser.reload().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                // TODO: Launch UserActivity if user, else AdminActivity
+                // TODO: Launch MainActivity
 
             }
         });
