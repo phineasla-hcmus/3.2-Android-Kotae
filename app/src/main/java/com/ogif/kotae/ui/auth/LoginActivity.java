@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             // TODO: check role
-            Intent intent = new Intent(v.getContext(), UserActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
             startActivity(intent);
             finish();
         });

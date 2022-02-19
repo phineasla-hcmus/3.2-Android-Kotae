@@ -2,13 +2,20 @@ package com.ogif.kotae.ui.main;
 
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.utils.RecyclerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +32,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private View homeView;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -61,6 +70,51 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        homeView = inflater.inflate(R.layout.fragment_home, container, false);
+        setUpRecyclerView();
+        return homeView;
+    }
+
+    private void setUpRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView) homeView.findViewById(R.id.recyclerView);
+        RecyclerAdapter adapter = new RecyclerAdapter(dummyStrings());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
+        recyclerView.setAdapter(adapter);
+//        adapter.setRecyclerClickListener(new RecyclerAdapter.RecyclerClickListener() {
+//            @Override
+//            public void onClick(int position) {
+//                if (position == 0) {
+//                    spaceNavigationView.showBadgeAtIndex(1, 54, ContextCompat.getColor(getActivity().getApplicationContext(), R.color.badge_background_color));
+//                } else if (position == 1) {
+//                    spaceNavigationView.hideBudgeAtIndex(1);
+//                }
+//            }
+//        });
+    }
+
+    private List<String> dummyStrings() {
+        List<String> colorList = new ArrayList<>();
+        colorList.add("#354045");
+        colorList.add("#20995E");
+        colorList.add("#76FF03");
+        colorList.add("#E26D1B");
+        colorList.add("#911717");
+        colorList.add("#9C27B0");
+        colorList.add("#20995E");
+        colorList.add("#76FF03");
+        colorList.add("#20995E");
+        colorList.add("#76FF03");
+        colorList.add("#E26D1B");
+        colorList.add("#911717");
+        colorList.add("#9C27B0");
+        colorList.add("#20995E");
+        colorList.add("#76FF03");
+        colorList.add("#E26D1B");
+        colorList.add("#911717");
+        colorList.add("#9C27B0");
+        colorList.add("#FFC107");
+        colorList.add("#01579B");
+        return colorList;
     }
 }

@@ -11,6 +11,8 @@
     <string name="bottom_nav_home">Trang chủ</string>
     <string name="bottom_nav_noti">Thông báo</string>
     <string name="bottom_nav_profile">Hồ sơ</string>
+    <string name="btn_filter">Lọc</string>
+    <string name="btn_leader_board">Top thành viên</string>
     <string name="content_action_noti">Thông báo</string>
     <string name="content_action_search">Tìm kiếm</string>
     <string name="create_question_title_header">Tiêu đề</string>

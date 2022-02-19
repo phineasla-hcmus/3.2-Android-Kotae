@@ -13,6 +13,8 @@
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_noti">Notifications</string>
     <string name="bottom_nav_profile">Profile</string>
+    <string name="btn_filter">Filter</string>
+    <string name="btn_leader_board">Leaderboard</string>
     <string name="content_action_noti">Notification</string>
     <string name="content_action_search">Search</string>
     <string name="create_question_title_header">Title</string>

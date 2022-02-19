@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentInsetEnd="@dimen/margin_x"
+    app:contentInsetStart="@dimen/margin_x"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <TextView
+            android:id="@+id/tv_app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--            <Button-->
+        <!--                android:id="@+id/btn_filter"-->
+        <!--                android:layout_width="48dp"-->
+        <!--                android:layout_height="48dp"-->
+        <!--                android:layout_gravity="end"-->
+        <!--                android:contentDescription="@string/content_action_search"-->
+        <!--                android:insetLeft="0dp"-->
+        <!--                android:insetTop="0dp"-->
+        <!--                android:insetRight="0dp"-->
+        <!--                android:insetBottom="0dp"-->
+        <!--                android:padding="0dp"-->
+        <!--                app:icon="@drawable/ic_outline_format_list_bulleted"-->
+        <!--                app:iconGravity="textStart"-->
+        <!--                app:iconPadding="0dp"-->
+        <!--                app:iconSize="32dp"-->
+        <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--                app:layout_constraintEnd_toEndOf="parent"-->
+        <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:contentDescription="@string/content_action_noti"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            app:icon="@drawable/ic_search"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Kotae.ShapeAppearanceOverlay.Button.Circle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.Toolbar>
