@@ -2,6 +2,8 @@ package com.ogif.kotae.ui.main;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.databinding.ActivityMainBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +28,8 @@ public class NotiFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ActivityMainBinding mainBinding;
 
     public NotiFragment() {
         // Required empty public constructor
@@ -62,5 +67,17 @@ public class NotiFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_noti, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 }

@@ -1,6 +1,7 @@
 package com.ogif.kotae.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -14,6 +15,7 @@ import com.ogif.kotae.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
 
         View view = binding.getRoot();
         setContentView(view);
+
+        // Get toolbar
+        toolbar = (Toolbar) binding.toolbar;
+        this.setSupportActionBar(toolbar);
 
         // Initialize home screen
         loadFragment(new HomeFragment());
