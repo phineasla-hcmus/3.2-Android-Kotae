@@ -14,10 +14,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.ActivitySignUpBinding;
 import com.ogif.kotae.utils.UserUtils;
 import com.ogif.kotae.utils.text.InputFilterMinMax;
 import com.ogif.kotae.utils.text.TextValidator;
+
+import java.util.Locale;
+import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -36,9 +40,10 @@ public class SignUpActivity extends AppCompatActivity {
         this.viewModel.getUserMutableLiveData().observe(this, user -> {
             if (user == null) {
                 binding.tvSignUpError.setVisibility(View.VISIBLE);
+                binding.btnSignUp.setEnabled(true);
                 return;
             }
-            // TODO: complete register, assign role, job and age to Firestore
+            // TODO redirect to email verification
         });
 
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
@@ -87,14 +92,21 @@ public class SignUpActivity extends AppCompatActivity {
                     return;
                 }
             }
-            CharSequence username = binding.etSignUpUsername.getText();
-            CharSequence password = binding.etSignUpPassword.getText();
-            if (username == null || password == null
-                    || UserUtils.isUsernameValid(username) != UserUtils.OK
+            String email = Objects.requireNonNull(binding.etSignUpEmail.getText()).toString();
+            String username = Objects.requireNonNull(binding.etSignUpUsername.getText()).toString();
+            String password = Objects.requireNonNull(binding.etSignUpPassword.getText()).toString();
+            String job = Objects.requireNonNull(binding.etSignUpJob.getText()).toString();
+            int age = Integer.parseInt(Objects.requireNonNull(binding.etSignUpAge.getText())
+                    .toString());
+            if (UserUtils.isUsernameValid(username) != UserUtils.OK
                     || UserUtils.isPasswordValid(password) != UserUtils.OK) {
                 return;
             }
-            this.viewModel.createUser(username.toString(), password.toString());
+            binding.btnSignUp.setEnabled(false);
+            this.viewModel.createUser(email,
+                    password,
+                    username,
+                    new User(job.toLowerCase(Locale.ROOT), UserUtils.getYearOfBirth(age)));
         });
         binding.tvSignUpToLogin.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), LoginActivity.class);

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.ogif.kotae.Global;
 
+import java.time.Year;
 import java.util.regex.Pattern;
 
 public class UserUtils {
@@ -29,5 +30,9 @@ public class UserUtils {
         if (!usernamePattern.matcher(username).matches())
             return INVALID_USERNAME_CHAR;
         return OK;
+    }
+
+    public static int getYearOfBirth(int age) {
+        return Year.now().getValue() - age;
     }
 }
