@@ -44,7 +44,7 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.btnSignUp.setEnabled(true);
                 return;
             }
-            // TODO redirect to email verification
+            startHomeActivity();
         });
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
         EditText[] ets = {binding.etSignUpEmail, binding.etSignUpUsername, binding.etSignUpJob, binding.etSignUpAge, binding.etSignUpPassword};
@@ -113,5 +113,12 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        startActivity(intent);
+        finish();
     }
 }
