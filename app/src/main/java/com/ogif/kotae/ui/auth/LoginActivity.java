@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        this.viewModel.getUserMutableLiveData().observe(this, user -> {
+        this.viewModel.getMutableLiveData().observe(this, user -> {
             if (user == null) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
                 return;

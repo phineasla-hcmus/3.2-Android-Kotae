@@ -4,6 +4,7 @@ public class User {
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
 
+    private String username;
     private String job;
     private int yob;
     private String role;
@@ -11,16 +12,27 @@ public class User {
     /**
      * Create user with default role as "user"
      */
-    public User(String job, int yob) {
+    public User(String username, String job, int yob) {
+        this.username = username;
         this.job = job;
         this.yob = yob;
         this.role = "user";
     }
 
-    public User(String job, int yob, String role) {
+    public User(String username, String job, int yob, String role) {
+        this.username = username;
         this.job = job;
         this.yob = yob;
         this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public User setUsername(String username) {
+        this.username = username;
+        return this;
     }
 
     public String getJob() {

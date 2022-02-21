@@ -16,7 +16,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.ActivitySignUpBinding;
-import com.ogif.kotae.utils.UserUtils;
+import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.text.InputFilterMinMax;
 import com.ogif.kotae.utils.text.TextValidator;
 
@@ -37,15 +37,15 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        this.viewModel.getUserMutableLiveData().observe(this, user -> {
-            if (user == null) {
+        this.viewModel.getMutableLiveData().observe(this, result -> {
+            if (result.isFailed()) {
+                binding.tvSignUpError.setText(getResources().getString(R.string.sign_up_error_existed));
                 binding.tvSignUpError.setVisibility(View.VISIBLE);
                 binding.btnSignUp.setEnabled(true);
                 return;
             }
             // TODO redirect to email verification
         });
-
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
         EditText[] ets = {binding.etSignUpEmail, binding.etSignUpUsername, binding.etSignUpJob, binding.etSignUpAge, binding.etSignUpPassword};
 
@@ -88,6 +88,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnSignUp.setOnClickListener(v -> {
             for (EditText et : ets) {
                 if (TextUtils.isEmpty(et.getText())) {
+                    binding.tvSignUpError.setText(getResources().getString(R.string.sign_up_error_missing));
                     binding.tvSignUpError.setVisibility(View.VISIBLE);
                     return;
                 }
@@ -103,10 +104,8 @@ public class SignUpActivity extends AppCompatActivity {
                 return;
             }
             binding.btnSignUp.setEnabled(false);
-            this.viewModel.createUser(email,
-                    password,
-                    username,
-                    new User(job.toLowerCase(Locale.ROOT), UserUtils.getYearOfBirth(age)));
+            this.viewModel.createUser(email, password,
+                    new User(username, job.toLowerCase(Locale.ROOT), UserUtils.getYearOfBirth(age)));
         });
         binding.tvSignUpToLogin.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), LoginActivity.class);

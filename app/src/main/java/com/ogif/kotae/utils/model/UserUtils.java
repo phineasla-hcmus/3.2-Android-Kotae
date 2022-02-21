@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.utils.model;
 
 import androidx.annotation.NonNull;
 

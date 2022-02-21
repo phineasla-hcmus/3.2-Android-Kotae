@@ -153,7 +153,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y_sm"
-        android:text="@string/sign_up_error"
+        android:text="@string/sign_up_error_missing"
         android:textColor="?attr/colorError"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/btn_sign_up"
