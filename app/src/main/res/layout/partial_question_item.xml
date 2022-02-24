@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tv_question_content"
+        android:layout_width="378dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans"
+        android:padding="5dp"
+        android:text="Nội dung câu hỏi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="224dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_tag1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lớp 10"
+            android:fontFamily="@font/open_sans" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_tag2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiếng anh" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/tv_question_posttime"
+        android:layout_width="153dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="16dp"
+        android:padding="5dp"
+        android:text="asked a minute ago"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/chipGroup"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_content" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/cim_avatar"
+        android:layout_width="61dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_outline_account_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup"></de.hdodenhof.circleimageview.CircleImageView>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="76dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/open_sans"
+        android:textStyle="bold"
+        android:text="Author"
+        app:layout_constraintStart_toEndOf="@+id/cim_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
