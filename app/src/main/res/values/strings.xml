@@ -15,22 +15,43 @@
     <string name="bottom_nav_profile">Profile</string>
     <string name="btn_filter">Filter</string>
     <string name="btn_leader_board">Leaderboard</string>
+    <string name="category_grade">Grade</string>
+    <string name="category_subject">Subject</string>
+    <string name="category_grade_1">Grade 1</string>
+    <string name="category_grade_2">Grade 2</string>
+    <string name="category_grade_3">Grade 3</string>
+    <string name="category_grade_4">Grade 4</string>
+    <string name="category_grade_5">Grade 5</string>
+    <string name="category_grade_6">Grade 6</string>
+    <string name="category_grade_7">Grade 7</string>
+    <string name="category_grade_8">Grade 8</string>
+    <string name="category_grade_9">Grade 9</string>
+    <string name="category_grade_10">Grade 10</string>
+    <string name="category_grade_11">Grade 11</string>
+    <string name="category_grade_12">Grade 12</string>
     <string name="content_action_noti">Notification</string>
     <string name="content_action_search">Search</string>
-    <string name="create_question_title_header">Title</string>
+    <string name="create_question_title">Title</string>
+    <string name="create_question_content_title">Content</string>
+    <string name="create_question_content_description">Click here to include all the information someone would need to answer your question</string>
+    <string name="create_question_images_title">Images</string>
+    <string name="create_question_category_title">Category</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>
     <string name="et_error_username_first_char">Username must start with a letter </string>
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
     <string name="et_error_username_invalid_char">Username contains invalid character</string>
+    <string name="fab_post_question">Post</string>
     <string name="login_error">Invalid email or password</string>
     <string name="login_header" translatable="false">Already have an account?</string>
     <string name="login_to_sign_up">New member? Sign up now</string>
+    <string name="question_title_hint">Question title</string>
+    <string name="question_title_character_counted_example" translatable="false">30/100</string>
     <string name="sign_up_error_missing">Missing required field(s)</string>
     <string name="sign_up_error_existed">User existed</string>
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>

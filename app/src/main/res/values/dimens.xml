@@ -9,4 +9,12 @@
     <dimen name="margin_x">16dp</dimen>
     <dimen name="margin_y">16dp</dimen>
     <dimen name="radius">16dp</dimen>
+
+    <!--Text size-->
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_large">28sp</dimen>
+
+    <!--Border radius-->
+    <dimen name="border_radius">8dp</dimen>
 </resources>

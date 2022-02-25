@@ -13,13 +13,33 @@
     <string name="bottom_nav_profile">Hồ sơ</string>
     <string name="btn_filter">Lọc</string>
     <string name="btn_leader_board">Top thành viên</string>
+    <string name="category_grade">Lớp</string>
+    <string name="category_subject">Môn học</string>
+    <string name="category_grade_1">Lớp 1</string>
+    <string name="category_grade_2">Lớp 2</string>
+    <string name="category_grade_3">Lớp 3</string>
+    <string name="category_grade_4">Lớp 4</string>
+    <string name="category_grade_5">Lớp 5</string>
+    <string name="category_grade_6">Lớp 6</string>
+    <string name="category_grade_7">Lớp 7</string>
+    <string name="category_grade_8">Lớp 8</string>
+    <string name="category_grade_9">Lớp 9</string>
+    <string name="category_grade_10">Lớp 10</string>
+    <string name="category_grade_11">Lớp 11</string>
+    <string name="category_grade_12">Lớp 12</string>
     <string name="content_action_noti">Thông báo</string>
     <string name="content_action_search">Tìm kiếm</string>
-    <string name="create_question_title_header">Tiêu đề</string>
+    <string name="create_question_title">Tiêu đề</string>
+    <string name="create_question_content_title">Nội dung</string>
+    <string name="create_question_content_description">
+Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần để trả lời câu hỏi của bạn</string>
+    <string name="create_question_images_title">Hình ảnh</string>
+    <string name="create_question_category_title">Phân loại</string>
     <string name="et_error_email">Email không hợp lệ</string>
     <string name="et_error_email_existed">Email đã tồn tại</string>
     <string name="et_error_password">Mật khẩu phải từ 6 đến 16 ký tự</string>
     <string name="et_error_username_first_char">Tên người dùng không hợp lệ</string>
+    <string name="fab_post_question">Đăng</string>
     <string name="login_error">Email hoặc mật khẩu không hợp lệ</string>
     <string name="login_to_sign_up">Đăng ký</string>
     <string name="sign_up_to_login">Đăng nhập</string>
@@ -29,4 +49,5 @@
     <string name="et_error_username_length">Tên người dùng phải từ 3 đến 16 ký tự</string>
     <string name="sign_up_error_missing">Có cái gì đó thiếu thiếu</string>
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
+    <string name="question_title_hint">Tiêu đề câu hỏi</string>
 </resources>

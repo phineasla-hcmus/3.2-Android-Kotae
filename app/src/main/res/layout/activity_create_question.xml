@@ -4,29 +4,178 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/margin_x"
+    android:paddingVertical="@dimen/margin_y"
     tools:context=".ui.main.CreateQuestion">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <TextView
+        android:id="@+id/tv_question_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_title"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_create_question_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="@dimen/margin_between_y"
+        app:boxCornerRadiusBottomEnd="@dimen/border_radius"
+        app:boxCornerRadiusBottomStart="@dimen/border_radius"
+        app:boxCornerRadiusTopEnd="@dimen/border_radius"
+        app:boxCornerRadiusTopStart="@dimen/border_radius"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="16dp">
 
-        <TextView
-            android:id="@+id/tv_question_title"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_create_question_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="@string/create_question_title_header"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:hint="@string/question_title_hint"
+            android:singleLine="true"
+            android:textSize="@dimen/text_size_medium"
+            tools:ignore="TextContrastCheck" />
 
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/tv_create_question_title_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_between_y_sm"
+        android:text="@string/sign_up_error_missing"
+        android:textColor="?attr/colorError"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_create_question_title" />
+
+    <TextView
+        android:id="@+id/tv_create_question_title_character_counted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_between_x"
+        android:text="@string/question_title_character_counted_example"
+        android:textSize="@dimen/text_size_small"
+
+        app:layout_constraintBottom_toBottomOf="@+id/tv_create_question_title_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_create_question_title_error"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tv_question_content_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_y"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_content_title"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_create_question_title_character_counted" />
+
+    <TextView
+        android:id="@+id/tv_question_content_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_y"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_content_description"
+        android:textColor="?attr/colorSurface"
+        android:textSize="@dimen/text_size_medium"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_content_title" />
+
+    <TextView
+        android:id="@+id/tv_question_images_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_y"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_images_title"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_content_description" />
+
+    <ImageButton
+        android:id="@+id/btn_question_images"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/margin_between_y"
+        android:background="@drawable/btn_rounded_corner"
+        android:contentDescription="@string/create_question_images_title"
+        android:src="@drawable/ic_baseline_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_images_title"
+        tools:ignore="DuplicateSpeakableTextCheck" />
+
+    <TextView
+        android:id="@+id/tv_question_category_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_y"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_category_title"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_question_images" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_question_category_grade"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_between_y"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/til_question_category_subject"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_category_title">
+
+        <AutoCompleteTextView
+            android:id="@+id/et_question_category_grade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/category_grade"
+            android:inputType="none"
+            tools:ignore="TextContrastCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_question_category_subject"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_between_x"
+        app:layout_constraintBottom_toBottomOf="@+id/til_question_category_grade"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/til_question_category_grade"
+        app:layout_constraintTop_toTopOf="@+id/til_question_category_grade"
+        app:layout_constraintVertical_bias="0.0">
+
+        <AutoCompleteTextView
+            android:id="@+id/et_question_category_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/category_subject"
+            android:inputType="none"
+            tools:ignore="TextContrastCheck" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/floating_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/fab_post_question"
+        android:text="@string/fab_post_question"
+        app:icon="@drawable/ic_outline_send"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
