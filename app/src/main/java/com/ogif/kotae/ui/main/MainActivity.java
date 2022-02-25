@@ -4,27 +4,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
+import com.ogif.kotae.ui.UserViewModel;
+import com.ogif.kotae.ui.auth.LoginActivity;
+import com.ogif.kotae.ui.auth.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private Toolbar toolbar;
+    private UserViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-
         View view = binding.getRoot();
         setContentView(view);
+
+        this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+
+        if (!this.viewModel.isLoggedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         // Get toolbar
         toolbar = (Toolbar) binding.includedToolBar.toolbar;

@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.auth;
+package com.ogif.kotae.ui;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -9,11 +9,11 @@ import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.UserRepository;
 
-public class AuthViewModel extends ViewModel {
+public class UserViewModel extends ViewModel {
     private final UserRepository authRepository;
     private final MutableLiveData<StateWrapper<FirebaseUser>> mutableLiveData;
 
-    public AuthViewModel() {
+    public UserViewModel() {
         this.authRepository = new UserRepository();
         this.mutableLiveData = authRepository.getMutableLiveData();
     }
@@ -26,7 +26,15 @@ public class AuthViewModel extends ViewModel {
         authRepository.createUser(email, password, extraInfo);
     }
 
-    MutableLiveData<StateWrapper<FirebaseUser>> getMutableLiveData() {
+    public boolean isLoggedIn() {
+        return authRepository.isLoggedIn();
+    }
+
+    public boolean isEmailVerified() {
+        return authRepository.isEmailVerified();
+    }
+
+    public MutableLiveData<StateWrapper<FirebaseUser>> getMutableLiveData() {
         return mutableLiveData;
     }
 }

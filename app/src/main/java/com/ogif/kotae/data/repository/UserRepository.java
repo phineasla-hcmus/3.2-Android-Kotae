@@ -36,8 +36,6 @@ public class UserRepository {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUser user = auth.getCurrentUser();
-                // boolean isNewUser = Objects.requireNonNull(task.getResult())
-                //         .getAdditionalUserInfo().isNewUser();
                 mutableLiveData.postValue(StateWrapper.success(user));
             } else {
                 String message = Objects.requireNonNull(task.getException()).getMessage();
@@ -85,6 +83,24 @@ public class UserRepository {
                 mutableLiveData.postValue(StateWrapper.fail(message));
             }
         });
+    }
+
+    public void reload(@NonNull FirebaseUser user) {
+        user.reload().addOnCompleteListener(task -> {
+            // TODO
+        });
+    }
+
+    public boolean isLoggedIn() {
+        return auth.getCurrentUser() != null;
+    }
+
+    /**
+     * @return true if the user's email is verified.
+     * @throws NullPointerException if {@link FirebaseAuth#getCurrentUser()} null
+     */
+    public boolean isEmailVerified() {
+        return Objects.requireNonNull(auth.getCurrentUser()).isEmailVerified();
     }
 
     public MutableLiveData<StateWrapper<FirebaseUser>> getMutableLiveData() {

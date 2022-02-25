@@ -16,6 +16,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.ActivitySignUpBinding;
+import com.ogif.kotae.ui.UserViewModel;
+import com.ogif.kotae.ui.main.MainActivity;
 import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.text.InputFilterMinMax;
 import com.ogif.kotae.utils.text.TextValidator;
@@ -27,7 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private static final String[] JOBS = {"Student", "Teacher"};
     private ActivitySignUpBinding binding;
-    private AuthViewModel viewModel;
+    private UserViewModel viewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class SignUpActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         this.viewModel.getMutableLiveData().observe(this, result -> {
             if (result.isFailed()) {
                 binding.tvSignUpError.setText(getResources().getString(R.string.sign_up_error_existed));
@@ -44,7 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.btnSignUp.setEnabled(true);
                 return;
             }
-            startHomeActivity();
+            startMainActivity();
         });
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
         EditText[] ets = {binding.etSignUpEmail, binding.etSignUpUsername, binding.etSignUpJob, binding.etSignUpAge, binding.etSignUpPassword};
@@ -109,15 +111,13 @@ public class SignUpActivity extends AppCompatActivity {
         });
         binding.tvSignUpToLogin.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             startActivity(intent);
             finish();
         });
     }
 
-    private void startHomeActivity() {
-        Intent intent = new Intent(this, SignUpActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+    private void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

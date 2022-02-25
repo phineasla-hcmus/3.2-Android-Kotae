@@ -11,13 +11,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.databinding.ActivityLoginBinding;
+import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.main.MainActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
-    private AuthViewModel viewModel;
+    private UserViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
         this.viewModel.getMutableLiveData().observe(this, user -> {
             if (user == null) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
@@ -55,16 +56,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    @Deprecated
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        // FirebaseUser currentUser = auth.getCurrentUser();
-        // if (currentUser != null) {
-        //     reload(currentUser);
-        // }
-    }
+    // @Deprecated
+    // @Override
+    // protected void onStart() {
+    //     super.onStart();
+    //     // Check if user is signed in (non-null) and update UI accordingly.
+    //     // FirebaseUser currentUser = auth.getCurrentUser();
+    //     // if (currentUser != null) {
+    //     //     reload(currentUser);
+    //     // }
+    // }
 
     @Deprecated
     private void reload(@NonNull FirebaseUser currentUser) {

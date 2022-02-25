@@ -64,6 +64,7 @@ dependencies {
     implementation 'io.noties.markwon:ext-tables:4.6.2'
     implementation 'io.noties.markwon:ext-tasklist:4.6.2'
     implementation 'io.noties.markwon:syntax-highlight:4.6.2'
-    //Circle Image
+
+    // Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

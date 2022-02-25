@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Kotae.ShapeAppearanceOverlay.Button.Circle" parent="ShapeAppearanceOverlay.Material3.Button">
+    <style name="ShapeAppearanceOverlay.Kotae.Button.Circle" parent="ShapeAppearanceOverlay.Material3.Button">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Kotae.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <style name="BottomNavigationView.Kotae.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">?attr/colorPrimary</item>
+    </style>
+
+    <style name="viewParent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="viewParent.headerText">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="viewParent.headerText.settingsMiniTitle">
+        <item name="android:textColor">#5D5C5C</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+
+    <!--<style name="ProfileItem" parent="viewParent.headerText.settingsMiniTitle">-->
+    <!--    <item name="android:textColor">?attr/colorOnSurface</item>-->
+    <!--    <item name="android:layout_gravity">center_vertical</item>-->
+    <!--    <item name="android:gravity">center_vertical</item>-->
+    <!--    <item name="android:drawablePadding">@dimen/margin_between_x_md</item>-->
+    <!--</style>-->
+    <style name="viewParent.headerText.settingsTextIcon" parent="ProfileItem">
+        <item name="android:drawableRight">@drawable/ic_more</item>
+        <item name="android:drawablePadding">@dimen/margin_between_x_md</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="ProfileSection">
+        <item name="android:layout_marginTop">@dimen/margin_between_y_lg</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProfileItem">
+        <item name="android:drawablePadding">@dimen/margin_between_x_md</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/margin_between_y_md</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProfileItem.Arrow">
+        <item name="android:drawableEnd">@drawable/ic_more</item>
+    </style>
+
+    <style name="ProfileItem.Header" parent="ProfileItem.Arrow">
+        <item name="android:textSize">@dimen/text_size_large</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

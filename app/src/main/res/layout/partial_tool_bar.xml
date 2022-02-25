@@ -70,7 +70,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/Kotae.ShapeAppearanceOverlay.Button.Circle" />
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Kotae.Button.Circle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,7 +86,7 @@
                 android:id="@+id/btn_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_baseline_filter_list"
+                android:drawableStart="@drawable/ic_baseline_filter_list"
                 android:text="@string/btn_filter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +96,7 @@
                 android:id="@+id/btn_leader_board"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_baseline_leaderboard"
+                android:drawableEnd="@drawable/ic_baseline_leaderboard"
                 android:text="@string/btn_leader_board"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

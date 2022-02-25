@@ -55,4 +55,10 @@
     <string name="sign_up_to_login">I\'m already a member</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="profile_dark_mode">Dark Mode</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_change_password">Change Password</string>
+    <string name="profile_language">Language</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_category_profile">Profile</string>
 </resources>
