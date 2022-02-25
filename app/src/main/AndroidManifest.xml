@@ -12,6 +12,11 @@
         <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.auth.LoginActivity"
@@ -20,17 +25,13 @@
         <activity
             android:name=".ui.auth.SignUpActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.main.QuestionContentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.CreateQuestion"
+            android:name=".ui.main.CreateQuestionActivity"
             android:exported="false" />
 
         <meta-data

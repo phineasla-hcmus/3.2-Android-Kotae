@@ -1,8 +1,8 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ogif.kotae.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.utils.RecyclerAdapter;
 
 import java.util.ArrayList;
@@ -33,7 +34,9 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private View homeView;
+    //    private View homeView;
+    private FloatingActionButton fabAddQuestion;
+    private FragmentHomeBinding binding;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -70,13 +73,27 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        homeView = inflater.inflate(R.layout.fragment_home, container, false);
+//        homeView = inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
         setUpRecyclerView();
-        return homeView;
+
+        fabAddQuestion = (FloatingActionButton) binding.fabAddQuestion;
+
+        fabAddQuestion.setOnClickListener(v -> {
+            startCreateQuestionActivity();
+        });
+
+        return binding.getRoot();
+    }
+
+    private void startCreateQuestionActivity() {
+        Intent intent = new Intent(getActivity().getApplicationContext(), CreateQuestionActivity.class);
+        startActivity(intent);
     }
 
     private void setUpRecyclerView() {
-        RecyclerView recyclerView = (RecyclerView) homeView.findViewById(R.id.recyclerView);
+//        RecyclerView recyclerView = (RecyclerView) homeView.findViewById(R.id.rv_home);
+        RecyclerView recyclerView = (RecyclerView) binding.rvHome;
         RecyclerAdapter adapter = new RecyclerAdapter(dummyStrings());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));

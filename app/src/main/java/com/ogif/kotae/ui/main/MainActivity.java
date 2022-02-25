@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         // Get toolbar
-        toolbar = (Toolbar) binding.toolbar;
+        toolbar = (Toolbar) binding.includedToolBar.toolbar;
         this.setSupportActionBar(toolbar);
 
         // Initialize home screen
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
-        BottomNavigationView bottomNav = (BottomNavigationView) binding.bottomNavigation;
+        BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             switch (item.getItemId()) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/margin_x"
     android:paddingVertical="@dimen/margin_y"
-    tools:context=".ui.main.CreateQuestion">
+    tools:context=".ui.main.CreateQuestionActivity">
 
     <TextView
         android:id="@+id/tv_question_title"
@@ -84,7 +84,7 @@
         android:layout_marginTop="@dimen/margin_between_y"
         android:fontFamily="@font/roboto"
         android:text="@string/create_question_content_description"
-        android:textColor="?attr/colorSurface"
+        android:textColor="?attr/colorOutline"
         android:textSize="@dimen/text_size_medium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_question_content_title" />
@@ -110,7 +110,8 @@
         android:src="@drawable/ic_baseline_add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_question_images_title"
-        tools:ignore="DuplicateSpeakableTextCheck" />
+        app:tint="?attr/colorPrimary"
+        tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
 
     <TextView
         android:id="@+id/tv_question_category_title"
@@ -167,14 +168,15 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/fab_post_question"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
         android:contentDescription="@string/fab_post_question"
         android:text="@string/fab_post_question"
+        android:textColor="?attr/colorPrimary"
         app:icon="@drawable/ic_outline_send"
+        app:iconTint="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

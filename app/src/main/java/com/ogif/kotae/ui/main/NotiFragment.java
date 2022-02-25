@@ -29,8 +29,6 @@ public class NotiFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private ActivityMainBinding mainBinding;
-
     public NotiFragment() {
         // Required empty public constructor
     }
