@@ -1,8 +1,12 @@
 package com.ogif.kotae.data.model;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Question {
     private String content;
     private String author;
+    private Date post_time;
     private  int upvote;
     private int downvote;
     private int report;
@@ -14,6 +18,7 @@ public class Question {
         this.grade = grade;
         this.content = content;
         this.subject = subject;
+        this.post_time = Calendar.getInstance().getTime();
         this.upvote = 0;
         this.downvote = 0;
         this.report = 0;
