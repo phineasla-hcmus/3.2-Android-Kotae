@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/ic_login_sign_up.xml" value="0.2775" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/ic_outline_favorite.xml" value="0.2385" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_admin.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_create_question.xml" value="0.21203703703703702" />
