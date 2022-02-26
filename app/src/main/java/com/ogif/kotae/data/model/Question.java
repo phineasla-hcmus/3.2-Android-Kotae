@@ -6,24 +6,33 @@ import java.util.Date;
 public class Question {
     private String content;
     private String author;
-    private Date post_time;
+    private String post_time;
     private  int upvote;
     private int downvote;
     private int report;
     private String subject;
     private String grade;
 
-    public Question(String author, String grade, String subject, String content){
+    public Question(String author, String grade, String subject, String content, String post_time){
         this.author = author;
         this.grade = grade;
         this.content = content;
         this.subject = subject;
-        this.post_time = Calendar.getInstance().getTime();
         this.upvote = 0;
         this.downvote = 0;
         this.report = 0;
+        this.post_time = post_time;
     }
-
+    public Question(String author, String grade, String subject, String content, String post_time, int upvote, int downvote, int report){
+        this.author = author;
+        this.grade = grade;
+        this.content = content;
+        this.subject = subject;
+        this.upvote = upvote;
+        this.downvote = downvote;
+        this.report = report;
+        this.post_time = post_time;
+    }
     public String getAuthor() { return this.author;}
 
     public String getQuestionContent() { return this.content; }
@@ -36,6 +45,10 @@ public class Question {
     public Question setUpvote(int upvote) {
         this.upvote = upvote;
         return this;
+    }
+
+    public String getPost_time() {
+        return post_time;
     }
 
     public Question setDownvote(int downvote){
