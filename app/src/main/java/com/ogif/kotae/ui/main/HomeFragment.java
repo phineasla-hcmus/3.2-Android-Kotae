@@ -1,6 +1,7 @@
 package com.ogif.kotae.ui.main;
 
 import android.content.Intent;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
+import com.ogif.kotae.utils.QuestionAdapter;
 import com.ogif.kotae.utils.RecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,9 +98,11 @@ public class HomeFragment extends Fragment {
     private void setUpRecyclerView() {
 //        RecyclerView recyclerView = (RecyclerView) homeView.findViewById(R.id.rv_home);
         RecyclerView recyclerView = (RecyclerView) binding.rvHome;
-        RecyclerAdapter adapter = new RecyclerAdapter(dummyStrings());
+        //RecyclerAdapter adapter = new RecyclerAdapter(dummyStrings());
+
+        QuestionAdapter adapter = new QuestionAdapter(questionList(),this.getContext());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 1));
         recyclerView.setAdapter(adapter);
 //        adapter.setRecyclerClickListener(new RecyclerAdapter.RecyclerClickListener() {
 //            @Override
@@ -133,5 +139,28 @@ public class HomeFragment extends Fragment {
         colorList.add("#FFC107");
         colorList.add("#01579B");
         return colorList;
+    }
+    private List<Question> questionList(){
+        List<Question> questionList = new ArrayList<>();
+        String date = "22/01/2022";
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        questionList.add(new Question
+                ("Chau","Lớp 10", "Tiếng Anh",
+                        "How old are you?",date));
+        return questionList;
     }
 }
