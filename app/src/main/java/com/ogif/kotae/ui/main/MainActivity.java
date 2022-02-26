@@ -1,21 +1,21 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
-import com.ogif.kotae.ui.auth.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
         // Get toolbar
         toolbar = (Toolbar) binding.includedToolBar.toolbar;
         this.setSupportActionBar(toolbar);
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize home screen
         loadFragment(new HomeFragment());
 
-        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
         bottomNav.setOnItemSelectedListener(item -> {

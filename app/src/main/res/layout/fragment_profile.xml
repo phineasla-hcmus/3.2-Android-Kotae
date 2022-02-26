@@ -6,56 +6,63 @@
     android:layout_height="match_parent"
     tools:context="com.ogif.kotae.ui.main.MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/margin_x">
+        android:padding="@dimen/margin_x"
+        app:layout_constraintBottom_toTopOf="@+id/constraint_layout_profile_user"
+        app:layout_constraintTop_toTopOf="parent">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_layout"
-            android:layout_width="375dp"
-            android:layout_height="wrap_content">
+            android:id="@+id/constraint_layout_profile_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:layout_constraintBottom_toTopOf="@+id/switch_profile_dark_mode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_profile"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_placeholder_user"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_profile_username"
-                style="@style/viewParent.headerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                app:layout_constraintStart_toEndOf="@id/img_profile"
+                android:layout_marginStart="@dimen/margin_between_x"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/img_profile"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/full_names" />
 
             <TextView
                 android:id="@+id/tv_profile_xp"
-                style="@style/viewParent.headerText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/img_profile"
+                android:layout_marginStart="@dimen/margin_between_x"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@id/img_profile"
-                app:layout_constraintTop_toBottomOf="@id/tv_profile_username"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_profile"
+                app:layout_constraintTop_toBottomOf="@+id/tv_profile_username"
                 tools:text="@tools:sample/lorem" />
 
             <ImageView
                 android:id="@+id/img_profile_arrow"
-                style="@style/viewParent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_more"
+                android:contentDescription="user detail"
+                android:src="@drawable/ic_right_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,9 +74,13 @@
             style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_between_y_lg"
             android:drawableStart="@drawable/ic_dark_mode"
-            android:text="@string/profile_dark_mode" />
+            android:text="@string/profile_dark_mode"
+            android:layout_marginTop="@dimen/margin_between_y_md"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_language"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraint_layout_profile_user" />
 
         <TextView
             android:id="@+id/tv_profile_language"
@@ -77,39 +88,69 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_language"
-            app:drawableStartCompat="@drawable/ic_language" />
+            app:drawableStartCompat="@drawable/ic_language"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_section_profile"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch_profile_dark_mode" />
 
         <TextView
+            android:id="@+id/tv_profile_section_profile"
             style="@style/ProfileSection"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/profile_category_profile" />
+            android:text="@string/profile_category_profile"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_edit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_language" />
 
         <TextView
+            android:id="@+id/tv_profile_edit"
             style="@style/ProfileItem.Arrow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_edit"
-            app:drawableStartCompat="@drawable/ic_profile" />
+            app:drawableStartCompat="@drawable/ic_profile"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_change_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_section_profile" />
 
         <TextView
+            android:id="@+id/tv_profile_change_password"
             style="@style/ProfileItem.Arrow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_change_password"
-            app:drawableStartCompat="@drawable/ic_password" />
+            app:drawableStartCompat="@drawable/ic_password"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_logout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_edit" />
 
         <TextView
+            android:id="@+id/tv_profile_logout"
             style="@style/viewParent.headerText.settingsTextIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_logout"
-            app:drawableStartCompat="@drawable/ic_logout" />
+            app:drawableStartCompat="@drawable/ic_logout"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_app_version"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_change_password" />
 
         <TextView
+            android:id="@+id/tv_profile_app_version"
             style="@style/viewParent.headerText.settingsMiniTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="App ver 1.0.0"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_logout" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
