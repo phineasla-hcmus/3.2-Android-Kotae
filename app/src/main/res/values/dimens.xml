@@ -12,6 +12,9 @@
     <!--Space between a view and an edge of the screen-->
     <dimen name="margin_x">16dp</dimen>
     <dimen name="margin_y">16dp</dimen>
+
+    <dimen name="padding_x">8dp</dimen>
+
     <dimen name="radius">16dp</dimen>
 
     <!--Text size-->

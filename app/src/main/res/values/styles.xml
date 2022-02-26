@@ -35,7 +35,7 @@
     <!--    <item name="android:drawablePadding">@dimen/margin_between_x_md</item>-->
     <!--</style>-->
     <style name="viewParent.headerText.settingsTextIcon" parent="ProfileItem">
-        <item name="android:drawableRight">@drawable/ic_more</item>
+        <item name="android:drawableRight">@drawable/ic_right_arrow</item>
         <item name="android:drawablePadding">@dimen/margin_between_x_md</item>
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:gravity">center_vertical</item>
@@ -51,17 +51,12 @@
         <item name="android:drawablePadding">@dimen/margin_between_x_md</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginTop">@dimen/margin_between_y_md</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:paddingVertical">@dimen/padding_x</item>
     </style>
 
     <style name="ProfileItem.Arrow">
-        <item name="android:drawableEnd">@drawable/ic_more</item>
-    </style>
-
-    <style name="ProfileItem.Header" parent="ProfileItem.Arrow">
-        <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:drawableEnd">@drawable/ic_right_arrow</item>
     </style>
 </resources>
