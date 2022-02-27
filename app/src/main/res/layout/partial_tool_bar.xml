@@ -33,25 +33,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!--            <Button-->
-            <!--                android:id="@+id/btn_filter"-->
-            <!--                android:layout_width="48dp"-->
-            <!--                android:layout_height="48dp"-->
-            <!--                android:layout_gravity="end"-->
-            <!--                android:contentDescription="@string/content_action_search"-->
-            <!--                android:insetLeft="0dp"-->
-            <!--                android:insetTop="0dp"-->
-            <!--                android:insetRight="0dp"-->
-            <!--                android:insetBottom="0dp"-->
-            <!--                android:padding="0dp"-->
-            <!--                app:icon="@drawable/ic_outline_format_list_bulleted"-->
-            <!--                app:iconGravity="textStart"-->
-            <!--                app:iconPadding="0dp"-->
-            <!--                app:iconSize="32dp"-->
-            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
             <Button
                 android:id="@+id/btn_search"
                 android:layout_width="48dp"
@@ -86,7 +67,8 @@
                 android:id="@+id/btn_filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_baseline_filter_list"
+                android:drawableLeft="@drawable/ic_baseline_filter_list"
+                android:drawableTint="?attr/colorOnPrimary"
                 android:text="@string/btn_filter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -97,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_baseline_leaderboard"
+                android:drawableTint="?attr/colorOnPrimary"
                 android:text="@string/btn_leader_board"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

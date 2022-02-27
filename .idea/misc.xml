@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/btn_leaderboard_background.xml" value="0.1615" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_admin.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_create_question.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -11,10 +12,11 @@
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.25" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/dropdown_item.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_admin.xml" value="0.21203703703703702" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_bookmark.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_bottom_nav_bar.xml" value="0.1125" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_main_content.xml" value="0.21203703703703702" />
-        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_tool_bar.xml" value="0.2" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_tool_bar.xml" value="0.264" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/sample_edit_text.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/simple_view.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/toolbar.xml" value="0.21203703703703702" />
