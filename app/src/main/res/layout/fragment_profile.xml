@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            app:layout_constraintBottom_toTopOf="@+id/switch_profile_dark_mode"
+            app:layout_constraintBottom_toTopOf="@+id/switch_profile_night_mode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -34,7 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_profile_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@tools:sample/full_names" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_profile_xp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:id="@+id/img_profile_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="user detail"
+                android:contentDescription="@string/profile_edit"
                 android:src="@drawable/ic_right_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,20 +69,20 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch_profile_dark_mode"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switch_profile_night_mode"
             style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_y_lg"
             android:drawableStart="@drawable/ic_dark_mode"
             android:text="@string/profile_dark_mode"
-            android:layout_marginTop="@dimen/margin_between_y_md"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_language"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraint_layout_profile_user" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_language"
             style="@style/ProfileItem.Arrow"
             android:layout_width="match_parent"
@@ -92,9 +92,9 @@
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_section_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch_profile_dark_mode" />
+            app:layout_constraintTop_toBottomOf="@+id/switch_profile_night_mode" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_section_profile"
             style="@style/ProfileSection"
             android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_profile_language" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_edit"
             style="@style/ProfileItem.Arrow"
             android:layout_width="match_parent"
@@ -116,7 +116,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_profile_section_profile" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_change_password"
             style="@style/ProfileItem.Arrow"
             android:layout_width="match_parent"
@@ -128,7 +128,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_profile_edit" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_logout"
             style="@style/ProfileItem"
             android:layout_width="match_parent"
@@ -140,9 +140,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_profile_change_password" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_app_version"
-            style="@style/viewParent.headerText.settingsMiniTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="App ver 1.0.0"

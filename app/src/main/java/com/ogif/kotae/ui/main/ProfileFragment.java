@@ -2,29 +2,32 @@ package com.ogif.kotae.ui.main;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
-import com.ogif.kotae.data.DarkModePreferenceManager;
+import com.ogif.kotae.databinding.FragmentProfileBinding;
 
 import java.util.Objects;
 
 /**
- * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener {
+public class ProfileFragment extends Fragment {
+    private FragmentProfileBinding binding;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor prefsEditor;
 
     /**
      * Use this factory method to create a new instance of
@@ -43,25 +46,37 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        View v = binding.getRoot();
 
-        SwitchCompat darkMode = v.findViewById(R.id.switch_profile_dark_mode);
+        prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        prefsEditor = prefs.edit();
 
-        darkMode.setOnCheckedChangeListener((compoundButton, b) -> {
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            // prefs.getBoolean()
-            DarkModePreferenceManager manager = new DarkModePreferenceManager(this.requireContext());
-            manager.setDarkMode(!manager.isDarkMode());
-            compoundButton.setChecked(manager.isDarkMode());
-            AppCompatDelegate.setDefaultNightMode(manager.isDarkMode()
+        SwitchMaterial switchNightMode = binding.switchProfileNightMode;
+        switchNightMode.setChecked(prefs.getBoolean(Global.SETTING_KEY_NIGHT_MODE, false));
+        switchNightMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            prefsEditor.putBoolean(Global.SETTING_KEY_NIGHT_MODE, isChecked);
+            prefsEditor.commit();
+            AppCompatDelegate.setDefaultNightMode(isChecked
                     ? AppCompatDelegate.MODE_NIGHT_YES
-                    : AppCompatDelegate.MODE_NIGHT_NO
-            );
+                    : AppCompatDelegate.MODE_NIGHT_NO);
+            // prefs.getBoolean()
+            // DarkModePreferenceManager manager = new DarkModePreferenceManager(this.requireContext());
+            // manager.setDarkMode(!manager.isDarkMode());
+            // compoundButton.setChecked(manager.isDarkMode());
+            // AppCompatDelegate.setDefaultNightMode(manager.isDarkMode()
+            //         ? AppCompatDelegate.MODE_NIGHT_YES
+            //         : AppCompatDelegate.MODE_NIGHT_NO
+            // );
             requireActivity().recreate();
         });
+
+        binding.tvProfileLanguage.setOnClickListener(view -> {
+            // TODO change language
+        });
+
         return v;
     }
 
@@ -79,26 +94,5 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         Objects.requireNonNull(((AppCompatActivity) requireActivity())
                 .getSupportActionBar())
                 .show();
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.tv_profile_language) {
-
-        } else if (id == R.id.tv_profile_change_password) {
-
-        }
-    }
-
-    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        // PreferenceManager.getDefaultSharedPreferences(getContext());
-        DarkModePreferenceManager manager = new DarkModePreferenceManager(this.requireContext());
-        manager.setDarkMode(!manager.isDarkMode());
-        compoundButton.setChecked(manager.isDarkMode());
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES
-        );
-        requireActivity().recreate();
     }
 }
