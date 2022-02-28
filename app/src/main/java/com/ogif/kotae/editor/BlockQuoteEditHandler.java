@@ -1,4 +1,4 @@
-package com.ogif.kotae.editor.shared;
+package com.ogif.kotae.editor;
 
 import android.text.Editable;
 import android.text.Spanned;

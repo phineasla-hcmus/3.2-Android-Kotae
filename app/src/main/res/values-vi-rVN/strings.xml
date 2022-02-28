@@ -49,5 +49,6 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="et_error_username_length">Tên người dùng phải từ 3 đến 16 ký tự</string>
     <string name="sign_up_error_missing">Có cái gì đó thiếu thiếu</string>
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
+    <string name="question">Câu hỏi</string>
     <string name="question_title_hint">Tiêu đề câu hỏi</string>
 </resources>

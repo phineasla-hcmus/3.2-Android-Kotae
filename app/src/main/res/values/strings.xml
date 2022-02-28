@@ -47,6 +47,7 @@
     <string name="login_error">Invalid email or password</string>
     <string name="login_header" translatable="false">Already have an account?</string>
     <string name="login_to_sign_up">New member? Sign up now</string>
+    <string name="question">Question</string>
     <string name="question_title_hint">Question title</string>
     <string name="question_title_character_counted_example" translatable="false">30/100</string>
     <string name="sign_up_error_missing">Missing required field(s)</string>

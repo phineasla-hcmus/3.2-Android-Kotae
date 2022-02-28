@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/edit_text"
+                android:id="@+id/et_question_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="none"
@@ -51,7 +51,7 @@
                 tools:ignore="ButtonStyle">
 
                 <Button
-                    android:id="@+id/bold"
+                    android:id="@+id/btn_bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -59,7 +59,7 @@
                     android:typeface="monospace" />
 
                 <Button
-                    android:id="@+id/italic"
+                    android:id="@+id/btn_italic"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -67,7 +67,7 @@
                     android:typeface="monospace" />
 
                 <Button
-                    android:id="@+id/strike"
+                    android:id="@+id/btn_strike"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -75,7 +75,7 @@
                     android:typeface="monospace" />
 
                 <Button
-                    android:id="@+id/quote"
+                    android:id="@+id/btn_quote"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -83,7 +83,7 @@
                     android:typeface="monospace" />
 
                 <Button
-                    android:id="@+id/code"
+                    android:id="@+id/btn_code"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

@@ -172,6 +172,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="10dp"
         android:contentDescription="@string/fab_post_question"
         android:text="@string/fab_post_question"
         android:textColor="?attr/colorPrimary"
