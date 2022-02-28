@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // Initialize home screen
         loadFragment(new HomeFragment());
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
         bottomNav.setOnItemSelectedListener(item -> {

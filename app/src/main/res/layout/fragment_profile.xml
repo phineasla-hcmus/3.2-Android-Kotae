@@ -130,7 +130,7 @@
 
         <TextView
             android:id="@+id/tv_profile_logout"
-            style="@style/viewParent.headerText.settingsTextIcon"
+            style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/profile_logout"
