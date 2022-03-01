@@ -2,12 +2,13 @@ package com.ogif.kotae.ui.main;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.FragmentProfileBinding;
+import com.ogif.kotae.utils.LocaleHelper;
 
 import java.util.Objects;
 
@@ -25,6 +27,7 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+    private static final String[] languages = {"English", "Tiếng Việt"};
     private FragmentProfileBinding binding;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
@@ -74,7 +77,7 @@ public class ProfileFragment extends Fragment {
         });
 
         binding.tvProfileLanguage.setOnClickListener(view -> {
-            // TODO change language
+            showLanguageDialog();
         });
 
         return v;
@@ -94,5 +97,21 @@ public class ProfileFragment extends Fragment {
         Objects.requireNonNull(((AppCompatActivity) requireActivity())
                 .getSupportActionBar())
                 .show();
+    }
+
+    private void showLanguageDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(getResources().getString(R.string.all_language))
+                .setSingleChoiceItems(languages, -1, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        LocaleHelper.setLocale(requireContext(), "en");
+                    } else if (i == 1) {
+                        Log.d("TESTING", "Set VN");
+                        LocaleHelper.setLocale(requireContext(), "vi");
+                    }
+                    requireActivity().recreate();
+                    dialogInterface.dismiss();
+                });
+        builder.create().show();
     }
 }

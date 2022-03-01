@@ -51,4 +51,10 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
     <string name="question">Câu hỏi</string>
     <string name="question_title_hint">Tiêu đề câu hỏi</string>
+    <string name="all_language">Ngôn ngữ</string>
+    <string name="profile_night_mode">Chế độ ban đêm</string>
+    <string name="profile_logout">Đăng xuất</string>
+    <string name="profile_category_profile">Hồ sơ</string>
+    <string name="profile_change_password">Đổi mật khẩu</string>
+    <string name="profile_edit">Chỉnh hồ sơ</string>
 </resources>
