@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotae">
         <activity
+            android:name=".ui.question.QuestionDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
