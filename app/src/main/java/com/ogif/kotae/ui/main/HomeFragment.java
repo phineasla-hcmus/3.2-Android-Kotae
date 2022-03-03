@@ -70,23 +70,24 @@ public class HomeFragment extends Fragment {
         List<Question> questionList = new ArrayList<>();
         String date = "22/01/2022";
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Chau", "Lớp 10", "Tiếng Anh",
+                ("Title","Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
+
         return questionList;
     }
 }

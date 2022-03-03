@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Question {
+    String title;
     private String content;
     private String author;
     private String post_time;
@@ -13,7 +14,8 @@ public class Question {
     private String subject;
     private String grade;
 
-    public Question(String author, String grade, String subject, String content, String post_time){
+    public Question(String title,String author, String grade, String subject, String content, String post_time){
+        this.title=title;
         this.author = author;
         this.grade = grade;
         this.content = content;
@@ -23,7 +25,8 @@ public class Question {
         this.report = 0;
         this.post_time = post_time;
     }
-    public Question(String author, String grade, String subject, String content, String post_time, int upvote, int downvote, int report){
+    public Question(String title,String author, String grade, String subject, String content, String post_time, int upvote, int downvote, int report){
+        this.title = title;
         this.author = author;
         this.grade = grade;
         this.content = content;
@@ -59,5 +62,9 @@ public class Question {
     public Question setReport(int report){
         this.report = report;
         return this;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }
