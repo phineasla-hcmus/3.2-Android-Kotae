@@ -6,10 +6,12 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ogif.kotae.data.model.Question;
@@ -19,12 +21,13 @@ import com.ogif.kotae.utils.QuestionAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     //    private View homeView;
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
+    SwipeRefreshLayout swipeLayout;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -48,8 +51,15 @@ public class HomeFragment extends Fragment {
         fabAddQuestion.setOnClickListener(v -> {
             startCreateQuestionActivity();
         });
-
+        swipeLayout = (SwipeRefreshLayout) binding.swipeContainer;
+        swipeLayout.setOnRefreshListener(this);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onRefresh() {
+       // Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
+        //TODO: do refresh task
     }
 
     private void startCreateQuestionActivity() {
