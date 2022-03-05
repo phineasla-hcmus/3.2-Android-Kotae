@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
-       // Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
         //TODO: do refresh task
     }
 
@@ -80,22 +80,22 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         List<Question> questionList = new ArrayList<>();
         String date = "22/01/2022";
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
         questionList.add(new Question
-                ("Title","Chau", "Lớp 10", "Tiếng Anh",
+                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
                         "How old are you?", date));
 
         return questionList;
