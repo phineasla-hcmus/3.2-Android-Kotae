@@ -1,53 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_question_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.QuestionContentActivity">
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:background="?attr/colorOnPrimary"
+        android:elevation="@dimen/default_app_bar_elevation"
+        app:tabIndicatorColor="?attr/colorPrimary"
+        app:tabIndicatorFullWidth="false"
+        app:tabSelectedTextColor="?android:attr/textColorPrimary"
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabTextColor="?android:attr/textColorSecondary">
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/markdown" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/preview" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingBottom="30dp">
 
-            <EditText
-                android:id="@+id/et_question_content"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="none"
-                android:hint="Markdown..."
-                android:inputType="text|textLongMessage|textMultiLine"
-                android:maxLines="100" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_markdown_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:boxStrokeColor="@color/color_text_input_box"
+                        app:hintTextColor="@color/color_text_input_box">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_markdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="start|top"
+                            android:imeOptions="flagNoExtractUi"
+                            android:minHeight="@dimen/body_height"
+                            android:theme="@style/TextInputEditTextStyle" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/previewText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/answer_preview_background"
+                        android:gravity="start|top"
+                        android:minHeight="@dimen/body_height"
+                        android:visibility="gone" />
+
+                </FrameLayout>
+
+                <!--                <com.google.android.material.checkbox.MaterialCheckBox-->
+                <!--                    android:id="@+id/debugPreview"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginStart="16dp"-->
+                <!--                    android:layout_marginEnd="16dp"-->
+                <!--                    android:layout_marginBottom="80dp"-->
+                <!--                    android:checked="true"-->
+                <!--                    android:text="@string/post_preview" />-->
+            </LinearLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_btn_edit"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            tools:ignore="ButtonStyle">
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/sv_content"
+            app:layout_anchorGravity="bottom|end">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:divider="@drawable/divider_btn_editor"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                android:showDividers="middle"
                 tools:ignore="ButtonStyle">
 
                 <Button
@@ -56,6 +119,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="B"
+                    android:textSize="16sp"
                     android:typeface="monospace" />
 
                 <Button
@@ -64,22 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="I"
-                    android:typeface="monospace" />
-
-                <Button
-                    android:id="@+id/btn_strike"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="S"
-                    android:typeface="monospace" />
-
-                <Button
-                    android:id="@+id/btn_quote"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text=">"
+                    android:textSize="16sp"
                     android:typeface="monospace" />
 
                 <Button
@@ -88,11 +137,41 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="`"
+                    android:textSize="16sp"
+                    android:typeface="monospace" />
+
+                <Button
+                    android:id="@+id/btn_heading_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="h1"
+                    android:textSize="16sp"
+                    android:typeface="monospace" />
+
+                <Button
+                    android:id="@+id/btn_heading_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="h2"
+                    android:textSize="16sp"
                     android:typeface="monospace" />
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/fab_save_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:padding="16dp"
+            android:textAllCaps="false"
+            android:textColor="?attr/colorPrimary"
+            app:icon="@drawable/ic_outline_save"
+            app:iconTint="?attr/colorPrimary" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

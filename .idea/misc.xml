@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/answer_preview_background.xml" value="0.1615" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/divider_btn_editor.xml" value="0.1615" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/ic_baseline_arrow_up.xml" value="0.248" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/ic_baseline_comment.xml" value="0.116" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/drawable/ic_baseline_leaderboard.xml" value="0.116" />

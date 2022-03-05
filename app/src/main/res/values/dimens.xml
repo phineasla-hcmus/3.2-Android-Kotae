@@ -27,4 +27,7 @@
 
     <!--Border radius-->
     <dimen name="border_radius">8dp</dimen>
+
+    <dimen name="default_app_bar_elevation">4dp</dimen>
+    <dimen name="body_height">512dp</dimen>
 </resources>

@@ -48,11 +48,13 @@
     <string name="login_error">Invalid email or password</string>
     <string name="login_header" translatable="false">Already have an account?</string>
     <string name="login_to_sign_up">New member? Sign up now</string>
+    <string name="markdown" translatable="false">Markdown</string>
     <string name="profile_category_profile">Profile</string>
     <string name="profile_change_password">Change Password</string>
     <string name="profile_night_mode">Night Mode</string>
     <string name="profile_edit">Edit Profile</string>
     <string name="profile_logout">Logout</string>
+    <string name="preview" translatable="false">Preview</string>
     <string name="question">Question</string>
     <string name="question_title_character_counted_example" translatable="false">30/100</string>
     <string name="question_title_hint">Question title</string>

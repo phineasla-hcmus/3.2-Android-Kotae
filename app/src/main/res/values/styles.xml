@@ -61,4 +61,13 @@
     <style name="ProfileItem.Arrow">
         <item name="android:drawableEnd">@drawable/ic_right_arrow</item>
     </style>
+
+    <style name="TabTextAppearance" parent="@style/TextAppearance.Design.Tab">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="TextInputEditTextStyle">
+        <item name="android:colorControlActivated">?attr/colorOnSurface</item>
+    </style>
 </resources>
