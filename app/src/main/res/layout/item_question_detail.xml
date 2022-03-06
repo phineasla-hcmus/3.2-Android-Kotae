@@ -11,12 +11,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:paddingHorizontal="@dimen/margin_x"
         android:paddingTop="@dimen/margin_between_y_md"
         android:paddingBottom="@dimen/margin_between_y"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,8 +24,6 @@
         android:id="@+id/tv_question_detail_body"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:paddingBottom="16dp"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,41 +31,49 @@
         app:layout_constraintTop_toBottomOf="@id/tv_question_detail_title"
         tools:text="Question body" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_images"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/chip_group_question_detail_tags"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_body"
+        tools:itemCount="3"
+        tools:orientation="horizontal" />
+
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_question_detail_tags"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="@dimen/margin_between_y_md"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_question_detail_body"
-        app:singleSelection="true" />
+        app:layout_constraintTop_toBottomOf="@id/rv_images"
+        app:singleSelection="true">
+
+    </com.google.android.material.chip.ChipGroup>
 
     <com.ogif.kotae.ui.question.AuthorView
         android:id="@+id/author_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/lastEditor"
+        app:layout_constraintEnd_toStartOf="@id/tv_last_editor"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/chip_group_question_detail_tags" />
 
     <TextView
-        android:id="@+id/lastEditor"
+        android:id="@+id/tv_last_editor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_between_x_md"
         android:gravity="end"
         android:lines="2"
-        android:textSize="@dimen/text_size_small"
-        android:textStyle="italic"
-        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@id/author_view"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="last edited by\nTam" />

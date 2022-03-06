@@ -78,25 +78,14 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private List<Question> questionList() {
         List<Question> questionList = new ArrayList<>();
-        String date = "22/01/2022";
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
-        questionList.add(new Question
-                ("Title", "Chau", "Lớp 10", "Tiếng Anh",
-                        "How old are you?", date));
+        long epochTimestamp = 1646543408;
+        Question sample = (Question) new Question().setTitle("How to survive in life")
+                .setAuthorId("randomString").setContent("Trakkam các kiểu").setGradeId("10")
+                .setPostTime(epochTimestamp);
+
+        for (int i = 0; i < 5; i++) {
+            questionList.add(sample);
+        }
 
         return questionList;
     }

@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/tv_avatar"
         android:layout_width="@dimen/avatar_size_sm"
         android:layout_height="@dimen/avatar_size_sm"
