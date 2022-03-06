@@ -13,6 +13,7 @@ public class Post {
     private int report = 0;
     private String subjectId;
     private String gradeId;
+    private boolean blocked;
 
     // TODO add images
 
@@ -108,6 +109,15 @@ public class Post {
 
     public Post setGradeId(String gradeId) {
         this.gradeId = gradeId;
+        return this;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public Post setBlocked(boolean blocked) {
+        this.blocked = blocked;
         return this;
     }
 }
