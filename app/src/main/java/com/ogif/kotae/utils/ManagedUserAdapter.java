@@ -36,6 +36,7 @@ public class ManagedUserAdapter extends ArrayAdapter<ManagedUser> {
         TextView upvote = (TextView) customView.findViewById(R.id.tv_user_upvote_admin);
         TextView answer = (TextView) customView.findViewById(R.id.tv_user_answer_admin);
         TextView report = (TextView) customView.findViewById(R.id.tv_user_report_admin);
+        TextView totalDaysBlocked = (TextView) customView.findViewById(R.id.tv_user_total_days_blocked_admin);
         ImageView ivBlock = (ImageView) customView.findViewById(R.id.iv_block);
 
         ManagedUser managedUser = getItem(position);
@@ -48,6 +49,7 @@ public class ManagedUserAdapter extends ArrayAdapter<ManagedUser> {
 
         if(managedUser.isBlocked() == false){
             ivBlock.setVisibility(View.GONE);
+            totalDaysBlocked.setVisibility(View.GONE);
         }
 
         return customView;

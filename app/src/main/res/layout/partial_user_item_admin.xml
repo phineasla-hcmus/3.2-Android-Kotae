@@ -34,7 +34,7 @@
                 android:id="@+id/iv_block"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:tint="@color/md_theme_light_error"
+                app:tint="@color/md_theme_light_error"
                 app:srcCompat="@drawable/ic_block"
                 tools:visibility="visible" />
 
@@ -78,8 +78,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
-                android:text="0"
                 android:textColor="@color/md_theme_light_error"
+                android:text=""
                 android:textSize="@dimen/text_size_medium"
                 android:visibility="invisible" />
 
