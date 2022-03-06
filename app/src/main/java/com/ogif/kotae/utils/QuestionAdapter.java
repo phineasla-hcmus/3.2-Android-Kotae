@@ -35,10 +35,10 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
 
     @Override
     public void onBindViewHolder( ViewHolder holder, int position) {
-        holder.tv_question_content.setText(questionList.get(position).getQuestionContent());
-        holder.tv_question_posttime.setText(questionList.get(position).getPost_time());
+        holder.tv_question_content.setText(questionList.get(position).getContent());
+        holder.tv_question_posttime.setText((int) questionList.get(position).getPostTime());
         holder.cim_avatar.setImageResource(R.drawable.ic_outline_account_circle);
-        holder.tv_author.setText(questionList.get(position).getAuthor());
+        holder.tv_author.setText(questionList.get(position).getAuthorId());
         holder.tv_question_title.setText(questionList.get(position).getTitle());
     }
 
