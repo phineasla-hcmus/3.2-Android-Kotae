@@ -28,10 +28,10 @@
             android:name=".ui.auth.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.QuestionContentActivity"
+            android:name=".ui.question.QuestionContentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.CreateQuestionActivity"
+            android:name=".ui.question.CreateQuestionActivity"
             android:exported="false" />
 
         <meta-data

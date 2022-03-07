@@ -33,7 +33,7 @@
     <string name="content_action_noti">Notification</string>
     <string name="content_action_search">Search</string>
     <string name="create_question_category_title">Category</string>
-    <string name="create_question_content_description">Click here to include all the information someone would need to answer your question</string>
+    <string name="create_question_content_description">Click here to include question content</string>
     <string name="create_question_content_title">Content</string>
     <string name="create_question_images_title">Images</string>
     <string name="create_question_title">Title</string>
@@ -57,7 +57,6 @@
     <string name="profile_logout">Logout</string>
     <string name="preview" translatable="false">Preview</string>
     <string name="question">Question</string>
-    <string name="question_title_character_counted_example" translatable="false">30/100</string>
     <string name="question_title_hint">Question title</string>
     <string name="sign_up_error_existed">User existed</string>
     <string name="sign_up_error_missing">Missing required field(s)</string>

@@ -1,12 +1,15 @@
-package com.ogif.kotae.ui.main;
+package com.ogif.kotae.ui.question;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
 
@@ -31,7 +35,9 @@ public class QuestionContentActivity extends AppCompatActivity {
     private ActivityQuestionContentBinding binding;
     private Button btnBold, btnItalic, btnCode, btnHeading1, btnHeading2;
     private TabLayout tabLayout;
+    private ExtendedFloatingActionButton fabSaveQuestion;
     private View view;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,11 @@ public class QuestionContentActivity extends AppCompatActivity {
         binding = ActivityQuestionContentBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
         setContentView(view);
+
+        toolbar = binding.tbQuestionContent;
+        this.setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Create question");
 
         etMarkdown = binding.etMarkdown;
         tvPreview = binding.tvPreview;
@@ -68,6 +79,38 @@ public class QuestionContentActivity extends AppCompatActivity {
 
             }
         });
+
+        fabSaveQuestion = binding.fabSaveQuestion;
+        fabSaveQuestion.setOnClickListener(v -> {
+            saveDraftContent();
+        });
+
+        Intent intent = getIntent();
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (!TextUtils.isEmpty(text)) {
+            etMarkdown.setText(text);
+            setMarkdown(text);
+        }
+    }
+
+    // pass question content to CreateQuestionActivity
+    private void saveDraftContent() {
+        String content = binding.etMarkdown.getText().toString();
+        // put the String to pass back into an Intent and close this activity
+        Intent intent = new Intent();
+        intent.putExtra(Intent.EXTRA_TEXT, content);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void onTabChanged(int position) {

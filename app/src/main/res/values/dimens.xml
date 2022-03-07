@@ -20,7 +20,7 @@
     <!--Text size-->
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
 
     <dimen name="avatar_size_sm">28dp</dimen>
     <dimen name="avatar_size_lg">60dp</dimen>
@@ -29,5 +29,5 @@
     <dimen name="border_radius">8dp</dimen>
 
     <dimen name="default_app_bar_elevation">4dp</dimen>
-    <dimen name="body_height">512dp</dimen>
+    <dimen name="body_height">450dp</dimen>
 </resources>

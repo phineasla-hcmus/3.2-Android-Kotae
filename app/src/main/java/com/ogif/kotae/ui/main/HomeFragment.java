@@ -11,11 +11,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
+import com.ogif.kotae.ui.question.CreateQuestionActivity;
 import com.ogif.kotae.utils.QuestionAdapter;
 
 import java.util.ArrayList;
