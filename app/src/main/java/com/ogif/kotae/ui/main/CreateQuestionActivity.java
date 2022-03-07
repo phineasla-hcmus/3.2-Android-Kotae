@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
 
@@ -22,40 +23,27 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private ExtendedFloatingActionButton fabPostQuestion;
     private Toolbar toolbar;
     private TextView tvQuestionContent;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_question);
 
         binding = ActivityCreateQuestionBinding.inflate(getLayoutInflater());
+        view = binding.getRoot();
+        setContentView(view);
 
         tvQuestionContent = binding.tvQuestionContentDescription;
 
-        tvQuestionContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("abc", "Clicked");
-                startQuestionContentActivity();
-            }
+        tvQuestionContent.setOnClickListener(view -> {
+            startQuestionContentActivity();
         });
-
-//        toolbar = (Toolbar) binding.toolbarCreateQuestion;
-//        this.setSupportActionBar(toolbar);
-//
-//        // calling the action bar
-//        ActionBar actionBar = getSupportActionBar();
-////
-////        // showing the back button in action bar
-//        actionBar.setDisplayHomeAsUpEnabled(true);
-////
-//        actionBar.setTitle(R.string.question);
 
 
         fabPostQuestion = (ExtendedFloatingActionButton) binding.fabPostQuestion;
 
         fabPostQuestion.setOnClickListener(v -> {
-            this.finish();
+
         });
     }
 
@@ -70,9 +58,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
     }
 
     private void startQuestionContentActivity() {
-        Intent intent = new Intent(this, QuestionContentActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(getApplicationContext(), QuestionContentActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
+//        finish();
     }
 }

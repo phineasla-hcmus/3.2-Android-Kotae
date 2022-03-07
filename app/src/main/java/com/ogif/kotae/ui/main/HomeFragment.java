@@ -63,7 +63,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void startCreateQuestionActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), QuestionContentActivity.class);
+        Intent intent = new Intent(getActivity().getApplicationContext(), CreateQuestionActivity.class);
         startActivity(intent);
     }
 
