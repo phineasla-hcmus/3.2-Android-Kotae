@@ -58,7 +58,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
                 tv_question_content = (TextView) itemView.findViewById(R.id.tv_question_content);
                 tv_question_title = (TextView) itemView.findViewById(R.id.tv_question_title);
                 tv_author = (TextView) itemView.findViewById(R.id.tv_author);
-                tv_question_posttime = (TextView) itemView.findViewById(R.id.tv_question_posttime);
+                tv_question_posttime = (TextView) itemView.findViewById(R.id.tv_question_post_time);
 
                 ib_upvote = (ImageButton) itemView.findViewById(R.id.ib_up);
                 ib_downvote = (ImageButton) itemView.findViewById(R.id.ib_down);
