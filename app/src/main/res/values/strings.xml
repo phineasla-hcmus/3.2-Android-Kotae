@@ -10,7 +10,7 @@
     <string name="all_username">Username</string>
     <string name="app_name" translatable="false">Kotae</string>
     <string name="bottom_nav_admin">Admin</string>
-    <string name="bottom_nav_bookmark">Bookmark</string>
+    <string name="all_bookmark">Bookmark</string>
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_noti">Notifications</string>
     <string name="bottom_nav_profile">Profile</string>
@@ -63,4 +63,5 @@
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
     <string name="all_answer">Answer</string>
+    <string name="question_detail_report">Report question</string>
 </resources>

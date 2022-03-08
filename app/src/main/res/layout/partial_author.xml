@@ -31,31 +31,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/full_names" />
 
-    <TextView
-        android:id="@+id/tv_reputation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="2dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_avatar"
-        app:layout_constraintTop_toBottomOf="@id/tv_username"
-        tools:text="123" />
-
     <!--<TextView-->
-    <!--    android:id="@+id/tv_date"-->
-    <!--    android:layout_width="0dp"-->
+    <!--    android:id="@+id/tv_reputation"-->
+    <!--    android:layout_width="wrap_content"-->
     <!--    android:layout_height="wrap_content"-->
     <!--    android:layout_marginStart="8dp"-->
     <!--    android:layout_marginTop="2dp"-->
-    <!--    android:textAlignment="textEnd"-->
+    <!--    android:textColor="?android:attr/textColorSecondary"-->
     <!--    android:textSize="@dimen/text_size_small"-->
+    <!--    android:textStyle="bold"-->
     <!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--    app:layout_constraintEnd_toEndOf="parent"-->
-    <!--    app:layout_constraintStart_toEndOf="@id/tv_reputation"-->
+    <!--    app:layout_constraintStart_toEndOf="@id/tv_avatar"-->
     <!--    app:layout_constraintTop_toBottomOf="@id/tv_username"-->
-    <!--    tools:text="@tools:sample/date/ddmmyy" />-->
+    <!--    tools:text="123" />-->
 </merge>

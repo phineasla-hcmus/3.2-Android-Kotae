@@ -14,8 +14,8 @@
     <dimen name="margin_y">16dp</dimen>
 
     <dimen name="padding_x">8dp</dimen>
-
-    <dimen name="radius">16dp</dimen>
+    <dimen name="padding_y">8dp</dimen>
+    <dimen name="padding_y_md">16dp</dimen>
 
     <!--Text size-->
     <dimen name="text_size_small">12sp</dimen>

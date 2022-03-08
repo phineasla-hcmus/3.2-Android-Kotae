@@ -44,17 +44,13 @@
 
     <style name="ProfileSection">
         <item name="android:layout_marginTop">@dimen/margin_between_y_lg</item>
-        <!--<item name="android:textColor">?attr/colorOnSurface</item>-->
-        <!--<item name="android:textStyle">bold</item>-->
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.LabelLarge</item>
     </style>
 
     <style name="ProfileItem">
         <item name="android:drawablePadding">@dimen/margin_between_x_md</item>
         <item name="android:gravity">center_vertical</item>
-        <!--<item name="android:textColor">?attr/colorOnSurface</item>-->
-        <!--<item name="android:textStyle">bold</item>-->
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="android:textAppearance">@style/TextAppearance.Material3.LabelMedium</item>
         <item name="android:paddingVertical">@dimen/padding_x</item>
     </style>
 

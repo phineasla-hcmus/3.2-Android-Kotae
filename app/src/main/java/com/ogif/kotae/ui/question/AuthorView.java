@@ -31,6 +31,6 @@ public class AuthorView extends ConstraintLayout {
     }
 
     public void init() {
-        inflate(getContext(), R.layout.partial_author_view, this);
+        inflate(getContext(), R.layout.partial_author, this);
     }
 }

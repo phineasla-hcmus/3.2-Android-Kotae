@@ -15,11 +15,22 @@
         <!--    android:theme="@style/MainToolbarStyle"-->
         <!--    app:navigationIcon="@drawable/ic_baseline_arrow_back"-->
         <!--    app:titleTextColor="?android:attr/textColorPrimary" />-->
-        <androidx.appcompat.widget.Toolbar
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back"
-            app:titleTextColor="?android:attr/textColorPrimary" />
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_question_detail"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

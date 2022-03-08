@@ -9,7 +9,7 @@
         android:id="@+id/page_bookmark"
         android:enabled="true"
         android:icon="@drawable/ic_outline_bookmark_border"
-        android:title="@string/bottom_nav_bookmark"/>
+        android:title="@string/all_bookmark"/>
     <item
         android:id="@+id/page_noti"
         android:enabled="true"
