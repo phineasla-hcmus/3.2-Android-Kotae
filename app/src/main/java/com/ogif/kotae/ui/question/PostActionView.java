@@ -9,28 +9,29 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.ogif.kotae.R;
 
-public class AuthorView extends ConstraintLayout {
-    public AuthorView(@NonNull Context context) {
+public class PostActionView extends ConstraintLayout {
+
+    public PostActionView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public AuthorView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PostActionView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public AuthorView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PostActionView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
-    public AuthorView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public PostActionView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
     }
 
     private void init() {
-        inflate(getContext(), R.layout.partial_author, this);
+        inflate(getContext(), R.layout.partial_post_action, this);
     }
 }

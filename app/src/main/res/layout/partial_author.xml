@@ -20,12 +20,11 @@
 
     <TextView
         android:id="@+id/tv_username"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="8dp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_avatar"
         app:layout_constraintTop_toTopOf="parent"

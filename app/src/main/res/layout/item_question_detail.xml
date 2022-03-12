@@ -57,25 +57,32 @@
     </com.google.android.material.chip.ChipGroup>
 
     <TextView
-        android:id="@+id/tv_last_editor"
+        android:id="@+id/tv_question_detail_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_between_y_md"
         android:gravity="end"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
         android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/author_view"
         tools:text="Asked 2 years ago" />
 
     <com.ogif.kotae.ui.question.AuthorView
         android:id="@+id/author_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_question_detail_date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_last_editor" />
+        app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
+
+    <com.ogif.kotae.ui.question.PostActionView
+        android:id="@+id/post_action_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/author_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

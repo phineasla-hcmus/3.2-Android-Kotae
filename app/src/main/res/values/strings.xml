@@ -64,4 +64,7 @@
     <string name="sign_up_to_login">I\'m already a member</string>
     <string name="all_answer">Answer</string>
     <string name="question_detail_report">Report question</string>
+    <string name="all_downvote">Downvote</string>
+    <string name="all_upvote">Upvote</string>
+    <string name="question_detail_comment">Comment</string>
 </resources>

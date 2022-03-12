@@ -22,7 +22,7 @@
     <dimen name="text_size_medium">16sp</dimen>
     <dimen name="text_size_large">20sp</dimen>
 
-    <dimen name="avatar_size_sm">28dp</dimen>
+    <dimen name="avatar_size_sm">40dp</dimen>
     <dimen name="avatar_size_lg">60dp</dimen>
 
     <!--Border radius-->
