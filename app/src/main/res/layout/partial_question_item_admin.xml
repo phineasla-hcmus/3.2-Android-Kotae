@@ -119,7 +119,7 @@
         android:background="?attr/colorSurface"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_question_posttime_admin"
-        app:srcCompat="@drawable/ic_baseline_arrow_down" />
+        app:srcCompat="@drawable/ic_baseline_arrow_downward" />
 
     <ImageView
         android:id="@+id/iv_up"
@@ -130,7 +130,7 @@
         android:background="?attr/colorSurface"
         app:layout_constraintEnd_toStartOf="@+id/iv_down"
         app:layout_constraintTop_toBottomOf="@+id/tv_question_posttime_admin"
-        app:srcCompat="@drawable/ic_baseline_arrow_up" />
+        app:srcCompat="@drawable/ic_baseline_arrow_upward" />
 
     <TextView
         android:id="@+id/tv_report_admin"

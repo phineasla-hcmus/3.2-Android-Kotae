@@ -14,7 +14,7 @@
         android:id="@+id/tv_user_name_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:fontFamily="@font/open_sans"
         android:gravity="center_vertical"
@@ -34,36 +34,36 @@
                 android:id="@+id/iv_block"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_baseline_block"
                 app:tint="@color/md_theme_light_error"
-                app:srcCompat="@drawable/ic_block"
                 tools:visibility="visible" />
 
             <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 app:srcCompat="@drawable/ic_baseline_comment" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="8dp"
-                app:srcCompat="@drawable/ic_baseline_arrow_up" />
+                android:layout_marginStart="8dp"
+                app:srcCompat="@drawable/ic_baseline_arrow_upward" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="8dp"
-                app:srcCompat="@drawable/ic_baseline_arrow_down" />
+                android:layout_marginStart="8dp"
+                app:srcCompat="@drawable/ic_baseline_arrow_downward" />
 
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 app:srcCompat="@drawable/ic_outline_report" />
 
         </TableRow>
@@ -78,8 +78,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
-                android:textColor="@color/md_theme_light_error"
                 android:text=""
+                android:textColor="@color/md_theme_light_error"
                 android:textSize="@dimen/text_size_medium"
                 android:visibility="invisible" />
 
@@ -87,7 +87,7 @@
                 android:id="@+id/tv_user_answer_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:text="10"
@@ -98,7 +98,7 @@
                 android:id="@+id/tv_user_upvote_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:text="10"
@@ -109,7 +109,7 @@
                 android:id="@+id/tv_user_downvote_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:text="20"
@@ -120,7 +120,7 @@
                 android:id="@+id/tv_user_report_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
                 android:fontFamily="@font/open_sans"
                 android:gravity="center"
                 android:text="30"

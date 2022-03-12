@@ -41,7 +41,7 @@
         android:padding="16dp"
         android:text="@string/all_answer"
         android:textAllCaps="false"
-        app:icon="@drawable/ic_edit"
+        app:icon="@drawable/ic_baseline_edit"
         app:layout_anchor="@id/swipe_refresh_layout"
         app:layout_anchorGravity="bottom|end" />
 

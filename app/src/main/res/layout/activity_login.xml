@@ -29,7 +29,7 @@
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_login_sign_up"
+        app:srcCompat="@drawable/ic_art_login_sign_up"
         tools:ignore="ContentDescription" />
 
     <com.google.android.material.textfield.TextInputLayout

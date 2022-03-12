@@ -79,16 +79,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_profile_username"
                 tools:text="3k" />
 
-            <ImageView
-                android:id="@+id/img_profile_arrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/profile_edit"
-                android:src="@drawable/ic_right_arrow"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -107,7 +97,7 @@
         <!--DEPRECATED-->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_language"
-            style="@style/ProfileItem.Arrow"
+            style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -131,7 +121,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_edit"
-            style="@style/ProfileItem.Arrow"
+            style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -144,7 +134,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_change_password"
-            style="@style/ProfileItem.Arrow"
+            style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"

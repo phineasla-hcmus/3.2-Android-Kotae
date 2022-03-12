@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
@@ -26,18 +27,19 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         this.context = context;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_question,parent,false);
-        ViewHolder viewHolder=new ViewHolder(view);
-        return viewHolder;
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_question, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tv_question_content.setText(questionList.get(position).getContent());
 //        holder.tv_question_posttime.setText((int) questionList.get(position).getPostTime());
-        holder.cim_avatar.setImageResource(R.drawable.ic_outline_account_circle);
+        holder.cim_avatar.setImageResource(R.drawable.ic_baseline_account_circle);
         holder.tv_author.setText(questionList.get(position).getAuthorId());
         holder.tv_question_title.setText(questionList.get(position).getTitle());
     }
@@ -47,25 +49,26 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.ViewHo
         return questionList.size();
     }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tv_question_title,tv_question_content, tv_author, tv_question_posttime;
-            ImageButton  ib_upvote, ib_downvote, ib_report;
-            CircleImageView cim_avatar;
-            public ViewHolder(View itemView) {
-                super(itemView);
+        TextView tv_question_title, tv_question_content, tv_author, tv_question_posttime;
+        ImageButton ib_upvote, ib_downvote, ib_report;
+        CircleImageView cim_avatar;
 
-                tv_question_content = (TextView) itemView.findViewById(R.id.tv_question_content);
-                tv_question_title = (TextView) itemView.findViewById(R.id.tv_question_title);
-                tv_author = (TextView) itemView.findViewById(R.id.tv_author);
-                tv_question_posttime = (TextView) itemView.findViewById(R.id.tv_question_post_time);
+        public ViewHolder(View itemView) {
+            super(itemView);
 
-                ib_upvote = (ImageButton) itemView.findViewById(R.id.ib_up);
-                ib_downvote = (ImageButton) itemView.findViewById(R.id.ib_down);
-                ib_report = (ImageButton) itemView.findViewById(R.id.ib_report);
+            tv_question_content = (TextView) itemView.findViewById(R.id.tv_question_content);
+            tv_question_title = (TextView) itemView.findViewById(R.id.tv_question_title);
+            tv_author = (TextView) itemView.findViewById(R.id.tv_author);
+            tv_question_posttime = (TextView) itemView.findViewById(R.id.tv_question_post_time);
 
-                cim_avatar = (CircleImageView) itemView.findViewById(R.id.cim_avatar);
-            }
+            ib_upvote = (ImageButton) itemView.findViewById(R.id.ib_up);
+            ib_downvote = (ImageButton) itemView.findViewById(R.id.ib_down);
+            ib_report = (ImageButton) itemView.findViewById(R.id.ib_report);
+
+            cim_avatar = (CircleImageView) itemView.findViewById(R.id.cim_avatar);
         }
     }
+}
 
