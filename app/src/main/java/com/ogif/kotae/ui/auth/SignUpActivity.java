@@ -39,7 +39,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        this.viewModel.getMutableLiveData().observe(this, result -> {
+        this.viewModel.getLiveData().observe(this, result -> {
             if (result.isFailed()) {
                 binding.tvSignUpError.setText(getResources().getString(R.string.sign_up_error_existed));
                 binding.tvSignUpError.setVisibility(View.VISIBLE);

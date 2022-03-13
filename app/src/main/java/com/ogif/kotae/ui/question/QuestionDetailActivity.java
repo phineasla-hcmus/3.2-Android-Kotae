@@ -17,6 +17,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_detail);
+
+
     }
 
     public static Intent newInstance(Context context, @NonNull Question question) {

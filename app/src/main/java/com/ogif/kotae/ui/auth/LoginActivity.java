@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.databinding.ActivityLoginBinding;
 import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.main.MainActivity;
@@ -28,12 +26,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        this.viewModel.getMutableLiveData().observe(this, user -> {
+        this.viewModel.getLiveData().observe(this, user -> {
             if (user == null) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
                 return;
             }
-            // TODO: check role
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -45,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
             } else {
+                // toString() is safe, already checked with isEmpty()
                 this.viewModel.login(email.toString(), password.toString());
             }
         });
@@ -53,27 +51,6 @@ public class LoginActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             startActivity(intent);
             finish();
-        });
-    }
-
-    // @Deprecated
-    // @Override
-    // protected void onStart() {
-    //     super.onStart();
-    //     // Check if user is signed in (non-null) and update UI accordingly.
-    //     // FirebaseUser currentUser = auth.getCurrentUser();
-    //     // if (currentUser != null) {
-    //     //     reload(currentUser);
-    //     // }
-    // }
-
-    @Deprecated
-    private void reload(@NonNull FirebaseUser currentUser) {
-        currentUser.reload().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                // TODO: Launch MainActivity
-
-            }
         });
     }
 }
