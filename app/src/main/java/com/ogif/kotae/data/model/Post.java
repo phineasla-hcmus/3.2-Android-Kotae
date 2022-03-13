@@ -1,21 +1,63 @@
 package com.ogif.kotae.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
-public class Post {
+public abstract class Post implements Parcelable {
     private String id;
     private String title;
     private String authorId;
     private String content;
     private long postTime;
-    private int upvote = 0;
-    private int downvote = 0;
-    private int report = 0;
+    private int upvote;
+    private int downvote;
+    private int report;
     private String subjectId;
     private String gradeId;
     private boolean blocked;
 
     // TODO add images
+
+    public Post() {
+    }
+
+    public Post(Parcel parcel) {
+        // Has to be exact order from writeToParcel
+        id = parcel.readString();
+        title = parcel.readString();
+        authorId = parcel.readString();
+        content = parcel.readString();
+        postTime = parcel.readLong();
+        upvote = parcel.readInt();
+        downvote = parcel.readInt();
+        report = parcel.readInt();
+        subjectId = parcel.readString();
+        gradeId = parcel.readString();
+        blocked = parcel.readInt() == 1;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int flags) {
+        // Has to be exact order from Post(Parcel parcel)
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(authorId);
+        parcel.writeString(content);
+        parcel.writeLong(postTime);
+        parcel.writeInt(upvote);
+        parcel.writeInt(downvote);
+        parcel.writeInt(report);
+        parcel.writeString(subjectId);
+        parcel.writeString(gradeId);
+        parcel.writeInt(blocked ? 1 : 0);
+    }
 
     public String getId() {
         return id;

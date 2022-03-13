@@ -74,7 +74,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_upvote"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/all_upvote"
@@ -86,7 +86,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_downvote"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/all_downvote"
@@ -98,13 +98,24 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_comment"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/question_detail_comment"
         app:icon="@drawable/ic_baseline_comment"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_report"
         app:layout_constraintStart_toEndOf="@+id/btn_downvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_report"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/question_detail_report"
+        app:icon="@drawable/ic_outline_report"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_comment"
+        app:layout_constraintTop_toTopOf="parent" />
 </merge>
