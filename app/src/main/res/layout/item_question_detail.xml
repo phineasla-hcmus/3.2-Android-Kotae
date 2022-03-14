@@ -20,7 +20,7 @@
         tools:text="Question title" />
 
     <TextView
-        android:id="@+id/tv_question_detail_body"
+        android:id="@+id/tv_question_detail_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_between_y"
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_body"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content"
         tools:itemCount="3" />
 
     <com.google.android.material.chip.ChipGroup

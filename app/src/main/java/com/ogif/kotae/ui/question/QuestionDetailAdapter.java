@@ -3,6 +3,7 @@ package com.ogif.kotae.ui.question;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,15 +21,19 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private Question question;
     private Answer[] answers;
 
-    public QuestionDetailAdapter(Question question, Answer[] answers) {
-        this.question = question;
-        this.answers = answers;
+    public QuestionDetailAdapter() {
+        this.question = null;
+        this.answers = new Answer[0];
     }
 
     private static class QuestionDetailHolder extends RecyclerView.ViewHolder {
+        private final TextView title;
+        private final TextView content;
 
         public QuestionDetailHolder(@NonNull View itemView) {
             super(itemView);
+            title = itemView.findViewById(R.id.tv_question_detail_title);
+            content = itemView.findViewById(R.id.tv_question_detail_content);
         }
     }
 
@@ -58,8 +63,12 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         switch (getItemViewType(position)) {
             case ITEM_TYPE_QUESTION: {
-                QuestionDetailHolder holder = (QuestionDetailHolder) viewHolder;
-                // Bind question to holder
+                if (question != null) {
+                    QuestionDetailHolder holder = (QuestionDetailHolder) viewHolder;
+                    // Bind question to holder
+                    holder.title.setText(question.getTitle());
+                    holder.content.setText(question.getContent());
+                }
                 break;
             }
             case ITEM_TYPE_ANSWER: {
@@ -80,5 +89,10 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public int getItemViewType(int position) {
         // QUESTION_DETAIL_ITEM always on top
         return position == 0 ? ITEM_TYPE_QUESTION : ITEM_TYPE_ANSWER;
+    }
+
+    public void updateQuestion(Question question) {
+        this.question = question;
+        notifyItemChanged(0);
     }
 }
