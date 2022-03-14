@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        this.viewModel.getLiveData().observe(this, user -> {
+        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        viewModel.getLiveData().observe(this, user -> {
             if (user == null) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
                 return;
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
             } else {
                 // toString() is safe, already checked with isEmpty()
-                this.viewModel.login(email.toString(), password.toString());
+                viewModel.login(email.toString(), password.toString());
             }
         });
         binding.tvLoginToSignUp.setOnClickListener(v -> {

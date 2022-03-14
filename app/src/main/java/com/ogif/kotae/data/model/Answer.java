@@ -25,6 +25,11 @@ public class Answer extends Post {
         questionId = parcel.readString();
     }
 
+    public Answer(String id, String title, String authorId, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked, String questionId) {
+        super(id, title, authorId, content, postTime, upvote, downvote, report, subjectId, gradeId, blocked);
+        this.questionId = questionId;
+    }
+
     public String getQuestionId() {
         return questionId;
     }
