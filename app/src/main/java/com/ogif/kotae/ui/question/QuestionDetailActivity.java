@@ -3,6 +3,7 @@ package com.ogif.kotae.ui.question;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
@@ -29,8 +31,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setSupportActionBar(binding.toolbarQuestionDetail);
-        setTitle("");
+        // MaterialToolbar toolbar = binding.toolbarQuestionDetail;
+        // setSupportActionBar(toolbar);
+        // toolbar.showOverflowMenu();
 
         adapter = new QuestionDetailAdapter();
         recyclerView = binding.recyclerViewQuestionDetail;
@@ -49,7 +52,12 @@ public class QuestionDetailActivity extends AppCompatActivity {
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
             adapter.updateQuestion(question);
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_question_detail, menu);
+        return true;
     }
 
     public static Intent newInstance(Context context, @NonNull Question question) {

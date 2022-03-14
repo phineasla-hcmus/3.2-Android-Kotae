@@ -2,6 +2,7 @@
 
     <style name="Theme.Kotae" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
+        <item name="colorPrimaryDark">@color/md_theme_light_primaryDark</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/md_theme_light_onPrimaryContainer</item>
@@ -31,7 +32,8 @@
         <!--<item name="colorShadow">@color/md_theme_light_shadow</item>-->
         <item name="colorPrimaryInverse">@color/md_theme_light_primaryInverse</item>
 
-        <item name="android:statusBarColor">@color/md_theme_light_background</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <!--<item name="android:statusBarColor">?attr/colorSurface</item>-->
+        <!--<item name="android:windowLightStatusBar">true</item>-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
     </style>
 </resources>
