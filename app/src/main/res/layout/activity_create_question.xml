@@ -115,21 +115,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/tv_question_content_description"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginHorizontal="@dimen/margin_x"-->
-    <!--        android:layout_marginTop="@dimen/margin_between_y"-->
-    <!--        android:clickable="true"-->
-    <!--        android:fontFamily="@font/roboto"-->
-    <!--        android:text="@string/create_question_content_description"-->
-    <!--        android:textColor="?attr/colorOutline"-->
-    <!--        android:textSize="@dimen/text_size_medium"-->
-    <!--        app:boxStrokeColor="@color/color_text_input_box"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_question_content_title" />-->
-
     <TextView
         android:id="@+id/tv_question_images_title"
         android:layout_width="wrap_content"

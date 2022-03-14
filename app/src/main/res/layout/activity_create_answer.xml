@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.CreateAnswerActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_create_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_create_question"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back"
+            app:titleTextColor="?android:attr/textColorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_question_content"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_x"
+        android:layout_marginTop="@dimen/margin_between_y"
+        android:fontFamily="@font/roboto"
+        android:hint="@string/create_answer_content_description"
+        app:boxStrokeColor="@color/color_text_input_box"
+        app:hintTextColor="@color/color_text_input_box"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/abl_create_question">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:gravity="start|top"
+            android:imeOptions="flagNoExtractUi"
+            android:minHeight="200dp"
+            android:theme="@style/TextInputEditTextStyle" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_question_images_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_x"
+        android:layout_marginTop="@dimen/margin_y"
+        android:fontFamily="@font/roboto"
+        android:text="@string/create_question_images_title"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/til_question_content" />
+
+    <ImageButton
+        android:id="@+id/btn_question_images"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="@dimen/margin_x"
+        android:layout_marginTop="@dimen/margin_between_y"
+        android:background="@drawable/btn_rounded_corner"
+        android:contentDescription="@string/create_question_images_title"
+        android:src="@drawable/ic_baseline_add"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_images_title"
+        app:tint="?attr/colorPrimary"
+        tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_post_question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="@dimen/margin_x"
+        android:layout_marginBottom="10dp"
+        android:contentDescription="@string/fab_post_question"
+        android:text="@string/fab_post_question"
+        android:textColor="?attr/colorPrimary"
+        app:icon="@drawable/ic_outline_send"
+        app:iconTint="?attr/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

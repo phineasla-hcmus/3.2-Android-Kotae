@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.main;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -11,83 +11,55 @@ import androidx.appcompat.widget.Toolbar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.ogif.kotae.R;
-import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
+import com.ogif.kotae.databinding.ActivityCreateAnswerBinding;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
-import org.commonmark.node.Node;
 
-import io.noties.markwon.Markwon;
+public class CreateAnswerActivity extends AppCompatActivity {
 
-public class CreateQuestionActivity extends AppCompatActivity {
-
-    private ActivityCreateQuestionBinding binding;
+    private ActivityCreateAnswerBinding binding;
     private ExtendedFloatingActionButton fabPostQuestion;
     private Toolbar toolbar;
     private EditText etContent;
     private View view;
-    private AutoCompleteTextView atcvGrade, atcvSubject;
-    private ArrayAdapter<String> gradeAdapter, subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
-    private String title, content, selectedGrade, selectedSubject;
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityCreateQuestionBinding.inflate(getLayoutInflater());
+        binding = ActivityCreateAnswerBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
         setContentView(view);
 
         toolbar = (Toolbar) binding.tbCreateQuestion;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Question detail");
 
         etContent = binding.etContent;
 
         etContent.setOnClickListener(view -> {
-            startQuestionContentActivity();
+            startAnswerContentActivity();
         });
 
         fabPostQuestion = (ExtendedFloatingActionButton) binding.fabPostQuestion;
 
-        fabPostQuestion.setOnClickListener(v -> {
-            if (isValid()) {
-                // TODO: Create question on Firebase
-            } else {
-                Toast.makeText(this, "Please check your input again", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        atcvGrade = binding.actvQuestionCategoryGrade;
-        atcvSubject = binding.atcvQuestionCategorySubject;
-
-        String[] grades = new String[]{"Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"};
-        gradeAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, grades);
-        atcvGrade.setAdapter(gradeAdapter);
-        atcvGrade.setOnItemClickListener((adapterView, view, i, l) -> {
-            selectedGrade = adapterView.getItemAtPosition(i).toString();
-        });
-
-        String[] subjects = new String[]{"Math", "Literature", "Biology", "Physics", "English", "History"};
-        subjectAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, subjects);
-        atcvSubject.setAdapter(subjectAdapter);
-        atcvSubject.setOnItemClickListener((adapterView, view, i, l) -> {
-            selectedSubject = adapterView.getItemAtPosition(i).toString();
-        });
+//        fabPostQuestion.setOnClickListener(v -> {
+//            if (isValid()) {
+//                // TODO: Create answer on Firebase
+//            } else {
+//                Toast.makeText(this, "Please check your input again", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
         someActivityResultLauncher = registerForActivityResult(
@@ -107,12 +79,12 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     }
 
-    public void startQuestionContentActivity() {
+    public void startAnswerContentActivity() {
         if (TextUtils.isEmpty(content)) {
             content = etContent.getText().toString();
         }
-        String description = getResources().getString(R.string.create_question_content_description);
-        Intent intent = new Intent(this, QuestionContentActivity.class);
+        String description = getResources().getString(R.string.create_answer_content_description);
+        Intent intent = new Intent(this, AnswerContentActivity.class);
         if (!content.equals(description)) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
@@ -127,13 +99,5 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean isValid() {
-        title = binding.tvQuestionTitle.getText().toString();
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content) || TextUtils.isEmpty(selectedGrade) || TextUtils.isEmpty(selectedSubject)) {
-            return false;
-        }
-        return true;
     }
 }

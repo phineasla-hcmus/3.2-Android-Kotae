@@ -1,15 +1,12 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.main;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -19,39 +16,32 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
-
-import org.commonmark.node.Node;
-
-
-import io.noties.markwon.Markwon;
-
 import com.ogif.kotae.R;
+import com.ogif.kotae.databinding.ActivityAnswerContentBinding;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
-public class QuestionContentActivity extends AppCompatActivity {
-
+public class AnswerContentActivity extends AppCompatActivity {
+    private ActivityAnswerContentBinding binding;
+    private View view;
     private EditText etMarkdown;
     private TextView tvPreview;
-    private ActivityQuestionContentBinding binding;
     private Button btnBold, btnItalic, btnCode, btnHeading1, btnHeading2;
     private TabLayout tabLayout;
-    private ExtendedFloatingActionButton fabSaveQuestion;
-    private View view;
+    private ExtendedFloatingActionButton fabSaveAnswer;
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityQuestionContentBinding.inflate(getLayoutInflater());
+        binding = ActivityAnswerContentBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
         setContentView(view);
 
-        toolbar = binding.tbQuestionContent;
+        toolbar = binding.tbAnswerContent;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Create question");
+        getSupportActionBar().setTitle("Create answer");
 
         etMarkdown = binding.etMarkdown;
         tvPreview = binding.tvPreview;
@@ -81,8 +71,8 @@ public class QuestionContentActivity extends AppCompatActivity {
             }
         });
 
-        fabSaveQuestion = binding.fabSaveQuestion;
-        fabSaveQuestion.setOnClickListener(v -> {
+        fabSaveAnswer = binding.fabSaveAnswer;
+        fabSaveAnswer.setOnClickListener(v -> {
             saveDraftContent();
         });
 
@@ -92,9 +82,10 @@ public class QuestionContentActivity extends AppCompatActivity {
             etMarkdown.setText(text);
             MarkdownUtils.setMarkdown(getApplicationContext(), text, binding.tvPreview);
         }
+
     }
 
-    // pass answer content to CreateQuestionActivity
+    // pass answer content to CreateAnswerActivity
     private void saveDraftContent() {
         String content = binding.etMarkdown.getText().toString();
         // put the String to pass back into an Intent and close this activity
@@ -102,16 +93,6 @@ public class QuestionContentActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, content);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void onTabChanged(int position) {
@@ -156,5 +137,4 @@ public class QuestionContentActivity extends AppCompatActivity {
             MarkdownUtils.setMarkdown(getApplicationContext(), binding.etMarkdown.getText().toString(), binding.tvPreview);
         }
     }
-
 }
