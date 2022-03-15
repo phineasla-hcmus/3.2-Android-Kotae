@@ -1,5 +1,6 @@
 package com.ogif.kotae.ui.question;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -28,11 +29,17 @@ public class QuestionDetailViewModel extends ViewModel {
     }
 
     public void getQuestion(String id) {
-        questionRepository.get(id, new TaskListener<Question>() {
+        questionRepository.get(id, new TaskListener.State<Question>() {
             @Override
             public void onSuccess(@Nullable Question result) {
                 questionLiveData.postValue(result);
             }
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // TODO add another LiveData to notify View on fail
+            }
+
         });
     }
 }

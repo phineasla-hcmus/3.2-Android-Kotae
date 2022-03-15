@@ -10,8 +10,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.UserViewModel;
@@ -29,6 +31,13 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        boolean isNightModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Global.SETTING_KEY_NIGHT_MODE, false);
+
+        AppCompatDelegate.setDefaultNightMode(isNightModeEnabled
+                ? AppCompatDelegate.MODE_NIGHT_YES
+                : AppCompatDelegate.MODE_NIGHT_NO);
 
         this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
 

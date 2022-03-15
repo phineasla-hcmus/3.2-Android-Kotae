@@ -1,6 +1,7 @@
 package com.ogif.kotae.data.repository;
 
 import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,7 +45,8 @@ public class GradeRepository {
                 });
     }
 
-    public void get(String id, TaskListener<Grade> callback) {
-        get(id).addOnSuccessListener(documentSnapshot -> callback.onSuccess(documentSnapshot.toObject(Grade.class))).addOnFailureListener(callback::onFailure);
+    public void get(String id, TaskListener.State<Grade> callback) {
+        get(id).addOnSuccessListener(documentSnapshot -> callback.onSuccess(documentSnapshot.toObject(Grade.class)))
+                .addOnFailureListener(callback::onFailure);
     }
 }

@@ -41,7 +41,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
         });
         setSupportActionBar(toolbar);
 
-
         adapter = new QuestionDetailAdapter();
         recyclerView = binding.recyclerViewQuestionDetail;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

@@ -65,14 +65,6 @@ public class ProfileFragment extends Fragment {
             AppCompatDelegate.setDefaultNightMode(isChecked
                     ? AppCompatDelegate.MODE_NIGHT_YES
                     : AppCompatDelegate.MODE_NIGHT_NO);
-            // prefs.getBoolean()
-            // DarkModePreferenceManager manager = new DarkModePreferenceManager(this.requireContext());
-            // manager.setDarkMode(!manager.isDarkMode());
-            // compoundButton.setChecked(manager.isDarkMode());
-            // AppCompatDelegate.setDefaultNightMode(manager.isDarkMode()
-            //         ? AppCompatDelegate.MODE_NIGHT_YES
-            //         : AppCompatDelegate.MODE_NIGHT_NO
-            // );
             requireActivity().recreate();
         });
 

@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_between_y_lg"
-            android:drawableStart="@drawable/ic_dark_mode"
+            android:drawableStart="@drawable/ic_night_mode"
             android:text="@string/profile_night_mode"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_language"
             app:layout_constraintEnd_toEndOf="parent"

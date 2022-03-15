@@ -32,7 +32,7 @@ public class QuestionRepository {
         return questionsRef.document(id).get();
     }
 
-    public void get(@NonNull String id, TaskListener<Question> callback) {
+    public void get(@NonNull String id, TaskListener.State<Question> callback) {
         get(id).addOnSuccessListener(documentSnapshot -> {
             callback.onSuccess(documentSnapshot.toObject(Question.class));
         }).addOnFailureListener(callback::onFailure);
