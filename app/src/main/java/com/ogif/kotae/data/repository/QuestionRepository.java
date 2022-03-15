@@ -28,11 +28,11 @@ public class QuestionRepository {
         this.questionsRef = db.collection("questions");
     }
 
-    public Task<DocumentSnapshot> get(String id) {
+    public Task<DocumentSnapshot> get(@NonNull String id) {
         return questionsRef.document(id).get();
     }
 
-    public void get(String id, TaskListener<Question> callback) {
+    public void get(@NonNull String id, TaskListener<Question> callback) {
         get(id).addOnSuccessListener(documentSnapshot -> {
             callback.onSuccess(documentSnapshot.toObject(Question.class));
         }).addOnFailureListener(callback::onFailure);

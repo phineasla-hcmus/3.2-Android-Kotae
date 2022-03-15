@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.ui.question.CreateQuestionActivity;
-import com.ogif.kotae.utils.QuestionAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
 public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    //    private View homeView;
+    // private View homeView;
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
     SwipeRefreshLayout swipeLayout;
@@ -42,7 +41,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-//        homeView = inflater.inflate(R.layout.fragment_home, container, false);
+        // homeView = inflater.inflate(R.layout.fragment_home, container, false);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         setUpRecyclerView();
 
@@ -63,16 +62,16 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void startCreateQuestionActivity() {
-        Intent intent = new Intent(getActivity().getApplicationContext(), CreateQuestionActivity.class);
+        Intent intent = new Intent(requireActivity().getApplicationContext(), CreateQuestionActivity.class);
         startActivity(intent);
     }
 
     private void setUpRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) binding.rvHome;
 
-        QuestionAdapter adapter = new QuestionAdapter(questionList(), this.getContext());
+        HomeAdapter adapter = new HomeAdapter(questionList(), this.getContext());
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity().getApplicationContext(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
         recyclerView.setAdapter(adapter);
     }
 

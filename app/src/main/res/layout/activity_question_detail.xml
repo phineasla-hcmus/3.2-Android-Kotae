@@ -6,7 +6,8 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:liftOnScroll="true">
 
         <!--<androidx.appcompat.widget.Toolbar-->
         <!--    android:layout_width="match_parent"-->
@@ -23,6 +24,7 @@
                 android:id="@+id/toolbar_question_detail"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorSurface"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:menu="@menu/menu_question_detail"

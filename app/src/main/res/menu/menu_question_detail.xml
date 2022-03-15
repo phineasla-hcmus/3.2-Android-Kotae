@@ -9,8 +9,8 @@
         android:title="@string/all_bookmark"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_report"
-        android:contentDescription="@string/question_detail_report"
-        android:title="@string/question_detail_report" />
+    <!--<item-->
+    <!--    android:id="@+id/menu_report"-->
+    <!--    android:contentDescription="@string/question_detail_report"-->
+    <!--    android:title="@string/question_detail_report" />-->
 </menu>

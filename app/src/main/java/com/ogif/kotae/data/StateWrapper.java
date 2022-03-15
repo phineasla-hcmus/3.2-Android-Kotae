@@ -1,8 +1,11 @@
 package com.ogif.kotae.data;
 
-
 import androidx.annotation.Nullable;
 
+/**
+ * Provide states to LiveData by wrapping the object. Currently support SUCCESS and FAIL
+ * states.
+ */
 public class StateWrapper<T> {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
