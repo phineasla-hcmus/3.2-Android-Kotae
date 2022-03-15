@@ -38,12 +38,14 @@
     <string name="create_question_content_title">Content</string>
     <string name="create_question_images_title">Images</string>
     <string name="create_question_title">Title</string>
+    <string name="create_question_error_missing" translatable="false">Missing required fields</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>
     <string name="et_error_username_first_char">Username must start with a letter </string>
     <string name="et_error_username_invalid_char">Username contains invalid character</string>
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
+    <string name="et_error_question_title_length" translatable="false">Question title must be between 16 to 100 characters</string>
     <string name="fab_add_question" translatable="false">Add new question</string>
     <string name="fab_post_question">Post</string>
     <string name="login_error">Invalid email or password</string>

@@ -41,7 +41,7 @@ public class AnswerContentActivity extends AppCompatActivity {
         toolbar = binding.tbAnswerContent;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Create answer");
+        getSupportActionBar().setTitle("Answer content");
 
         etMarkdown = binding.etMarkdown;
         tvPreview = binding.tvPreview;

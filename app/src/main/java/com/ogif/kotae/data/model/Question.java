@@ -3,9 +3,6 @@ package com.ogif.kotae.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class Question extends Post {
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
         public Question createFromParcel(Parcel in) {

@@ -62,17 +62,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/tv_create_question_title_error"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginVertical="@dimen/margin_between_y_sm"-->
-    <!--        android:text="@string/sign_up_error_missing"-->
-    <!--        android:textColor="?attr/colorError"-->
-    <!--        android:visibility="invisible"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@+id/til_create_question_title" />-->
-
     <TextView
         android:id="@+id/tv_question_content_title"
         android:layout_width="wrap_content"

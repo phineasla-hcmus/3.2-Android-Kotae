@@ -51,7 +51,7 @@ public class QuestionContentActivity extends AppCompatActivity {
         toolbar = binding.tbQuestionContent;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Create question");
+        getSupportActionBar().setTitle("Question content");
 
         etMarkdown = binding.etMarkdown;
         tvPreview = binding.tvPreview;

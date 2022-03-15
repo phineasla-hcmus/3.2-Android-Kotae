@@ -43,7 +43,7 @@ public class CreateAnswerActivity extends AppCompatActivity {
         toolbar = (Toolbar) binding.tbCreateQuestion;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Question detail");
+        getSupportActionBar().setTitle("Create answer");
 
         etContent = binding.etContent;
 

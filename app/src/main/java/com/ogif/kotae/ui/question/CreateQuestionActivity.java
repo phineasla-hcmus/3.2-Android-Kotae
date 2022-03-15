@@ -7,41 +7,49 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Grade;
+import com.ogif.kotae.data.model.Subject;
+import com.ogif.kotae.data.repository.GradeRepository;
+import com.ogif.kotae.data.repository.SubjectRepository;
 import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
+import com.ogif.kotae.ui.QuestionViewModel;
+import com.ogif.kotae.utils.GradeAdapter;
+import com.ogif.kotae.utils.SubjectAdapter;
 import com.ogif.kotae.utils.model.MarkdownUtils;
+import com.ogif.kotae.utils.model.QuestionUtils;
+import com.ogif.kotae.utils.text.TextValidator;
 
-import org.commonmark.node.Node;
-
-import io.noties.markwon.Markwon;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class CreateQuestionActivity extends AppCompatActivity {
 
     private ActivityCreateQuestionBinding binding;
-    private ExtendedFloatingActionButton fabPostQuestion;
     private Toolbar toolbar;
-    private EditText etContent;
     private View view;
-    private AutoCompleteTextView atcvGrade, atcvSubject;
-    private ArrayAdapter<String> gradeAdapter, subjectAdapter;
+    private GradeAdapter gradeAdapter;
+    private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
     private String title, content, selectedGrade, selectedSubject;
+    private QuestionViewModel viewModel;
+    private GradeRepository gradeRepository;
+    private SubjectRepository subjectRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,41 +59,37 @@ public class CreateQuestionActivity extends AppCompatActivity {
         view = binding.getRoot();
         setContentView(view);
 
+        this.viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
+
         toolbar = (Toolbar) binding.tbCreateQuestion;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setTitle("Create question");
 
-        etContent = binding.etContent;
+        EditText[] ets = {binding.etCreateQuestionTitle, binding.etContent, binding.actvQuestionCategoryGrade, binding.atcvQuestionCategorySubject};
 
-        etContent.setOnClickListener(view -> {
+        binding.etContent.setOnClickListener(view -> {
             startQuestionContentActivity();
         });
 
-        fabPostQuestion = (ExtendedFloatingActionButton) binding.fabPostQuestion;
-
-        fabPostQuestion.setOnClickListener(v -> {
-            if (isValid()) {
-                // TODO: Create question on Firebase
-            } else {
-                Toast.makeText(this, "Please check your input again", Toast.LENGTH_SHORT).show();
-            }
+        gradeRepository = new GradeRepository();
+        gradeRepository.getAllGrades(grades -> {
+            gradeAdapter = new GradeAdapter(getApplicationContext(), R.layout.dropdown_item, grades.toArray(new Grade[grades.size()]));
+            binding.actvQuestionCategoryGrade.setAdapter(gradeAdapter);
         });
 
-        atcvGrade = binding.actvQuestionCategoryGrade;
-        atcvSubject = binding.atcvQuestionCategorySubject;
-
-        String[] grades = new String[]{"Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5"};
-        gradeAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, grades);
-        atcvGrade.setAdapter(gradeAdapter);
-        atcvGrade.setOnItemClickListener((adapterView, view, i, l) -> {
+        binding.actvQuestionCategoryGrade.setOnItemClickListener((adapterView, view, i, l) -> {
+            Grade grade = (Grade) adapterView.getItemAtPosition(i);
             selectedGrade = adapterView.getItemAtPosition(i).toString();
         });
 
-        String[] subjects = new String[]{"Math", "Literature", "Biology", "Physics", "English", "History"};
-        subjectAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, subjects);
-        atcvSubject.setAdapter(subjectAdapter);
-        atcvSubject.setOnItemClickListener((adapterView, view, i, l) -> {
+        subjectRepository = new SubjectRepository();
+        subjectRepository.getAllSubjects(subjects -> {
+            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, subjects.toArray(new Subject[subjects.size()]));
+            binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
+        });
+
+        binding.atcvQuestionCategorySubject.setOnItemClickListener((adapterView, view, i, l) -> {
             selectedSubject = adapterView.getItemAtPosition(i).toString();
         });
 
@@ -99,17 +103,45 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             // There are no request codes
                             Intent data = result.getData();
                             content = data.getStringExtra(Intent.EXTRA_TEXT);
-                            MarkdownUtils.setMarkdown(getApplicationContext(), content, etContent);
+                            MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
                         }
                     }
                 });
 
+        binding.etCreateQuestionTitle.addTextChangedListener(new TextValidator() {
+            @Override
+            public void validate(Editable title) {
+                TextInputLayout til = binding.tilCreateQuestionTitle;
+                switch (QuestionUtils.isTitleValid(title)) {
+                    case QuestionUtils.INVALID_TITLE_LENGTH:
+                        til.setErrorEnabled(true);
+                        til.setError(getResources().getString(R.string.et_error_question_title_length));
+                        break;
+                    default:
+                        til.setErrorEnabled(false);
+                }
+            }
+        });
 
+        binding.fabPostQuestion.setOnClickListener(v -> {
+            for (EditText et : ets) {
+                if (TextUtils.isEmpty(et.getText())) {
+                    Toast.makeText(this, getResources().getString(R.string.create_question_error_missing), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+            String title = Objects.requireNonNull(binding.etCreateQuestionTitle.getText()).toString();
+            String content = Objects.requireNonNull(binding.etContent.getText()).toString();
+
+            binding.fabPostQuestion.setEnabled(false);
+            this.viewModel.createQuestion(title, content, selectedSubject, selectedGrade);
+            this.finish();
+        });
     }
 
     public void startQuestionContentActivity() {
         if (TextUtils.isEmpty(content)) {
-            content = etContent.getText().toString();
+            content = binding.etContent.getText().toString();
         }
         String description = getResources().getString(R.string.create_question_content_description);
         Intent intent = new Intent(this, QuestionContentActivity.class);
@@ -127,13 +159,5 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private boolean isValid() {
-        title = binding.tvQuestionTitle.getText().toString();
-        if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content) || TextUtils.isEmpty(selectedGrade) || TextUtils.isEmpty(selectedSubject)) {
-            return false;
-        }
-        return true;
     }
 }
