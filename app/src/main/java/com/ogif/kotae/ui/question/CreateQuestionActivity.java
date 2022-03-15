@@ -80,7 +80,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         binding.actvQuestionCategoryGrade.setOnItemClickListener((adapterView, view, i, l) -> {
             Grade grade = (Grade) adapterView.getItemAtPosition(i);
-            selectedGrade = adapterView.getItemAtPosition(i).toString();
+            selectedGrade = grade.getId();
         });
 
         subjectRepository = new SubjectRepository();
@@ -90,7 +90,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
         });
 
         binding.atcvQuestionCategorySubject.setOnItemClickListener((adapterView, view, i, l) -> {
-            selectedSubject = adapterView.getItemAtPosition(i).toString();
+            Subject subject = (Subject) adapterView.getItemAtPosition(i);
+            selectedSubject = subject.getId();
         });
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed

@@ -29,5 +29,8 @@
     <dimen name="border_radius">8dp</dimen>
 
     <dimen name="default_app_bar_elevation">4dp</dimen>
-    <dimen name="body_height">450dp</dimen>
+    <dimen name="body_height">300dp</dimen>
+
+    <dimen name="btn_edit_width">40dp</dimen>
+    <dimen name="btn_edit_height">40dp</dimen>
 </resources>

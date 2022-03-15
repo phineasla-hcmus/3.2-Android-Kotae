@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
+import com.ogif.kotae.ui.main.AnswerContentActivity;
 
 import java.util.Objects;
 
@@ -58,6 +60,15 @@ public class QuestionDetailActivity extends AppCompatActivity {
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
             adapter.updateQuestion(question);
         });
+
+        binding.btnQuestionAnswer.setOnClickListener(v -> {
+            startAnswerContentActivity();
+        });
+    }
+
+    private void startAnswerContentActivity() {
+        Intent intent = new Intent(getApplicationContext(), AnswerContentActivity.class);
+        startActivity(intent);
     }
 
     @Override
