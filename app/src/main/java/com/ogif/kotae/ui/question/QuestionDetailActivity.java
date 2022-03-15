@@ -20,6 +20,7 @@ import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.ui.main.AnswerContentActivity;
+import com.ogif.kotae.ui.main.CreateAnswerActivity;
 
 import java.util.Objects;
 
@@ -62,12 +63,12 @@ public class QuestionDetailActivity extends AppCompatActivity {
         });
 
         binding.btnQuestionAnswer.setOnClickListener(v -> {
-            startAnswerContentActivity();
+            startCreateAnswerActivity();
         });
     }
 
-    private void startAnswerContentActivity() {
-        Intent intent = new Intent(getApplicationContext(), AnswerContentActivity.class);
+    private void startCreateAnswerActivity() {
+        Intent intent = new Intent(getApplicationContext(), CreateAnswerActivity.class);
         startActivity(intent);
     }
 

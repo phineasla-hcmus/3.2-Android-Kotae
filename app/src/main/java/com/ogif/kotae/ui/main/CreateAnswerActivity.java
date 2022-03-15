@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,22 +16,27 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityCreateAnswerBinding;
+import com.ogif.kotae.ui.AnswerViewModel;
+import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.utils.model.MarkdownUtils;
+
+import java.util.Objects;
 
 
 public class CreateAnswerActivity extends AppCompatActivity {
 
     private ActivityCreateAnswerBinding binding;
-    private ExtendedFloatingActionButton fabPostQuestion;
     private Toolbar toolbar;
     private EditText etContent;
     private View view;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
     private String content;
+    private AnswerViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,8 @@ public class CreateAnswerActivity extends AppCompatActivity {
         binding = ActivityCreateAnswerBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
         setContentView(view);
+
+        this.viewModel = new ViewModelProvider(this).get(AnswerViewModel.class);
 
         toolbar = (Toolbar) binding.tbCreateQuestion;
         this.setSupportActionBar(toolbar);
@@ -51,15 +59,14 @@ public class CreateAnswerActivity extends AppCompatActivity {
             startAnswerContentActivity();
         });
 
-        fabPostQuestion = (ExtendedFloatingActionButton) binding.fabPostQuestion;
+        binding.fabPostAnswer.setOnClickListener(v -> {
+            String content = Objects.requireNonNull(binding.etContent.getText()).toString();
 
-//        fabPostQuestion.setOnClickListener(v -> {
-//            if (isValid()) {
-//                // TODO: Create answer on Firebase
-//            } else {
-//                Toast.makeText(this, "Please check your input again", Toast.LENGTH_SHORT).show();
-//            }
-//        });
+            binding.fabPostAnswer.setEnabled(false);
+            this.viewModel.createAnswer(content);
+            this.finish();
+        });
+
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
         someActivityResultLauncher = registerForActivityResult(
@@ -75,8 +82,6 @@ public class CreateAnswerActivity extends AppCompatActivity {
                         }
                     }
                 });
-
-
     }
 
     public void startAnswerContentActivity() {
