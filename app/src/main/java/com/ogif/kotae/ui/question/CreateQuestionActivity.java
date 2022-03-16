@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,15 +15,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Grade;
 import com.ogif.kotae.data.model.Subject;
 import com.ogif.kotae.data.repository.GradeRepository;
@@ -35,14 +35,13 @@ import com.ogif.kotae.utils.model.MarkdownUtils;
 import com.ogif.kotae.utils.model.QuestionUtils;
 import com.ogif.kotae.utils.text.TextValidator;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CreateQuestionActivity extends AppCompatActivity {
 
     private ActivityCreateQuestionBinding binding;
     private Toolbar toolbar;
-    private View view;
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
@@ -56,8 +55,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityCreateQuestionBinding.inflate(getLayoutInflater());
-        view = binding.getRoot();
-        setContentView(view);
+        View view1 = binding.getRoot();
+        setContentView(view1);
 
         this.viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
 
@@ -66,16 +65,28 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Create question");
 
-        EditText[] ets = {binding.etCreateQuestionTitle, binding.etContent, binding.actvQuestionCategoryGrade, binding.atcvQuestionCategorySubject};
+        EditText[] ets = {binding.etCreateQuestionTitle,
+                          binding.etContent,
+                          binding.actvQuestionCategoryGrade,
+                          binding.atcvQuestionCategorySubject};
 
         binding.etContent.setOnClickListener(view -> {
             startQuestionContentActivity();
         });
 
         gradeRepository = new GradeRepository();
-        gradeRepository.getAllGrades(grades -> {
-            gradeAdapter = new GradeAdapter(getApplicationContext(), R.layout.dropdown_item, grades.toArray(new Grade[grades.size()]));
-            binding.actvQuestionCategoryGrade.setAdapter(gradeAdapter);
+        gradeRepository.getAll(new TaskListener.State<List<Grade>>() {
+            @Override
+            public void onSuccess(@NonNull List<Grade> result) {
+                Grade[] grades = result.toArray(new Grade[result.size()]);
+                gradeAdapter = new GradeAdapter(getApplicationContext(), R.layout.dropdown_item, grades);
+                binding.actvQuestionCategoryGrade.setAdapter(gradeAdapter);
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // TODO
+            }
         });
 
         binding.actvQuestionCategoryGrade.setOnItemClickListener((adapterView, view, i, l) -> {
@@ -85,7 +96,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         subjectRepository = new SubjectRepository();
         subjectRepository.getAllSubjects(subjects -> {
-            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, subjects.toArray(new Subject[subjects.size()]));
+            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, subjects
+                    .toArray(new Subject[subjects.size()]));
             binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
         });
 
@@ -113,13 +125,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
             @Override
             public void validate(Editable title) {
                 TextInputLayout til = binding.tilCreateQuestionTitle;
-                switch (QuestionUtils.isTitleValid(title)) {
-                    case QuestionUtils.INVALID_TITLE_LENGTH:
-                        til.setErrorEnabled(true);
-                        til.setError(getResources().getString(R.string.et_error_question_title_length));
-                        break;
-                    default:
-                        til.setErrorEnabled(false);
+                if (QuestionUtils.isTitleValid(title) == QuestionUtils.INVALID_TITLE_LENGTH) {
+                    til.setErrorEnabled(true);
+                    til.setError(getResources().getString(R.string.et_error_question_title_length));
+                } else {
+                    til.setErrorEnabled(false);
                 }
             }
         });
@@ -127,11 +137,13 @@ public class CreateQuestionActivity extends AppCompatActivity {
         binding.fabPostQuestion.setOnClickListener(v -> {
             for (EditText et : ets) {
                 if (TextUtils.isEmpty(et.getText())) {
-                    Toast.makeText(this, getResources().getString(R.string.create_question_error_missing), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getResources().getString(R.string.create_question_error_missing), Toast.LENGTH_SHORT)
+                            .show();
                     return;
                 }
             }
-            String title = Objects.requireNonNull(binding.etCreateQuestionTitle.getText()).toString();
+            String title = Objects.requireNonNull(binding.etCreateQuestionTitle.getText())
+                    .toString();
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
 
             binding.fabPostQuestion.setEnabled(false);

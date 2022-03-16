@@ -7,10 +7,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Grade;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GradeRepository {
     private final FirebaseFirestore db;
@@ -25,24 +27,19 @@ public class GradeRepository {
         return gradesRef.document(id).get();
     }
 
-    public interface GradeCallBack {
-        void gradesList(ArrayList<Grade> grades);
+    public Task<QuerySnapshot> getAll() {
+        return gradesRef.get();
     }
 
-    public void getAllGrades(GradeCallBack gradeCallBack) {
-
-        gradesRef.get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        ArrayList<Grade> grades = new ArrayList<>();
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            grades.add(new Grade(document.getId(), document.getString("name")));
-                        }
-                        gradeCallBack.gradesList(grades);
-                    } else {
-                        Log.d("data", "Error getting documents: ", task.getException());
-                    }
-                });
+    public void getAll(TaskListener.State<List<Grade>> callback) {
+        // Log.d("data", "Error getting documents: ", task.getException());
+        getAll().addOnSuccessListener(result -> {
+            List<Grade> grades = new ArrayList<>();
+            for (QueryDocumentSnapshot document : result) {
+                grades.add(new Grade(document.getId(), document.getString("name")));
+            }
+            callback.onSuccess(grades);
+        }).addOnFailureListener(callback::onFailure);
     }
 
     public void get(String id, TaskListener.State<Grade> callback) {

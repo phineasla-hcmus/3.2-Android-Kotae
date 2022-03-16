@@ -1,5 +1,7 @@
 package com.ogif.kotae.data.model;
 
+import androidx.annotation.NonNull;
+
 public class Grade {
     private String id, name;
 
@@ -24,6 +26,7 @@ public class Grade {
         this.name = name;
     }
 
+    @NonNull
     public String toString() {
         return name;
     }

@@ -79,7 +79,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel
                 .getQuestionLiveData()

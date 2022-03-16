@@ -13,6 +13,7 @@ public abstract class Post implements Parcelable {
     private String id;
     private String title;
     private String authorId;
+    private String authorName;
     private String content;
     private long postTime;
     private int upvote;
@@ -27,10 +28,25 @@ public abstract class Post implements Parcelable {
     public Post() {
     }
 
-    public Post(String id, String title, String authorId, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked) {
+    public Post(String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked) {
+        this.title = title;
+        this.authorId = authorId;
+        this.authorName = authorName;
+        this.content = content;
+        this.postTime = postTime;
+        this.upvote = upvote;
+        this.downvote = downvote;
+        this.report = report;
+        this.subjectId = subjectId;
+        this.gradeId = gradeId;
+        this.blocked = blocked;
+    }
+
+    public Post(String id, String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
+        this.authorName = authorName;
         this.content = content;
         this.postTime = postTime;
         this.upvote = upvote;
@@ -46,6 +62,7 @@ public abstract class Post implements Parcelable {
         id = parcel.readString();
         title = parcel.readString();
         authorId = parcel.readString();
+        authorName = parcel.readString();
         content = parcel.readString();
         postTime = parcel.readLong();
         upvote = parcel.readInt();
@@ -67,6 +84,7 @@ public abstract class Post implements Parcelable {
         parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(authorId);
+        parcel.writeString(authorName);
         parcel.writeString(content);
         parcel.writeLong(postTime);
         parcel.writeInt(upvote);
@@ -79,11 +97,6 @@ public abstract class Post implements Parcelable {
 
     public String getId() {
         return id;
-    }
-
-    public Post setId(String id) {
-        this.id = id;
-        return this;
     }
 
     @PropertyName("title")
@@ -116,6 +129,17 @@ public abstract class Post implements Parcelable {
     @PropertyName("author")
     public Post setAuthorId(String authorId) {
         this.authorId = authorId;
+        return this;
+    }
+
+    @PropertyName("author_id")
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    @PropertyName("author_id")
+    public Post setAuthorName(String authorName) {
+        this.authorName = authorName;
         return this;
     }
 

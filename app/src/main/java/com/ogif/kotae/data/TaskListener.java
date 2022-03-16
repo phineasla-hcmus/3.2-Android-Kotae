@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
  */
 public interface TaskListener {
     interface Success<TSuccess> {
-        void onSuccess(@Nullable TSuccess result);
+        void onSuccess(TSuccess result);
     }
 
     interface State<TSuccess> extends Success<TSuccess> {
