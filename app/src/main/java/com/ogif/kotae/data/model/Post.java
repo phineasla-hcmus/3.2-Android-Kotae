@@ -19,8 +19,6 @@ public abstract class Post implements Parcelable {
     private int upvote;
     private int downvote;
     private int report;
-    private String subjectId;
-    private String gradeId;
     private boolean blocked;
 
     // TODO add images
@@ -28,7 +26,7 @@ public abstract class Post implements Parcelable {
     public Post() {
     }
 
-    public Post(String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked) {
+    public Post(String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, boolean blocked) {
         this.title = title;
         this.authorId = authorId;
         this.authorName = authorName;
@@ -37,12 +35,10 @@ public abstract class Post implements Parcelable {
         this.upvote = upvote;
         this.downvote = downvote;
         this.report = report;
-        this.subjectId = subjectId;
-        this.gradeId = gradeId;
         this.blocked = blocked;
     }
 
-    public Post(String id, String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked) {
+    public Post(String id, String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, boolean blocked) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
@@ -52,8 +48,6 @@ public abstract class Post implements Parcelable {
         this.upvote = upvote;
         this.downvote = downvote;
         this.report = report;
-        this.subjectId = subjectId;
-        this.gradeId = gradeId;
         this.blocked = blocked;
     }
 
@@ -68,8 +62,6 @@ public abstract class Post implements Parcelable {
         upvote = parcel.readInt();
         downvote = parcel.readInt();
         report = parcel.readInt();
-        subjectId = parcel.readString();
-        gradeId = parcel.readString();
         blocked = parcel.readInt() == 1;
     }
 
@@ -189,28 +181,6 @@ public abstract class Post implements Parcelable {
     @PropertyName("report")
     public Post setReport(int report) {
         this.report = report;
-        return this;
-    }
-
-    @PropertyName("subject")
-    public String getSubjectId() {
-        return subjectId;
-    }
-
-    @PropertyName("subject")
-    public Post setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
-        return this;
-    }
-
-    @PropertyName("grade")
-    public String getGradeId() {
-        return gradeId;
-    }
-
-    @PropertyName("grade")
-    public Post setGradeId(String gradeId) {
-        this.gradeId = gradeId;
         return this;
     }
 
