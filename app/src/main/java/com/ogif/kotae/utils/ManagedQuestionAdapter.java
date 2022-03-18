@@ -50,7 +50,7 @@ public class ManagedQuestionAdapter extends ArrayAdapter<Post> {
         Question question = (Question) getItem(position);
         title.setText(question.getTitle());
         content.setText(question.getContent());
-        posttime.setText(Long.toString(question.getPostTime()));
+        posttime.setText(question.getPostTime().toString());
         author.setText(question.getAuthorId());
         upvote.setText(Integer.toString(question.getUpvote()));
         downvote.setText(Integer.toString(question.getDownvote()));

@@ -45,6 +45,11 @@ public class UserRepository {
         });
     }
 
+    public void getById(@NonNull String id) {
+        // usersRef.document(id).
+        // TODO
+    }
+
     /**
      * @implNote <b>Usernames are not unique</b>. Firebase doesn't have unique index like MongoDB,
      * and Free Tier doesn't have Cloud Function, there are some workarounds:

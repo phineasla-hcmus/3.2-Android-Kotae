@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Answer extends Post {
-    private String questionId;
-
     public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
         public Answer createFromParcel(Parcel in) {
             return new Answer(in);
@@ -16,6 +14,28 @@ public class Answer extends Post {
         }
     };
 
+    public static class Builder extends Post.Builder<Builder> {
+        private String questionId;
+
+        public Builder() {}
+
+        @Override
+        public Builder getThis() {
+            return this;
+        }
+
+        public Answer build() {
+            return new Answer(this);
+        }
+
+        public Builder question(String id) {
+            this.questionId = id;
+            return getThis();
+        }
+    }
+
+    private String questionId;
+
     public Answer() {
         super();
     }
@@ -25,23 +45,18 @@ public class Answer extends Post {
         questionId = parcel.readString();
     }
 
-    public Answer(String questionId, String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, boolean blocked) {
-        super(title, authorId, authorName, content, postTime, upvote, downvote, report, blocked);
-        this.questionId = questionId;
-    }
-
-    public String getQuestionId() {
-        return questionId;
-    }
-
-    public Post setQuestionId(String questionId) {
-        this.questionId = questionId;
-        return this;
+    public Answer(Builder builder) {
+        super(builder);
+        this.questionId = builder.questionId;
     }
 
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
         parcel.writeString(questionId);
+    }
+
+    public String getQuestionId() {
+        return questionId;
     }
 }

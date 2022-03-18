@@ -62,7 +62,7 @@ public class AdminActivity extends AppCompatActivity {
         });
 
         lvQuestion = (ListView) findViewById(R.id.lv_question_admin);
-        managedQuestionAdapter = new ManagedQuestionAdapter(AdminActivity.this,R.layout.partial_question_item_admin);
+        managedQuestionAdapter = new ManagedQuestionAdapter(AdminActivity.this, R.layout.partial_question_item_admin);
         lvQuestion.setAdapter(managedQuestionAdapter);
     }
 
@@ -73,11 +73,14 @@ public class AdminActivity extends AppCompatActivity {
         managedUserAdapter.add(new ManagedUser("4", "Nguyen Van D", 10, 5, 3, 1, false));
         managedUserAdapter.add(new ManagedUser("5", "Nguyen Van E", 10, 5, 3, 1, true));
 
-        managedQuestionAdapter.add(new Question().setTitle("Question 1").setAuthorId("Alibaba").setContent("Cho em hỏi tí").setPostTime(new Date().getTime()).setUpvote(10).setDownvote(10).setReport(3).setBlocked(true));
-        managedQuestionAdapter.add(new Question().setTitle("Question 1").setAuthorId("Alibaba").setContent("Cho em hỏi tí").setPostTime(new Date().getTime()).setUpvote(10).setDownvote(10).setReport(3).setBlocked(true));
-        managedQuestionAdapter.add(new Question().setTitle("Question 1").setAuthorId("Alibaba").setContent("Cho em hỏi tí").setPostTime(new Date().getTime()).setUpvote(10).setDownvote(10).setReport(3).setBlocked(true));
-        managedQuestionAdapter.add(new Question().setTitle("Question 1").setAuthorId("Alibaba").setContent("Cho em hỏi tí").setPostTime(new Date().getTime()).setUpvote(10).setDownvote(10).setReport(3).setBlocked(true));
-        managedQuestionAdapter.add(new Question().setTitle("Question 1").setAuthorId("Alibaba").setContent("Cho em hỏi tí").setPostTime(new Date().getTime()).setUpvote(10).setDownvote(10).setReport(3).setBlocked(true));
+        Question mockQuestion = new Question.Builder().title("Question 1")
+                .author("id", "Alibaba")
+                .content("Etto, shitsumon o shite mo ii desu ka?")
+                .block(true)
+                .build();
+
+        managedQuestionAdapter.add(mockQuestion);
+
     }
 
 

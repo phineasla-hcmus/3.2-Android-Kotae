@@ -39,8 +39,11 @@ public class AnswerRepository {
     }
 
     public void createAnswer(@NonNull String content) {
-        Answer answer = new Answer("questionId", "sample", "0FDZ97sbxRf17ac07Sx260inaPR2", "Tam Nguyen", content, 150000000, 0, 0, 0, false);
-        answersRef.add(answer)
+        // Answer answer = new Answer("questionId", "sample", "0FDZ97sbxRf17ac07Sx260inaPR2", "Tam Nguyen", content, 150000000, 0, 0, 0, false);
+        Answer mockAnswer = new Answer.Builder().question("0FDZ97sbxRf17ac07Sx260inaPR2")
+                .author("abc", "Tam Nguyen").content(content)
+                .build();
+        answersRef.add(mockAnswer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

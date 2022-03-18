@@ -19,6 +19,7 @@ public class QuestionViewModel extends ViewModel {
     }
 
     public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String gradeId, @NonNull String subjectId) {
+
         questionRepository.createQuestion(title, content, gradeId, subjectId);
     }
 

@@ -27,8 +27,12 @@ public class QuestionRepository extends FirestoreGenericRepository {
     }
 
     public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId) {
-        Question question = new Question("sample", title, "0FDZ97sbxRf17ac07Sx260inaPR2", content, 150000000, 0, 0, 0, false, subjectId, gradeId);
-        reference.add(question)
+        Question mockQuestion = new Question.Builder().title(title)
+                .content(content)
+                .subject(subjectId, "Math?")
+                .grade(gradeId, "Uni?")
+                .build();
+        reference.add(mockQuestion)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
