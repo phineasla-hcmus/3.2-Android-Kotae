@@ -18,9 +18,9 @@ public class QuestionViewModel extends ViewModel {
         this.mutableLiveData = questionRepository.getMutableLiveData();
     }
 
-    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String gradeId, @NonNull String subjectId) {
+    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
 
-        questionRepository.createQuestion(title, content, gradeId, subjectId);
+        questionRepository.createQuestion(title, content, subjectId, gradeId, subject, grade);
     }
 
     public LiveData<StateWrapper<Question>> getLiveData() {

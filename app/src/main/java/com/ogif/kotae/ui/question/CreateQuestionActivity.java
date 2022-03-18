@@ -45,7 +45,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
-    private String title, content, selectedGrade, selectedSubject;
+    private String title, content, selectedGradeId, selectedSubjectId, selectedGradeName, selectedSubjectName;
     private QuestionViewModel viewModel;
     private GradeRepository gradeRepository;
     private SubjectRepository subjectRepository;
@@ -91,7 +91,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         binding.actvQuestionCategoryGrade.setOnItemClickListener((adapterView, view, i, l) -> {
             Grade grade = (Grade) adapterView.getItemAtPosition(i);
-            selectedGrade = grade.getId();
+            selectedGradeId = grade.getId();
+            selectedGradeName = grade.getName();
         });
 
         subjectRepository = new SubjectRepository();
@@ -103,7 +104,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         binding.atcvQuestionCategorySubject.setOnItemClickListener((adapterView, view, i, l) -> {
             Subject subject = (Subject) adapterView.getItemAtPosition(i);
-            selectedSubject = subject.getId();
+            selectedSubjectId = subject.getId();
+            selectedSubjectName = subject.getName();
         });
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
@@ -147,7 +149,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
 
             binding.fabPostQuestion.setEnabled(false);
-            this.viewModel.createQuestion(title, content, selectedSubject, selectedGrade);
+            this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
             this.finish();
         });
     }

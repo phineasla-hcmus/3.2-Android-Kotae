@@ -26,11 +26,11 @@ public class QuestionRepository extends FirestoreGenericRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId) {
+    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
         Question mockQuestion = new Question.Builder().title(title)
                 .content(content)
-                .subject(subjectId, "Math?")
-                .grade(gradeId, "Uni?")
+                .subject(subjectId, subject)
+                .grade(gradeId, grade)
                 .build();
         reference.add(mockQuestion)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
