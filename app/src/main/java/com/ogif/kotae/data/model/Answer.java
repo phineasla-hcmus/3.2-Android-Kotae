@@ -3,7 +3,9 @@ package com.ogif.kotae.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Answer extends Post {
+import com.google.firebase.firestore.PropertyName;
+
+public final class Answer extends Post {
     public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
         public Answer createFromParcel(Parcel in) {
             return new Answer(in);
@@ -56,6 +58,7 @@ public class Answer extends Post {
         parcel.writeString(questionId);
     }
 
+    @PropertyName("question_id")
     public String getQuestionId() {
         return questionId;
     }

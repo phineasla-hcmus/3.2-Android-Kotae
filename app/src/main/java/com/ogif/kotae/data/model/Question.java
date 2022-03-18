@@ -11,7 +11,7 @@ import com.google.firebase.firestore.PropertyName;
  * https://ducmanhphan.github.io/2020-04-06-how-to-apply-builder-pattern-with-inhertitance/
  */
 
-public class Question extends Post {
+public final class Question extends Post {
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
         public Question createFromParcel(Parcel in) {
             return new Question(in);
