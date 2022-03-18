@@ -82,4 +82,14 @@
     <string name="all_downvote">Downvote</string>
     <string name="all_upvote">Upvote</string>
     <string name="question_detail_comment">Comment</string>
+
+    <string name="question_all">All</string>
+    <string name="question_answered">Answered</string>
+    <string name="question_unanswered">Un-Answered</string>
+    <string name="question_status">Status</string>
+
+    <string name="question_sort">Sort</string>
+    <string name="question_sort_most_view">Most view</string>
+    <string name="question_sort_top_week">Top week</string>
+    <string name="question_sort_top_month">Top month</string>
 </resources>

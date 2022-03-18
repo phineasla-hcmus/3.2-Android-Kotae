@@ -69,4 +69,14 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="category_ethic">GDCD</string>
     <string name="filter_submit">Đồng ý</string>
     <string name="filter_cancel">Hủy bỏ</string>
+
+    <string name="question_status">Trạng thái</string>
+    <string name="question_all">Tất cả</string>
+    <string name="question_answered">Đã trã lời</string>
+    <string name="question_unanswered">Chưa trã lời</string>
+
+    <string name="question_sort">Sắp xếp</string>
+    <string name="question_sort_most_view">Xem nhiều nhất</string>
+    <string name="question_sort_top_week">Xem nhiều nhất tuần</string>
+    <string name="question_sort_top_month">Xem nhiều nhất tháng</string>
 </resources>
