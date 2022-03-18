@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         List<Question> questionList = new ArrayList<>();
         long epochTimestamp = 1646543408;
         Question sample = (Question) new Question().setTitle("How to survive in life")
-                .setAuthorId("randomString").setContent("Trakkam các kiểu").setGradeId("10")
+                .setAuthorId("randomString").setContent("Trakkam các kiểu")
                 .setPostTime(epochTimestamp);
 
         for (int i = 0; i < 5; i++) {

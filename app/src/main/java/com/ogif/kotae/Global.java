@@ -13,4 +13,6 @@ public class Global {
 
     public static final String SETTING_KEY_NIGHT_MODE = "night_mode";
     public static final String SETTING_KEY_LANGUAGES = "languages";
+
+    public static final String DEFAULT_USER_AVATAR = "gs://android-kotae.appspot.com/avatars/profile3.png";
 }

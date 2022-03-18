@@ -1,7 +1,10 @@
 package com.ogif.kotae.data.model;
 
+
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.firebase.firestore.PropertyName;
 
 public class Question extends Post {
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
@@ -23,14 +26,8 @@ public class Question extends Post {
         super();
     }
 
-    public Question(String title, String authorId, String content, long postTime, int upvote, int downvote, int report, boolean blocked, String subjectId, String gradeId) {
-        super(title, authorId, content, postTime, upvote, downvote, report, blocked);
-        this.subjectId = subjectId;
-        this.gradeId = gradeId;
-    }
-
-    public Question(String id, String title, String authorId, String content, long postTime, int upvote, int downvote, int report, boolean blocked, String subjectId, String gradeId) {
-        super(id, title, authorId, content, postTime, upvote, downvote, report, blocked);
+    public Question(String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, boolean blocked, String subjectId, String gradeId) {
+        super(title, authorId, authorName, content, postTime, upvote, downvote, report, blocked);
         this.subjectId = subjectId;
         this.gradeId = gradeId;
     }
@@ -47,7 +44,7 @@ public class Question extends Post {
         parcel.writeString(subjectId);
         parcel.writeString(gradeId);
     }
-    
+
     @PropertyName("subjectId")
     public String getSubjectId() {
         return subjectId;

@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Post;
+import com.ogif.kotae.data.model.Question;
 
 public class ManagedQuestionAdapter extends ArrayAdapter<Post> {
     Activity context;
@@ -46,19 +47,19 @@ public class ManagedQuestionAdapter extends ArrayAdapter<Post> {
 
         ImageView ivReport = (ImageView) customView.findViewById(R.id.iv_report_question_admin);
 
-        Post post = getItem(position);
-        title.setText(post.getTitle());
-        content.setText(post.getContent());
-        posttime.setText(Long.toString(post.getPostTime()));
-        author.setText(post.getAuthorId());
-        upvote.setText(Integer.toString(post.getUpvote()));
-        downvote.setText(Integer.toString(post.getDownvote()));
+        Question question = (Question) getItem(position);
+        title.setText(question.getTitle());
+        content.setText(question.getContent());
+        posttime.setText(Long.toString(question.getPostTime()));
+        author.setText(question.getAuthorId());
+        upvote.setText(Integer.toString(question.getUpvote()));
+        downvote.setText(Integer.toString(question.getDownvote()));
 
-        grade.setText(post.getGradeId());
-        subject.setText(post.getSubjectId());
+        grade.setText(question.getGradeId());
+        subject.setText(question.getSubjectId());
 
-        if (post.getReport() != 0) {
-            report.setText(Integer.toString(post.getReport()));
+        if (question.getReport() != 0) {
+            report.setText(Integer.toString(question.getReport()));
         } else {
             ivReport.setVisibility(View.GONE);
             report.setVisibility(View.GONE);

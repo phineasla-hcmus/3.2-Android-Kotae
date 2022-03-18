@@ -39,7 +39,7 @@ public class AnswerRepository {
     }
 
     public void createAnswer(@NonNull String content) {
-        Answer answer = new Answer("sample", null, "0FDZ97sbxRf17ac07Sx260inaPR2", content, 150000000, 0, 0, 0, "s01", "g01", false, "1");
+        Answer answer = new Answer("questionId", "sample", "0FDZ97sbxRf17ac07Sx260inaPR2", "Tam Nguyen", content, 150000000, 0, 0, 0, false);
         answersRef.add(answer)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

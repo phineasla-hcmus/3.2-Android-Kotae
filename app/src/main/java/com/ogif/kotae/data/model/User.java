@@ -1,5 +1,7 @@
 package com.ogif.kotae.data.model;
 
+import com.ogif.kotae.Global;
+
 public class User {
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
@@ -8,22 +10,17 @@ public class User {
     private String job;
     private int yob;
     private String role;
+    private String avatar;
 
     /**
-     * Create user with default role as "user"
+     * Create user with default role as "user" and avatar
      */
     public User(String username, String job, int yob) {
         this.username = username;
         this.job = job;
         this.yob = yob;
         this.role = "user";
-    }
-
-    public User(String username, String job, int yob, String role) {
-        this.username = username;
-        this.job = job;
-        this.yob = yob;
-        this.role = role;
+        this.avatar = Global.DEFAULT_USER_AVATAR;
     }
 
     public String getUsername() {
@@ -59,6 +56,15 @@ public class User {
 
     public User setRole(String role) {
         this.role = role;
+        return this;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public User setAvatar(String avatarUrl) {
+        this.avatar = avatar;
         return this;
     }
 }

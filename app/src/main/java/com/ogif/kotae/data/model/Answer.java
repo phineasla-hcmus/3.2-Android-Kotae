@@ -25,8 +25,8 @@ public class Answer extends Post {
         questionId = parcel.readString();
     }
 
-    public Answer(String id, String title, String authorId, String content, long postTime, int upvote, int downvote, int report, String subjectId, String gradeId, boolean blocked, String questionId) {
-        super(id, title, authorId, content, postTime, upvote, downvote, report, subjectId, gradeId, blocked);
+    public Answer(String questionId, String title, String authorId, String authorName, String content, long postTime, int upvote, int downvote, int report, boolean blocked) {
+        super(title, authorId, authorName, content, postTime, upvote, downvote, report, blocked);
         this.questionId = questionId;
     }
 

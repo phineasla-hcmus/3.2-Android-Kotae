@@ -49,7 +49,11 @@ public class SignUpActivity extends AppCompatActivity {
             startMainActivity();
         });
         ArrayAdapter<String> jobArrayAdapter = new ArrayAdapter<>(this, R.layout.dropdown_item, JOBS);
-        EditText[] ets = {binding.etSignUpEmail, binding.etSignUpUsername, binding.etSignUpJob, binding.etSignUpAge, binding.etSignUpPassword};
+        EditText[] ets = {binding.etSignUpEmail,
+                          binding.etSignUpUsername,
+                          binding.etSignUpJob,
+                          binding.etSignUpAge,
+                          binding.etSignUpPassword};
 
         binding.etSignUpUsername.addTextChangedListener(new TextValidator() {
             @Override

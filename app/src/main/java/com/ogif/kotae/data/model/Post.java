@@ -82,8 +82,6 @@ public abstract class Post implements Parcelable {
         parcel.writeInt(upvote);
         parcel.writeInt(downvote);
         parcel.writeInt(report);
-        parcel.writeString(subjectId);
-        parcel.writeString(gradeId);
         parcel.writeInt(blocked ? 1 : 0);
     }
 
