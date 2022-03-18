@@ -3,16 +3,24 @@ package com.ogif.kotae.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.ui.question.CreateQuestionActivity;
@@ -27,7 +35,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
     SwipeRefreshLayout swipeLayout;
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference questionsRef = db.collection("questions");
+    private  HomeAdapter adapter;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -35,7 +45,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,7 +81,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private void setUpRecyclerView() {
         RecyclerView recyclerView = (RecyclerView) binding.rvHome;
 
-        HomeAdapter adapter = new HomeAdapter(questionList(), this.getContext());
+         adapter = new HomeAdapter(questionList(), this.getContext());
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
         recyclerView.setAdapter(adapter);
@@ -82,10 +94,24 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 .setAuthorId("randomString").setContent("Trakkam các kiểu")
                 .setPostTime(epochTimestamp);
 
-        for (int i = 0; i < 5; i++) {
-            questionList.add(sample);
-        }
-
+//        for (int i = 0; i < 5; i++) {
+//            questionList.add(sample);
+//        }
+        questionsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null){
+                    Log.e("Firestore error", error.getMessage() );
+                    return;
+                }
+                for (DocumentChange dc : value.getDocumentChanges()){
+                    if (dc.getType()== DocumentChange.Type.ADDED){
+                        questionList.add(dc.getDocument().toObject(Question.class));
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
         return questionList;
     }
 }
