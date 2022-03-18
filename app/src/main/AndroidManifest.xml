@@ -10,10 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotae">
         <activity
+            android:name=".ui.main.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,5 +52,11 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+    </queries>
 
 </manifest>

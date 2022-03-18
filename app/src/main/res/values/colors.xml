@@ -57,4 +57,15 @@
     <color name="md_theme_dark_inversePrimary">#2459BD</color>
     <color name="md_theme_dark_shadow">#000000</color>
     <color name="md_theme_dark_primaryInverse">#2459BD</color>
+<!--    Temporary color, update later-->
+    <color name="contentContainerColor">#eeeeee</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#657786</color>
+    <color name="iconColor">#657786</color>
+    <color name="dividerColor">#657786</color>
+    <color name="suggestionIconColor">#657786</color>
+    <color name="suggestionTextColor">#657786</color>
+    <color name="suggestionSelectedTextColor">#212121</color>
+    <color name="blue_dark">#4986bc</color>
+    <color name="blue">#529ecc</color>
 </resources>

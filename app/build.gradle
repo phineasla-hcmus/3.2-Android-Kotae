@@ -68,4 +68,8 @@ dependencies {
 
     // Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Search View
+    implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:1.1.4"
+    implementation "com.paulrybitskyi.commons:commons-ktx:1.0.4"
 }
