@@ -139,7 +139,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         binding.fabPostQuestion.setOnClickListener(v -> {
             for (EditText et : ets) {
                 if (TextUtils.isEmpty(et.getText())) {
-                    Toast.makeText(this, getResources().getString(R.string.create_question_error_missing), Toast.LENGTH_SHORT)
+                    Toast.makeText(this, getResources().getString(R.string.field_error_missing), Toast.LENGTH_SHORT)
                             .show();
                     return;
                 }

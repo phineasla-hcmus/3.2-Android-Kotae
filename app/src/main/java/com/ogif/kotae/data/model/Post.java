@@ -11,10 +11,15 @@ import org.jetbrains.annotations.TestOnly;
 import java.util.Date;
 
 /**
- * https://stackoverflow.com/questions/17164375/subclassing-a-java-builder-class
- * https://ducmanhphan.github.io/2020-04-06-how-to-apply-builder-pattern-with-inhertitance/
+ * Interface for Question, Answer and Comment
+ *
+ * @see <a href="https://stackoverflow.com/questions/17164375/subclassing-a-java-builder-class">
+ * Subclassing a builder class
+ * </a>
+ * @see <a href="https://ducmanhphan.github.io/2020-04-06-how-to-apply-builder-pattern-with-inhertitance/">
+ * Apply builder pattern with inheritatance
+ * </a>
  */
-
 public abstract class Post implements Parcelable {
     public abstract static class Builder<T extends Builder<T>> {
         private String authorId;
@@ -128,17 +133,6 @@ public abstract class Post implements Parcelable {
     public Date getPostTime() {
         return postTime;
     }
-
-    // @PropertyName("post_time")
-    // public Post setPostTime(long postTime) {
-    //     this.postTime = postTime;
-    //     return this;
-    // }
-    //
-    // public Post setPostTime(Date postTime) {
-    //     this.postTime = postTime.getTime();
-    //     return this;
-    // }
 
     @PropertyName("upvote")
     public int getUpvote() {

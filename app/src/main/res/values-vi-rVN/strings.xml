@@ -47,7 +47,7 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="all_job">Công việc</string>
     <string name="et_error_username_invalid_char">Tên người dùng không hợp lệ</string>
     <string name="et_error_username_length">Tên người dùng phải từ 3 đến 16 ký tự</string>
-    <string name="sign_up_error_missing">Có cái gì đó thiếu thiếu</string>
+    <string name="field_error_missing">Có cái gì đó thiếu thiếu</string>
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
     <string name="question">Câu hỏi</string>
     <string name="question_title_hint">Tiêu đề câu hỏi</string>
@@ -58,15 +58,15 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="profile_change_password">Đổi mật khẩu</string>
     <string name="profile_edit">Chỉnh hồ sơ</string>
     <string name="category_course">Môn học</string>
-    <string name="category_math">Toán</string>
-    <string name="category_physic">Lý</string>
-    <string name="category_chemistry">Hóa</string>
-    <string name="category_literature">Văn</string>
-    <string name="category_english">Anh</string>
-    <string name="category_biology">Sinh</string>
-    <string name="category_history">Sử</string>
-    <string name="category_geography">Địa</string>
-    <string name="category_ethic">GDCD</string>
+    <string name="category_subject_math">Toán</string>
+    <string name="category_subject_physic">Lý</string>
+    <string name="category_subject_chemistry">Hóa</string>
+    <string name="category_subject_literature">Văn</string>
+    <string name="category_subject_english">Anh</string>
+    <string name="category_subject_biology">Sinh</string>
+    <string name="category_subject_history">Sử</string>
+    <string name="category_subject_geography">Địa</string>
+    <string name="category_subject_ethic">GDCD</string>
     <string name="filter_submit">Đồng ý</string>
     <string name="filter_cancel">Hủy bỏ</string>
 
@@ -79,4 +79,13 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="question_sort_most_view">Xem nhiều nhất</string>
     <string name="question_sort_top_week">Xem nhiều nhất tuần</string>
     <string name="question_sort_top_month">Xem nhiều nhất tháng</string>
+    <string name="all_answer">Trả lời</string>
+    <string name="create_answer_content_description">Nhấp vào đây để trả lời câu hỏi</string>
+    <string name="et_error_question_title_length">Tiêu đề phải từ 16 đến 100 ký tự</string>
+    <string name="fab_add_question">Thêm câu hỏi</string>
+    <string name="no_preview">Không có bản xem trước</string>
+    <string name="post_image">Thêm hình ảnh</string>
+    <string name="preview">Xem trước</string>
+    <string name="question_detail_comment">Bình luận</string>
+    <string name="question_detail_report">Báo cáo</string>
 </resources>

@@ -285,21 +285,21 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_math" />
+                    android:text="@string/category_subject_math" />
 
                 <CheckBox
                     android:id="@+id/chk_physic"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_physic" />
+                    android:text="@string/category_subject_physic" />
 
                 <CheckBox
                     android:id="@+id/chk_chemistry"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_chemistry" />
+                    android:text="@string/category_subject_chemistry" />
             </LinearLayout>
 
             <LinearLayout
@@ -312,21 +312,21 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_english" />
+                    android:text="@string/category_subject_english" />
 
                 <CheckBox
                     android:id="@+id/chk_biology"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_biology" />
+                    android:text="@string/category_subject_biology" />
 
                 <CheckBox
                     android:id="@+id/chk_literature"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_literature" />
+                    android:text="@string/category_subject_literature" />
             </LinearLayout>
 
             <LinearLayout
@@ -339,21 +339,21 @@
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_history" />
+                    android:text="@string/category_subject_history" />
 
                 <CheckBox
                     android:id="@+id/chk_ethic"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_ethic" />
+                    android:text="@string/category_subject_ethic" />
 
                 <CheckBox
                     android:id="@+id/chk_geography"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/category_geography" />
+                    android:text="@string/category_subject_geography" />
             </LinearLayout>
         </LinearLayout>
 

@@ -33,7 +33,7 @@
         tools:text="@tools:sample/lorem/random" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_images"
+        android:id="@+id/recycler_view_question_detail_images"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_between_y_md"
@@ -51,9 +51,20 @@
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rv_images"
+        app:layout_constraintTop_toBottomOf="@id/recycler_view_question_detail_images"
         app:singleSelection="true">
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_question_detail_subject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Toán" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_question_detail_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Lớp 5" />
     </com.google.android.material.chip.ChipGroup>
 
     <TextView
@@ -65,11 +76,11 @@
         android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/author_view"
+        app:layout_constraintTop_toTopOf="@+id/author_view_question_detail"
         tools:text="Asked 2 years ago" />
 
     <com.ogif.kotae.ui.question.AuthorView
-        android:id="@+id/author_view"
+        android:id="@+id/author_view_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@+id/tv_question_detail_date"
@@ -77,13 +88,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
 
-    <com.ogif.kotae.ui.question.PostActionView
-        android:id="@+id/post_action_view"
+    <com.ogif.kotae.ui.question.PostActionGroupView
+        android:id="@+id/post_action_group_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author_view" />
+        app:layout_constraintTop_toBottomOf="@+id/author_view_question_detail" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

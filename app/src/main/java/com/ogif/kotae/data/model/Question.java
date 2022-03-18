@@ -6,11 +6,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.firestore.PropertyName;
 
-/**
- * https://stackoverflow.com/questions/17164375/subclassing-a-java-builder-class
- * https://ducmanhphan.github.io/2020-04-06-how-to-apply-builder-pattern-with-inhertitance/
- */
-
 public final class Question extends Post {
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
         public Question createFromParcel(Parcel in) {

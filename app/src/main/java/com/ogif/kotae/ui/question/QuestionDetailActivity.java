@@ -44,16 +44,11 @@ public class QuestionDetailActivity extends AppCompatActivity {
         });
         setSupportActionBar(toolbar);
 
-        adapter = new QuestionDetailAdapter();
+        adapter = new QuestionDetailAdapter(this);
         recyclerView = binding.recyclerViewQuestionDetail;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
-
-        // QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory((Question) new Question()
-        //         .setTitle("this is a title")
-        //         .setContent("GET HELP, HELPPPPPPPPPP!!!!")
-        //         .setAuthorId("123").setSubjectId("s01"));
         QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(getIntent().getExtras()
                 .getParcelable(BUNDLE_QUESTION));
         questionDetailViewModel = new ViewModelProvider(this, factory)

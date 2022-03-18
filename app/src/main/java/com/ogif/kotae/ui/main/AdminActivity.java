@@ -11,12 +11,9 @@ import android.widget.TabHost;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.ManagedUser;
-import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.utils.ManagedQuestionAdapter;
 import com.ogif.kotae.utils.ManagedUserAdapter;
-
-import java.util.Date;
 
 public class AdminActivity extends AppCompatActivity {
     TabHost tabHost;
@@ -50,7 +47,7 @@ public class AdminActivity extends AppCompatActivity {
         tabHost.addTab(tabUser);
 
         lvUser = (ListView) findViewById(R.id.lv_user_admin);
-        managedUserAdapter = new ManagedUserAdapter(AdminActivity.this, R.layout.partial_user_item_admin);
+        managedUserAdapter = new ManagedUserAdapter(AdminActivity.this, R.layout.item_user_admin);
         lvUser.setAdapter(managedUserAdapter);
 
         lvUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,7 +59,7 @@ public class AdminActivity extends AppCompatActivity {
         });
 
         lvQuestion = (ListView) findViewById(R.id.lv_question_admin);
-        managedQuestionAdapter = new ManagedQuestionAdapter(AdminActivity.this, R.layout.partial_question_item_admin);
+        managedQuestionAdapter = new ManagedQuestionAdapter(AdminActivity.this, R.layout.item_question_admin);
         lvQuestion.setAdapter(managedQuestionAdapter);
     }
 

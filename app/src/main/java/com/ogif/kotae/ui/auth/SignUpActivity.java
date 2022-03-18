@@ -94,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnSignUp.setOnClickListener(v -> {
             for (EditText et : ets) {
                 if (TextUtils.isEmpty(et.getText())) {
-                    binding.tvSignUpError.setText(getResources().getString(R.string.sign_up_error_missing));
+                    binding.tvSignUpError.setText(getResources().getString(R.string.field_error_missing));
                     binding.tvSignUpError.setVisibility(View.VISIBLE);
                     return;
                 }

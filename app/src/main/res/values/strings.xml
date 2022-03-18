@@ -1,5 +1,8 @@
 <resources>
     <string name="all_age">Age</string>
+    <string name="all_answer">Answer</string>
+    <string name="all_bookmark">Bookmark</string>
+    <string name="all_downvote" translatable="false">Downvote</string>
     <string name="all_email">Email</string>
     <string name="all_forgot_password">Forgot password</string>
     <string name="all_job">Job</string>
@@ -7,17 +10,21 @@
     <string name="all_login">Login</string>
     <string name="all_password">Password</string>
     <string name="all_sign_up">Sign up</string>
+    <string name="all_upvote" translatable="false">Upvote</string>
     <string name="all_username">Username</string>
     <string name="app_name" translatable="false">Kotae</string>
     <string name="bottom_nav_admin">Admin</string>
-    <string name="all_bookmark">Bookmark</string>
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_noti">Notifications</string>
     <string name="bottom_nav_profile">Profile</string>
     <string name="btn_filter">Filter</string>
     <string name="btn_leader_board">Leaderboard</string>
+    <string name="category_course">Course</string>
     <string name="category_grade">Grade</string>
     <string name="category_grade_1">Grade 1</string>
+    <string name="category_grade_10">Grade 10</string>
+    <string name="category_grade_11">Grade 11</string>
+    <string name="category_grade_12">Grade 12</string>
     <string name="category_grade_2">Grade 2</string>
     <string name="category_grade_3">Grade 3</string>
     <string name="category_grade_4">Grade 4</string>
@@ -26,70 +33,61 @@
     <string name="category_grade_7">Grade 7</string>
     <string name="category_grade_8">Grade 8</string>
     <string name="category_grade_9">Grade 9</string>
-    <string name="category_grade_10">Grade 10</string>
-    <string name="category_grade_11">Grade 11</string>
-    <string name="category_grade_12">Grade 12</string>
-    <string name="category_course">Course</string>
-    <string name="category_math">Math</string>
-    <string name="category_physic">Physic</string>
-    <string name="category_chemistry">Chemistry</string>
-    <string name="category_literature">Literature</string>
-    <string name="category_english">English</string>
-    <string name="category_biology">Biology</string>
-    <string name="category_history">History</string>
-    <string name="category_geography">Geography</string>
-    <string name="category_ethic">Ethic</string>
-    <string name="filter_submit">Submit</string>
-    <string name="filter_cancel">Cancel</string>
     <string name="category_subject">Subject</string>
+    <string name="category_subject_biology">Biology</string>
+    <string name="category_subject_chemistry">Chemistry</string>
+    <string name="category_subject_english">English</string>
+    <string name="category_subject_ethic">Ethic</string>
+    <string name="category_subject_geography">Geography</string>
+    <string name="category_subject_history">History</string>
+    <string name="category_subject_literature">Literature</string>
+    <string name="category_subject_math">Math</string>
+    <string name="category_subject_physic">Physic</string>
     <string name="content_action_noti">Notification</string>
     <string name="content_action_search">Search</string>
+    <string name="create_answer_content_description">Click here to include your answer</string>
     <string name="create_question_category_title">Category</string>
     <string name="create_question_content_description">Click here to include question content</string>
-    <string name="create_answer_content_description" translatable="false">Click here to include your answer</string>
     <string name="create_question_content_title">Content</string>
     <string name="create_question_images_title">Images</string>
     <string name="create_question_title">Title</string>
-    <string name="create_question_error_missing" translatable="false">Missing required fields</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>
+    <string name="et_error_question_title_length">Question title must be between 16 to 100 characters</string>
     <string name="et_error_username_first_char">Username must start with a letter </string>
     <string name="et_error_username_invalid_char">Username contains invalid character</string>
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
-    <string name="et_error_question_title_length" translatable="false">Question title must be between 16 to 100 characters</string>
-    <string name="fab_add_question" translatable="false">Add new question</string>
+    <string name="fab_add_question">Add new question</string>
     <string name="fab_post_question">Post</string>
+    <string name="field_error_missing">Missing required field(s)</string>
+    <string name="filter_cancel">Cancel</string>
+    <string name="filter_submit">Submit</string>
     <string name="login_error">Invalid email or password</string>
     <string name="login_header" translatable="false">Already have an account?</string>
     <string name="login_to_sign_up">New member? Sign up now</string>
     <string name="markdown" translatable="false">Markdown</string>
-    <string name="no_preview" translatable="false">No preview available</string>
+    <string name="no_preview">No preview available</string>
+    <string name="post_image">Post image</string>
+    <string name="preview">Preview</string>
     <string name="profile_category_profile">Profile</string>
     <string name="profile_change_password">Change Password</string>
-    <string name="profile_night_mode">Night Mode</string>
     <string name="profile_edit">Edit Profile</string>
     <string name="profile_logout">Logout</string>
-    <string name="preview" translatable="false">Preview</string>
+    <string name="profile_night_mode">Night Mode</string>
     <string name="question">Question</string>
-    <string name="question_title_hint">Question title</string>
-    <string name="sign_up_error_existed">User existed</string>
-    <string name="sign_up_error_missing">Missing required field(s)</string>
-    <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
-    <string name="sign_up_to_login">I\'m already a member</string>
-    <string name="all_answer">Answer</string>
-    <string name="question_detail_report">Report question</string>
-    <string name="all_downvote">Downvote</string>
-    <string name="all_upvote">Upvote</string>
-    <string name="question_detail_comment">Comment</string>
-
     <string name="question_all">All</string>
     <string name="question_answered">Answered</string>
-    <string name="question_unanswered">Un-Answered</string>
-    <string name="question_status">Status</string>
-
+    <string name="question_detail_comment">Comment</string>
+    <string name="question_detail_report">Report question</string>
     <string name="question_sort">Sort</string>
     <string name="question_sort_most_view">Most view</string>
-    <string name="question_sort_top_week">Top week</string>
     <string name="question_sort_top_month">Top month</string>
+    <string name="question_sort_top_week">Top week</string>
+    <string name="question_status">Status</string>
+    <string name="question_title_hint">Question title</string>
+    <string name="question_unanswered">Unanswered</string>
+    <string name="sign_up_error_existed">User existed</string>
+    <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
+    <string name="sign_up_to_login">I\'m already a member</string>
 </resources>

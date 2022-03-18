@@ -27,22 +27,22 @@ public class QuestionRepository extends FirestoreGenericRepository {
     }
 
     public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
-        Question mockQuestion = new Question.Builder().title(title)
+        Question question = new Question.Builder().title(title)
                 .content(content)
                 .subject(subjectId, subject)
                 .grade(gradeId, grade)
                 .build();
-        reference.add(mockQuestion)
+        reference.add(question)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Log.d("data", "DocumentSnapshot written with ID: " + documentReference.getId());
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("data", "Error adding document", e);
+                        Log.w(TAG, "Error adding document", e);
                     }
                 });
 
