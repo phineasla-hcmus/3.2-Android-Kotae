@@ -57,4 +57,16 @@ Bấm vào đây để bao gồm tất cả thông tin mà ai đó sẽ cần đ
     <string name="profile_category_profile">Hồ sơ</string>
     <string name="profile_change_password">Đổi mật khẩu</string>
     <string name="profile_edit">Chỉnh hồ sơ</string>
+    <string name="category_course">Môn học</string>
+    <string name="category_math">Toán</string>
+    <string name="category_physic">Lý</string>
+    <string name="category_chemistry">Hóa</string>
+    <string name="category_literature">Văn</string>
+    <string name="category_english">Anh</string>
+    <string name="category_biology">Sinh</string>
+    <string name="category_history">Sử</string>
+    <string name="category_geography">Địa</string>
+    <string name="category_ethic">GDCD</string>
+    <string name="filter_submit">Đồng ý</string>
+    <string name="filter_cancel">Hủy bỏ</string>
 </resources>
