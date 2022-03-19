@@ -128,6 +128,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
                     {
                         upvote.setImageResource(R.drawable.ic_baseline_arrow_upward_selected);
                         upClicked = true;
+                        downClicked = false;
+                        downvote.setImageResource(R.drawable.ic_baseline_arrow_downward);
                         //cập nhật lại số lượng
                     }
                     else
@@ -145,6 +147,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
                     {
                         downvote.setImageResource(R.drawable.ic_baseline_arrow_downward_selected);
                         downClicked = true;
+                        upClicked = false;
+                        upvote.setImageResource(R.drawable.ic_baseline_arrow_upward);
                         //cập nhật lại số lượng
                     }
                     else
