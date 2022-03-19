@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="7dp"
+    android:layout_margin="@dimen/margin_between_y"
     app:cardBackgroundColor="?attr/colorOnSurfaceInverse"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="5dp"
-    app:contentPadding="10dp">
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    app:cardElevation="25dp"
+    app:contentPadding="@dimen/padding_y_md">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_question"
