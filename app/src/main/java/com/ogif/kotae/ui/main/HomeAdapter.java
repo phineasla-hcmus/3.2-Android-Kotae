@@ -56,6 +56,9 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
         holder.author.setText(model.getAuthorName());
         holder.title.setText(model.getTitle());
+        holder.tv_up.setText(Integer.toString(model.getUpvote()));
+        holder.tv_down.setText(Integer.toString(model.getDownvote()));
+        holder.tv_report.setText(Integer.toString(model.getReport()));
         holder.layout.setOnClickListener(view -> {
 //            Intent intent = QuestionDetailActivity.newInstance(holder.layout.getContext(), model);
 //            view.getContext().startActivity(intent);
@@ -82,7 +85,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, content, author, postTime;
+        TextView title, content, author, postTime, tv_up, tv_down, tv_report;
         ImageButton upvote, downvote, report;
         CircleImageView avatar;
         ConstraintLayout layout;
@@ -94,6 +97,9 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
             title = (TextView) itemView.findViewById(R.id.tv_question_title);
             author = (TextView) itemView.findViewById(R.id.tv_author);
             postTime = (TextView) itemView.findViewById(R.id.tv_question_post_time);
+            tv_up = (TextView) itemView.findViewById(R.id.tv_up);
+            tv_down = (TextView) itemView. findViewById(R.id.tv_down);
+            tv_report = (TextView) itemView.findViewById(R.id.tv_report);
 
             upvote = (ImageButton) itemView.findViewById(R.id.ib_up);
             downvote = (ImageButton) itemView.findViewById(R.id.ib_down);
