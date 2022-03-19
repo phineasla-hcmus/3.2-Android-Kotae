@@ -1,19 +1,25 @@
 package com.ogif.kotae.ui.main;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.ui.question.QuestionDetailActivity;
 
 
@@ -21,13 +27,17 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
-    private List<Question> questionList;
-    private Context context;
+public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.ViewHolder> {
+//    private List<Question> questionList;
+//    private Context context;
+//
+//    public HomeAdapter(List<Question> questionList, Context context) {
+//        this.questionList = questionList;
+//        this.context = context;
+//    }
 
-    public HomeAdapter(List<Question> questionList, Context context) {
-        this.questionList = questionList;
-        this.context = context;
+    public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options) {
+        super(options);
     }
 
     @NonNull
@@ -39,24 +49,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Question question = questionList.get(position);
-        holder.content.setText(question.getContent());
+    protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
+        holder.content.setText(model.getContent());
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
-        holder.author.setText(question.getAuthorId());
-        holder.title.setText(question.getTitle());
+        holder.author.setText(model.getAuthorName());
+        holder.title.setText(model.getTitle());
         holder.layout.setOnClickListener(view -> {
-            Intent intent = QuestionDetailActivity.newInstance(context, question);
-            context.startActivity(intent);
+//            Intent intent = QuestionDetailActivity.newInstance(holder.layout.getContext(), model);
+//            view.getContext().startActivity(intent);
+            Log.d("model", "pos "+String.valueOf(position)+": " +model.getAuthorId());
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return questionList.size();
-    }
+//    @Override
+//    public void onBindViewHolder(ViewHolder holder, int position) {
+//        UserRepository userRepository = new UserRepository();
+//        Question question = questionList.get(position);
+//        holder.content.setText(question.getContent());
+//        // holder.postTime.setText((int) questionList.get(position).getPostTime());
+//        // TODO support avatar
+//        holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
+//        holder.author.setText(question.getAuthorId());
+//        holder.title.setText(question.getTitle());
+//        holder.layout.setOnClickListener(view -> {
+//            Intent intent = QuestionDetailActivity.newInstance(context, question);
+//            context.startActivity(intent);
+//        });
+//    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
