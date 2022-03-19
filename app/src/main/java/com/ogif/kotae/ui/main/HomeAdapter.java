@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.UserRepository;
@@ -50,6 +51,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
+        Log.d("question: ", model.getAuthorName() + " " + model.getAuthorId());
         holder.content.setText(model.getContent());
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         // TODO support avatar
@@ -59,6 +61,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
         holder.tv_up.setText(Integer.toString(model.getUpvote()));
         holder.tv_down.setText(Integer.toString(model.getDownvote()));
         holder.tv_report.setText(Integer.toString(model.getReport()));
+        holder.subject.setText(model.getSubject());
+        holder.grade.setText(model.getGrade());
         holder.layout.setOnClickListener(view -> {
 //            Intent intent = QuestionDetailActivity.newInstance(holder.layout.getContext(), model);
 //            view.getContext().startActivity(intent);
@@ -87,8 +91,10 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
 
         TextView title, content, author, postTime, tv_up, tv_down, tv_report;
         ImageButton upvote, downvote, report;
+        Chip grade, subject;
         CircleImageView avatar;
         ConstraintLayout layout;
+        boolean downClicked, upClicked;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -108,6 +114,47 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
             avatar = (CircleImageView) itemView.findViewById(R.id.cim_avatar);
 
             layout = (ConstraintLayout) itemView.findViewById(R.id.constraint_layout_question);
+
+            grade = (Chip) itemView.findViewById(R.id.chip_grade);
+            subject = (Chip) itemView.findViewById(R.id.chip_subject);
+
+            downClicked = false;
+            upClicked = false;
+
+            upvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!upClicked)
+                    {
+                        upvote.setImageResource(R.drawable.ic_baseline_arrow_upward_selected);
+                        upClicked = true;
+                        //cập nhật lại số lượng
+                    }
+                    else
+                    {
+                        upvote.setImageResource(R.drawable.ic_baseline_arrow_upward);
+                        upClicked = false;
+                        //cập nhật số lượng
+                    }
+                }
+            });
+            downvote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!downClicked)
+                    {
+                        downvote.setImageResource(R.drawable.ic_baseline_arrow_downward_selected);
+                        downClicked = true;
+                        //cập nhật lại số lượng
+                    }
+                    else
+                    {
+                        downvote.setImageResource(R.drawable.ic_baseline_arrow_downward);
+                        downClicked = false;
+                        //cập nhật số lượng
+                    }
+                }
+            });
         }
     }
 }
