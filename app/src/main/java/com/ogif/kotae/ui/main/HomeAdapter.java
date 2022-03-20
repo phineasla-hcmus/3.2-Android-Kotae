@@ -1,6 +1,5 @@
 package com.ogif.kotae.ui.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,25 +18,16 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.ui.question.QuestionDetailActivity;
-
-
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.ViewHolder> {
-//    private List<Question> questionList;
-//    private Context context;
-//
-//    public HomeAdapter(List<Question> questionList, Context context) {
-//        this.questionList = questionList;
-//        this.context = context;
-//    }
+public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder> {
+    private final Context context;
 
-    public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options) {
+    public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options, @NonNull Context context) {
         super(options);
+        this.context = context;
     }
 
     @NonNull
@@ -58,15 +47,15 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
         holder.author.setText(model.getAuthorName());
         holder.title.setText(model.getTitle());
-        holder.tv_up.setText(Integer.toString(model.getUpvote()));
-        holder.tv_down.setText(Integer.toString(model.getDownvote()));
-        holder.tv_report.setText(Integer.toString(model.getReport()));
+        holder.upvoteCounter.setText(Integer.toString(model.getUpvote()));
+        holder.downvoteCounter.setText(Integer.toString(model.getDownvote()));
+        holder.reportCounter.setText(Integer.toString(model.getReport()));
         holder.subject.setText(model.getSubject());
         holder.grade.setText(model.getGrade());
         holder.layout.setOnClickListener(view -> {
 //            Intent intent = QuestionDetailActivity.newInstance(holder.layout.getContext(), model);
 //            view.getContext().startActivity(intent);
-            Log.d("model", "pos "+String.valueOf(position)+": " +model.getAuthorId());
+            Log.d("model", "pos " + String.valueOf(position) + ": " + model.getAuthorId());
         });
     }
 
@@ -86,10 +75,15 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
 //        });
 //    }
 
+    private void startQuestionDetailActivity(@NonNull Question question) {
+        Intent intent = QuestionDetailActivity.newInstance(context, question);
+
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView title, content, author, postTime, tv_up, tv_down, tv_report;
+        TextView title, content, author, postTime, upvoteCounter, downvoteCounter, reportCounter;
         ImageButton upvote, downvote, report;
         Chip grade, subject;
         CircleImageView avatar;
@@ -103,9 +97,9 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
             title = (TextView) itemView.findViewById(R.id.tv_question_title);
             author = (TextView) itemView.findViewById(R.id.tv_author);
             postTime = (TextView) itemView.findViewById(R.id.tv_question_post_time);
-            tv_up = (TextView) itemView.findViewById(R.id.tv_up);
-            tv_down = (TextView) itemView. findViewById(R.id.tv_down);
-            tv_report = (TextView) itemView.findViewById(R.id.tv_report);
+            upvoteCounter = (TextView) itemView.findViewById(R.id.tv_up);
+            downvoteCounter = (TextView) itemView.findViewById(R.id.tv_down);
+            reportCounter = (TextView) itemView.findViewById(R.id.tv_report);
 
             upvote = (ImageButton) itemView.findViewById(R.id.ib_up);
             downvote = (ImageButton) itemView.findViewById(R.id.ib_down);
@@ -124,16 +118,13 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
             upvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!upClicked)
-                    {
+                    if (!upClicked) {
                         upvote.setImageResource(R.drawable.ic_baseline_arrow_upward_selected);
                         upClicked = true;
                         downClicked = false;
                         downvote.setImageResource(R.drawable.ic_baseline_arrow_downward);
                         //cập nhật lại số lượng
-                    }
-                    else
-                    {
+                    } else {
                         upvote.setImageResource(R.drawable.ic_baseline_arrow_upward);
                         upClicked = false;
                         //cập nhật số lượng
@@ -143,16 +134,13 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question,HomeAdapter.V
             downvote.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!downClicked)
-                    {
+                    if (!downClicked) {
                         downvote.setImageResource(R.drawable.ic_baseline_arrow_downward_selected);
                         downClicked = true;
                         upClicked = false;
                         upvote.setImageResource(R.drawable.ic_baseline_arrow_upward);
                         //cập nhật lại số lượng
-                    }
-                    else
-                    {
+                    } else {
                         downvote.setImageResource(R.drawable.ic_baseline_arrow_downward);
                         downClicked = false;
                         //cập nhật số lượng

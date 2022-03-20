@@ -44,7 +44,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(itemView);
             title = itemView.findViewById(R.id.tv_question_detail_title);
             content = itemView.findViewById(R.id.tv_question_detail_content);
-            images = itemView.findViewById(R.id.recycler_view_question_detail_images);
+        images = itemView.findViewById(R.id.recycler_view_question_detail_images);
             subject = itemView.findViewById(R.id.chip_question_detail_subject);
             grade = itemView.findViewById(R.id.chip_question_detail_grade);
             author = itemView.findViewById(R.id.author_view_question_detail);

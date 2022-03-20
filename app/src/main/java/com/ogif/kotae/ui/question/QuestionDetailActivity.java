@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
@@ -27,9 +28,10 @@ import java.util.Objects;
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
     private ActivityQuestionDetailBinding binding;
-    private RecyclerView recyclerView;
     private QuestionDetailAdapter adapter;
     private QuestionDetailViewModel questionDetailViewModel;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         adapter = new QuestionDetailAdapter(this);
+        shimmerFrameLayout = binding.shimmerFrameLayoutQuestionDetail;
         recyclerView = binding.recyclerViewQuestionDetail;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
@@ -60,6 +63,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
         binding.btnQuestionAnswer.setOnClickListener(v -> {
             startCreateAnswerActivity();
         });
+
+        shimmerFrameLayout.startShimmer();
     }
 
     private void startCreateAnswerActivity() {

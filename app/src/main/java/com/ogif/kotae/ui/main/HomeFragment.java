@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment  {
         FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
                 .setQuery(query, Question.class)
                 .build();
-        adapter = new HomeAdapter(options);
+        adapter = new HomeAdapter(options, this.getContext());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));

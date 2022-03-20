@@ -73,4 +73,7 @@ dependencies {
     // Search View
     implementation "com.paulrybitskyi.persistentsearchview:persistentsearchview:1.1.4"
     implementation "com.paulrybitskyi.commons:commons-ktx:1.0.4"
+
+    // Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 }
