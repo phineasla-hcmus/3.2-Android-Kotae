@@ -9,19 +9,20 @@ import androidx.lifecycle.ViewModel;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 
 public class QuestionDetailViewModel extends ViewModel {
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
     private final MutableLiveData<Question> questionLiveData;
-    private final MutableLiveData<Answer[]> answerMutableLiveData;
-    private final MutableLiveData<Boolean> failLiveData;
+    private final MutableLiveData<Answer[]> answerLiveData;
 
     public QuestionDetailViewModel() {
         this.questionRepository = new QuestionRepository();
+        this.answerRepository = new AnswerRepository();
         this.questionLiveData = new MutableLiveData<>();
-        this.answerMutableLiveData = new MutableLiveData<>();
-        this.failLiveData = new MutableLiveData<>();
+        this.answerLiveData = new MutableLiveData<>();
     }
 
     public QuestionDetailViewModel(Question question) {
@@ -33,7 +34,7 @@ public class QuestionDetailViewModel extends ViewModel {
     }
 
     public LiveData<Answer[]> getAnswerLiveData() {
-        return answerMutableLiveData;
+        return answerLiveData;
     }
 
     public void getQuestion(String id) {
@@ -45,9 +46,8 @@ public class QuestionDetailViewModel extends ViewModel {
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                // TODO add another LiveData to notify View on fail
+                questionLiveData.postValue(null);
             }
-
         });
     }
 }

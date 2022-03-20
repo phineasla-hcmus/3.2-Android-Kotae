@@ -1,7 +1,6 @@
 package com.ogif.kotae.data;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 /**
  * Provide callbacks between ViewModel and Repository, aims to remove LiveData from Repository.
@@ -11,11 +10,11 @@ public interface TaskListener {
         void onSuccess(TSuccess result);
     }
 
-    interface State<TSuccess> extends Success<TSuccess> {
+    interface State<TComplete> extends Success<TComplete> {
         void onFailure(@NonNull Exception e);
     }
 
-    interface Progress<TSuccess, TProgress> extends State<TSuccess> {
+    interface Progress<TComplete, TProgress> extends State<TComplete> {
         void onProgress(@NonNull TProgress snapshot);
     }
 }

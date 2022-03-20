@@ -4,8 +4,6 @@ package com.ogif.kotae.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.firestore.PropertyName;
-
 public final class Question extends Post {
     public static final Parcelable.Creator<Question> CREATOR = new Parcelable.Creator<Question>() {
         public Question createFromParcel(Parcel in) {
@@ -54,15 +52,10 @@ public final class Question extends Post {
         }
     }
 
-    @PropertyName("title")
     private String title;
-    @PropertyName("subject_id")
     private String subjectId;
-    @PropertyName("subject")
     private String subject;
-    @PropertyName("grade_id")
     private String gradeId;
-    @PropertyName("grade")
     private String grade;
 
     public Question() {
@@ -97,27 +90,22 @@ public final class Question extends Post {
         parcel.writeString(grade);
     }
 
-    @PropertyName("title")
     public String getTitle() {
         return title;
     }
 
-    @PropertyName("subject_id")
     public String getSubjectId() {
         return subjectId;
     }
 
-    @PropertyName("subject")
     public String getSubject() {
         return subject;
     }
 
-    @PropertyName("grade_id")
     public String getGradeId() {
         return gradeId;
     }
 
-    @PropertyName("grade")
     public String getGrade() {
         return grade;
     }

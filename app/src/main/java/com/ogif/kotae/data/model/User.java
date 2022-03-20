@@ -1,17 +1,23 @@
 package com.ogif.kotae.data.model;
 
+import com.google.firebase.firestore.DocumentId;
 import com.ogif.kotae.Global;
 
 public class User {
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
 
+    @DocumentId
+    private String id;
     private String username;
     private String job;
     private int yob;
     private String role;
     private String avatar;
     private int reputation;
+
+    public User() {
+    }
 
     /**
      * Create user with default role as "user" and avatar
@@ -23,6 +29,10 @@ public class User {
         this.role = "user";
         this.avatar = Global.DEFAULT_USER_AVATAR;
         this.reputation = 0;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getUsername() {

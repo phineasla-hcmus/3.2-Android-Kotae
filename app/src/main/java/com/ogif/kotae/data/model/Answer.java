@@ -58,7 +58,6 @@ public final class Answer extends Post {
         parcel.writeString(questionId);
     }
 
-    @PropertyName("question_id")
     public String getQuestionId() {
         return questionId;
     }
