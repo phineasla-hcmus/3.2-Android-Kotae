@@ -63,7 +63,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         toolbar = (Toolbar) binding.tbCreateQuestion;
         this.setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Create question");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Create question");
 
         EditText[] ets = {binding.etCreateQuestionTitle,
                           binding.etContent,

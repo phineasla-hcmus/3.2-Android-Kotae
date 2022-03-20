@@ -79,7 +79,7 @@
     <string name="question_all">All</string>
     <string name="question_answered">Answered</string>
     <string name="question_detail_comment">Comment</string>
-    <string name="question_detail_report">Report question</string>
+    <string name="all_report">Report question</string>
     <string name="question_sort">Sort</string>
     <string name="question_sort_most_view">Most view</string>
     <string name="question_sort_top_month">Top month</string>

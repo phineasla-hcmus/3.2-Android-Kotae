@@ -24,8 +24,8 @@ public class AnswerRepository {
 
     public AnswerRepository() {
         this.db = FirebaseFirestore.getInstance();
-        this.mutableLiveData = new MutableLiveData<>();
         this.answersRef = db.collection("answers");
+        this.mutableLiveData = new MutableLiveData<>();
     }
 
     public Task<DocumentSnapshot> get(@NonNull String id) {

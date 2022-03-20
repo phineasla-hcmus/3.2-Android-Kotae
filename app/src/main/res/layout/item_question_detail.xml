@@ -29,13 +29,12 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_question_detail_title"
-        tools:layout_height="100dp"
         tools:text="@tools:sample/lorem/random" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_question_detail_images"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_between_y_md"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

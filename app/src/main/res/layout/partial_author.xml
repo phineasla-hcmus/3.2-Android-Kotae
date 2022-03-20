@@ -9,7 +9,7 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/tv_avatar"
+        android:id="@+id/tv_author_avatar"
         android:layout_width="@dimen/avatar_size_sm"
         android:layout_height="@dimen/avatar_size_sm"
         android:scaleType="centerCrop"
@@ -19,28 +19,26 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/tv_username"
+        android:id="@+id/tv_author_username"
         android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_avatar"
+        app:layout_constraintStart_toEndOf="@id/tv_author_avatar"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/full_names" />
 
-    <!--<TextView-->
-    <!--    android:id="@+id/tv_reputation"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_marginStart="8dp"-->
-    <!--    android:layout_marginTop="2dp"-->
-    <!--    android:textColor="?android:attr/textColorSecondary"-->
-    <!--    android:textSize="@dimen/text_size_small"-->
-    <!--    android:textStyle="bold"-->
-    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--    app:layout_constraintStart_toEndOf="@id/tv_avatar"-->
-    <!--    app:layout_constraintTop_toBottomOf="@id/tv_username"-->
-    <!--    tools:text="123" />-->
+    <TextView
+        android:id="@+id/tv_reputation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_y"
+        android:layout_marginTop="2dp"
+        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_author_avatar"
+        app:layout_constraintTop_toBottomOf="@id/tv_author_username"
+        tools:text="123" />
 </merge>
