@@ -45,6 +45,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
+
         holder.author.setText(model.getAuthorName());
         holder.title.setText(model.getTitle());
         holder.upvoteCounter.setText(Integer.toString(model.getUpvote()));

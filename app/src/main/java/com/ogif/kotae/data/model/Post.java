@@ -119,12 +119,12 @@ public abstract class Post implements Parcelable {
         return content;
     }
 
-    @PropertyName("author_id")
+    @PropertyName("authorId")
     public String getAuthorId() {
         return authorId;
     }
 
-    @PropertyName("author")
+    @PropertyName("authorName")
     public String getAuthorName() {
         return authorName;
     }
