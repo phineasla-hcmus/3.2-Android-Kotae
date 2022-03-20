@@ -53,9 +53,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         holder.subject.setText(model.getSubject());
         holder.grade.setText(model.getGrade());
         holder.layout.setOnClickListener(view -> {
-//            Intent intent = QuestionDetailActivity.newInstance(holder.layout.getContext(), model);
-//            view.getContext().startActivity(intent);
-            Log.d("model", "pos " + String.valueOf(position) + ": " + model.getAuthorId());
+            Intent intent = QuestionDetailActivity.newInstance(context, model);
+            context.startActivity(intent);
         });
     }
 
