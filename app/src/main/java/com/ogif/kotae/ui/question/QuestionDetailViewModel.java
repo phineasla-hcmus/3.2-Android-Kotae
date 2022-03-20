@@ -7,25 +7,33 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 
 public class QuestionDetailViewModel extends ViewModel {
     private final QuestionRepository questionRepository;
     private final MutableLiveData<Question> questionLiveData;
+    private final MutableLiveData<Answer[]> answerMutableLiveData;
+    private final MutableLiveData<Boolean> failLiveData;
 
     public QuestionDetailViewModel() {
         this.questionRepository = new QuestionRepository();
         this.questionLiveData = new MutableLiveData<>();
+        this.answerMutableLiveData = new MutableLiveData<>();
+        this.failLiveData = new MutableLiveData<>();
     }
 
     public QuestionDetailViewModel(Question question) {
-        this.questionRepository = new QuestionRepository();
-        this.questionLiveData = new MutableLiveData<>(question);
+        this();
     }
 
     public LiveData<Question> getQuestionLiveData() {
         return questionLiveData;
+    }
+
+    public LiveData<Answer[]> getAnswerLiveData() {
+        return answerMutableLiveData;
     }
 
     public void getQuestion(String id) {

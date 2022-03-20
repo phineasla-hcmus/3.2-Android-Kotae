@@ -54,10 +54,15 @@ public final class Question extends Post {
         }
     }
 
+    @PropertyName("title")
     private String title;
+    @PropertyName("subject_id")
     private String subjectId;
+    @PropertyName("subject")
     private String subject;
+    @PropertyName("grade_id")
     private String gradeId;
+    @PropertyName("grade")
     private String grade;
 
     public Question() {
@@ -97,7 +102,7 @@ public final class Question extends Post {
         return title;
     }
 
-    @PropertyName("subjectId")
+    @PropertyName("subject_id")
     public String getSubjectId() {
         return subjectId;
     }
@@ -107,7 +112,7 @@ public final class Question extends Post {
         return subject;
     }
 
-    @PropertyName("gradeId")
+    @PropertyName("grade_id")
     public String getGradeId() {
         return gradeId;
     }

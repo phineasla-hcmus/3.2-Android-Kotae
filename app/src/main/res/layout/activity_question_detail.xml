@@ -53,40 +53,16 @@
         android:layout_marginHorizontal="@dimen/margin_x"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer_frame_layout_question_detail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include
-                layout="@layout/item_question_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <include
-                layout="@layout/item_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <include
-                layout="@layout/item_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <include
-                layout="@layout/item_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <include
-                layout="@layout/item_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_question_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!--<com.google.android.material.progressindicator.CircularProgressIndicator-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:indeterminate="true"-->
+    <!--    app:layout_anchor="@+id/swipe_refresh_layout"-->
+    <!--    app:layout_anchorGravity="center" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

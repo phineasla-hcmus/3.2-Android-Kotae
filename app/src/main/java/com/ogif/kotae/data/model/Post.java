@@ -56,13 +56,21 @@ public abstract class Post implements Parcelable {
 
     @DocumentId
     private String id;
+    @PropertyName("author_id")
     private String authorId;
+    @PropertyName("author")
     private String authorName;
+    @PropertyName("content")
     private String content;
+    @PropertyName("post_time")
     private Date postTime;
+    @PropertyName("upvote")
     private int upvote;
+    @PropertyName("downvote")
     private int downvote;
+    @PropertyName("report")
     private int report;
+    @PropertyName("blocked")
     private boolean blocked;
 
     // TODO add images
@@ -114,19 +122,19 @@ public abstract class Post implements Parcelable {
         return id;
     }
 
-    @PropertyName("content")
-    public String getContent() {
-        return content;
-    }
-
-    @PropertyName("authorId")
+    @PropertyName("author_id")
     public String getAuthorId() {
         return authorId;
     }
 
-    @PropertyName("authorName")
+    @PropertyName("author")
     public String getAuthorName() {
         return authorName;
+    }
+
+    @PropertyName("content")
+    public String getContent() {
+        return content;
     }
 
     @PropertyName("post_time")

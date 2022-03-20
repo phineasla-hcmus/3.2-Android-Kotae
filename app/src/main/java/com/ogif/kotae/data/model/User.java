@@ -11,6 +11,7 @@ public class User {
     private int yob;
     private String role;
     private String avatar;
+    private int reputation;
 
     /**
      * Create user with default role as "user" and avatar
@@ -21,6 +22,7 @@ public class User {
         this.yob = yob;
         this.role = "user";
         this.avatar = Global.DEFAULT_USER_AVATAR;
+        this.reputation = 0;
     }
 
     public String getUsername() {
