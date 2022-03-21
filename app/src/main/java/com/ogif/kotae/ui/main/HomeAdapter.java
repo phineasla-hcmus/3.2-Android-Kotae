@@ -40,13 +40,13 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
-        Log.d("question: ", model.getAuthorName() + " " + model.getAuthorId());
+        Log.d("question: ", model.getAuthor() + " " + model.getAuthorId());
         holder.content.setText(model.getContent());
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
 
-        holder.author.setText(model.getAuthorName());
+        holder.author.setText(model.getAuthor());
         holder.title.setText(model.getTitle());
         holder.upvoteCounter.setText(Integer.toString(model.getUpvote()));
         holder.downvoteCounter.setText(Integer.toString(model.getDownvote()));

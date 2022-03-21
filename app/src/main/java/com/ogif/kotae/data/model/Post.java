@@ -74,7 +74,7 @@ public abstract class Post implements Parcelable {
     @DocumentId
     protected String id;
     protected String authorId;
-    protected String authorName;
+    protected String author;
     protected String content;
     protected Date postTime;
     protected int upvote;
@@ -89,7 +89,7 @@ public abstract class Post implements Parcelable {
         // Has to be exact order from writeToParcel
         id = parcel.readString();
         authorId = parcel.readString();
-        authorName = parcel.readString();
+        author = parcel.readString();
         content = parcel.readString();
         postTime = new Date(parcel.readLong());
         upvote = parcel.readInt();
@@ -100,7 +100,7 @@ public abstract class Post implements Parcelable {
 
     public Post(@NonNull Builder<?> builder) {
         this.authorId = builder.authorId;
-        this.authorName = builder.authorName;
+        this.author = builder.authorName;
         this.content = builder.content;
         this.blocked = builder.block;
         this.postTime = new Date();
@@ -116,7 +116,7 @@ public abstract class Post implements Parcelable {
         // Has to be exact order from Post(Parcel parcel)
         parcel.writeString(id);
         parcel.writeString(authorId);
-        parcel.writeString(authorName);
+        parcel.writeString(author);
         parcel.writeString(content);
         parcel.writeLong(postTime.getTime());
         parcel.writeInt(upvote);
@@ -137,7 +137,7 @@ public abstract class Post implements Parcelable {
         }
         post.id = document.getId();
         post.authorId = document.getString(Field.authorId);
-        post.authorName = document.getString(Field.authorName);
+        post.author = document.getString(Field.authorName);
         post.content = document.getString(Field.content);
         post.postTime = document.getDate(Field.postTime);
         Integer checkNull = document.get(Field.upvote, int.class);
@@ -163,8 +163,8 @@ public abstract class Post implements Parcelable {
         return authorId;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getAuthor() {
+        return author;
     }
 
     public String getContent() {

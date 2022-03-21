@@ -53,7 +53,7 @@
         tools:text="Asked 2 years ago" />
 
     <com.ogif.kotae.ui.question.PostActionGroupView
-        android:id="@+id/post_action_group_answer"
+        android:id="@+id/action_group_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

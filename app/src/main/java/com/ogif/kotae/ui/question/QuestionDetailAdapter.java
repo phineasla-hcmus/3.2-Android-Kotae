@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,9 @@ import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // https://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-types
 
 class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -24,12 +28,12 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private final Context context;
     private Question question;
-    private Answer[] answers;
+    private List<Answer> answers;
 
     public QuestionDetailAdapter(Context context) {
         this.context = context;
         this.question = null;
-        this.answers = new Answer[0];
+        this.answers = new ArrayList<>();
     }
 
     private abstract static class PostHolder extends RecyclerView.ViewHolder {
@@ -38,12 +42,12 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         protected final AuthorView author;
         protected final PostActionGroupView actions;
 
-        public PostHolder(@NonNull View itemView) {
+        public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int actions) {
             super(itemView);
-            content = itemView.findViewById(R.id.tv_question_detail_content);
-            images = itemView.findViewById(R.id.recycler_view_question_detail_images);
-            author = itemView.findViewById(R.id.author_view_question_detail);
-            actions = itemView.findViewById(R.id.post_action_group_question_detail);
+            this.content = itemView.findViewById(content);
+            this.images = itemView.findViewById(images);
+            this.author = itemView.findViewById(author);
+            this.actions = itemView.findViewById(actions);
         }
     }
 
@@ -53,7 +57,11 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private final Chip grade;
 
         public QuestionDetailHolder(@NonNull View itemView) {
-            super(itemView);
+            super(itemView,
+                    R.id.tv_question_detail_content,
+                    R.id.recycler_view_question_detail_images,
+                    R.id.author_view_question_detail,
+                    R.id.action_group_question_detail);
             title = itemView.findViewById(R.id.tv_question_detail_title);
             subject = itemView.findViewById(R.id.chip_question_detail_subject);
             grade = itemView.findViewById(R.id.chip_question_detail_grade);
@@ -62,7 +70,11 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private static class AnswerHolder extends PostHolder {
         public AnswerHolder(@NonNull View itemView) {
-            super(itemView);
+            super(itemView,
+                    R.id.tv_answer_content,
+                    R.id.recycler_view_answer_images,
+                    R.id.author_view_answer,
+                    R.id.action_group_answer);
         }
     }
 
@@ -93,7 +105,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
             case ITEM_TYPE_ANSWER: {
                 // Because question always at position 0
-                Answer answer = answers[position - 1];
+                Answer answer = answers.get(position - 1);
                 bindCommonView(viewHolder, answer);
                 bindAnswer((AnswerHolder) viewHolder, answer);
                 break;
@@ -104,7 +116,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemCount() {
         // Answer + question
-        return answers.length + 1;
+        return answers.size() + 1;
     }
 
     @Override
@@ -113,9 +125,29 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return position == 0 ? ITEM_TYPE_QUESTION : ITEM_TYPE_ANSWER;
     }
 
-    public void updateQuestion(Question question) {
+    public void updateQuestion(@NonNull Question question) {
         this.question = question;
         notifyItemChanged(0);
+    }
+
+    public void updateAnswers(@NonNull List<Answer> answers) {
+        this.answers.addAll(answers);
+        // notifyItemRangeInserted(1, answers.size());
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Bind common Question and Answer views.
+     */
+    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, Post post) {
+        PostHolder holder = (PostHolder) viewHolder;
+        RecyclerView.LayoutManager imagesLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        holder.content.setText(post.getContent());
+        holder.images.setLayoutManager(imagesLayoutManager);
+        holder.author.setAuthorName(post.getAuthor());
+        // TODO aw s, now we need to either fetch the User or store reputation in Post :facepalm:
+        // holder.author.setReputation(post);
+        // TODO bind author avatar
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder) {
@@ -126,19 +158,5 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void bindAnswer(@NonNull AnswerHolder holder, Answer answer) {
 
-    }
-
-    /**
-     * Bind common Question and Answer views.
-     */
-    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, Post post) {
-        PostHolder holder = (PostHolder) viewHolder;
-        RecyclerView.LayoutManager imagesLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        holder.content.setText(question.getContent());
-        holder.images.setLayoutManager(imagesLayoutManager);
-        holder.author.setAuthorName(post.getAuthorName());
-        // TODO aw s, now we need to either fetch the User or store reputation in Post :facepalm:
-        // holder.author.setReputation(post);
-        // TODO bind author avatar
     }
 }

@@ -62,7 +62,7 @@ public final class SearchItem extends BaseItem {
 
     private final void bindFullName(SearchItem.ViewHolder $this$bindFullName, Question Question) {
         TextView var10000 = $this$bindFullName.getFullNameTv();
-        var10000.setText((CharSequence) Question.getAuthorName());
+        var10000.setText((CharSequence) Question.getAuthor());
     }
 
     public final void setOnItemClickListener(@NonNull SearchItem.ViewHolder viewHolder, @Nullable OnItemClickListener onItemClickListener) {

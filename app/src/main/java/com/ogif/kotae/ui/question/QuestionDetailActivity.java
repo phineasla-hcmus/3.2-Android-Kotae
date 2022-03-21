@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,9 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.ui.main.CreateAnswerActivity;
+
+import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
@@ -46,12 +50,20 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
-        QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(getIntent().getExtras()
-                .getParcelable(BUNDLE_QUESTION));
+
+        Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
+
+        QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(questionFromExtra);
         questionDetailViewModel = new ViewModelProvider(this, factory)
                 .get(QuestionDetailViewModel.class);
+
+        questionDetailViewModel.getAnswers();
+
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
             adapter.updateQuestion(question);
+        });
+        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
+            adapter.updateAnswers(answers);
         });
 
         binding.btnQuestionAnswer.setOnClickListener(v -> {
