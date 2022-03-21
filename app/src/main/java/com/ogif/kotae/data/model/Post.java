@@ -3,8 +3,11 @@ package com.ogif.kotae.data.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.google.firebase.firestore.DocumentId;
-import com.google.firebase.firestore.PropertyName;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import org.jetbrains.annotations.TestOnly;
 
@@ -54,23 +57,35 @@ public abstract class Post implements Parcelable {
         }
     }
 
-    @DocumentId
-    private String id;
-    private String authorId;
-    private String authorName;
-    private String content;
-    private Date postTime;
-    private int upvote;
-    private int downvote;
-    private int report;
-    private boolean blocked;
+    /**
+     * Firestore
+     */
+    public static class Field {
+        public static final String authorId = "authorId";
+        public static final String authorName = "authorName";
+        public static final String content = "content";
+        public static final String postTime = "postTime";
+        public static final String upvote = "upvote";
+        public static final String downvote = "downvote";
+        public static final String report = "report";
+        public static final String blocked = "blocked";
+    }
 
-    // TODO add images
+    @DocumentId
+    protected String id;
+    protected String authorId;
+    protected String authorName;
+    protected String content;
+    protected Date postTime;
+    protected int upvote;
+    protected int downvote;
+    protected int report;
+    protected boolean blocked;
 
     public Post() {
     }
 
-    public Post(Parcel parcel) {
+    public Post(@NonNull Parcel parcel) {
         // Has to be exact order from writeToParcel
         id = parcel.readString();
         authorId = parcel.readString();
@@ -83,7 +98,7 @@ public abstract class Post implements Parcelable {
         blocked = parcel.readInt() == 1;
     }
 
-    public Post(Builder<?> builder) {
+    public Post(@NonNull Builder<?> builder) {
         this.authorId = builder.authorId;
         this.authorName = builder.authorName;
         this.content = builder.content;
@@ -108,6 +123,36 @@ public abstract class Post implements Parcelable {
         parcel.writeInt(downvote);
         parcel.writeInt(report);
         parcel.writeInt(blocked ? 1 : 0);
+    }
+
+    @Nullable
+    protected static <T extends Post> T fromDocument(@NonNull DocumentSnapshot document, @NonNull Class<T> clazz) {
+        T post;
+        if (!document.exists())
+            return null;
+        try {
+            post = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
+        post.id = document.getId();
+        post.authorId = document.getString(Field.authorId);
+        post.authorName = document.getString(Field.authorName);
+        post.content = document.getString(Field.content);
+        post.postTime = document.getDate(Field.postTime);
+        Integer checkNull = document.get(Field.upvote, int.class);
+        if (checkNull != null)
+            post.upvote = checkNull;
+        checkNull = document.get(Field.downvote, int.class);
+        if (checkNull != null)
+            post.downvote = checkNull;
+        checkNull = document.get(Field.report, int.class);
+        if (checkNull != null)
+            post.report = checkNull;
+        Boolean blocked = document.getBoolean(Field.blocked);
+        if (blocked != null)
+            post.blocked = blocked;
+        return post;
     }
 
     public String getId() {

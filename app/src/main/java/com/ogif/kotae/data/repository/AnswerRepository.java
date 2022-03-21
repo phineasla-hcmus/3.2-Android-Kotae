@@ -33,8 +33,18 @@ public class AnswerRepository {
         this.mutableLiveData = new MutableLiveData<>();
     }
 
-    public Task<DocumentSnapshot> get(@NonNull String id) {
+    private Task<DocumentSnapshot> get(@NonNull String id) {
         return answersRef.document(id).get();
+    }
+
+    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Answer>> callback) {
+        query.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Answer> answers = new ArrayList<>(queryDocumentSnapshots.size());
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                answers.add(document.toObject(Answer.class));
+            }
+            callback.onSuccess(answers);
+        }).addOnFailureListener(callback::onFailure);
     }
 
     public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {
@@ -43,16 +53,19 @@ public class AnswerRepository {
         }).addOnFailureListener(callback::onFailure);
     }
 
-    public void getList(@NonNull String questionId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
-        answersRef.whereEqualTo("questionId", questionId)
+    public void getListFromQuestion(@NonNull String questionId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
+        Task<QuerySnapshot> query = answersRef.whereEqualTo("questionId", questionId)
                 .limit(limit)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Answer> answers = new ArrayList<>(queryDocumentSnapshots.size());
-                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        // TODO do something
-                    }
-                });
+                .get();
+        onQueryListComplete(query, callback);
+    }
+
+    public void getListFromQuestion(@NonNull String questionId, @NonNull String afterId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
+        Task<QuerySnapshot> query = answersRef.whereEqualTo("questionId", questionId)
+                .startAt(afterId)
+                .limit(limit)
+                .get();
+        onQueryListComplete(query, callback);
     }
 
     public void createAnswer(@NonNull String content) {
