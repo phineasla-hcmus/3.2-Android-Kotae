@@ -355,6 +355,34 @@
                     android:layout_weight="1"
                     android:text="@string/category_subject_geography" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chk_informatics"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/category_subject_informatics" />
+
+                <CheckBox
+                    android:id="@+id/chk_technology"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/category_subject_technology" />
+
+                <CheckBox
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text=""
+                    android:visibility="invisible" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -362,7 +390,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_between_y_lg"
+            android:layout_marginBottom="@dimen/margin_between_y_lg"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/LinearLayoutCourse">

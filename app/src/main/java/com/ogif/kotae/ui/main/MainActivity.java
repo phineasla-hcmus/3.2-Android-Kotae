@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Toolbar toolbar;
     private UserViewModel viewModel;
+    final int REQUEST_CODE_FILTER = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startSearchActivity();
+            }
+        });
+
+        binding.includedToolBar.btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startFilterActivity();
             }
         });
 
@@ -91,6 +100,19 @@ public class MainActivity extends AppCompatActivity {
     private void startSearchActivity() {
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         startActivity(intent);
+    }
+
+    private void startFilterActivity(){
+        Intent intent = new Intent(getApplicationContext(), FilterQuestionActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_FILTER);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null){
+            // Get questions after filter & render
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void loadFragment(Fragment fragment) {

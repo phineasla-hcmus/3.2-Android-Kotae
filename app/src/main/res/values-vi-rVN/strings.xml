@@ -41,6 +41,8 @@
     <string name="category_subject_literature">Văn</string>
     <string name="category_subject_math">Toán</string>
     <string name="category_subject_physic">Lý</string>
+    <string name="category_subject_technology">Công nghệ</string>
+    <string name="category_subject_informatics">Tin học</string>
     <string name="content_action_noti">Thông báo</string>
     <string name="content_action_search">Tìm kiếm</string>
     <string name="create_answer_content_description">Nhấp vào đây để trả lời câu hỏi</string>
