@@ -203,23 +203,25 @@ public class FilterQuestionActivity extends AppCompatActivity {
     private void filterQuestionsAndSetResult(String sort, String status, List<String> lstGrades, List<String> lstCourses, ArrayList<Question> questions, ArrayList<Answer> answers) {
         questions = sortQuestionByUpvote(questions, sort);
         questions = filterQuestionByStatus(questions, answers, status);
+        questions = filterQuestionByGrade(questions, lstGrades);
+        questions = filterQuestionBySubject(questions, lstCourses);
+
+        printQuestions(questions);
 
         // Set Result
 //        Intent intent = new Intent();
-//        intent.putExtra("SORT", sort);
-//        intent.putExtra("FILTER_STATUS", status);
-//        intent.putStringArrayListExtra("FILTER_GRADES", (ArrayList<String>) lstGrades);
-//        intent.putStringArrayListExtra("FILTER_COURSES", (ArrayList<String>) lstCourses);
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList("filteredQuestions", questions);
+//        intent.putExtras(bundle);
 //        setResult(RESULT_OK, intent);
-//
 //        finish();
     }
 
     private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
         ArrayList<Question> newQuestions = new ArrayList<Question>();
 
-        // ELSE => Get all (Do nothing)
         if (sort.equals("MOST_VIEW")) {
+            // Get all
             // Default : Order by vote desc
             return questions;
         } else if (sort.equals("TOP_WEEK")) {
@@ -245,9 +247,9 @@ public class FilterQuestionActivity extends AppCompatActivity {
 
             return newQuestions;
         }
+        // ELSE => Get all (Do nothing)
         return questions;
     }
-
 
     private ArrayList<Question> filterAnsweredQuestions(ArrayList<Question> questions, ArrayList<Answer> answers) {
         // No Duplicate
@@ -262,7 +264,6 @@ public class FilterQuestionActivity extends AppCompatActivity {
         }
         return new ArrayList<Question>(setAnsweredQuestions);
     }
-
 
     // For Testing
     private void printQuestions(ArrayList<Question> questions) {
@@ -287,9 +288,7 @@ public class FilterQuestionActivity extends AppCompatActivity {
             // printQuestions(questions);
             return questions;
         }
-
         // ELSE => ALL => Get all (Do Nothing)
-
         // TEST
         // printQuestions(questions);
         return questions;
@@ -301,7 +300,16 @@ public class FilterQuestionActivity extends AppCompatActivity {
             return questions;
         }
 
-        return null;
+        // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple grade?)
+        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
+        for(String gradeId :lstGrades){
+            for(Question question : questions){
+                if(question.getGradeId().equals(gradeId)){
+                    tempQuestions.add(question);
+                }
+            }
+        }
+        return new ArrayList<Question>(tempQuestions);
     }
 
     private ArrayList<Question> filterQuestionBySubject(ArrayList<Question> questions, List<String> lstCourses) {
@@ -310,7 +318,15 @@ public class FilterQuestionActivity extends AppCompatActivity {
             return questions;
         }
 
-
-        return null;
+        // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple subject?)
+        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
+        for(String courseId :lstCourses){
+            for(Question question : questions){
+                if(question.getSubjectId().equals(courseId)){
+                    tempQuestions.add(question);
+                }
+            }
+        }
+        return new ArrayList<Question>(tempQuestions);
     }
 }
