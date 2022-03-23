@@ -1,22 +1,39 @@
 package com.ogif.kotae.ui.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class FilterQuestionActivity extends AppCompatActivity {
-    TextView tvCancel, tvSubmit;
+    private TextView tvCancel, tvSubmit;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +53,6 @@ public class FilterQuestionActivity extends AppCompatActivity {
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String sort = getSort();
                 String status = getStatus();
 
@@ -46,14 +62,16 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 // If list is empty => No filter => Get all
                 List<String> lstCourses = getCourses();
 
-                Intent intent = new Intent();
-                intent.putExtra("SORT", sort);
-                intent.putExtra("FILTER_STATUS", status);
-                intent.putStringArrayListExtra("FILTER_GRADES", (ArrayList<String>) lstGrades);
-                intent.putStringArrayListExtra("FILTER_COURSES", (ArrayList<String>) lstCourses);
-                setResult(RESULT_OK, intent);
+                filterQuestions(sort, status, lstGrades, lstCourses);
 
-                finish();
+//                Intent intent = new Intent();
+//                intent.putExtra("SORT", sort);
+//                intent.putExtra("FILTER_STATUS", status);
+//                intent.putStringArrayListExtra("FILTER_GRADES", (ArrayList<String>) lstGrades);
+//                intent.putStringArrayListExtra("FILTER_COURSES", (ArrayList<String>) lstCourses);
+//                setResult(RESULT_OK, intent);
+//
+//                finish();
             }
         });
     }
@@ -142,7 +160,133 @@ public class FilterQuestionActivity extends AppCompatActivity {
         return lstCourses;
     }
 
-    private ArrayList<Question> filterQuestions(String sort, String status, List<String> lstGrades, List<String> lstCourses) {
+    private Timestamp getFirstDayOfWeek(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return new Timestamp(calendar.getTime());
+    }
+
+    private Timestamp getFirstDayOfMonth(Date date) {
+        return new Timestamp(new Date(date.getYear(), date.getMonth(), 1));
+    }
+
+    private void filterQuestions(String sort, String status, List<String> lstGrades, List<String> lstCourses) {
+        ArrayList<Question> filteredQuestions = new ArrayList<Question>();
+        db = FirebaseFirestore.getInstance();
+        Query query = db.collection("questions").whereEqualTo("blocked", false)
+                .orderBy("upvote", Query.Direction.DESCENDING);
+        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Question question = documentSnapshot.toObject(Question.class);
+                    filteredQuestions.add(question);
+                }
+
+                for (Question question : filteredQuestions) {
+                    Log.d("AAA", question.getTitle());
+                }
+
+                // To Do
+                // .....
+                sortQuestionByUpvote(filteredQuestions, sort);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("AAA", e.toString());
+                Toast.makeText(FilterQuestionActivity.this, "Query Failed...", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+//        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+//                        Question question = documentSnapshot.toObject(Question.class);
+//                        filteredQuestions.add(question);
+//                    }
+//                } else {
+//                    Log.d("AAA", "onComplete: FALSE GET DATA FIREBASE");
+//                    Toast.makeText(FilterQuestionActivity.this, "Query Failed...", Toast.LENGTH_SHORT).show();
+//                    finish();
+//                }
+//
+//                // To do
+//                // Test get questions
+//                for (Question question : filteredQuestions) {
+//                    Log.d("AAA", question.getTitle());
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.d("AAA", "onComplete: FALSE GET DATA FIREBASE");
+//                Log.d("AAA", e.toString());
+//            }
+//        });
+    }
+
+    private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
+        ArrayList<Question> newQuestions = new ArrayList<Question>();
+
+        // ELSE => Get all (Do nothing)
+        if (sort.equals("MOST_VIEW")) {
+            // Default : Order by vote desc
+            return questions;
+        } else if (sort.equals("TOP_WEEK")) {
+            Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
+
+            for (Question question : questions) {
+                if (question.getPostTime().compareTo(firstDayOfWeek.toDate()) != -1) {
+                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
+                    newQuestions.add(question);
+                }
+            }
+
+            return newQuestions;
+        } else if (sort.equals("TOP_MONTH")) {
+            Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
+
+            for (Question question : questions) {
+                if (question.getPostTime().compareTo(firstDayOfMonth.toDate()) != -1) {
+                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
+                    newQuestions.add(question);
+                }
+            }
+
+            return newQuestions;
+        }
+        return questions;
+    }
+
+    private ArrayList<Question> filterQuestionByStatus(ArrayList<Question> questions, String status) {
+        // ELSE => Get all (Do nothing)
+        if (status.equals("ANSWERED")) {
+
+        } else if (status.equals("UNANSWERED")) {
+
+        }
+        return questions;
+    }
+
+    private ArrayList<Question> filterQuestionByGrade(ArrayList<Question> questions, List<String> lstGrades) {
+        // size == 0 => Get all (Do nothing)
+        if (lstGrades.size() != 0) {
+            return questions;
+        }
+
+        return null;
+    }
+
+    private ArrayList<Question> filterQuestionBySubject(ArrayList<Question> questions, List<String> lstCourses) {
+        // size == 0 => Get all (Do nothing)
+        if (lstCourses.size() == 0) {
+            return questions;
+        }
 
 
         return null;
