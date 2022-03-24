@@ -87,4 +87,5 @@
     <string name="question_unanswered">Chưa trã lời</string>
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
     <string name="sign_up_to_login">Đăng nhập</string>
+    <string name="user">Người dùng</string>
 </resources>

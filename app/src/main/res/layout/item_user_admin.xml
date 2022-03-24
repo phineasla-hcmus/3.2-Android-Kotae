@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginLeft="10dp"
     android:layout_marginTop="4dp"
     android:layout_marginRight="10dp"
@@ -11,123 +11,62 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/tv_user_name_admin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_weight="1"
-        android:fontFamily="@font/open_sans"
-        android:gravity="center_vertical"
-        android:text="@tools:sample/lorem[0]"
-        android:textSize="@dimen/text_size_large" />
-
-    <TableLayout
+        android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0">
+        android:layout_marginStart="@dimen/margin_between_x_md"
+        android:layout_weight="1"
+        android:fontFamily="@font/open_sans"
+        android:text="@tools:sample/lorem[0]"
+        android:textSize="@dimen/text_size_large"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_report"
+        app:layout_constraintStart_toEndOf="@+id/iv_avatar" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/iv_block"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/margin_y"
+        android:layout_marginEnd="@dimen/margin_between_x_md"
+        app:layout_constraintEnd_toStartOf="@+id/iv_report"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_block"
+        app:tint="@color/md_theme_light_error"
+        tools:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/iv_block"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                app:srcCompat="@drawable/ic_baseline_block"
-                app:tint="@color/md_theme_light_error"
-                tools:visibility="visible" />
+    <ImageView
+        android:id="@+id/iv_report"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="@dimen/margin_y"
+        android:layout_marginEnd="@dimen/margin_x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_outline_report" />
 
-            <ImageView
-                android:id="@+id/imageView5"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/ic_baseline_comment" />
+    <TextView
+        android:id="@+id/tv_user_report"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_y_sm"
+        android:fontFamily="@font/open_sans"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/md_theme_dark_background"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_report"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/iv_report"
+        app:layout_constraintTop_toBottomOf="@+id/iv_report" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/ic_baseline_arrow_upward" />
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="@dimen/margin_x"
+        android:layout_marginTop="@dimen/margin_y"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_account_circle" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/ic_baseline_arrow_downward" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="8dp"
-                app:srcCompat="@drawable/ic_outline_report" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/tv_user_total_days_blocked_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/md_theme_light_error"
-                android:textSize="@dimen/text_size_medium"
-                android:visibility="invisible" />
-
-            <TextView
-                android:id="@+id/tv_user_answer_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text="10"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_user_upvote_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text="10"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_user_downvote_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text="20"
-                android:textColor="@android:color/black"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_user_report_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text="30"
-                android:textColor="@color/md_theme_light_error"
-                android:textSize="16sp" />
-        </TableRow>
-
-    </TableLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

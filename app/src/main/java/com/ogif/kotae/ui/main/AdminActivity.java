@@ -1,89 +1,45 @@
 package com.ogif.kotae.ui.main;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TabHost;
-
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.ogif.kotae.R;
-import com.ogif.kotae.data.model.ManagedUser;
-import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.utils.ManagedQuestionAdapter;
-import com.ogif.kotae.utils.ManagedUserAdapter;
+import com.ogif.kotae.utils.ViewPager2AdminAdapter;
+
 
 public class AdminActivity extends AppCompatActivity {
-    TabHost tabHost;
-    ListView lvUser, lvQuestion;
-    ManagedUserAdapter managedUserAdapter;
-    ManagedQuestionAdapter managedQuestionAdapter;
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager2;
+    private ViewPager2AdminAdapter viewPager2AdminAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
 
-        addControls();
-        fakeData();
-    }
+        tabLayout = (TabLayout) findViewById(R.id.tabbar_admin);
+        viewPager2 = (ViewPager2) findViewById(R.id.vpg2_admin);
+        viewPager2AdminAdapter = new ViewPager2AdminAdapter(this);
+        viewPager2.setAdapter(viewPager2AdminAdapter);
 
-    private void addControls() {
-        tabHost = (TabHost) findViewById(R.id.tabhost);
-        tabHost.setup();
-
-        TabHost.TabSpec tabQuestion = tabHost.newTabSpec("question");
-        TabHost.TabSpec tabUser = tabHost.newTabSpec("user");
-
-        tabQuestion.setContent(R.id.tab_question);
-        tabUser.setContent(R.id.tab_user);
-
-        tabQuestion.setIndicator("Question");
-        tabUser.setIndicator("User");
-
-        tabHost.addTab(tabQuestion);
-        tabHost.addTab(tabUser);
-
-        lvUser = (ListView) findViewById(R.id.lv_user_admin);
-        managedUserAdapter = new ManagedUserAdapter(AdminActivity.this, R.layout.item_user_admin);
-        lvUser.setAdapter(managedUserAdapter);
-
-        lvUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        new TabLayoutMediator(tabLayout, viewPager2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ManagedUser managedUser = managedUserAdapter.getItem(i);
-                System.out.println(managedUser.getUserName());
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                switch (position) {
+                    case 1: {
+                        tab.setText("User");
+                        break;
+                    }
+                    default: {
+                        tab.setText("Question");
+                        break;
+                    }
+                }
             }
-        });
-
-        lvQuestion = (ListView) findViewById(R.id.lv_question_admin);
-        managedQuestionAdapter = new ManagedQuestionAdapter(AdminActivity.this, R.layout.item_question_admin);
-        lvQuestion.setAdapter(managedQuestionAdapter);
-    }
-
-    private void fakeData() {
-        managedUserAdapter.add(new ManagedUser("1", "Nguyen Van A", 10, 5, 3, 1, false));
-        managedUserAdapter.add(new ManagedUser("2", "Nguyen Van B", 10, 5, 3, 1, true));
-        managedUserAdapter.add(new ManagedUser("3", "Nguyen Van C", 10, 5, 3, 1, false));
-        managedUserAdapter.add(new ManagedUser("4", "Nguyen Van D", 10, 5, 3, 1, false));
-        managedUserAdapter.add(new ManagedUser("5", "Nguyen Van E", 10, 5, 3, 1, true));
-
-        Question mockQuestion = new Question.Builder().title("Question 1")
-                .author("id", "Alibaba")
-                .content("Etto, shitsumon o shite mo ii desu ka?")
-                .block(true)
-                .build();
-
-        managedQuestionAdapter.add(mockQuestion);
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
-        return super.onCreateOptionsMenu(menu);
+        }).attach();
     }
 }
