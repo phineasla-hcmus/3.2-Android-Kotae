@@ -1,65 +1,115 @@
 package com.ogif.kotae.data.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import com.google.firebase.firestore.DocumentId;
 
-import com.google.firebase.firestore.PropertyName;
+import java.util.Date;
 
-public final class Comment extends Post {
-    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
-        public Comment createFromParcel(Parcel in) {
-            return new Comment(in);
-        }
+public final class Comment {
 
-        public Comment[] newArray(int size) {
-            return new Comment[size];
-        }
-    };
-
-    public static class Builder extends Post.Builder<Builder> {
+    public static class Builder {
+        private String authorId;
+        private String authorName;
+        private String content;
         private String parentId;
 
         public Builder() {
-        }
-
-        @Override
-        public Builder getThis() {
-            return this;
         }
 
         public Comment build() {
             return new Comment(this);
         }
 
+        /**
+         * @param id   should be the same User as "name"
+         * @param name should be the same User as "id"
+         */
+        public Builder author(String id, String name) {
+            this.authorId = id;
+            this.authorName = name;
+            return this;
+        }
+
+        public Builder content(String content) {
+            this.content = content;
+            return this;
+        }
+
         public Builder parent(String id) {
             this.parentId = id;
-            return getThis();
+            return this;
         }
     }
 
+    /**
+     * Firestore
+     */
+    public static class Field {
+        public static final String authorId = "authorId";
+        public static final String authorName = "authorName";
+        public static final String content = "content";
+        public static final String postTime = "postTime";
+        public static final String upvote = "upvote";
+        public static final String downvote = "downvote";
+        public static final String report = "report";
+        public static final String blocked = "blocked";
+        public static final String parentId = "parentId";
+    }
+
+    @DocumentId
+    private String id;
+    private String authorId;
+    private String author;
+    private String content;
+    protected Date postTime;
+    protected int upvote;
+    protected int downvote;
+    protected int report;
+    protected boolean blocked;
     private String parentId;
 
     public Comment() {
-        super();
-    }
-
-    public Comment(Parcel parcel) {
-        super(parcel);
-        parentId = parcel.readString();
     }
 
     public Comment(Builder builder) {
-        super(builder);
+        this.authorId = builder.authorId;
+        this.author = builder.authorName;
+        this.content = builder.content;
+        this.postTime = new Date();
         this.parentId = builder.parentId;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        super.writeToParcel(parcel, flags);
-        parcel.writeString(parentId);
+    public String getAuthorId() {
+        return authorId;
     }
 
-    @PropertyName("parent_id")
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public Date getPostTime() {
+        return postTime;
+    }
+
+    public int getUpvote() {
+        return upvote;
+    }
+
+    public int getDownvote() {
+        return downvote;
+    }
+
+    public int getReport() {
+        return report;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
     public String getParentId() {
         return parentId;
     }

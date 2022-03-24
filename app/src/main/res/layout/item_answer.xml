@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootQuestionView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_between_y"
+    android:background="?attr/colorSurface"
+    android:paddingHorizontal="@dimen/padding_y_md">
 
     <TextView
         android:id="@+id/tv_answer_content"

@@ -8,114 +8,56 @@
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <!--<ImageButton-->
-    <!--    android:id="@+id/btn_upvote"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:contentDescription="@string/all_upvote"-->
-    <!--    android:src="@drawable/ic_baseline_arrow_up"-->
-    <!--    app:layout_constraintEnd_toStartOf="@+id/btn_downvote"-->
-    <!--    app:layout_constraintStart_toStartOf="parent"-->
-    <!--    app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--<TextView-->
-    <!--    android:id="@+id/tv_upvote"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_marginTop="@dimen/margin_between_y_sm"-->
-    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--    app:layout_constraintEnd_toEndOf="@+id/btn_upvote"-->
-    <!--    app:layout_constraintStart_toStartOf="@+id/btn_upvote"-->
-    <!--    app:layout_constraintTop_toBottomOf="@+id/btn_upvote"-->
-    <!--    tools:text="12" />-->
-
-    <!--<ImageButton-->
-    <!--    android:id="@+id/btn_downvote"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:contentDescription="@string/all_downvote"-->
-    <!--    android:src="@drawable/ic_baseline_arrow_down"-->
-    <!--    app:layout_constraintEnd_toStartOf="@+id/btn_report"-->
-    <!--    app:layout_constraintStart_toEndOf="@+id/btn_upvote"-->
-    <!--    app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--<TextView-->
-    <!--    android:id="@+id/tv_downvote"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_marginTop="@dimen/margin_between_y_sm"-->
-    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--    app:layout_constraintEnd_toEndOf="@+id/btn_downvote"-->
-    <!--    app:layout_constraintStart_toStartOf="@+id/btn_downvote"-->
-    <!--    app:layout_constraintTop_toBottomOf="@+id/btn_downvote"-->
-    <!--    tools:text="0" />-->
-
-    <!--<ImageButton-->
-    <!--    android:id="@+id/btn_report"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:contentDescription="@string/question_detail_report"-->
-    <!--    android:src="@drawable/ic_outline_report"-->
-    <!--    app:layout_constraintEnd_toEndOf="parent"-->
-    <!--    app:layout_constraintStart_toEndOf="@+id/btn_downvote"-->
-    <!--    app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--<TextView-->
-    <!--    android:id="@+id/tv_report"-->
-    <!--    android:layout_width="wrap_content"-->
-    <!--    android:layout_height="wrap_content"-->
-    <!--    android:layout_marginTop="@dimen/margin_between_y_sm"-->
-    <!--    android:visibility="invisible"-->
-    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--    app:layout_constraintEnd_toEndOf="@+id/btn_report"-->
-    <!--    app:layout_constraintStart_toStartOf="@+id/btn_report"-->
-    <!--    app:layout_constraintTop_toBottomOf="@+id/btn_report"-->
-    <!--    tools:text="1" />-->
-
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_upvote"
+        android:id="@+id/btn_post_action_upvote"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/all_upvote"
+        android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_arrow_upward"
-        app:layout_constraintEnd_toStartOf="@+id/btn_downvote"
+        app:iconTint="@color/color_toggle_button"
+        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_downvote"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_downvote"
+        android:id="@+id/btn_post_action_downvote"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/all_downvote"
+        android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_arrow_downward"
-        app:layout_constraintEnd_toStartOf="@+id/btn_comment"
-        app:layout_constraintStart_toEndOf="@+id/btn_upvote"
+        app:iconTint="@color/color_toggle_button"
+        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_comment"
+        app:layout_constraintStart_toEndOf="@+id/btn_post_action_upvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_comment"
+        android:id="@+id/btn_post_action_comment"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/question_detail_comment"
+        android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_comment"
-        app:layout_constraintEnd_toStartOf="@+id/btn_report"
-        app:layout_constraintStart_toEndOf="@+id/btn_downvote"
+        app:iconTint="@color/color_toggle_button"
+        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_more"
+        app:layout_constraintStart_toEndOf="@+id/btn_post_action_downvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_report"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/all_report"
-        app:icon="@drawable/ic_outline_report"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_comment"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--    android:id="@+id/btn_post_action_more"-->
+    <!--    style="@style/Widget.Material3.Button.IconButton"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:contentDescription="@string/all_more"-->
+    <!--    app:icon="@drawable/ic_baseline_more_vert"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    app:layout_constraintStart_toEndOf="@+id/btn_post_action_comment"-->
+    <!--    app:layout_constraintTop_toTopOf="parent" />-->
 </merge>

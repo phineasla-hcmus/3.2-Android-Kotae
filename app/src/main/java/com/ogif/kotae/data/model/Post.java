@@ -14,7 +14,7 @@ import org.jetbrains.annotations.TestOnly;
 import java.util.Date;
 
 /**
- * Interface for Question, Answer and Comment
+ * Interface for Question, Answer
  *
  * @see <a href="https://stackoverflow.com/questions/17164375/subclassing-a-java-builder-class">
  * Subclassing a builder class
@@ -25,6 +25,7 @@ import java.util.Date;
  */
 public abstract class Post implements Parcelable {
     public abstract static class Builder<T extends Builder<T>> {
+        private String id;
         private String authorId;
         private String authorName;
         private String content;
@@ -34,6 +35,17 @@ public abstract class Post implements Parcelable {
         }
 
         public abstract T getThis();
+
+        /**
+         * @implNote Should only be used when fetch data from database, not when insert data into
+         * database, as <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/DocumentId">
+         * ID will be ignored
+         * </a>
+         */
+        public T id(String id) {
+            this.id = id;
+            return getThis();
+        }
 
         /**
          * @param id   should be the same User as "name"

@@ -93,4 +93,5 @@
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
     <string name="user">User</string>
+    <string name="all_more">More options</string>
 </resources>

@@ -28,7 +28,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private final Context context;
     private Question question;
-    private List<Answer> answers;
+    private final List<Answer> answers;
 
     public QuestionDetailAdapter(Context context) {
         this.context = context;
@@ -132,14 +132,14 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void updateAnswers(@NonNull List<Answer> answers) {
         this.answers.addAll(answers);
-        // notifyItemRangeInserted(1, answers.size());
-        notifyDataSetChanged();
+        notifyItemRangeInserted(1, answers.size());
+        // notifyDataSetChanged();
     }
 
     /**
      * Bind common Question and Answer views.
      */
-    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, Post post) {
+    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post) {
         PostHolder holder = (PostHolder) viewHolder;
         RecyclerView.LayoutManager imagesLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.content.setText(post.getContent());

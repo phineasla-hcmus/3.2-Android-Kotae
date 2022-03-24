@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootQuestionView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurface"
+    android:paddingHorizontal="@dimen/padding_y_md">
 
     <TextView
         android:id="@+id/tv_question_detail_title"
@@ -29,6 +31,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_question_detail_title"
+        tools:layout_height="100dp"
         tools:text="@tools:sample/lorem/random" />
 
     <androidx.recyclerview.widget.RecyclerView
