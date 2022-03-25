@@ -78,8 +78,8 @@
 
         <TextView
             android:id="@+id/tv_question_post_time"
-            android:layout_width="163dp"
-            android:layout_height="27dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="96dp"
             android:padding="5dp"
             android:text="asked a minute ago"

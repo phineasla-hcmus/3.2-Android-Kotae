@@ -19,6 +19,8 @@ import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.question.QuestionDetailActivity;
+import com.ogif.kotae.utils.model.DateUtils;
+import com.ogif.kotae.utils.model.MarkdownUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -41,8 +43,10 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
         Log.d("question: ", model.getAuthor() + " " + model.getAuthorId());
-        holder.content.setText(model.getContent());
+        //holder.content.setText(model.getContent());
+        MarkdownUtils.setMarkdown(context,model.getContent(),holder.content);
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
+        DateUtils.formatDate(model.getPostTime(),holder.postTime);
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
 
@@ -74,11 +78,6 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 //            context.startActivity(intent);
 //        });
 //    }
-
-    private void startQuestionDetailActivity(@NonNull Question question) {
-        Intent intent = QuestionDetailActivity.newInstance(context, question);
-
-    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
