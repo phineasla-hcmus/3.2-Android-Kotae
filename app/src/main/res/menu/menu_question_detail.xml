@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_favorite"
+        android:id="@+id/menu_bookmark"
         android:contentDescription="@string/all_bookmark"
         android:icon="@drawable/ic_baseline_bookmark_border"
         android:title="@string/all_bookmark"
         app:showAsAction="always" />
 
-    <!--<item-->
-    <!--    android:id="@+id/menu_report"-->
-    <!--    android:contentDescription="@string/question_detail_report"-->
-    <!--    android:title="@string/question_detail_report" />-->
+    <item
+        android:id="@+id/menu_report"
+        android:icon="@drawable/ic_outline_report"
+        android:title="@string/all_report" />
 </menu>

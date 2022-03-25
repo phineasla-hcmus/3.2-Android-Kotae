@@ -80,6 +80,7 @@ public abstract class Post implements Parcelable {
         public static final String upvote = "upvote";
         public static final String downvote = "downvote";
         public static final String report = "report";
+        public static final String comment = "comment";
         public static final String blocked = "blocked";
     }
 
@@ -92,6 +93,7 @@ public abstract class Post implements Parcelable {
     protected int upvote;
     protected int downvote;
     protected int report;
+    protected int comment;
     protected boolean blocked;
 
     public Post() {
@@ -107,6 +109,7 @@ public abstract class Post implements Parcelable {
         upvote = parcel.readInt();
         downvote = parcel.readInt();
         report = parcel.readInt();
+        comment = parcel.readInt();
         blocked = parcel.readInt() == 1;
     }
 
@@ -135,6 +138,7 @@ public abstract class Post implements Parcelable {
         parcel.writeInt(upvote);
         parcel.writeInt(downvote);
         parcel.writeInt(report);
+        parcel.writeInt(comment);
         parcel.writeInt(blocked ? 1 : 0);
     }
 
@@ -162,11 +166,17 @@ public abstract class Post implements Parcelable {
         checkNull = document.get(Field.report, int.class);
         if (checkNull != null)
             post.report = checkNull;
+        checkNull = document.get(Field.comment, int.class);
+        if (checkNull != null) {
+            post.comment = checkNull;
+        }
         Boolean blocked = document.getBoolean(Field.blocked);
         if (blocked != null)
             post.blocked = blocked;
         return post;
     }
+
+    // public void increment
 
     public String getId() {
         return id;
@@ -198,6 +208,10 @@ public abstract class Post implements Parcelable {
 
     public int getReport() {
         return report;
+    }
+
+    public int getComment() {
+        return comment;
     }
 
     public boolean isBlocked() {

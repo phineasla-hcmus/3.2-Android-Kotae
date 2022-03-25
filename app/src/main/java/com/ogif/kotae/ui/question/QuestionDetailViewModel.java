@@ -37,6 +37,10 @@ public class QuestionDetailViewModel extends ViewModel {
         this.questionLiveData.setValue(question);
     }
 
+    /**
+     * Fetch question from Database, should only be used to check for update, otherwise use Question
+     * passed from Home Activity
+     */
     public void getQuestion(String id) {
         questionRepository.get(id, new TaskListener.State<Question>() {
             @Override

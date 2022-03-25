@@ -43,7 +43,7 @@ public class AuthorView extends ConstraintLayout {
     }
 
     private void init() {
-        // binding = inflate(getContext(), R.layout.partial_author, this);
+        // inflate(getContext(), R.layout.partial_author, this);
         binding = PartialAuthorBinding.inflate(LayoutInflater.from(getContext()), this);
         avatar = binding.tvAuthorAvatar;
         username = binding.tvAuthorUsername;

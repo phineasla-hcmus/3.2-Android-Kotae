@@ -9,7 +9,7 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_vote_action_upvote"
+        android:id="@+id/btn_post_action_upvote"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,14 +17,14 @@
         android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_arrow_upward"
         app:iconTint="@color/color_toggle_button"
-        app:layout_constraintEnd_toStartOf="@+id/btn_vote_action_downvote"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_downvote"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="10" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_vote_action_downvote"
+        android:id="@+id/btn_post_action_downvote"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:icon="@drawable/ic_baseline_arrow_downward"
         app:iconTint="@color/color_toggle_button"
         app:layout_constraintEnd_toStartOf="@+id/btn_post_action_comment"
-        app:layout_constraintStart_toEndOf="@+id/btn_vote_action_upvote"
+        app:layout_constraintStart_toEndOf="@+id/btn_post_action_upvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="2" />
 
@@ -43,11 +43,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/question_detail_comment"
-        android:textColor="@color/color_toggle_button"
+        android:textColor="?attr/colorOnSurface"
         app:icon="@drawable/ic_baseline_comment"
-        app:iconTint="@color/color_toggle_button"
-        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_more"
-        app:layout_constraintStart_toEndOf="@+id/btn_vote_action_downvote"
+        app:iconTint="?attr/colorOnSurface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_post_action_downvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />
 

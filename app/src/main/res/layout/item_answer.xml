@@ -55,13 +55,24 @@
         app:layout_constraintTop_toTopOf="@+id/author_view_answer"
         tools:text="Asked 2 years ago" />
 
-    <com.ogif.kotae.ui.question.view.VoteActionView
-        android:id="@+id/action_group_answer"
+    <com.ogif.kotae.ui.question.view.PostActionView
+        android:id="@+id/post_action_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_answer_more"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/author_view_answer" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_answer_more"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/all_more"
+        app:icon="@drawable/ic_baseline_more_vert"
+        app:iconTint="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@+id/post_action_answer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/post_action_answer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

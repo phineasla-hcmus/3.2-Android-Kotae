@@ -90,8 +90,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
 
-    <com.ogif.kotae.ui.question.view.VoteActionView
-        android:id="@+id/vote_action_question_detail"
+    <com.ogif.kotae.ui.question.view.PostActionView
+        android:id="@+id/post_action_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

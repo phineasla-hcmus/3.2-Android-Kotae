@@ -2,8 +2,10 @@ package com.ogif.kotae.ui.question.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
@@ -11,13 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.question.view.AuthorView;
-import com.ogif.kotae.ui.question.view.VoteActionView;
+import com.ogif.kotae.ui.question.view.PostActionView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         protected final TextView content;
         protected final RecyclerView images;
         protected final AuthorView author;
-        protected final VoteActionView actions;
+        protected final PostActionView actions;
 
         public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int actions) {
             super(itemView);
@@ -63,20 +66,23 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     R.id.tv_question_detail_content,
                     R.id.recycler_view_question_detail_images,
                     R.id.author_view_question_detail,
-                    R.id.vote_action_question_detail);
-            title = itemView.findViewById(R.id.tv_question_detail_title);
-            subject = itemView.findViewById(R.id.chip_question_detail_subject);
-            grade = itemView.findViewById(R.id.chip_question_detail_grade);
+                    R.id.post_action_question_detail);
+            this.title = itemView.findViewById(R.id.tv_question_detail_title);
+            this.subject = itemView.findViewById(R.id.chip_question_detail_subject);
+            this.grade = itemView.findViewById(R.id.chip_question_detail_grade);
         }
     }
 
     private static class AnswerHolder extends PostHolder {
+        private final MaterialButton more;
+
         public AnswerHolder(@NonNull View itemView) {
             super(itemView,
                     R.id.tv_answer_content,
                     R.id.recycler_view_answer_images,
                     R.id.author_view_answer,
-                    R.id.action_group_answer);
+                    R.id.post_action_answer);
+            this.more = itemView.findViewById(R.id.btn_answer_more);
         }
     }
 
@@ -135,7 +141,6 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void updateAnswers(@NonNull List<Answer> answers) {
         this.answers.addAll(answers);
         notifyItemRangeInserted(1, answers.size());
-        // notifyDataSetChanged();
     }
 
     /**
@@ -159,6 +164,22 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void bindAnswer(@NonNull AnswerHolder holder, Answer answer) {
+        PopupMenu popup = new PopupMenu(context, holder.more);
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.menu_report) {
+                showReportDialog(answer);
+                return true;
+            }
+            return false;
+        });
+        holder.more.setOnClickListener(view -> {
+            MenuInflater inflater = popup.getMenuInflater();
+            inflater.inflate(R.menu.menu_answer, popup.getMenu());
+            popup.show();
+        });
+    }
+
+    public void showReportDialog(Post post) {
 
     }
 }
