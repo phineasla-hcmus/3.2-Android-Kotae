@@ -8,10 +8,13 @@
     <string name="all_job">Job</string>
     <string name="all_language">Language</string>
     <string name="all_login">Login</string>
+    <string name="all_more">More options</string>
     <string name="all_password">Password</string>
     <string name="all_sign_up">Sign up</string>
     <string name="all_upvote" translatable="false">Upvote</string>
+    <string name="all_user">User</string>
     <string name="all_username">Username</string>
+    <string name="all_report">Report question</string>
     <string name="app_name" translatable="false">Kotae</string>
     <string name="bottom_nav_admin">Admin</string>
     <string name="bottom_nav_home">Home</string>
@@ -51,9 +54,9 @@
     <string name="create_question_category_title">Category</string>
     <string name="create_question_content_description">Click here to include question content</string>
     <string name="create_question_content_title">Content</string>
-    <string name="create_answer_content_title" translatable="false">Content</string>
+    <string name="create_answer_content_title">Content</string>
     <string name="create_question_images_title">Images</string>
-    <string name="create_answer_images_title" translatable="false">Images</string>
+    <string name="create_answer_images_title">Images</string>
     <string name="create_question_title">Title</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
@@ -64,7 +67,7 @@
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
     <string name="fab_add_question">Add new question</string>
     <string name="fab_post_question">Post</string>
-    <string name="fab_post_answer" translatable="false">Post</string>
+    <string name="fab_post_answer">Post</string>
     <string name="field_error_missing">Missing required field(s)</string>
     <string name="filter_cancel">Cancel</string>
     <string name="filter_submit">Submit</string>
@@ -84,7 +87,6 @@
     <string name="question_all">All</string>
     <string name="question_answered">Answered</string>
     <string name="question_detail_comment">Comment</string>
-    <string name="all_report">Report question</string>
     <string name="question_sort">Sort</string>
     <string name="question_sort_most_view">Most view</string>
     <string name="question_sort_top_month">Top month</string>
@@ -95,6 +97,4 @@
     <string name="sign_up_error_existed">User existed</string>
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
-    <string name="user">User</string>
-    <string name="all_more">More options</string>
 </resources>

@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_answer_content"
         tools:itemCount="3" />
 
-    <com.ogif.kotae.ui.question.AuthorView
+    <com.ogif.kotae.ui.question.view.AuthorView
         android:id="@+id/author_view_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         app:layout_constraintTop_toTopOf="@+id/author_view_answer"
         tools:text="Asked 2 years ago" />
 
-    <com.ogif.kotae.ui.question.PostActionGroupView
+    <com.ogif.kotae.ui.question.view.VoteActionView
         android:id="@+id/action_group_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

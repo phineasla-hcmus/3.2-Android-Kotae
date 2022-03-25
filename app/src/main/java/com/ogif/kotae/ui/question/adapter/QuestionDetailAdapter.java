@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.question.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -16,13 +16,15 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.ui.question.view.AuthorView;
+import com.ogif.kotae.ui.question.view.VoteActionView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // https://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-types
 
-class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_TYPE_QUESTION = 0;
     private static final int ITEM_TYPE_ANSWER = 1;
 
@@ -40,7 +42,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         protected final TextView content;
         protected final RecyclerView images;
         protected final AuthorView author;
-        protected final PostActionGroupView actions;
+        protected final VoteActionView actions;
 
         public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int actions) {
             super(itemView);
@@ -61,7 +63,7 @@ class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     R.id.tv_question_detail_content,
                     R.id.recycler_view_question_detail_images,
                     R.id.author_view_question_detail,
-                    R.id.action_group_question_detail);
+                    R.id.vote_action_question_detail);
             title = itemView.findViewById(R.id.tv_question_detail_title);
             subject = itemView.findViewById(R.id.chip_question_detail_subject);
             grade = itemView.findViewById(R.id.chip_question_detail_grade);

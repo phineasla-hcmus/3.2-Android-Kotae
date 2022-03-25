@@ -10,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ogif.kotae.data.StateWrapper;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
 
 import java.util.Objects;
@@ -45,9 +46,16 @@ public class UserRepository {
         });
     }
 
-    public void getById(@NonNull String id) {
-        // usersRef.document(id).
-        // TODO
+    public void getCurrentUser(TaskListener.State<User> callback) {
+        if (auth.getCurrentUser() == null)
+            callback.onFailure(new NullPointerException("User haven't logged in"));
+        getById(auth.getCurrentUser().getUid(), callback);
+    }
+
+    public void getById(@NonNull String id, TaskListener.State<User> callback) {
+        usersRef.document(id).get().addOnSuccessListener(documentSnapshot -> {
+            callback.onSuccess(documentSnapshot.toObject(User.class));
+        }).addOnFailureListener(callback::onFailure);
     }
 
     /**

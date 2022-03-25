@@ -3,27 +3,22 @@ package com.ogif.kotae.ui.question;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
-import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.ui.main.CreateAnswerActivity;
-
-import java.util.List;
+import com.ogif.kotae.ui.question.adapter.QuestionDetailAdapter;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";

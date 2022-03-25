@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.question.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

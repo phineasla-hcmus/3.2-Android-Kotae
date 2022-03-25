@@ -111,6 +111,7 @@ public abstract class Post implements Parcelable {
     }
 
     public Post(@NonNull Builder<?> builder) {
+        this.id = builder.id;
         this.authorId = builder.authorId;
         this.author = builder.authorName;
         this.content = builder.content;
