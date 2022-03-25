@@ -12,6 +12,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
@@ -59,4 +60,11 @@ public class QuestionRepository {
     public MutableLiveData<StateWrapper<Question>> getMutableLiveData() {
         return mutableLiveData;
     }
+
+    public Query getHomeQuestions(){
+        return questionsRef.whereEqualTo("blocked",false)
+                            .orderBy("postTime", Query.Direction.DESCENDING)
+                            .limit(20);
+    }
+
 }

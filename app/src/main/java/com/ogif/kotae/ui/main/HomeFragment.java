@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.ui.question.CreateQuestionActivity;
 
@@ -38,9 +39,8 @@ public class HomeFragment extends Fragment   {
     // private View homeView;
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
-    SwipeRefreshLayout swipeLayout;
-    private FirebaseFirestore db;
-
+    private SwipeRefreshLayout swipeLayout;
+    private  QuestionRepository questionRepository;
     private HomeAdapter adapter;
 
     public HomeFragment() {
@@ -60,8 +60,10 @@ public class HomeFragment extends Fragment   {
         // Inflate the layout for this fragment
         // homeView = inflater.inflate(R.layout.fragment_home, container, false);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        setUpRecyclerView();
 
+        questionRepository = new QuestionRepository();
+
+        setUpRecyclerView();
         fabAddQuestion = (FloatingActionButton) binding.fabAddQuestion;
 
         fabAddQuestion.setOnClickListener(v -> {
@@ -71,6 +73,10 @@ public class HomeFragment extends Fragment   {
        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
            @Override
            public void onRefresh() {
+               FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
+                       .setQuery(questionRepository.getHomeQuestions(), Question.class)
+                       .build();
+               adapter = new HomeAdapter(options,getActivity().getApplicationContext());
                adapter.notifyDataSetChanged();
                swipeLayout.setRefreshing(false);
            }
@@ -88,16 +94,15 @@ public class HomeFragment extends Fragment   {
         RecyclerView recyclerView = (RecyclerView) binding.rvHome;
 
         //adapter = new HomeAdapter(questionList(), this.getContext());
-        db = FirebaseFirestore.getInstance();
-        Query query = db.collection("questions").whereEqualTo("blocked",false);
+
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
 
         FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
-                .setQuery(query, Question.class)
+                .setQuery(questionRepository.getHomeQuestions(), Question.class)
                 .build();
         adapter = new HomeAdapter(options, this.getContext());
         adapter.notifyDataSetChanged();
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
         recyclerView.setAdapter(adapter);
 
     }
