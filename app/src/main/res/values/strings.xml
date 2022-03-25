@@ -65,6 +65,8 @@
     <string name="et_error_username_first_char">Username must start with a letter </string>
     <string name="et_error_username_invalid_char">Username contains invalid character</string>
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
+    <string name="tag_view_extension" translatable="false">false</string>
+    <string name="tag_animation_maker" translatable="false">false</string>
     <string name="fab_add_question">Add new question</string>
     <string name="fab_post_question">Post</string>
     <string name="fab_post_answer">Post</string>

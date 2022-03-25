@@ -12,6 +12,7 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -60,7 +61,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        adapter = new SearchRecyclerViewAdapter(this, items);
+//        adapter = new SearchRecyclerViewAdapter(this, items);
 
 //        onRestoreState(savedInstanceState)
         init();
@@ -160,6 +161,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        this.adapter = var1;
+
         return var1;
     }
 
@@ -206,6 +209,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         this.items = destination$iv$iv;
+//        adapter.notifyDataSetChanged();
 
         Runnable runnable = new Runnable() {
             @Override
