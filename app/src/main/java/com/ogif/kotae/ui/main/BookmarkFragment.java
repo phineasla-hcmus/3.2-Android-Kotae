@@ -1,66 +1,100 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.databinding.FragmentBookmarkBinding;
+import com.ogif.kotae.databinding.FragmentHomeBinding;
+import com.ogif.kotae.ui.question.CreateQuestionActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BookmarkFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class BookmarkFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // private View homeView;
+    private FloatingActionButton fabAddQuestion;
+    private @NonNull FragmentBookmarkBinding binding;
+    SwipeRefreshLayout swipeLayout;
+    private FirebaseFirestore db;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private HomeAdapter adapter;
 
     public BookmarkFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FavoriteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BookmarkFragment newInstance(String param1, String param2) {
-        BookmarkFragment fragment = new BookmarkFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bookmark, container, false);
+        // homeView = inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentBookmarkBinding.inflate(inflater, container, false);
+        setUpRecyclerView();
+
+
+        swipeLayout = (SwipeRefreshLayout) binding.swipeContainer;
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.notifyDataSetChanged();
+                swipeLayout.setRefreshing(false);
+            }
+        });
+        return binding.getRoot();
+    }
+
+
+
+    private void setUpRecyclerView() {
+        RecyclerView recyclerView = (RecyclerView) binding.rvBookmark;
+
+        //adapter = new HomeAdapter(questionList(), this.getContext());
+        db = FirebaseFirestore.getInstance();
+        Query query = db.collection("questions").whereEqualTo("blocked",false);
+
+        FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
+                .setQuery(query, Question.class)
+                .build();
+        adapter = new HomeAdapter(options, this.getContext());
+        adapter.notifyDataSetChanged();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
+        recyclerView.setAdapter(adapter);
+
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
