@@ -38,8 +38,10 @@ public class QuestionRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
+    public void createQuestion(@NonNull String authorId, @NonNull String authorName, @NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
+
         Question question = new Question.Builder().title(title)
+                .author(authorId, authorName)
                 .content(content)
                 .subject(subjectId, subject)
                 .grade(gradeId, grade)
