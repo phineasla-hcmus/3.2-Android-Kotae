@@ -13,6 +13,9 @@
             android:name=".ui.main.SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.main.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.FilterQuestionActivity"
             android:exported="false" />
         <activity

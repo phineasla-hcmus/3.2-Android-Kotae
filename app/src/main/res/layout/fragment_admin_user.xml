@@ -6,11 +6,8 @@
     tools:context=".ui.main.AdminUserFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lv_user_admin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFC107"
-        android:text="USER FRAGMENT" />
-
+        android:layout_height="match_parent" />
 </LinearLayout>

@@ -15,6 +15,8 @@ public class User {
     private String role;
     private String avatar;
     private int reputation;
+    private int report;
+    private boolean blocked;
 
     public User() {
     }
@@ -29,6 +31,34 @@ public class User {
         this.role = "user";
         this.avatar = Global.DEFAULT_USER_AVATAR;
         this.reputation = 0;
+    }
+
+    public User(String username, String avatar, int report, boolean blocked) {
+        this.username = username;
+        this.avatar = avatar;
+        this.report = report;
+        this.blocked = blocked;
+    }
+
+    public int getReport() {
+        return report;
+    }
+
+    public void setReport(int report) {
+        this.report = report;
+    }
+
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getId() {

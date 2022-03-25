@@ -18,6 +18,12 @@ public class AdminUserAdapter extends BaseAdapter {
     private int layout;
     private ArrayList<User> userArrayList;
 
+    public AdminUserAdapter(Context context, int layout, ArrayList<User> userArrayList) {
+        this.context = context;
+        this.layout = layout;
+        this.userArrayList = userArrayList;
+    }
+
     @Override
     public int getCount() {
         return userArrayList.size();
@@ -48,15 +54,14 @@ public class AdminUserAdapter extends BaseAdapter {
         tvUsername.setText(user.getUsername());
         tvReport.setText(String.valueOf(user.getReport()));
 
-        if (!user.isBlocked()) {
-            ivBlock.setVisibility(View.GONE);
+        if (user.isBlocked()) {
+            ivBlock.setVisibility(View.VISIBLE);
         }
 
         // How to set avatar to imageview?
 //        if (user.getAvatar().length() != 0) {
 //            ivAvatar.setImageResource(user.getAvatar());
 //        }
-
 
         return view;
     }

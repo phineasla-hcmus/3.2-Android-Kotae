@@ -28,6 +28,7 @@
         android:layout_height="32dp"
         android:layout_marginTop="@dimen/margin_y"
         android:layout_marginEnd="@dimen/margin_between_x_md"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/iv_report"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_block"
