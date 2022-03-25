@@ -50,56 +50,19 @@
         <androidx.core.widget.NestedScrollView
             android:id="@+id/sv_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="30dp">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_markdown_input"
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:boxStrokeColor="@color/color_text_input_box"
-                        app:hintTextColor="@color/color_text_input_box">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_markdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="start|top"
-                            android:imeOptions="flagNoExtractUi"
-                            android:minHeight="@dimen/body_height"
-                            android:theme="@style/TextInputEditTextStyle" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <TextView
-                        android:id="@+id/tv_preview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:background="@drawable/answer_preview_background"
-                        android:gravity="start|top"
-                        android:minHeight="@dimen/body_height"
-                        android:visibility="gone" />
-
-                </FrameLayout>
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp">
 
                 <HorizontalScrollView
+                    android:id="@+id/scroll_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_x">
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/ll_btn_edit"
@@ -108,10 +71,47 @@
                         android:orientation="horizontal"
                         tools:ignore="ButtonStyle" />
                 </HorizontalScrollView>
-            </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_markdown_input"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scroll_view"
+                    app:boxCornerRadiusTopEnd="0dp"
+                    app:boxCornerRadiusTopStart="0dp"
+                    app:boxStrokeColor="@color/color_text_input_box"
+                    app:hintEnabled="false"
+                    app:hintTextColor="@color/color_text_input_box">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_markdown"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/body_height"
+                        android:gravity="start|top"
+                        android:imeOptions="flagNoExtractUi"
+                        android:isScrollContainer="true"
+                        android:scrollbars="vertical"
+                        android:theme="@style/TextInputEditTextStyle"
+                        app:textInputLayoutFocusedRectEnabled="false" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_preview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/scroll_view"
+                    android:background="@drawable/answer_preview_background"
+                    android:gravity="start|top"
+                    android:includeFontPadding="false"
+                    android:minHeight="@dimen/body_height"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
 
         </androidx.core.widget.NestedScrollView>
-
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/fab_save_answer"

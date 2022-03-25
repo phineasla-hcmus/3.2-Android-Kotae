@@ -48,7 +48,7 @@ public class CreateAnswerActivity extends AppCompatActivity {
 
         this.viewModel = new ViewModelProvider(this).get(AnswerViewModel.class);
 
-        toolbar = (Toolbar) binding.tbCreateQuestion;
+        toolbar = (Toolbar) binding.tbCreateAnswer;
         this.setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Create answer");

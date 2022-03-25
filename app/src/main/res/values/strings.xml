@@ -51,7 +51,9 @@
     <string name="create_question_category_title">Category</string>
     <string name="create_question_content_description">Click here to include question content</string>
     <string name="create_question_content_title">Content</string>
+    <string name="create_answer_content_title" translatable="false">Content</string>
     <string name="create_question_images_title">Images</string>
+    <string name="create_answer_images_title" translatable="false">Images</string>
     <string name="create_question_title">Title</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
@@ -62,6 +64,7 @@
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
     <string name="fab_add_question">Add new question</string>
     <string name="fab_post_question">Post</string>
+    <string name="fab_post_answer" translatable="false">Post</string>
     <string name="field_error_missing">Missing required field(s)</string>
     <string name="filter_cancel">Cancel</string>
     <string name="filter_submit">Submit</string>

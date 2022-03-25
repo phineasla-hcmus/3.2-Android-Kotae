@@ -35,13 +35,15 @@
             android:exported="false" />
         <activity
             android:name=".ui.question.QuestionContentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.question.CreateQuestionActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.AnswerContentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.main.CreateAnswerActivity"
             android:exported="false" />
@@ -61,7 +63,7 @@
 
     <queries>
         <intent>
-            <action android:name="android.speech.RecognitionService"/>
+            <action android:name="android.speech.RecognitionService" />
         </intent>
     </queries>
 
