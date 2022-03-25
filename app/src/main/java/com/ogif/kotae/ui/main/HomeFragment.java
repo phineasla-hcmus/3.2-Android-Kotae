@@ -32,7 +32,7 @@ import com.ogif.kotae.ui.question.CreateQuestionActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment  {
+public class HomeFragment extends Fragment   {
 
 
     // private View homeView;
@@ -68,15 +68,16 @@ public class HomeFragment extends Fragment  {
             startCreateQuestionActivity();
         });
         swipeLayout = (SwipeRefreshLayout) binding.swipeContainer;
-       // swipeLayout.setOnRefreshListener(this);
+       swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+           @Override
+           public void onRefresh() {
+               adapter.notifyDataSetChanged();
+               swipeLayout.setRefreshing(false);
+           }
+       });
         return binding.getRoot();
     }
 
-//    @Override
-//    public void onRefresh() {
-//        // Toast.makeText(getContext(), "Refreshing", Toast.LENGTH_SHORT).show();
-//        //TODO: do refresh task
-//    }
 
     private void startCreateQuestionActivity() {
         Intent intent = new Intent(requireActivity().getApplicationContext(), CreateQuestionActivity.class);
@@ -94,7 +95,7 @@ public class HomeFragment extends Fragment  {
                 .setQuery(query, Question.class)
                 .build();
         adapter = new HomeAdapter(options, this.getContext());
-
+        adapter.notifyDataSetChanged();
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
         recyclerView.setAdapter(adapter);
