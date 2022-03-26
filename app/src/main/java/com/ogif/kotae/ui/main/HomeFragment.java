@@ -33,14 +33,14 @@ import com.ogif.kotae.ui.question.CreateQuestionActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment   {
+public class HomeFragment extends Fragment {
 
 
     // private View homeView;
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
     private SwipeRefreshLayout swipeLayout;
-    private  QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
     private HomeAdapter adapter;
 
     public HomeFragment() {
@@ -70,17 +70,17 @@ public class HomeFragment extends Fragment   {
             startCreateQuestionActivity();
         });
         swipeLayout = (SwipeRefreshLayout) binding.swipeContainer;
-       swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-           @Override
-           public void onRefresh() {
-               FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
-                       .setQuery(questionRepository.getHomeQuestions(), Question.class)
-                       .build();
-               adapter = new HomeAdapter(options,getActivity().getApplicationContext());
-               adapter.notifyDataSetChanged();
-               swipeLayout.setRefreshing(false);
-           }
-       });
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
+                        .setQuery(questionRepository.getHomeQuestions(), Question.class)
+                        .build();
+                adapter = new HomeAdapter(options, getActivity().getApplicationContext());
+                adapter.notifyDataSetChanged();
+                swipeLayout.setRefreshing(false);
+            }
+        });
         return binding.getRoot();
     }
 

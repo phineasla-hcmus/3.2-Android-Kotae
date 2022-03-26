@@ -1,5 +1,6 @@
 package com.ogif.kotae.adapters.model;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,13 +18,17 @@ import com.arthurivanets.adapster.markers.ItemResources;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.ui.question.QuestionDetailActivity;
 
 import org.jetbrains.annotations.Nullable;
 
 public final class SearchItem extends BaseItem {
+    private Question question;
+
     @NonNull
     public SearchItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         View var10002 = inflater.inflate(R.layout.item_search, parent, false);
+
         return new SearchItem.ViewHolder(var10002);
     }
 
@@ -34,11 +39,18 @@ public final class SearchItem extends BaseItem {
     @Override
     public void bind(@Nullable Adapter adapter, @NonNull BaseItem.ViewHolder viewHolder, @Nullable ItemResources resources) {
         super.bind(adapter, viewHolder, resources);
-        Question var10002 = (Question) this.getItemModel();
-        this.bindTitle((ViewHolder) viewHolder, var10002);
-        this.bindProfileImage((ViewHolder) viewHolder, var10002);
-        this.bindUsername((ViewHolder) viewHolder, var10002);
-        this.bindFullName((ViewHolder) viewHolder, var10002);
+        question = (Question) this.getItemModel();
+        this.bindTitle((ViewHolder) viewHolder, question);
+        this.bindProfileImage((ViewHolder) viewHolder, question);
+        this.bindUsername((ViewHolder) viewHolder, question);
+        this.bindFullName((ViewHolder) viewHolder, question);
+        this.setOnItemClickListener((ViewHolder) viewHolder, new OnItemClickListener() {
+            @Override
+            public void onItemClicked(View view, Object item, int position) {
+                Intent intent = QuestionDetailActivity.newInstance(view.getContext(), question);
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     private final void bindProfileImage(SearchItem.ViewHolder $this$bindProfileImage, Question Question) {
@@ -113,6 +125,8 @@ public final class SearchItem extends BaseItem {
             this.contentContainerRl = (RelativeLayout) itemView.findViewById(R.id.contentContainerRl);
             this.commentIv = (ImageView) itemView.findViewById(R.id.firstButtonIv);
         }
+
+
     }
 
 }
