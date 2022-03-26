@@ -17,7 +17,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
-import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 
 import java.util.ArrayList;
@@ -72,10 +71,10 @@ public class QuestionRepository {
         return mutableLiveData;
     }
 
-    public Query getHomeQuestions(){
-        return questionsRef.whereEqualTo("blocked",false)
-                            .orderBy("postTime", Query.Direction.DESCENDING)
-                            .limit(20);
+    public Query getHomeQuestions() {
+        return questionsRef.whereEqualTo("blocked", false)
+                .orderBy("postTime", Query.Direction.DESCENDING)
+                .limit(20);
     }
 
     public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {

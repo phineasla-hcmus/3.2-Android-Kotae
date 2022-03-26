@@ -1,16 +1,9 @@
 package com.ogif.kotae.ui.question;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +11,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
-
-import org.commonmark.node.Node;
-
-
-import io.noties.markwon.Markwon;
-
 import com.ogif.kotae.R;
+import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;

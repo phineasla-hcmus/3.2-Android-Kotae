@@ -1,24 +1,13 @@
 package com.ogif.kotae.utils.model;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.text.Spanned;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import org.commonmark.node.Node;
-
-import java.util.concurrent.Executors;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.ext.latex.JLatexMathPlugin;
-import io.noties.markwon.ext.latex.JLatexMathTheme;
 import io.noties.markwon.inlineparser.MarkwonInlineParserPlugin;
-import ru.noties.jlatexmath.JLatexMathDrawable;
 
 public class MarkdownUtils {
     public static void setMarkdown(Context context, String content, TextView contentView) {

@@ -1,15 +1,5 @@
 package com.ogif.kotae.ui.question;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.ogif.kotae.R;
@@ -66,9 +65,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle("Create question");
 
         EditText[] ets = {binding.etCreateQuestionTitle,
-                          binding.etContent,
-                          binding.actvQuestionCategoryGrade,
-                          binding.atcvQuestionCategorySubject};
+                binding.etContent,
+                binding.actvQuestionCategoryGrade,
+                binding.atcvQuestionCategorySubject};
 
         binding.etContent.setOnClickListener(view -> {
             startQuestionContentActivity();

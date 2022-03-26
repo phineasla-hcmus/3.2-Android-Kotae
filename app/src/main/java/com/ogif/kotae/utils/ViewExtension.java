@@ -1,10 +1,14 @@
 package com.ogif.kotae.utils;
 
 import android.view.View;
+
 import androidx.annotation.NonNull;
-import kotlin.jvm.internal.Intrinsics;
-import org.jetbrains.annotations.Nullable;
+
 import com.ogif.kotae.R;
+
+import org.jetbrains.annotations.Nullable;
+
+import kotlin.jvm.internal.Intrinsics;
 
 public final class ViewExtension {
     public static final void setVisibilityMarker(@NonNull View $this$setVisibilityMarker, boolean isVisible) {
@@ -17,7 +21,7 @@ public final class ViewExtension {
             var10000 = null;
         }
 
-        Boolean var3 = (Boolean)var10000;
+        Boolean var3 = (Boolean) var10000;
         boolean var4;
         if (var3 != null) {
             var4 = var3;

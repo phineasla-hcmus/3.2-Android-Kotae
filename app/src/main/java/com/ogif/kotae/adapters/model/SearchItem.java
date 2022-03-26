@@ -2,8 +2,8 @@ package com.ogif.kotae.adapters.model;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,11 +15,10 @@ import com.arthurivanets.adapster.listeners.ItemClickListener;
 import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.arthurivanets.adapster.markers.ItemResources;
 import com.arthurivanets.adapster.model.BaseItem;
+import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 
 import org.jetbrains.annotations.Nullable;
-
-import com.ogif.kotae.R;
 
 public final class SearchItem extends BaseItem {
     @NonNull
@@ -41,16 +40,6 @@ public final class SearchItem extends BaseItem {
         this.bindUsername((ViewHolder) viewHolder, var10002);
         this.bindFullName((ViewHolder) viewHolder, var10002);
     }
-
-
-//    public void bind(Adapter var1, androidx.recyclerview.widget.RecyclerView.ViewHolder var2, ItemResources var3) {
-//        this.bind(var1, (SearchItem.ViewHolder) var2, null);
-//    }
-//
-//    public void bind(Adapter var1, com.arthurivanets.adapster.model.BaseItem.ViewHolder var2, ItemResources var3) {
-//        super.bind(var1, var2, var3);
-//        this.bind(var1, (ViewHolder) var2, null);
-//    }
 
     private final void bindProfileImage(SearchItem.ViewHolder $this$bindProfileImage, Question Question) {
         $this$bindProfileImage.getProfileImageIv().setImageResource(R.drawable.ic_teacher);

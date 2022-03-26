@@ -1,9 +1,6 @@
 package com.ogif.kotae.adapters;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,13 +8,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.arthurivanets.adapster.recyclerview.TrackableRecyclerViewAdapter;
-import com.ogif.kotae.R;
 import com.ogif.kotae.adapters.model.SearchItem;
-import com.ogif.kotae.ui.main.HomeAdapter;
-
-import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public final class SearchRecyclerViewAdapter extends TrackableRecyclerViewAdapter {
     @Nullable

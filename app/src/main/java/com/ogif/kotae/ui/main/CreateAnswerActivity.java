@@ -1,5 +1,13 @@
 package com.ogif.kotae.ui.main;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,20 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityCreateAnswerBinding;
 import com.ogif.kotae.ui.AnswerViewModel;
-import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
 import java.util.Objects;

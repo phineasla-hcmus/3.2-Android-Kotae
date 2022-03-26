@@ -10,7 +10,7 @@ import android.view.animation.DecelerateInterpolator;
 import androidx.annotation.NonNull;
 
 import com.paulrybitskyi.commons.ktx.ViewUtils;
-import com.paulrybitskyi.persistentsearchview.utils.*;
+import com.paulrybitskyi.persistentsearchview.utils.AnimationType;
 
 public final class AnimationUtils {
     private static final long HEADER_ANIMATION_DURATION;
@@ -19,7 +19,6 @@ public final class AnimationUtils {
     public static final AnimationUtils INSTANCE;
 
     public final void showHeader(@NonNull View header) {
-        boolean var3 = false;
         if (!ViewExtension.getVisibilityMarker(header) && AnimationType.ENTER != ViewExtension.getAnimationMarker(header)) {
             ViewExtension.cancelAllAnimations(header);
             ViewUtils.makeVisible(header);
@@ -52,7 +51,6 @@ public final class AnimationUtils {
     }
 
     public final void hideHeader(@NonNull View header) {
-        boolean var3 = false;
         if (ViewExtension.getVisibilityMarker(header) && AnimationType.EXIT != ViewExtension.getAnimationMarker(header)) {
             ViewExtension.cancelAllAnimations(header);
             ViewExtension.setVisibilityMarker(header, false);

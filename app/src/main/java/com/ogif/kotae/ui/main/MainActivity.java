@@ -19,7 +19,6 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
-import com.ogif.kotae.ui.question.CreateQuestionActivity;
 
 public class MainActivity extends AppCompatActivity {
 

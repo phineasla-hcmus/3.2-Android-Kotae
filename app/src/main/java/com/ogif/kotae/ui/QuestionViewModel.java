@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.google.android.gms.tasks.Task;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
@@ -48,7 +47,8 @@ public class QuestionViewModel extends ViewModel {
     public LiveData<StateWrapper<Question>> getLiveData() {
         return mutableLiveData;
     }
-    public void hideReport(ImageButton report, TextView counter){
+
+    public void hideReport(ImageButton report, TextView counter) {
         userRepository.getCurrentUser(new TaskListener.State<User>() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -58,11 +58,10 @@ public class QuestionViewModel extends ViewModel {
             @Override
             public void onSuccess(User result) {
                 String role = result.getRole();
-                if (role!=null && role.equals("admin")){
+                if (role != null && role.equals("admin")) {
                     report.setVisibility(View.VISIBLE);
                     counter.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     report.setVisibility(View.INVISIBLE);
                     counter.setVisibility(View.INVISIBLE);
                 }

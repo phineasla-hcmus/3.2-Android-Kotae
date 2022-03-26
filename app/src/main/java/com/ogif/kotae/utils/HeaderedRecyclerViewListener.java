@@ -5,16 +5,13 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
+
 import com.paulrybitskyi.commons.ktx.NumberUtils;
-import kotlin.jvm.internal.DefaultConstructorMarker;
 
 public abstract class HeaderedRecyclerViewListener extends OnScrollListener {
     private int scrollDetectionDistance;
     private int firstVisiblePosition;
     private int previousFirstVisiblePosition;
-    private static final int SWIPE_DETECTION_DISTANCE_IN_DP = 10;
-//    @NonNull
-//    public static final HeaderedRecyclerViewListener.Companion Companion = new HeaderedRecyclerViewListener.Companion((DefaultConstructorMarker)null);
 
     public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
         if (dy > 0) {
