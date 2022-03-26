@@ -19,6 +19,7 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 import com.ogif.kotae.ui.questiondetail.view.PostActionView;
 
@@ -45,14 +46,14 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         protected final TextView content;
         protected final RecyclerView images;
         protected final AuthorView author;
-        protected final PostActionView actions;
+        protected final VoteView vote;
 
-        public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int actions) {
+        public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int vote) {
             super(itemView);
             this.content = itemView.findViewById(content);
             this.images = itemView.findViewById(images);
             this.author = itemView.findViewById(author);
-            this.actions = itemView.findViewById(actions);
+            this.vote = itemView.findViewById(vote);
         }
     }
 
@@ -66,7 +67,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     R.id.tv_question_detail_content,
                     R.id.recycler_view_question_detail_images,
                     R.id.author_view_question_detail,
-                    R.id.post_action_question_detail);
+                    R.id.vote_view_question_detail);
             this.title = itemView.findViewById(R.id.tv_question_detail_title);
             this.subject = itemView.findViewById(R.id.chip_question_detail_subject);
             this.grade = itemView.findViewById(R.id.chip_question_detail_grade);
@@ -81,7 +82,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     R.id.tv_answer_content,
                     R.id.recycler_view_answer_images,
                     R.id.author_view_answer,
-                    R.id.post_action_answer);
+                    R.id.vote_view_answer);
             this.more = itemView.findViewById(R.id.btn_answer_more);
         }
     }

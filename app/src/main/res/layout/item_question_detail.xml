@@ -90,16 +90,30 @@
             tools:text="Lớp 5" />
     </com.google.android.material.chip.ChipGroup>
 
-    <com.ogif.kotae.ui.questiondetail.view.PostActionView
-        android:id="@+id/post_action_question_detail"
+    <com.ogif.kotae.ui.VoteView
+        android:id="@+id/vote_view_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_question_detail_comment"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_between_y"
+        android:contentDescription="@string/question_detail_comment"
+        android:textColor="?attr/colorOnSurface"
+        app:icon="@drawable/ic_baseline_comment"
+        app:iconTint="?attr/colorOnSurface"
+        app:layout_constraintBottom_toBottomOf="@id/vote_view_question_detail"
+        app:layout_constraintStart_toEndOf="@+id/vote_view_question_detail"
+        app:layout_constraintTop_toTopOf="@+id/vote_view_question_detail"
+        tools:text="5" />
+
     <TextView
-        android:id="@+id/tv_question_detail_answer"
+        android:id="@+id/tv_question_detail_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -109,7 +123,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/post_action_question_detail"
+        app:layout_constraintTop_toBottomOf="@id/vote_view_question_detail"
         tools:text="2 Answers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
