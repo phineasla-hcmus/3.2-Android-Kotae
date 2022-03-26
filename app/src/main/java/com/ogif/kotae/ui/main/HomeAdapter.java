@@ -18,9 +18,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.question.QuestionDetailActivity;
 import com.ogif.kotae.utils.model.DateUtils;
 import com.ogif.kotae.utils.model.MarkdownUtils;
+import com.ogif.kotae.utils.model.QuestionUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -44,6 +46,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
         Log.d("question: ", model.getAuthor() + " " + model.getAuthorId());
         //holder.content.setText(model.getContent());
+        holder.report.setVisibility(View.INVISIBLE);
+        holder.reportCounter.setVisibility(View.INVISIBLE);
         MarkdownUtils.setMarkdown(context,model.getContent(),holder.content);
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         DateUtils.formatDate(model.getPostTime(),holder.postTime);
@@ -113,6 +117,9 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
             downClicked = false;
             upClicked = false;
+
+            QuestionViewModel questionViewModel =  new QuestionViewModel();
+            questionViewModel.hideReport(report,reportCounter);
 
             upvote.setOnClickListener(new View.OnClickListener() {
                 @Override
