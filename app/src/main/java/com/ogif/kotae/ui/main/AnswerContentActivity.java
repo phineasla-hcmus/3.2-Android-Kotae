@@ -23,8 +23,10 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityAnswerContentBinding;
-import com.ogif.kotae.ui.question.QuestionContentActivity;
 import com.ogif.kotae.utils.model.MarkdownUtils;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 public class AnswerContentActivity extends AppCompatActivity {
     private ActivityAnswerContentBinding binding;
@@ -83,6 +85,16 @@ public class AnswerContentActivity extends AppCompatActivity {
             MarkdownUtils.setMarkdown(getApplicationContext(), text, binding.tvPreview);
         }
         buildButtonsScroll();
+
+        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
+            @Override
+            public void onVisibilityChanged(boolean isOpen) {
+
+                if (isOpen && etMarkdown.hasFocus()) {
+                    binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
+                }
+            }
+        });
     }
 
     // pass answer content to CreateAnswerActivity

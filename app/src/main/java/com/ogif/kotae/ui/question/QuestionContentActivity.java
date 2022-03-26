@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.color.MaterialColors;
@@ -31,6 +33,9 @@ import io.noties.markwon.Markwon;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.utils.model.MarkdownUtils;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
 public class QuestionContentActivity extends AppCompatActivity {
 
@@ -90,6 +95,16 @@ public class QuestionContentActivity extends AppCompatActivity {
         }
 
         buildButtonsScroll();
+
+        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
+            @Override
+            public void onVisibilityChanged(boolean isOpen) {
+
+                if (isOpen && etMarkdown.hasFocus()) {
+                    binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
+                }
+            }
+        });
     }
 
     // pass answer content to CreateQuestionActivity
@@ -127,6 +142,7 @@ public class QuestionContentActivity extends AppCompatActivity {
                 binding.tilMarkdownInput.setVisibility(View.VISIBLE);
                 binding.tvPreview.setVisibility(View.GONE);
                 binding.etMarkdown.requestFocus();
+                binding.scrollView.setVisibility(View.VISIBLE);
 
                 // show keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -136,6 +152,7 @@ public class QuestionContentActivity extends AppCompatActivity {
             case 1: {
                 binding.tilMarkdownInput.setVisibility(View.GONE);
                 binding.tvPreview.setVisibility(View.VISIBLE);
+                binding.scrollView.setVisibility(View.GONE);
 
                 // hide keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

@@ -63,8 +63,8 @@ public class CreateAnswerActivity extends AppCompatActivity {
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
 
             binding.fabPostAnswer.setEnabled(false);
-            // TODO: get question id
-            this.viewModel.createAnswer("5dEcqTo35b9QA1XoGg2o", content);
+            String id = getIntent().getStringExtra("questionId");
+            this.viewModel.createAnswer(id, content);
             this.finish();
         });
 

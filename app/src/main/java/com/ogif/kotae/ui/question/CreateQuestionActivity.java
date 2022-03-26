@@ -150,7 +150,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
             binding.fabPostQuestion.setEnabled(false);
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
-//            this.finish();
+            this.finish();
         });
     }
 

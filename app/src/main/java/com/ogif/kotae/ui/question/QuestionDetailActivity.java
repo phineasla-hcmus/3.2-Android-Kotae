@@ -26,6 +26,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private QuestionDetailAdapter adapter;
     private QuestionDetailViewModel questionDetailViewModel;
     private RecyclerView recyclerView;
+    private String questionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
+        questionId = questionFromExtra.getId();
 
         QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(questionFromExtra);
         questionDetailViewModel = new ViewModelProvider(this, factory)
@@ -68,6 +70,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     private void startCreateAnswerActivity() {
         Intent intent = new Intent(getApplicationContext(), CreateAnswerActivity.class);
+        intent.putExtra("questionId", questionId);
         startActivity(intent);
     }
 
