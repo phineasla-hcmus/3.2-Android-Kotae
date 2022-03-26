@@ -1,6 +1,5 @@
 package com.ogif.kotae.ui.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,11 +16,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.FragmentBookmarkBinding;
-import com.ogif.kotae.databinding.FragmentHomeBinding;
-import com.ogif.kotae.ui.question.CreateQuestionActivity;
 
 
 public class BookmarkFragment extends Fragment {

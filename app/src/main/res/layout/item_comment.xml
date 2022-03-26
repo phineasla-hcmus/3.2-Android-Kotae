@@ -46,10 +46,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/all_upvote"
+        android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_arrow_upward"
+        app:iconTint="@color/color_toggle_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_comment_downvote"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_comment"
         app:layout_constraintTop_toBottomOf="@id/tv_comment"
         tools:text="10" />
 
@@ -58,23 +59,13 @@
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_between_y"
         android:contentDescription="@string/all_downvote"
+        android:textColor="@color/color_toggle_button"
         app:icon="@drawable/ic_baseline_arrow_downward"
+        app:iconTint="@color/color_toggle_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_comment_report"
         app:layout_constraintStart_toEndOf="@+id/btn_comment_upvote"
         app:layout_constraintTop_toBottomOf="@id/tv_comment"
         tools:text="2" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_comment_report"
-        style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/all_report"
-        app:icon="@drawable/ic_outline_report"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_comment_downvote"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

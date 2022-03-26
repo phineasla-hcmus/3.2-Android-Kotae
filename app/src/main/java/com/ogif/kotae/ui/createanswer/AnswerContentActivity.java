@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.main;
+package com.ogif.kotae.ui.createanswer;
 
 import android.content.Context;
 import android.content.Intent;

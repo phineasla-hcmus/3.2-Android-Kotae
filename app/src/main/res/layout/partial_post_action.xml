@@ -8,45 +8,82 @@
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_post_action_upvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/all_upvote"
-        android:textColor="@color/color_toggle_button"
-        app:icon="@drawable/ic_baseline_arrow_upward"
-        app:iconTint="@color/color_toggle_button"
-        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_downvote"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10" />
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--    android:id="@+id/btn_post_action_upvote"-->
+    <!--    style="@style/Widget.Material3.Button.TextButton.Icon"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:contentDescription="@string/all_upvote"-->
+    <!--    android:textColor="@color/color_toggle_button"-->
+    <!--    app:icon="@drawable/ic_baseline_arrow_upward"-->
+    <!--    app:iconTint="@color/color_toggle_button"-->
+    <!--    app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:text="10" />-->
 
-    <com.google.android.material.button.MaterialButton
+    <!--<com.google.android.material.checkbox.MaterialCheckBox-->
+    <!--    android:id="@+id/btn_post_action_upvote"-->
+    <!--    style="@style/Widget.Material3.Button.TextButton.Icon"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:contentDescription="@string/all_upvote"-->
+    <!--    android:textColor="@color/color_toggle_button"-->
+    <!--    android:button="@drawable/ic_baseline_arrow_upward"-->
+    <!--    app:iconTint="@color/color_toggle_button"-->
+    <!--    app:layout_constraintHorizontal_chainStyle="spread_inside"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:text="10" />-->
+
+    <RadioGroup
         android:id="@+id/btn_post_action_downvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/all_downvote"
-        android:textColor="@color/color_toggle_button"
-        app:icon="@drawable/ic_baseline_arrow_downward"
-        app:iconTint="@color/color_toggle_button"
-        app:layout_constraintEnd_toStartOf="@+id/btn_post_action_comment"
-        app:layout_constraintStart_toEndOf="@+id/btn_post_action_upvote"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="2" />
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_upvote"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_baseline_arrow_upward"
+            tools:text="10" />
+
+        <RadioButton
+            android:id="@+id/radio_downvote"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_baseline_arrow_downward"
+            tools:text="10" />
+    </RadioGroup>
+
+
+    <!--<com.google.android.material.button.MaterialButton-->
+    <!--    android:id="@+id/btn_post_action_downvote"-->
+    <!--    style="@style/Widget.Material3.Button.TextButton.Icon"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginStart="@dimen/margin_between_y"-->
+    <!--    android:contentDescription="@string/all_downvote"-->
+    <!--    android:textColor="@color/color_toggle_button"-->
+    <!--    app:icon="@drawable/ic_baseline_arrow_downward"-->
+    <!--    app:iconTint="@color/color_toggle_button"-->
+    <!--    app:layout_constraintStart_toEndOf="@+id/btn_post_action_upvote"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:text="2" />-->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_post_action_comment"
         style="@style/Widget.Material3.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_between_y"
         android:contentDescription="@string/question_detail_comment"
         android:textColor="?attr/colorOnSurface"
         app:icon="@drawable/ic_baseline_comment"
         app:iconTint="?attr/colorOnSurface"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_post_action_downvote"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="5" />

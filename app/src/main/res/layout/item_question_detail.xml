@@ -8,17 +8,38 @@
     android:background="?attr/colorSurface"
     android:paddingHorizontal="@dimen/padding_y_md">
 
+    <com.ogif.kotae.ui.questiondetail.view.AuthorView
+        android:id="@+id/author_view_question_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_y_md"
+        app:layout_constraintEnd_toStartOf="@id/tv_question_detail_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_question_detail_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:lines="1"
+        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/author_view_question_detail"
+        tools:text="Asked 2 years ago" />
+
     <TextView
         android:id="@+id/tv_question_detail_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/margin_between_y_md"
+        android:layout_marginTop="@dimen/margin_between_y"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/author_view_question_detail"
         tools:text="Question title" />
 
     <TextView
@@ -69,34 +90,26 @@
             tools:text="Lớp 5" />
     </com.google.android.material.chip.ChipGroup>
 
-    <TextView
-        android:id="@+id/tv_question_detail_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:lines="1"
-        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/author_view_question_detail"
-        tools:text="Asked 2 years ago" />
-
-    <com.ogif.kotae.ui.question.view.AuthorView
-        android:id="@+id/author_view_question_detail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/tv_question_detail_date"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
-
-    <com.ogif.kotae.ui.question.view.PostActionView
+    <com.ogif.kotae.ui.questiondetail.view.PostActionView
         android:id="@+id/post_action_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip_group_question_detail_tags" />
+
+    <TextView
+        android:id="@+id/tv_question_detail_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_between_y"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/author_view_question_detail" />
+        app:layout_constraintTop_toBottomOf="@id/post_action_question_detail"
+        tools:text="2 Answers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
