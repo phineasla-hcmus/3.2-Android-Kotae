@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question.view;
+package com.ogif.kotae.ui.questiondetail.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -13,8 +13,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.ogif.kotae.databinding.PartialAuthorBinding;
 
 import java.util.Locale;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AuthorView extends ConstraintLayout {
     PartialAuthorBinding binding;

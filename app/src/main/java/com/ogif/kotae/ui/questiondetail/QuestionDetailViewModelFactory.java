@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.questiondetail;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;

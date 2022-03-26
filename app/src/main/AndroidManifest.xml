@@ -40,21 +40,21 @@
             android:name=".ui.auth.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.question.QuestionContentActivity"
+            android:name=".ui.createquestion.QuestionContentActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name=".ui.question.CreateQuestionActivity"
+            android:name=".ui.createquestion.CreateQuestionActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.AnswerContentActivity"
+            android:name=".ui.createanswer.AnswerContentActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".ui.main.CreateAnswerActivity"
+            android:name=".ui.createanswer.CreateAnswerActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.question.QuestionDetailActivity"
+            android:name=".ui.questiondetail.QuestionDetailActivity"
             android:exported="false"
             android:parentActivityName=".ui.main.MainActivity">
             <meta-data

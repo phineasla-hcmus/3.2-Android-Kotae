@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question.adapter;
+package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,8 +19,8 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.ui.question.view.AuthorView;
-import com.ogif.kotae.ui.question.view.PostActionView;
+import com.ogif.kotae.ui.questiondetail.view.AuthorView;
+import com.ogif.kotae.ui.questiondetail.view.PostActionView;
 
 import java.util.ArrayList;
 import java.util.List;

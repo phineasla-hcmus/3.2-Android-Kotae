@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.question;
+package com.ogif.kotae.ui.questiondetail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +17,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
-import com.ogif.kotae.ui.main.CreateAnswerActivity;
-import com.ogif.kotae.ui.question.adapter.QuestionDetailAdapter;
+import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
+import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";

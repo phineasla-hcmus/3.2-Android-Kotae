@@ -18,7 +18,7 @@ import com.arthurivanets.adapster.markers.ItemResources;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.ui.question.QuestionDetailActivity;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 import org.jetbrains.annotations.Nullable;
 

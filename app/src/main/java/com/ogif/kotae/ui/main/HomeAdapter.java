@@ -19,10 +19,9 @@ import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.QuestionViewModel;
-import com.ogif.kotae.ui.question.QuestionDetailActivity;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.utils.model.DateUtils;
 import com.ogif.kotae.utils.model.MarkdownUtils;
-import com.ogif.kotae.utils.model.QuestionUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
