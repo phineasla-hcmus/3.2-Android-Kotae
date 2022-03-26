@@ -9,17 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityAnswerContentBinding;
@@ -31,12 +27,6 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 public class AnswerContentActivity extends AppCompatActivity {
     private ActivityAnswerContentBinding binding;
     private View view;
-    private EditText etMarkdown;
-    private TextView tvPreview;
-    private Button btnBold, btnItalic, btnCode, btnHeading1, btnHeading2;
-    private TabLayout tabLayout;
-    private ExtendedFloatingActionButton fabSaveAnswer;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +36,11 @@ public class AnswerContentActivity extends AppCompatActivity {
         view = binding.getRoot();
         setContentView(view);
 
-        toolbar = binding.tbAnswerContent;
-        this.setSupportActionBar(toolbar);
+        this.setSupportActionBar(binding.tbAnswerContent);
 
         getSupportActionBar().setTitle("Answer content");
 
-        etMarkdown = binding.etMarkdown;
-        tvPreview = binding.tvPreview;
-
-        tabLayout = binding.tabLayout;
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 onTabChanged(tab.getPosition());
@@ -73,15 +57,14 @@ public class AnswerContentActivity extends AppCompatActivity {
             }
         });
 
-        fabSaveAnswer = binding.fabSaveAnswer;
-        fabSaveAnswer.setOnClickListener(v -> {
+        binding.fabSaveAnswer.setOnClickListener(v -> {
             saveDraftContent();
         });
 
         Intent intent = getIntent();
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (!TextUtils.isEmpty(text)) {
-            etMarkdown.setText(text);
+            binding.etMarkdown.setText(text);
             MarkdownUtils.setMarkdown(getApplicationContext(), text, binding.tvPreview);
         }
         buildButtonsScroll();
@@ -90,7 +73,7 @@ public class AnswerContentActivity extends AppCompatActivity {
             @Override
             public void onVisibilityChanged(boolean isOpen) {
 
-                if (isOpen && etMarkdown.hasFocus()) {
+                if (isOpen && binding.etMarkdown.hasFocus()) {
                     binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
                 }
             }
@@ -119,19 +102,20 @@ public class AnswerContentActivity extends AppCompatActivity {
 
     private void onTabChanged(int position) {
         // get a reference to the tabs container view
-        LinearLayout ll = (LinearLayout) tabLayout.getChildAt(0);
+        LinearLayout ll = (LinearLayout) binding.tabLayout.getChildAt(0);
         // get the child view at the position of the currently selected tab and set selected to false
-        ll.getChildAt(tabLayout.getSelectedTabPosition()).setSelected(false);
+        ll.getChildAt(binding.tabLayout.getSelectedTabPosition()).setSelected(false);
         // get the child view at the new selected position and set selected to true
         ll.getChildAt(position).setSelected(true);
         // move the selection indicator
-        tabLayout.setScrollPosition(position, 0, true);
+        binding.tabLayout.setScrollPosition(position, 0, true);
 
         switch (position) {
             case 0: {
                 binding.tilMarkdownInput.setVisibility(View.VISIBLE);
                 binding.tvPreview.setVisibility(View.GONE);
                 binding.etMarkdown.requestFocus();
+                binding.llBtnEdit.setVisibility(View.VISIBLE);
 
                 // show keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -141,6 +125,7 @@ public class AnswerContentActivity extends AppCompatActivity {
             case 1: {
                 binding.tilMarkdownInput.setVisibility(View.GONE);
                 binding.tvPreview.setVisibility(View.VISIBLE);
+                binding.llBtnEdit.setVisibility(View.GONE);
 
                 // hide keyboard
                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

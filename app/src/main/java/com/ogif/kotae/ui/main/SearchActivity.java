@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.ogif.kotae.R;
 import com.ogif.kotae.adapters.SearchRecyclerViewAdapter;
 import com.ogif.kotae.adapters.model.SearchItem;
@@ -77,7 +75,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initProgressBar() {
-        binding.progressBar.setVisibility(View.GONE);
+        binding.pbSearch.setVisibility(View.GONE);
     }
 
     private void initSearchView() {
@@ -86,25 +84,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         persistentSearchView.setOnRightBtnClickListener(this);
         persistentSearchView.showRightButton();
         persistentSearchView.setVoiceRecognitionDelegate(new VoiceRecognitionDelegate(this));
-        this.mOnSearchConfirmedListener = new OnSearchConfirmedListener() {
-            @Override
-            public void onSearchConfirmed(PersistentSearchView searchView, String query) {
-                Toast.makeText(SearchActivity.this, "Search confirmed", Toast.LENGTH_SHORT).show();
-                SearchActivity.this.saveSearchQueryIfNecessary(query);
-                searchView.collapse();
+        this.mOnSearchConfirmedListener = (searchView, query) -> {
+            Toast.makeText(SearchActivity.this, "Search confirmed", Toast.LENGTH_SHORT).show();
+            SearchActivity.this.saveSearchQueryIfNecessary(query);
+            searchView.collapse();
 
-                SearchActivity.this.performSearch(query);
-            }
+            SearchActivity.this.performSearch(query);
         };
         persistentSearchView.setOnSearchConfirmedListener(this.mOnSearchConfirmedListener);
-        this.mOnSearchQueryChangeListener = new OnSearchQueryChangeListener() {
-            @Override
-            public void onSearchQueryChanged(PersistentSearchView searchView, String oldQuery, String newQuery) {
-                if (newQuery.isEmpty()) {
-                    setSuggestions(dataProvider.getInitialSearchQueries(), true);
-                } else {
-                    setSuggestions(dataProvider.getSuggestionsForQuery(newQuery), true);
-                }
+        this.mOnSearchQueryChangeListener = (searchView, oldQuery, newQuery) -> {
+            if (newQuery.isEmpty()) {
+                setSuggestions(dataProvider.getInitialSearchQueries(), true);
+            } else {
+                setSuggestions(dataProvider.getSuggestionsForQuery(newQuery), true);
             }
         };
         persistentSearchView.setOnSearchQueryChangeListener(this.mOnSearchQueryChangeListener);
@@ -138,14 +130,14 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initEmptyView() {
         // if items are empty, set visibility to true
-        binding.emptyViewLl.setVisibility(View.VISIBLE);
+        binding.llSearchEmptyView.setVisibility(View.VISIBLE);
     }
 
     private void initRecyclerView() {
-        binding.recyclerView.setLayoutManager((RecyclerView.LayoutManager) this.initLayoutManager());
-        binding.recyclerView.setAdapter(this.initAdapter());
-        binding.recyclerView.addItemDecoration((RecyclerView.ItemDecoration) this.initVerticalSpacingItemDecorator());
-        binding.recyclerView.addOnScrollListener((RecyclerView.OnScrollListener) this.initHeaderedRecyclerViewListener());
+        binding.rvSearch.setLayoutManager((RecyclerView.LayoutManager) this.initLayoutManager());
+        binding.rvSearch.setAdapter(this.initAdapter());
+        binding.rvSearch.addItemDecoration((RecyclerView.ItemDecoration) this.initVerticalSpacingItemDecorator());
+        binding.rvSearch.addOnScrollListener((RecyclerView.OnScrollListener) this.initHeaderedRecyclerViewListener());
     }
 
     private final LinearLayoutManager initLayoutManager() {
@@ -153,17 +145,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private final SearchRecyclerViewAdapter initAdapter() {
-        SearchRecyclerViewAdapter var1 = new SearchRecyclerViewAdapter((Context) this, this.items);
-        var1.setMOnItemClickListener(new OnItemClickListener<SearchItem>() {
-            @Override
-            public void onItemClicked(View view, SearchItem item, int position) {
-                Toast.makeText(SearchActivity.this, "Username", Toast.LENGTH_SHORT).show();
-            }
-        });
+        SearchRecyclerViewAdapter adapter = new SearchRecyclerViewAdapter((Context) this, this.items);
+        this.adapter = adapter;
 
-        this.adapter = var1;
-
-        return var1;
+        return adapter;
     }
 
     private final VerticalSpacingItemDecorator initVerticalSpacingItemDecorator() {
@@ -187,14 +172,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private final void performSearch(String query) {
-        LinearLayout var18 = binding.emptyViewLl;
-        ViewUtils.makeGone((View) var18);
-        RecyclerView var19 = binding.recyclerView;
-        var19.setAlpha(0.0F);
-        ProgressBar var20 = binding.progressBar;
-        ViewUtils.makeVisible((View) var20);
-        SearchRecyclerViewAdapter var21 = this.adapter;
-        var21.clear();
+        ViewUtils.makeGone((View) binding.llSearchEmptyView);
+        binding.rvSearch.setAlpha(0.0F);
+        ViewUtils.makeVisible((View) binding.pbSearch);
+        this.adapter.clear();
 
         this.viewModel.getQuestions(query);
 
@@ -214,9 +195,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 persistentSearchView.hideProgressBar(false);
                 persistentSearchView.showLeftButton();
                 adapter.setItems(items);
-                ProgressBar var10000 = binding.progressBar;
-                ViewUtils.makeGone((View) var10000);
-                binding.recyclerView.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
+                ViewUtils.makeGone((View) binding.pbSearch);
+                binding.rvSearch.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
             }
         };
         (new Handler()).postDelayed(runnable, 1000L);

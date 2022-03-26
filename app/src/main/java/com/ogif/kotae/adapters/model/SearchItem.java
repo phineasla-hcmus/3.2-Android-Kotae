@@ -27,13 +27,13 @@ public final class SearchItem extends BaseItem {
 
     @NonNull
     public SearchItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
-        View var10002 = inflater.inflate(R.layout.item_search, parent, false);
+        View view = inflater.inflate(R.layout.item_search, parent, false);
 
-        return new SearchItem.ViewHolder(var10002);
+        return new SearchItem.ViewHolder(view);
     }
 
-    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter var1, ViewGroup var2, LayoutInflater var3, ItemResources var4) {
-        return (androidx.recyclerview.widget.RecyclerView.ViewHolder) this.init(var1, var2, var3);
+    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter adapter, ViewGroup parent, LayoutInflater inflater, ItemResources var4) {
+        return (androidx.recyclerview.widget.RecyclerView.ViewHolder) this.init(adapter, parent, inflater);
     }
 
     @Override
@@ -43,7 +43,7 @@ public final class SearchItem extends BaseItem {
         this.bindTitle((ViewHolder) viewHolder, question);
         this.bindProfileImage((ViewHolder) viewHolder, question);
         this.bindUsername((ViewHolder) viewHolder, question);
-        this.bindFullName((ViewHolder) viewHolder, question);
+        this.bindPoint((ViewHolder) viewHolder, question);
         this.setOnItemClickListener((ViewHolder) viewHolder, new OnItemClickListener() {
             @Override
             public void onItemClicked(View view, Object item, int position) {
@@ -53,29 +53,29 @@ public final class SearchItem extends BaseItem {
         });
     }
 
-    private final void bindProfileImage(SearchItem.ViewHolder $this$bindProfileImage, Question Question) {
-        $this$bindProfileImage.getProfileImageIv().setImageResource(R.drawable.ic_teacher);
-        $this$bindProfileImage.getCommentIv().setImageResource(R.drawable.ic_baseline_comment);
+    private final void bindProfileImage(SearchItem.ViewHolder viewHolder, Question Question) {
+        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_teacher);
+        viewHolder.getIvComment().setImageResource(R.drawable.ic_baseline_comment);
     }
 
-    private final void bindUsername(SearchItem.ViewHolder $this$bindUsername, Question Question) {
-        TextView var10000 = $this$bindUsername.getUsernameTv();
-        var10000.setText((CharSequence) Question.getAuthor());
+    private final void bindUsername(SearchItem.ViewHolder viewHolder, Question Question) {
+        TextView tvUsername = viewHolder.getTvUsername();
+        tvUsername.setText((CharSequence) Question.getAuthor());
     }
 
-    private final void bindFullName(SearchItem.ViewHolder $this$bindFullName, Question Question) {
-        TextView var10000 = $this$bindFullName.getFullNameTv();
+    private final void bindPoint(SearchItem.ViewHolder viewHolder, Question Question) {
+        TextView tvPoint = viewHolder.getTvPoint();
         //TODO: get point of current user
-        var10000.setText(String.valueOf(20));
+        tvPoint.setText(String.valueOf(20));
     }
 
-    private final void bindTitle(SearchItem.ViewHolder $this$bindTitle, Question Question) {
-        TextView var10000 = $this$bindTitle.getTitle();
-        var10000.setText((CharSequence) Question.getTitle());
+    private final void bindTitle(SearchItem.ViewHolder viewHolder, Question Question) {
+        TextView tvTitle = viewHolder.getTvTitle();
+        tvTitle.setText((CharSequence) Question.getTitle());
     }
 
     public final void setOnItemClickListener(@NonNull SearchItem.ViewHolder viewHolder, @Nullable OnItemClickListener onItemClickListener) {
-        viewHolder.getContentContainerRl().setOnClickListener((OnClickListener) (new ItemClickListener(this, 0, onItemClickListener)));
+        viewHolder.getRlContentContainer().setOnClickListener((OnClickListener) (new ItemClickListener(this, 0, onItemClickListener)));
     }
 
     public int getLayout() {
@@ -87,43 +87,42 @@ public final class SearchItem extends BaseItem {
     }
 
     public static final class ViewHolder extends com.arthurivanets.adapster.model.BaseItem.ViewHolder {
-        private final TextView usernameTv, tvTitle;
-        private final TextView fullNameTv;
-        private final ImageView profileImageIv, commentIv;
-        private final RelativeLayout contentContainerRl;
+        private final TextView tvUsername, tvTitle, tvPoint;
+        private final ImageView ivAvatar, ivComment;
+        private final RelativeLayout rlContentContainer;
 
-        public final TextView getUsernameTv() {
-            return this.usernameTv;
+        public final TextView getTvUsername() {
+            return this.tvUsername;
         }
 
-        public final TextView getFullNameTv() {
-            return this.fullNameTv;
+        public final TextView getTvPoint() {
+            return this.tvPoint;
         }
 
-        public final ImageView getProfileImageIv() {
-            return this.profileImageIv;
+        public final ImageView getIvAvatar() {
+            return this.ivAvatar;
         }
 
-        public final ImageView getCommentIv() {
-            return this.commentIv;
+        public final ImageView getIvComment() {
+            return this.ivComment;
         }
 
-        public final RelativeLayout getContentContainerRl() {
-            return this.contentContainerRl;
+        public final RelativeLayout getRlContentContainer() {
+            return this.rlContentContainer;
         }
 
-        public final TextView getTitle() {
+        public final TextView getTvTitle() {
             return this.tvTitle;
         }
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tvTitle = (TextView) itemView.findViewById(R.id.tv_search_item_title);
-            this.usernameTv = (TextView) itemView.findViewById(R.id.tv_item_username);
-            this.fullNameTv = (TextView) itemView.findViewById(R.id.tv_item_point);
-            this.profileImageIv = (ImageView) itemView.findViewById(R.id.civ_item_avatar);
-            this.contentContainerRl = (RelativeLayout) itemView.findViewById(R.id.contentContainerRl);
-            this.commentIv = (ImageView) itemView.findViewById(R.id.firstButtonIv);
+            this.tvUsername = (TextView) itemView.findViewById(R.id.tv_item_username);
+            this.tvPoint = (TextView) itemView.findViewById(R.id.tv_item_point);
+            this.ivAvatar = (ImageView) itemView.findViewById(R.id.civ_item_avatar);
+            this.rlContentContainer = (RelativeLayout) itemView.findViewById(R.id.rl_content_container);
+            this.ivComment = (ImageView) itemView.findViewById(R.id.iv_comment);
         }
 
 

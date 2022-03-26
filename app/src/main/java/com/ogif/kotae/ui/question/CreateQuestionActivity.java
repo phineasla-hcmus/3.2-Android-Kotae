@@ -16,7 +16,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
@@ -40,27 +39,26 @@ import java.util.Objects;
 public class CreateQuestionActivity extends AppCompatActivity {
 
     private ActivityCreateQuestionBinding binding;
-    private Toolbar toolbar;
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
-    private String title, content, selectedGradeId, selectedSubjectId, selectedGradeName, selectedSubjectName;
+    private String content, selectedGradeId, selectedSubjectId, selectedGradeName, selectedSubjectName;
     private QuestionViewModel viewModel;
     private GradeRepository gradeRepository;
     private SubjectRepository subjectRepository;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityCreateQuestionBinding.inflate(getLayoutInflater());
-        View view1 = binding.getRoot();
-        setContentView(view1);
+        view = binding.getRoot();
+        setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
 
-        toolbar = (Toolbar) binding.tbCreateQuestion;
-        this.setSupportActionBar(toolbar);
+        this.setSupportActionBar(binding.tbCreateQuestion);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Create question");
 

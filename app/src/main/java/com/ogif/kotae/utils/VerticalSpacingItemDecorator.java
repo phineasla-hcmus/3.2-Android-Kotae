@@ -15,8 +15,8 @@ public final class VerticalSpacingItemDecorator extends ItemDecoration {
 
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull State state) {
         int position = parent.getChildAdapterPosition(view);
-        Adapter var10001 = parent.getAdapter();
-        if (position != var10001.getItemCount() - 1) {
+        Adapter adapter = parent.getAdapter();
+        if (position != adapter.getItemCount() - 1) {
             outRect.bottom = this.verticalSpacing - this.verticalSpacingCompensation;
         } else {
             outRect.bottom = this.verticalSpacing;

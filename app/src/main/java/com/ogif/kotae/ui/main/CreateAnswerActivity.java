@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -14,7 +13,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.ogif.kotae.R;
@@ -28,10 +26,8 @@ import java.util.Objects;
 public class CreateAnswerActivity extends AppCompatActivity {
 
     private ActivityCreateAnswerBinding binding;
-    private Toolbar toolbar;
-    private EditText etContent;
     private View view;
-    private ActivityResultLauncher<Intent> someActivityResultLauncher;
+    private ActivityResultLauncher<Intent> answerActivityResultLauncher;
     private String content;
     private AnswerViewModel viewModel;
 
@@ -44,15 +40,11 @@ public class CreateAnswerActivity extends AppCompatActivity {
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(AnswerViewModel.class);
-
-        toolbar = (Toolbar) binding.tbCreateAnswer;
-        this.setSupportActionBar(toolbar);
+        this.setSupportActionBar(binding.tbCreateAnswer);
 
         getSupportActionBar().setTitle("Create answer");
 
-        etContent = binding.etContent;
-
-        etContent.setOnClickListener(view -> {
+        binding.etContent.setOnClickListener(view -> {
             startAnswerContentActivity();
         });
 
@@ -67,7 +59,7 @@ public class CreateAnswerActivity extends AppCompatActivity {
 
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-        someActivityResultLauncher = registerForActivityResult(
+        answerActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
@@ -76,7 +68,7 @@ public class CreateAnswerActivity extends AppCompatActivity {
                             // There are no request codes
                             Intent data = result.getData();
                             content = data.getStringExtra(Intent.EXTRA_TEXT);
-                            MarkdownUtils.setMarkdown(getApplicationContext(), content, etContent);
+                            MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
                         }
                     }
                 });
@@ -84,14 +76,14 @@ public class CreateAnswerActivity extends AppCompatActivity {
 
     public void startAnswerContentActivity() {
         if (TextUtils.isEmpty(content)) {
-            content = etContent.getText().toString();
+            content = binding.etContent.getText().toString();
         }
         String description = getResources().getString(R.string.create_answer_content_description);
         Intent intent = new Intent(this, AnswerContentActivity.class);
         if (!content.equals(description)) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
-        someActivityResultLauncher.launch(intent);
+        answerActivityResultLauncher.launch(intent);
     }
 
     @Override

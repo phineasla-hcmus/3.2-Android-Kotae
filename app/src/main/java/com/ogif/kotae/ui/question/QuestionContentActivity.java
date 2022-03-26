@@ -30,13 +30,8 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 
 public class QuestionContentActivity extends AppCompatActivity {
 
-    private EditText etMarkdown;
-    private TextView tvPreview;
     private ActivityQuestionContentBinding binding;
-    private TabLayout tabLayout;
-    private ExtendedFloatingActionButton fabSaveQuestion;
     private View view;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +41,11 @@ public class QuestionContentActivity extends AppCompatActivity {
         view = binding.getRoot();
         setContentView(view);
 
-        toolbar = binding.tbQuestionContent;
-        this.setSupportActionBar(toolbar);
+        this.setSupportActionBar(binding.tbQuestionContent);
 
         getSupportActionBar().setTitle("Question content");
 
-        etMarkdown = binding.etMarkdown;
-        tvPreview = binding.tvPreview;
-
-        tabLayout = binding.tabLayout;
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 onTabChanged(tab.getPosition());
@@ -73,15 +62,14 @@ public class QuestionContentActivity extends AppCompatActivity {
             }
         });
 
-        fabSaveQuestion = binding.fabSaveQuestion;
-        fabSaveQuestion.setOnClickListener(v -> {
+        binding.fabSaveQuestion.setOnClickListener(v -> {
             saveDraftContent();
         });
 
         Intent intent = getIntent();
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (!TextUtils.isEmpty(text)) {
-            etMarkdown.setText(text);
+            binding.etMarkdown.setText(text);
             MarkdownUtils.setMarkdown(getApplicationContext(), text, binding.tvPreview);
         }
 
@@ -90,8 +78,7 @@ public class QuestionContentActivity extends AppCompatActivity {
         KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
             @Override
             public void onVisibilityChanged(boolean isOpen) {
-
-                if (isOpen && etMarkdown.hasFocus()) {
+                if (isOpen && binding.etMarkdown.hasFocus()) {
                     binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
                 }
             }
@@ -120,13 +107,13 @@ public class QuestionContentActivity extends AppCompatActivity {
 
     private void onTabChanged(int position) {
         // get a reference to the tabs container view
-        LinearLayout ll = (LinearLayout) tabLayout.getChildAt(0);
+        LinearLayout ll = (LinearLayout) binding.tabLayout.getChildAt(0);
         // get the child view at the position of the currently selected tab and set selected to false
-        ll.getChildAt(tabLayout.getSelectedTabPosition()).setSelected(false);
+        ll.getChildAt(binding.tabLayout.getSelectedTabPosition()).setSelected(false);
         // get the child view at the new selected position and set selected to true
         ll.getChildAt(position).setSelected(true);
         // move the selection indicator
-        tabLayout.setScrollPosition(position, 0, true);
+        binding.tabLayout.setScrollPosition(position, 0, true);
 
         switch (position) {
             case 0: {
