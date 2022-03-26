@@ -43,7 +43,6 @@ public class QuestionViewModel extends ViewModel {
                 questionRepository.createQuestion(authorId, authorName, title, content, subjectId, gradeId, subject, grade);
             }
         });
-
     }
 
     public LiveData<StateWrapper<Question>> getLiveData() {

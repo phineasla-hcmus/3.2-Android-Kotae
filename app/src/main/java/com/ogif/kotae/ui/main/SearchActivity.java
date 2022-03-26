@@ -4,15 +4,10 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -20,11 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.ogif.kotae.R;
 import com.ogif.kotae.adapters.SearchRecyclerViewAdapter;
 import com.ogif.kotae.adapters.model.SearchItem;
-import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivitySearchBinding;
 import com.ogif.kotae.utils.AnimationUtils;
 import com.ogif.kotae.utils.DataProvider;
@@ -41,7 +40,6 @@ import com.paulrybitskyi.persistentsearchview.utils.ViewUtils;
 import com.paulrybitskyi.persistentsearchview.utils.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
@@ -53,6 +51,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private OnSearchQueryChangeListener mOnSearchQueryChangeListener;
     private OnSuggestionChangeListener mOnSuggestionChangeListener;
     private SearchRecyclerViewAdapter adapter;
+    private SearchViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +60,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-//        adapter = new SearchRecyclerViewAdapter(this, items);
+
+        this.viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
 //        onRestoreState(savedInstanceState)
         init();
@@ -196,20 +196,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         SearchRecyclerViewAdapter var21 = this.adapter;
         var21.clear();
 
-        Iterable $this$map$iv = (Iterable) this.dataProvider.generateQuestions(query, 100);
-        Iterator var11 = $this$map$iv.iterator();
+        this.viewModel.getQuestions(query);
 
-        ArrayList<SearchItem> destination$iv$iv = new ArrayList<>();
+        this.viewModel.getQuestionLiveData().observe(this, questions -> {
+            this.items.clear();
+            if (questions != null) {
+                for (int i = 0; i < questions.size(); i++) {
+                    this.items.add(new SearchItem(questions.get(i)));
+                }
+            }
 
-        while (var11.hasNext()) {
-            Object item$iv$iv = var11.next();
-            Question p1 = (Question) item$iv$iv;
-            SearchItem var16 = new SearchItem(p1);
-            destination$iv$iv.add(var16);
-        }
-
-        this.items = destination$iv$iv;
-//        adapter.notifyDataSetChanged();
+        });
 
         Runnable runnable = new Runnable() {
             @Override

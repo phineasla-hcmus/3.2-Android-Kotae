@@ -13,15 +13,24 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionRepository {
     private static final String TAG = "QuestionRepository";
     private final FirebaseFirestore db;
     private final CollectionReference questionsRef;
     private final MutableLiveData<StateWrapper<Question>> mutableLiveData;
+
+    private String orderBy = Question.Field.postTime;
+    private Query.Direction orderByDirection = Query.Direction.DESCENDING;
 
     public QuestionRepository() {
         this.db = FirebaseFirestore.getInstance();
@@ -67,6 +76,24 @@ public class QuestionRepository {
         return questionsRef.whereEqualTo("blocked",false)
                             .orderBy("postTime", Query.Direction.DESCENDING)
                             .limit(20);
+    }
+
+    public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {
+        Task<QuerySnapshot> query = questionsRef.whereEqualTo("title", keyword)
+                .orderBy("postTime", orderByDirection)
+                .limit(limit)
+                .get();
+        onQueryListComplete(query, callback);
+    }
+
+    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
+        query.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                questions.add(document.toObject(Question.class));
+            }
+            callback.onSuccess(questions);
+        }).addOnFailureListener(callback::onFailure);
     }
 
 }
