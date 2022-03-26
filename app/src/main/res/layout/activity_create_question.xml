@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.question.CreateQuestionActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -16,7 +16,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:minHeight="700dp">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/abl_create_question"
@@ -104,7 +105,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="300dp"
                     android:clickable="true"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -164,6 +165,7 @@
                 android:layout_marginVertical="@dimen/margin_between_y"
                 android:layout_marginStart="@dimen/margin_x"
                 android:layout_marginEnd="8dp"
+                android:paddingBottom="150dp"
                 app:layout_constraintEnd_toStartOf="@+id/til_question_category_subject"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -187,6 +189,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_between_x"
                 android:layout_marginEnd="@dimen/margin_x"
+                android:paddingBottom="150dp"
                 app:layout_constraintBottom_toBottomOf="@+id/til_question_category_grade"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
