@@ -39,8 +39,8 @@ public class VerticalVoteView extends VoteView {
     @Override
     protected void init() {
         super.init();
-        // this.upvoteCounter = findViewById(<text-view-here>);
-        // this.downvoteCounter = findViewById(<text-view-here>);
+        this.upvoteCounter = findViewById(R.id.tv_vertical_vote_view_upvote);
+        this.downvoteCounter = findViewById(R.id.tv_vertical_vote_view_downvote);
     }
 
     @Override

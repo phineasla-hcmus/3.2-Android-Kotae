@@ -2,12 +2,14 @@ package com.ogif.kotae.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.CompoundButton;
+import android.util.Log;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.ogif.kotae.R;
 
 import java.util.Locale;
@@ -21,8 +23,9 @@ public class VoteView extends ConstraintLayout {
     protected int upvoteCount;
     protected int downvoteCount;
     protected int currentState;
-    protected CompoundButton upvote;
-    protected CompoundButton downvote;
+    protected MaterialButtonToggleGroup toggleGroup;
+    protected Button upvote;
+    protected Button downvote;
     protected OnStateChangeListener listener;
 
     interface OnStateChangeListener {
@@ -51,18 +54,32 @@ public class VoteView extends ConstraintLayout {
         init();
     }
 
-    private void onUpvoteChanged(CompoundButton btn, boolean isChecked) {
-        if (isChecked)
-            updateState(UPVOTE);
-        else
-            updateState(NONE);
-    }
-
-    private void onDownvoteChanged(CompoundButton btn, boolean isChecked) {
-        if (isChecked)
-            updateState(UPVOTE);
-        else
-            updateState(NONE);
+    private void onVoteStateChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+        // if (checkedId == R.id.btn_vote_view_upvote)
+        //     Log.d("TEST", "UPVOTE: " + (isChecked ? "TRUE" : "FALSE"));
+        // if (checkedId == R.id.btn_vote_view_downvote)
+        //     Log.d("TEST", "DOWNVOTE: " + (isChecked ? "TRUE" : "FALSE"));
+        if (checkedId == R.id.btn_vote_view_upvote) {
+            if (isChecked) {
+                setUpvoteValue(getUpvoteValue() + 1);
+                setUpvoteActive(true);
+                setState(UPVOTE);
+            } else {
+                setUpvoteValue(getUpvoteValue() - 1);
+                setUpvoteActive(false);
+                setState(NONE);
+            }
+        } else if (checkedId == R.id.btn_vote_view_downvote) {
+            if (isChecked) {
+                setDownvoteValue(getDownvoteValue() + 1);
+                setDownvoteActive(true);
+                setState(DOWNVOTE);
+            } else {
+                setDownvoteValue(getDownvoteValue() - 1);
+                setDownvoteActive(false);
+                setState(NONE);
+            }
+        }
     }
 
     protected void inflate() {
@@ -72,40 +89,35 @@ public class VoteView extends ConstraintLayout {
     protected void init() {
         inflate();
         this.currentState = NONE;
-        this.upvote = findViewById(R.id.chk_vote_view_upvote);
-        this.downvote = findViewById(R.id.chk_vote_view_downvote);
-        upvote.setOnCheckedChangeListener(this::onUpvoteChanged);
-        downvote.setOnCheckedChangeListener(this::onDownvoteChanged);
+        this.toggleGroup = findViewById(R.id.toggle_group_vote_view);
+        this.upvote = findViewById(R.id.btn_vote_view_upvote);
+        this.downvote = findViewById(R.id.btn_vote_view_downvote);
+
+        toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
     }
 
     public void updateState(int state) {
         if (state == NONE && currentState != NONE) {
             if (currentState == UPVOTE) {
                 setUpvoteValue(getUpvoteValue() - 1);
-                if (listener != null)
-                    listener.onUpvote(false);
+                setUpvoteActive(false);
             } else if (currentState == DOWNVOTE) {
                 setDownvoteValue(getDownvoteValue() - 1);
-                if (listener != null)
-                    listener.onDownvote(false);
+                setDownvoteActive(false);
             }
         } else if (state == UPVOTE && currentState != UPVOTE) {
             setUpvoteValue(getUpvoteValue() + 1);
-            if (listener != null)
-                listener.onUpvote(true);
+            setUpvoteActive(true);
             if (currentState == DOWNVOTE) {
                 setDownvoteValue(getDownvoteValue() - 1);
-                if (listener != null)
-                    listener.onDownvote(false);
+                setDownvoteActive(false);
             }
         } else if (state == DOWNVOTE && currentState != DOWNVOTE) {
             setDownvoteValue(getDownvoteValue() + 1);
-            if (listener != null)
-                listener.onDownvote(true);
+            setDownvoteActive(true);
             if (currentState == UPVOTE) {
                 setUpvoteValue(getUpvoteValue() - 1);
-                if (listener != null)
-                    listener.onUpvote(false);
+                setUpvoteActive(false);
             }
         }
         setState(state);
@@ -119,6 +131,16 @@ public class VoteView extends ConstraintLayout {
         downvote.setText(String.format(Locale.getDefault(), "%d", downvoteCount));
     }
 
+    protected void setUpvoteActive(boolean isActive) {
+        if (listener != null)
+            listener.onUpvote(isActive);
+    }
+
+    protected void setDownvoteActive(boolean isActive) {
+        if (listener != null)
+            listener.onDownvote(isActive);
+    }
+
     public void setOnStateChangeListener(@Nullable OnStateChangeListener listener) {
         this.listener = listener;
     }
@@ -128,26 +150,16 @@ public class VoteView extends ConstraintLayout {
     }
 
     public void setState(int state) {
-        upvote.setOnCheckedChangeListener(null);
-        downvote.setOnCheckedChangeListener(null);
-        switch (state) {
-            case NONE:
-                upvote.setChecked(false);
-                downvote.setChecked(false);
-                break;
-            case UPVOTE:
-                upvote.setChecked(true);
-                downvote.setChecked(false);
-                break;
-            case DOWNVOTE:
-                upvote.setChecked(false);
-                downvote.setChecked(true);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + state);
-        }
-        upvote.setOnCheckedChangeListener(this::onUpvoteChanged);
-        downvote.setOnCheckedChangeListener(this::onDownvoteChanged);
+        // https://stackoverflow.com/questions/15523157/change-checkbox-value-without-triggering-oncheckchanged
+        // toggleGroup.clearOnButtonCheckedListeners();
+        // if (state == NONE)
+        //     toggleGroup.clearChecked();
+        // else if (state == UPVOTE)
+        //     toggleGroup.check(R.id.btn_vote_view_upvote);
+        // else if (state == DOWNVOTE)
+        //     toggleGroup.check(R.id.btn_vote_view_downvote);
+        // else throw new IllegalStateException("Unexpected value: " + state);
+        // toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
         currentState = state;
     }
 

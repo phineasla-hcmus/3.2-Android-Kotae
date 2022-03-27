@@ -8,31 +8,58 @@
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chk_vote_view_upvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:button="@drawable/ic_baseline_arrow_upward"
-        android:buttonTint="@color/color_toggle_button"
-        android:textColor="@color/color_toggle_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10" />
+    <!--<com.google.android.material.checkbox.MaterialCheckBox-->
+    <!--    android:id="@+id/btn_vote_view_upvote"-->
+    <!--    style="@style/Widget.Material3.Button.TextButton.Icon"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:button="@drawable/ic_baseline_arrow_upward"-->
+    <!--    android:buttonTint="@color/color_toggle_button"-->
+    <!--    android:textColor="@color/color_toggle_button"-->
+    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:text="10" />-->
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chk_vote_view_downvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
+    <!--<com.google.android.material.checkbox.MaterialCheckBox-->
+    <!--    android:id="@+id/btn_vote_view_downvote"-->
+    <!--    style="@style/Widget.Material3.Button.TextButton.Icon"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginStart="@dimen/margin_between_y"-->
+    <!--    android:button="@drawable/ic_baseline_arrow_downward"-->
+    <!--    android:buttonTint="@color/color_toggle_button"-->
+    <!--    android:textColor="@color/color_toggle_button"-->
+    <!--    app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    app:layout_constraintStart_toEndOf="@id/btn_vote_view_upvote"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"-->
+    <!--    tools:text="2" />-->
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_vote_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_between_y"
-        android:button="@drawable/ic_baseline_arrow_downward"
-        android:buttonTint="@color/color_toggle_button"
-        android:textColor="@color/color_toggle_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/chk_vote_view_upvote"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="2" />
+        app:singleSelection="true">
+
+        <Button
+            android:id="@+id/btn_vote_view_upvote"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/all_upvote"
+            app:icon="@drawable/ic_baseline_arrow_upward"
+            app:iconTint="@color/color_toggle_button"
+            tools:text="10" />
+
+        <Button
+            android:id="@+id/btn_vote_view_downvote"
+            style="@style/Widget.Material3.Button.TextButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/all_downvote"
+            app:icon="@drawable/ic_baseline_arrow_downward"
+            app:iconTint="@color/color_toggle_button"
+            tools:text="3" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 </merge>

@@ -8,28 +8,80 @@
     android:orientation="horizontal"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chk_vertical_vote_view_upvote"
-        style="@style/Widget.Material3.Button.IconButton"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_vertical_vote_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:button="@drawable/ic_baseline_arrow_upward"
-        android:buttonTint="@color/color_toggle_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:singleSelection="true">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chk_vertical_vote_view_downvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/btn_vertical_vote_view_upvote"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/all_upvote"
+            app:icon="@drawable/ic_baseline_arrow_upward"
+            app:iconTint="@color/color_toggle_button" />
+
+        <Button
+            android:id="@+id/btn_vertical_vote_view_downvote"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/all_downvote"
+            app:icon="@drawable/ic_baseline_arrow_downward"
+            app:iconTint="@color/color_toggle_button" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <TextView
+        android:id="@+id/tv_vertical_vote_view_upvote"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_between_y"
-        android:button="@drawable/ic_baseline_arrow_downward"
-        android:buttonTint="@color/color_toggle_button"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/chk_vertical_vote_view_upvote"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="2" />
+        app:layout_constraintEnd_toStartOf="@id/tv_vertical_vote_view_downvote"
+        app:layout_constraintStart_toStartOf="@id/toggle_group_vertical_vote_view"
+        app:layout_constraintTop_toBottomOf="@+id/toggle_group_vertical_vote_view"
+        tools:text="100" />
+
+    <TextView
+        android:id="@+id/tv_vertical_vote_view_downvote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/toggle_group_vertical_vote_view"
+        app:layout_constraintStart_toEndOf="@id/tv_vertical_vote_view_upvote"
+        app:layout_constraintTop_toBottomOf="@id/toggle_group_vertical_vote_view"
+        tools:text="100" />
+
+    <!--<com.google.android.material.button.MaterialButtonToggleGroup-->
+    <!--    android:id="@+id/toggle_group_vertical_vote_view_1"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    app:layout_constraintStart_toEndOf="@id/toggle_group_vertical_vote_view"-->
+    <!--    app:singleSelection="true">-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_vertical_vote_view_upvote_1"-->
+    <!--        style="@style/Widget.Material3.Button.IconButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:contentDescription="@string/all_upvote"-->
+    <!--        android:drawableTop="@drawable/ic_baseline_arrow_upward"-->
+    <!--        android:drawableTint="@color/color_toggle_button"-->
+    <!--        tools:text="10" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_vertical_vote_view_downvote_1"-->
+    <!--        style="@style/Widget.Material3.Button.IconButton"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:contentDescription="@string/all_downvote"-->
+    <!--        android:drawableTop="@drawable/ic_baseline_arrow_downward"-->
+    <!--        android:drawableTint="@color/color_toggle_button"-->
+    <!--        tools:text="10" />-->
+    <!--</com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+
 </merge>
