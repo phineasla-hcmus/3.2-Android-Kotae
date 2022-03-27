@@ -55,29 +55,29 @@ public class VoteView extends ConstraintLayout {
     }
 
     private void onVoteStateChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-        // if (checkedId == R.id.btn_vote_view_upvote)
-        //     Log.d("TEST", "UPVOTE: " + (isChecked ? "TRUE" : "FALSE"));
-        // if (checkedId == R.id.btn_vote_view_downvote)
-        //     Log.d("TEST", "DOWNVOTE: " + (isChecked ? "TRUE" : "FALSE"));
         if (checkedId == R.id.btn_vote_view_upvote) {
             if (isChecked) {
                 setUpvoteValue(getUpvoteValue() + 1);
-                setUpvoteActive(true);
-                setState(UPVOTE);
+                if (listener != null)
+                    listener.onUpvote(true);
+                this.currentState = UPVOTE;
             } else {
                 setUpvoteValue(getUpvoteValue() - 1);
-                setUpvoteActive(false);
-                setState(NONE);
+                if (listener != null)
+                    listener.onUpvote(false);
+                this.currentState = NONE;
             }
         } else if (checkedId == R.id.btn_vote_view_downvote) {
             if (isChecked) {
                 setDownvoteValue(getDownvoteValue() + 1);
-                setDownvoteActive(true);
-                setState(DOWNVOTE);
+                if (listener != null)
+                    listener.onDownvote(true);
+                this.currentState = DOWNVOTE;
             } else {
                 setDownvoteValue(getDownvoteValue() - 1);
-                setDownvoteActive(false);
-                setState(NONE);
+                if (listener != null)
+                    listener.onDownvote(false);
+                this.currentState = NONE;
             }
         }
     }
@@ -96,31 +96,55 @@ public class VoteView extends ConstraintLayout {
         toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
     }
 
-    public void updateState(int state) {
-        if (state == NONE && currentState != NONE) {
-            if (currentState == UPVOTE) {
-                setUpvoteValue(getUpvoteValue() - 1);
-                setUpvoteActive(false);
-            } else if (currentState == DOWNVOTE) {
-                setDownvoteValue(getDownvoteValue() - 1);
-                setDownvoteActive(false);
-            }
-        } else if (state == UPVOTE && currentState != UPVOTE) {
-            setUpvoteValue(getUpvoteValue() + 1);
-            setUpvoteActive(true);
-            if (currentState == DOWNVOTE) {
-                setDownvoteValue(getDownvoteValue() - 1);
-                setDownvoteActive(false);
-            }
-        } else if (state == DOWNVOTE && currentState != DOWNVOTE) {
-            setDownvoteValue(getDownvoteValue() + 1);
-            setDownvoteActive(true);
-            if (currentState == UPVOTE) {
-                setUpvoteValue(getUpvoteValue() - 1);
-                setUpvoteActive(false);
-            }
-        }
-        setState(state);
+    // public void setVoteState(int state) {
+    //     if (state == NONE && currentState != NONE) {
+    //         if (currentState == UPVOTE) {
+    //             setUpvoteValue(getUpvoteValue() - 1);
+    //             setUpvoteActive(false);
+    //         } else if (currentState == DOWNVOTE) {
+    //             setDownvoteValue(getDownvoteValue() - 1);
+    //             setDownvoteActive(false);
+    //         }
+    //     } else if (state == UPVOTE && currentState != UPVOTE) {
+    //         setUpvoteValue(getUpvoteValue() + 1);
+    //         setUpvoteActive(true);
+    //         if (currentState == DOWNVOTE) {
+    //             setDownvoteValue(getDownvoteValue() - 1);
+    //             setDownvoteActive(false);
+    //         }
+    //     } else if (state == DOWNVOTE && currentState != DOWNVOTE) {
+    //         setDownvoteValue(getDownvoteValue() + 1);
+    //         setDownvoteActive(true);
+    //         if (currentState == UPVOTE) {
+    //             setUpvoteValue(getUpvoteValue() - 1);
+    //             setUpvoteActive(false);
+    //         }
+    //     }
+    //     this.currentState = state;
+    // }
+
+    /**
+     * Set state without calling {@link OnStateChangeListener}
+     *
+     * @param upvote   current upvote count
+     * @param downvote current downvote count
+     * @param state    {@link VoteView#UPVOTE}, {@link VoteView#DOWNVOTE} or {@link VoteView#NONE}
+     */
+    public void setVoteState(int upvote, int downvote, int state) {
+        // https://stackoverflow.com/questions/15523157/change-checkbox-value-without-triggering-oncheckchanged
+        toggleGroup.clearOnButtonCheckedListeners();
+        setUpvoteValue(upvote);
+        setDownvoteValue(downvote);
+        if (state == UPVOTE)
+            toggleGroup.check(R.id.btn_vote_view_upvote);
+        else if (state == DOWNVOTE)
+            toggleGroup.check(R.id.btn_vote_view_downvote);
+        toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
+        this.currentState = state;
+    }
+
+    public int getVoteState() {
+        return currentState;
     }
 
     protected void setUpvoteText() {
@@ -131,40 +155,12 @@ public class VoteView extends ConstraintLayout {
         downvote.setText(String.format(Locale.getDefault(), "%d", downvoteCount));
     }
 
-    protected void setUpvoteActive(boolean isActive) {
-        if (listener != null)
-            listener.onUpvote(isActive);
-    }
-
-    protected void setDownvoteActive(boolean isActive) {
-        if (listener != null)
-            listener.onDownvote(isActive);
-    }
-
     public void setOnStateChangeListener(@Nullable OnStateChangeListener listener) {
         this.listener = listener;
     }
 
     public OnStateChangeListener getOnStateChangeListener() {
         return listener;
-    }
-
-    public void setState(int state) {
-        // https://stackoverflow.com/questions/15523157/change-checkbox-value-without-triggering-oncheckchanged
-        // toggleGroup.clearOnButtonCheckedListeners();
-        // if (state == NONE)
-        //     toggleGroup.clearChecked();
-        // else if (state == UPVOTE)
-        //     toggleGroup.check(R.id.btn_vote_view_upvote);
-        // else if (state == DOWNVOTE)
-        //     toggleGroup.check(R.id.btn_vote_view_downvote);
-        // else throw new IllegalStateException("Unexpected value: " + state);
-        // toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
-        currentState = state;
-    }
-
-    public int getState() {
-        return currentState;
     }
 
     public void setUpvoteValue(int value) {
