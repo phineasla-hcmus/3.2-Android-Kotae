@@ -12,12 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_answer_content"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back"
-            app:titleTextColor="?android:attr/textColorPrimary" />
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_answer_content"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorSurface"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_question_answer_content"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back"
+                app:title="Answer content" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -111,17 +121,5 @@
 
 
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_save_answer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary"
-            app:icon="@drawable/ic_outline_save"
-            app:iconTint="?attr/colorPrimary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

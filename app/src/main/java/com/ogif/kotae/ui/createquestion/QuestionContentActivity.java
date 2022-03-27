@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
@@ -37,10 +39,6 @@ public class QuestionContentActivity extends AppCompatActivity {
         view = binding.getRoot();
         setContentView(view);
 
-        this.setSupportActionBar(binding.tbQuestionContent);
-
-        getSupportActionBar().setTitle("Question content");
-
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -58,8 +56,13 @@ public class QuestionContentActivity extends AppCompatActivity {
             }
         });
 
-        binding.fabSaveQuestion.setOnClickListener(v -> {
+        binding.toolbarQuestionContent.setOnClickListener(v -> {
+            this.finish();
+        });
+
+        binding.toolbarQuestionContent.getMenu().getItem(0).setOnMenuItemClickListener(v -> {
             saveDraftContent();
+            return true;
         });
 
         Intent intent = getIntent();
@@ -89,16 +92,6 @@ public class QuestionContentActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_TEXT, content);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void onTabChanged(int position) {

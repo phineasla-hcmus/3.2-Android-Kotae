@@ -11,6 +11,7 @@
     <string name="all_more">More options</string>
     <string name="all_password">Password</string>
     <string name="all_sign_up">Sign up</string>
+    <string name="all_save_content" translatable="false">Save content</string>
     <string name="all_upvote" translatable="false">Upvote</string>
     <string name="all_user">User</string>
     <string name="all_username">Username</string>

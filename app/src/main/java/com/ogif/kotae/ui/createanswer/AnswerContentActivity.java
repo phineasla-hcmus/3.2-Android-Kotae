@@ -13,8 +13,10 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
@@ -36,10 +38,6 @@ public class AnswerContentActivity extends AppCompatActivity {
         view = binding.getRoot();
         setContentView(view);
 
-        this.setSupportActionBar(binding.tbAnswerContent);
-
-        getSupportActionBar().setTitle("Answer content");
-
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -57,8 +55,13 @@ public class AnswerContentActivity extends AppCompatActivity {
             }
         });
 
-        binding.fabSaveAnswer.setOnClickListener(v -> {
+        binding.toolbarAnswerContent.setOnClickListener(v -> {
+            this.finish();
+        });
+
+        binding.toolbarAnswerContent.getMenu().getItem(0).setOnMenuItemClickListener(v -> {
             saveDraftContent();
+            return true;
         });
 
         Intent intent = getIntent();

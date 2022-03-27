@@ -12,12 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_question_content"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="@drawable/ic_baseline_arrow_back"
-            app:titleTextColor="?android:attr/textColorPrimary" />
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_question_content"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorSurface"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_question_answer_content"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back"
+                app:title="Question content" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -87,11 +97,10 @@
                 <TextView
                     android:id="@+id/tv_preview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/body_height"
                     android:background="@drawable/answer_preview_background"
                     android:gravity="start|top"
                     android:includeFontPadding="false"
-                    android:minHeight="@dimen/body_height"
                     android:visibility="gone" />
 
                 <HorizontalScrollView
@@ -111,103 +120,6 @@
             </RelativeLayout>
 
         </ScrollView>
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/fab_save_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:padding="16dp"
-            android:textAllCaps="false"
-            android:textColor="?attr/colorPrimary"
-            app:icon="@drawable/ic_outline_save"
-            app:iconTint="?attr/colorPrimary" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-    <!--    <androidx.coordinatorlayout.widget.CoordinatorLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-
-    <!--        <androidx.core.widget.NestedScrollView-->
-    <!--            android:id="@+id/sv_content"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent">-->
-
-    <!--            <RelativeLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:layout_marginStart="16dp"-->
-    <!--                android:layout_marginTop="16dp"-->
-    <!--                android:layout_marginEnd="16dp">-->
-
-    <!--                <com.google.android.material.textfield.TextInputLayout-->
-    <!--                    android:id="@+id/til_markdown_input"-->
-    <!--                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    app:boxCornerRadiusBottomEnd="0dp"-->
-    <!--                    app:boxCornerRadiusBottomStart="0dp"-->
-    <!--                    app:boxStrokeColor="@color/color_text_input_box"-->
-    <!--                    app:hintEnabled="false"-->
-    <!--                    app:hintTextColor="@color/color_text_input_box">-->
-
-    <!--                    <com.google.android.material.textfield.TextInputEditText-->
-    <!--                        android:id="@+id/et_markdown"-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="@dimen/body_height"-->
-    <!--                        android:gravity="start|top"-->
-    <!--                        android:imeOptions="flagNoExtractUi"-->
-    <!--                        android:isScrollContainer="true"-->
-    <!--                        android:scrollbars="vertical"-->
-    <!--                        android:theme="@style/TextInputEditTextStyle"-->
-    <!--                        app:textInputLayoutFocusedRectEnabled="false" />-->
-
-    <!--                </com.google.android.material.textfield.TextInputLayout>-->
-
-    <!--                <TextView-->
-    <!--                    android:id="@+id/tv_preview"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_above="@id/scroll_view"-->
-    <!--                    android:background="@drawable/answer_preview_background"-->
-    <!--                    android:gravity="start|top"-->
-    <!--                    android:includeFontPadding="false"-->
-    <!--                    android:minHeight="@dimen/body_height"-->
-    <!--                    android:visibility="gone" />-->
-
-
-    <!--                <HorizontalScrollView-->
-    <!--                    android:id="@+id/scroll_view"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:layout_below="@id/til_markdown_input">-->
-
-    <!--                    <LinearLayout-->
-    <!--                        android:id="@+id/ll_btn_edit"-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:orientation="horizontal"-->
-    <!--                        tools:ignore="ButtonStyle" />-->
-    <!--                </HorizontalScrollView>-->
-
-
-    <!--            </RelativeLayout>-->
-
-
-    <!--        </androidx.core.widget.NestedScrollView>-->
-
-    <!--        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-    <!--            android:id="@+id/fab_save_question"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_gravity="bottom|end"-->
-    <!--            android:layout_margin="16dp"-->
-    <!--            android:padding="16dp"-->
-    <!--            android:textAllCaps="false"-->
-    <!--            android:textColor="?attr/colorPrimary"-->
-    <!--            app:icon="@drawable/ic_outline_save"-->
-    <!--            app:iconTint="?attr/colorPrimary" />-->
-    <!--    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
 </LinearLayout>
