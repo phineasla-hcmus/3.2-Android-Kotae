@@ -7,19 +7,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.ogif.kotae.data.model.Grade;
 
 public class GradeAdapter extends ArrayAdapter<Grade> {
 
-    // Your sent context
-    private Context context;
     // Your custom values for the spinner (User)
-    private Grade[] values;
+    private final Grade[] values;
 
     public GradeAdapter(Context context, int textViewResourceId,
                         Grade[] values) {
         super(context, textViewResourceId, values);
-        this.context = context;
+        // Your sent context
         this.values = values;
     }
 
@@ -58,7 +58,7 @@ public class GradeAdapter extends ArrayAdapter<Grade> {
     // Normally is the same view, but you can customize it if you want
     @Override
     public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+                                @NonNull ViewGroup parent) {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values[position].getName());

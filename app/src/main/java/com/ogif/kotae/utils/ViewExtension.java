@@ -9,11 +9,11 @@ import com.ogif.kotae.R;
 import org.jetbrains.annotations.Nullable;
 
 public final class ViewExtension {
-    public static final void setVisibilityMarker(@NonNull View view, boolean isVisible) {
+    public static void setVisibilityMarker(@NonNull View view, boolean isVisible) {
         view.setTag(R.string.tag_view_extension, isVisible);
     }
 
-    public static final boolean getVisibilityMarker(@NonNull View view) {
+    public static boolean getVisibilityMarker(@NonNull View view) {
         Object object = view.getTag(R.string.tag_view_extension);
         if (!(object instanceof Boolean)) {
             object = null;
@@ -30,16 +30,16 @@ public final class ViewExtension {
         return var4;
     }
 
-    public static final void setAnimationMarker(@NonNull View view, @NonNull Object marker) {
+    public static void setAnimationMarker(@NonNull View view, @NonNull Object marker) {
         view.setTag(R.string.tag_animation_maker, marker);
     }
 
     @Nullable
-    public static final Object getAnimationMarker(@NonNull View view) {
+    public static Object getAnimationMarker(@NonNull View view) {
         return view.getTag(R.string.tag_animation_maker);
     }
 
-    public static final void cancelAllAnimations(@NonNull View view) {
+    public static void cancelAllAnimations(@NonNull View view) {
         view.clearAnimation();
         view.animate().cancel();
     }

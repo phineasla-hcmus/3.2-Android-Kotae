@@ -83,8 +83,7 @@ public final class AnimationUtils {
     }
 
     static {
-        AnimationUtils var0 = new AnimationUtils();
-        INSTANCE = var0;
+        INSTANCE = new AnimationUtils();
         HEADER_ANIMATION_DURATION = 250L;
         HEADER_ANIMATION_INTERPOLATOR = new DecelerateInterpolator();
     }

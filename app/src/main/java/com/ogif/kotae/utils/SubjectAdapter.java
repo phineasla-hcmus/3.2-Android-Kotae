@@ -7,19 +7,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.ogif.kotae.data.model.Subject;
 
 public class SubjectAdapter extends ArrayAdapter<Subject> {
 
-    // Your sent context
-    private Context context;
     // Your custom values for the spinner (User)
-    private Subject[] values;
+    private final Subject[] values;
 
     public SubjectAdapter(Context context, int textViewResourceId,
                           Subject[] values) {
         super(context, textViewResourceId, values);
-        this.context = context;
+        // Your sent context
         this.values = values;
     }
 
@@ -58,7 +58,7 @@ public class SubjectAdapter extends ArrayAdapter<Subject> {
     // Normally is the same view, but you can customize it if you want
     @Override
     public View getDropDownView(int position, View convertView,
-                                ViewGroup parent) {
+                                @NonNull ViewGroup parent) {
         TextView label = (TextView) super.getDropDownView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         label.setText(values[position].getName());

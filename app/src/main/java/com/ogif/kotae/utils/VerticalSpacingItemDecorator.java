@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.State;
 
+import java.util.Objects;
+
 public final class VerticalSpacingItemDecorator extends ItemDecoration {
     private final int verticalSpacing;
     private final int verticalSpacingCompensation;
@@ -16,7 +18,7 @@ public final class VerticalSpacingItemDecorator extends ItemDecoration {
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull State state) {
         int position = parent.getChildAdapterPosition(view);
         Adapter adapter = parent.getAdapter();
-        if (position != adapter.getItemCount() - 1) {
+        if (position != Objects.requireNonNull(adapter).getItemCount() - 1) {
             outRect.bottom = this.verticalSpacing - this.verticalSpacingCompensation;
         } else {
             outRect.bottom = this.verticalSpacing;

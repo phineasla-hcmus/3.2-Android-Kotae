@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import com.paulrybitskyi.commons.ktx.NumberUtils;
 
 public abstract class HeaderedRecyclerViewListener extends OnScrollListener {
-    private int scrollDetectionDistance;
+    private final int scrollDetectionDistance;
     private int firstVisiblePosition;
     private int previousFirstVisiblePosition;
 
@@ -22,7 +22,7 @@ public abstract class HeaderedRecyclerViewListener extends OnScrollListener {
 
     }
 
-    private final void onScrolledUpwards(RecyclerView recyclerView, int deltaY) {
+    private void onScrolledUpwards(RecyclerView recyclerView, int deltaY) {
         this.firstVisiblePosition = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(0));
         boolean isFirstItem = this.firstVisiblePosition == 0;
         if (this.shouldShowHeader(deltaY, isFirstItem)) {
@@ -32,11 +32,11 @@ public abstract class HeaderedRecyclerViewListener extends OnScrollListener {
         this.previousFirstVisiblePosition = this.firstVisiblePosition;
     }
 
-    private final boolean shouldShowHeader(int deltaY, boolean isFirstItem) {
+    private boolean shouldShowHeader(int deltaY, boolean isFirstItem) {
         return Math.abs(deltaY) >= this.scrollDetectionDistance || isFirstItem && this.firstVisiblePosition != this.previousFirstVisiblePosition;
     }
 
-    private final void onScrolledDownwards(RecyclerView recyclerView, int deltaY) {
+    private void onScrolledDownwards(RecyclerView recyclerView, int deltaY) {
         this.firstVisiblePosition = recyclerView.getChildAdapterPosition(recyclerView.getChildAt(0));
         if (this.shouldHideHeader(deltaY)) {
             this.hideHeader();
@@ -45,7 +45,7 @@ public abstract class HeaderedRecyclerViewListener extends OnScrollListener {
         this.previousFirstVisiblePosition = this.firstVisiblePosition;
     }
 
-    private final boolean shouldHideHeader(int deltaY) {
+    private boolean shouldHideHeader(int deltaY) {
         return this.firstVisiblePosition > 0 && (Math.abs(deltaY) >= this.scrollDetectionDistance || this.firstVisiblePosition > this.previousFirstVisiblePosition);
     }
 

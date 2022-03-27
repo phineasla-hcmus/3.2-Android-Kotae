@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -44,17 +42,14 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
     private String content, selectedGradeId, selectedSubjectId, selectedGradeName, selectedSubjectName;
     private QuestionViewModel viewModel;
-    private GradeRepository gradeRepository;
-    private SubjectRepository subjectRepository;
-    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityCreateQuestionBinding.inflate(getLayoutInflater());
-        view = binding.getRoot();
-        setContentView(view);
+        View view1 = binding.getRoot();
+        setContentView(view1);
 
         this.viewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
 
@@ -67,15 +62,13 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 binding.actvQuestionCategoryGrade,
                 binding.atcvQuestionCategorySubject};
 
-        binding.etContent.setOnClickListener(view -> {
-            startQuestionContentActivity();
-        });
+        binding.etContent.setOnClickListener(view -> startQuestionContentActivity());
 
-        gradeRepository = new GradeRepository();
+        GradeRepository gradeRepository = new GradeRepository();
         gradeRepository.getAll(new TaskListener.State<List<Grade>>() {
             @Override
             public void onSuccess(@NonNull List<Grade> result) {
-                Grade[] grades = result.toArray(new Grade[result.size()]);
+                Grade[] grades = result.toArray(new Grade[0]);
                 gradeAdapter = new GradeAdapter(getApplicationContext(), R.layout.dropdown_item, grades);
                 binding.actvQuestionCategoryGrade.setAdapter(gradeAdapter);
             }
@@ -92,10 +85,10 @@ public class CreateQuestionActivity extends AppCompatActivity {
             selectedGradeName = grade.getName();
         });
 
-        subjectRepository = new SubjectRepository();
+        SubjectRepository subjectRepository = new SubjectRepository();
         subjectRepository.getAllSubjects(subjects -> {
             subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, subjects
-                    .toArray(new Subject[subjects.size()]));
+                    .toArray(new Subject[0]));
             binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
         });
 
@@ -108,15 +101,12 @@ public class CreateQuestionActivity extends AppCompatActivity {
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
         someActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            content = data.getStringExtra(Intent.EXTRA_TEXT);
-                            MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
-                        }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        content = Objects.requireNonNull(data).getStringExtra(Intent.EXTRA_TEXT);
+                        MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
                     }
                 });
 
@@ -153,7 +143,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     public void startQuestionContentActivity() {
         if (TextUtils.isEmpty(content)) {
-            content = binding.etContent.getText().toString();
+            content = Objects.requireNonNull(binding.etContent.getText()).toString();
         }
         String description = getResources().getString(R.string.create_question_content_description);
         Intent intent = new Intent(this, QuestionContentActivity.class);
@@ -165,10 +155,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

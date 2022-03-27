@@ -41,12 +41,9 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySearchBinding binding;
-    private DataProvider dataProvider = new DataProvider();
-    private List<SearchItem> items = new ArrayList<>();
+    private final DataProvider dataProvider = new DataProvider();
+    private final List<SearchItem> items = new ArrayList<>();
     private PersistentSearchView persistentSearchView;
-    private OnSearchConfirmedListener mOnSearchConfirmedListener;
-    private OnSearchQueryChangeListener mOnSearchQueryChangeListener;
-    private OnSuggestionChangeListener mOnSuggestionChangeListener;
     private SearchAdapter adapter;
     private SearchViewModel viewModel;
 
@@ -83,23 +80,23 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         persistentSearchView.setOnRightBtnClickListener(this);
         persistentSearchView.showRightButton();
         persistentSearchView.setVoiceRecognitionDelegate(new VoiceRecognitionDelegate(this));
-        this.mOnSearchConfirmedListener = (searchView, query) -> {
+        OnSearchConfirmedListener mOnSearchConfirmedListener = (searchView, query) -> {
             Toast.makeText(SearchActivity.this, "Search confirmed", Toast.LENGTH_SHORT).show();
             SearchActivity.this.saveSearchQueryIfNecessary(query);
             searchView.collapse();
 
             SearchActivity.this.performSearch(query);
         };
-        persistentSearchView.setOnSearchConfirmedListener(this.mOnSearchConfirmedListener);
-        this.mOnSearchQueryChangeListener = (searchView, oldQuery, newQuery) -> {
+        persistentSearchView.setOnSearchConfirmedListener(mOnSearchConfirmedListener);
+        OnSearchQueryChangeListener mOnSearchQueryChangeListener = (searchView, oldQuery, newQuery) -> {
             if (newQuery.isEmpty()) {
                 setSuggestions(dataProvider.getInitialSearchQueries(), true);
             } else {
                 setSuggestions(dataProvider.getSuggestionsForQuery(newQuery), true);
             }
         };
-        persistentSearchView.setOnSearchQueryChangeListener(this.mOnSearchQueryChangeListener);
-        this.mOnSuggestionChangeListener = new OnSuggestionChangeListener() {
+        persistentSearchView.setOnSearchQueryChangeListener(mOnSearchQueryChangeListener);
+        OnSuggestionChangeListener mOnSuggestionChangeListener = new OnSuggestionChangeListener() {
             @Override
             public void onSuggestionPicked(SuggestionItem suggestion) {
                 String query = suggestion.getItemModel().getText();
@@ -113,7 +110,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 dataProvider.removeSearchQuery(suggestion.getItemModel().getText());
             }
         };
-        persistentSearchView.setOnSuggestionChangeListener(this.mOnSuggestionChangeListener);
+        persistentSearchView.setOnSuggestionChangeListener(mOnSuggestionChangeListener);
         persistentSearchView.setDismissOnTouchOutside(true);
         persistentSearchView.setDimBackground(true);
         persistentSearchView.setProgressBarEnabled(true);
@@ -139,22 +136,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         binding.rvSearch.addOnScrollListener((RecyclerView.OnScrollListener) this.initHeaderedRecyclerViewListener());
     }
 
-    private final LinearLayoutManager initLayoutManager() {
+    private LinearLayoutManager initLayoutManager() {
         return new LinearLayoutManager((Context) this);
     }
 
-    private final SearchAdapter initAdapter() {
+    private SearchAdapter initAdapter() {
         SearchAdapter adapter = new SearchAdapter((Context) this, this.items);
         this.adapter = adapter;
 
         return adapter;
     }
 
-    private final VerticalSpacingItemDecorator initVerticalSpacingItemDecorator() {
+    private VerticalSpacingItemDecorator initVerticalSpacingItemDecorator() {
         return new VerticalSpacingItemDecorator(NumberUtils.dpToPx(2, (Context) this), NumberUtils.dpToPx(2, (Context) this));
     }
 
-    private final HeaderedRecyclerViewListener initHeaderedRecyclerViewListener() {
+    private HeaderedRecyclerViewListener initHeaderedRecyclerViewListener() {
         return (HeaderedRecyclerViewListener) (new HeaderedRecyclerViewListener((Context) this) {
             public void showHeader() {
                 AnimationUtils.INSTANCE.showHeader(binding.persistentSearchView);
@@ -166,11 +163,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         });
     }
 
-    private final void saveSearchQueryIfNecessary(String query) {
+    private void saveSearchQueryIfNecessary(String query) {
         this.dataProvider.saveSearchQuery(query);
     }
 
-    private final void performSearch(String query) {
+    private void performSearch(String query) {
         ViewUtils.makeGone((View) binding.llSearchEmptyView);
         binding.rvSearch.setAlpha(0.0F);
         ViewUtils.makeVisible((View) binding.pbSearch);
@@ -188,15 +185,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         });
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                persistentSearchView.hideProgressBar(false);
-                persistentSearchView.showLeftButton();
-                adapter.setItems(items);
-                ViewUtils.makeGone((View) binding.pbSearch);
-                binding.rvSearch.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
-            }
+        Runnable runnable = () -> {
+            persistentSearchView.hideProgressBar(false);
+            persistentSearchView.showLeftButton();
+            adapter.setItems(items);
+            ViewUtils.makeGone((View) binding.pbSearch);
+            binding.rvSearch.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
         };
         (new Handler()).postDelayed(runnable, 1000L);
         binding.persistentSearchView.hideLeftButton(false);

@@ -13,18 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public final class LeaderboardAdapter extends TrackableRecyclerViewAdapter {
     @Nullable
     private OnItemClickListener<LeaderboardItem> mOnItemClickListener;
-
-    @Nullable
-    public final OnItemClickListener<LeaderboardItem> getMOnItemClickListener() {
-        return this.mOnItemClickListener;
-    }
-
-    public final void setMOnItemClickListener(@Nullable OnItemClickListener<LeaderboardItem> var1) {
-        this.mOnItemClickListener = var1;
-    }
 
 
     protected void assignListeners(@NonNull LeaderboardItem.ViewHolder holder, int position, @NonNull LeaderboardItem item) {

@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -26,7 +24,6 @@ import java.util.Objects;
 public class CreateAnswerActivity extends AppCompatActivity {
 
     private ActivityCreateAnswerBinding binding;
-    private View view;
     private ActivityResultLauncher<Intent> answerActivityResultLauncher;
     private String content;
     private AnswerViewModel viewModel;
@@ -36,17 +33,15 @@ public class CreateAnswerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityCreateAnswerBinding.inflate(getLayoutInflater());
-        view = binding.getRoot();
+        View view = binding.getRoot();
         setContentView(view);
 
         this.viewModel = new ViewModelProvider(this).get(AnswerViewModel.class);
         this.setSupportActionBar(binding.tbCreateAnswer);
 
-        getSupportActionBar().setTitle("Create answer");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Create answer");
 
-        binding.etContent.setOnClickListener(view -> {
-            startAnswerContentActivity();
-        });
+        binding.etContent.setOnClickListener(v -> startAnswerContentActivity());
 
         binding.fabPostAnswer.setOnClickListener(v -> {
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
@@ -61,22 +56,19 @@ public class CreateAnswerActivity extends AppCompatActivity {
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
         answerActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            content = data.getStringExtra(Intent.EXTRA_TEXT);
-                            MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
-                        }
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                        content = Objects.requireNonNull(data).getStringExtra(Intent.EXTRA_TEXT);
+                        MarkdownUtils.setMarkdown(getApplicationContext(), content, binding.etContent);
                     }
                 });
     }
 
     public void startAnswerContentActivity() {
         if (TextUtils.isEmpty(content)) {
-            content = binding.etContent.getText().toString();
+            content = Objects.requireNonNull(binding.etContent.getText()).toString();
         }
         String description = getResources().getString(R.string.create_answer_content_description);
         Intent intent = new Intent(this, AnswerContentActivity.class);
@@ -88,10 +80,9 @@ public class CreateAnswerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

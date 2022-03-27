@@ -13,10 +13,8 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
@@ -24,7 +22,8 @@ import com.ogif.kotae.databinding.ActivityAnswerContentBinding;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.util.Objects;
 
 public class AnswerContentActivity extends AppCompatActivity {
     private ActivityAnswerContentBinding binding;
@@ -55,9 +54,7 @@ public class AnswerContentActivity extends AppCompatActivity {
             }
         });
 
-        binding.toolbarAnswerContent.setOnClickListener(v -> {
-            this.finish();
-        });
+        binding.toolbarAnswerContent.setOnClickListener(v -> this.finish());
 
         binding.toolbarAnswerContent.getMenu().getItem(0).setOnMenuItemClickListener(v -> {
             saveDraftContent();
@@ -72,20 +69,17 @@ public class AnswerContentActivity extends AppCompatActivity {
         }
         buildButtonsScroll();
 
-        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
-            @Override
-            public void onVisibilityChanged(boolean isOpen) {
+        KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
 
-                if (isOpen && binding.etMarkdown.hasFocus()) {
-                    binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
-                }
+            if (isOpen && binding.etMarkdown.hasFocus()) {
+                binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
             }
         });
     }
 
     // pass answer content to CreateAnswerActivity
     private void saveDraftContent() {
-        String content = binding.etMarkdown.getText().toString();
+        String content = Objects.requireNonNull(binding.etMarkdown.getText()).toString();
         // put the String to pass back into an Intent and close this activity
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_TEXT, content);
@@ -95,10 +89,9 @@ public class AnswerContentActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -141,7 +134,7 @@ public class AnswerContentActivity extends AppCompatActivity {
     }
 
     private void refreshPreview() {
-        if (TextUtils.isEmpty(binding.etMarkdown.getText().toString())) {
+        if (TextUtils.isEmpty(Objects.requireNonNull(binding.etMarkdown.getText()).toString())) {
             binding.tvPreview.setText(R.string.no_preview);
         } else {
             MarkdownUtils.setMarkdown(getApplicationContext(), binding.etMarkdown.getText().toString(), binding.tvPreview);
@@ -149,7 +142,7 @@ public class AnswerContentActivity extends AppCompatActivity {
     }
 
     private void insertText(String text) {
-        binding.etMarkdown.getText().insert(binding.etMarkdown.getSelectionStart(), text);
+        Objects.requireNonNull(binding.etMarkdown.getText()).insert(binding.etMarkdown.getSelectionStart(), text);
     }
 
     private void buildButtonsScroll() {
@@ -170,12 +163,7 @@ public class AnswerContentActivity extends AppCompatActivity {
             btnEdit.setLayoutParams(layoutParams);
             btnEdit.setTag(i);
             int finalI = i;
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insertText(mds[finalI]);
-                }
-            });
+            btnEdit.setOnClickListener(view -> insertText(mds[finalI]));
             binding.llBtnEdit.addView(btnEdit);
         }
     }

@@ -4,15 +4,13 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 
 public final class DataProvider implements Serializable {
 //    private List initialSearchQueries = CollectionsKt.mutableListOf(new String[]{"dinosoaring", "liquidathor", "cobrawl", "advicewalker", "coachsoul", "lightqueen", "messymosquito", "coldox", "froghurt", "rangerman"});
 
-    private List<String> initialSearchQueries = new ArrayList<>();
+    private final List<String> initialSearchQueries = new ArrayList<>();
 
     @NonNull
     public final List<String> getInitialSearchQueries() {
@@ -21,16 +19,12 @@ public final class DataProvider implements Serializable {
 
     @NonNull
     public final List<String> getSuggestionsForQuery(@NonNull String query) {
-        List pickedSuggestions = (List) (new ArrayList());
-        CharSequence var3 = (CharSequence) query;
-        if (var3.length() == 0) {
-            pickedSuggestions.addAll((Collection) this.initialSearchQueries);
+        List<String> pickedSuggestions = new ArrayList<>();
+        if (((CharSequence) query).length() == 0) {
+            pickedSuggestions.addAll(this.initialSearchQueries);
         } else {
-            Iterable iterable = (Iterable) this.initialSearchQueries;
-            Iterator iterator = iterable.iterator();
 
-            while (iterator.hasNext()) {
-                Object object = iterator.next();
+            for (Object object : (Iterable) this.initialSearchQueries) {
                 String it = (String) object;
                 if (it == null) {
                     throw new NullPointerException("null cannot be cast to non-null type java.lang.String");

@@ -22,6 +22,7 @@ import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("rawtypes")
 public final class SearchItem extends BaseItem {
     private Question question;
 
@@ -32,7 +33,8 @@ public final class SearchItem extends BaseItem {
         return new SearchItem.ViewHolder(view);
     }
 
-    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter adapter, ViewGroup parent, LayoutInflater inflater, ItemResources var4) {
+    @NonNull
+    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater, ItemResources var4) {
         return (androidx.recyclerview.widget.RecyclerView.ViewHolder) this.init(adapter, parent, inflater);
     }
 
@@ -41,35 +43,32 @@ public final class SearchItem extends BaseItem {
         super.bind(adapter, viewHolder, resources);
         question = (Question) this.getItemModel();
         this.bindTitle((ViewHolder) viewHolder, question);
-        this.bindProfileImage((ViewHolder) viewHolder, question);
+        this.bindProfileImage((ViewHolder) viewHolder);
         this.bindUsername((ViewHolder) viewHolder, question);
         this.bindPoint((ViewHolder) viewHolder, question);
-        this.setOnItemClickListener((ViewHolder) viewHolder, new OnItemClickListener() {
-            @Override
-            public void onItemClicked(View view, Object item, int position) {
-                Intent intent = QuestionDetailActivity.newInstance(view.getContext(), question);
-                view.getContext().startActivity(intent);
-            }
+        this.setOnItemClickListener((ViewHolder) viewHolder, (view, item, position) -> {
+            Intent intent = QuestionDetailActivity.newInstance(view.getContext(), question);
+            view.getContext().startActivity(intent);
         });
     }
 
-    private final void bindProfileImage(SearchItem.ViewHolder viewHolder, Question Question) {
+    private void bindProfileImage(SearchItem.ViewHolder viewHolder) {
         viewHolder.getIvAvatar().setImageResource(R.drawable.ic_teacher);
         viewHolder.getIvComment().setImageResource(R.drawable.ic_baseline_comment);
     }
 
-    private final void bindUsername(SearchItem.ViewHolder viewHolder, Question Question) {
+    private void bindUsername(SearchItem.ViewHolder viewHolder, Question Question) {
         TextView tvUsername = viewHolder.getTvUsername();
         tvUsername.setText((CharSequence) Question.getAuthor());
     }
 
-    private final void bindPoint(SearchItem.ViewHolder viewHolder, Question Question) {
+    private void bindPoint(SearchItem.ViewHolder viewHolder, Question Question) {
         TextView tvPoint = viewHolder.getTvPoint();
         //TODO: get point of current user
         tvPoint.setText(String.valueOf(20));
     }
 
-    private final void bindTitle(SearchItem.ViewHolder viewHolder, Question Question) {
+    private void bindTitle(SearchItem.ViewHolder viewHolder, Question Question) {
         TextView tvTitle = viewHolder.getTvTitle();
         tvTitle.setText((CharSequence) Question.getTitle());
     }

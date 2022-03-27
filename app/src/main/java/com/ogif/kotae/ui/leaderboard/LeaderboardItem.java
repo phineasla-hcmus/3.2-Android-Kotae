@@ -20,8 +20,8 @@ import com.ogif.kotae.data.model.User;
 
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("rawtypes")
 public final class LeaderboardItem extends BaseItem {
-    private User user;
 
     @NonNull
     public LeaderboardItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
@@ -30,14 +30,15 @@ public final class LeaderboardItem extends BaseItem {
         return new LeaderboardItem.ViewHolder(view);
     }
 
-    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter adapter, ViewGroup parent, LayoutInflater inflater, ItemResources var4) {
+    @NonNull
+    public androidx.recyclerview.widget.RecyclerView.ViewHolder init(Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater, ItemResources var4) {
         return (androidx.recyclerview.widget.RecyclerView.ViewHolder) this.init(adapter, parent, inflater);
     }
 
     @Override
     public void bind(@Nullable Adapter adapter, @NonNull BaseItem.ViewHolder viewHolder, @Nullable ItemResources resources) {
         super.bind(adapter, viewHolder, resources);
-        user = (User) this.getItemModel();
+        User user = (User) this.getItemModel();
         this.bindProfileImage((LeaderboardItem.ViewHolder) viewHolder, user);
         this.bindUsername((LeaderboardItem.ViewHolder) viewHolder, user);
         this.bindPoint((LeaderboardItem.ViewHolder) viewHolder, user);
@@ -50,16 +51,16 @@ public final class LeaderboardItem extends BaseItem {
 //        });
     }
 
-    private final void bindProfileImage(LeaderboardItem.ViewHolder viewHolder, User User) {
+    private void bindProfileImage(LeaderboardItem.ViewHolder viewHolder, User User) {
         viewHolder.getIvAvatar().setImageResource(R.drawable.ic_teacher);
     }
 
-    private final void bindUsername(LeaderboardItem.ViewHolder viewHolder, User User) {
+    private void bindUsername(LeaderboardItem.ViewHolder viewHolder, User User) {
         TextView tvUsername = viewHolder.getTvUsername();
         tvUsername.setText((CharSequence) User.getUsername());
     }
 
-    private final void bindPoint(LeaderboardItem.ViewHolder viewHolder, User User) {
+    private void bindPoint(LeaderboardItem.ViewHolder viewHolder, User User) {
         TextView tvPoint = viewHolder.getTvPoint();
         //TODO: get point of current user
         tvPoint.setText(String.valueOf(20));
@@ -100,7 +101,6 @@ public final class LeaderboardItem extends BaseItem {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ;
             this.tvUsername = (TextView) itemView.findViewById(R.id.tv_leaderboard_username);
             this.tvPoint = (TextView) itemView.findViewById(R.id.tv_leaderboard_point);
             this.ivAvatar = (ImageView) itemView.findViewById(R.id.civ_leaderboard_avatar);

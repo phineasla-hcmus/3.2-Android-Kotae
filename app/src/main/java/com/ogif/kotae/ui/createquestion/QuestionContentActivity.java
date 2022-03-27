@@ -4,19 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
@@ -24,7 +20,8 @@ import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
 import com.ogif.kotae.utils.model.MarkdownUtils;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.util.Objects;
 
 public class QuestionContentActivity extends AppCompatActivity {
 
@@ -56,9 +53,7 @@ public class QuestionContentActivity extends AppCompatActivity {
             }
         });
 
-        binding.toolbarQuestionContent.setOnClickListener(v -> {
-            this.finish();
-        });
+        binding.toolbarQuestionContent.setOnClickListener(v -> this.finish());
 
         binding.toolbarQuestionContent.getMenu().getItem(0).setOnMenuItemClickListener(v -> {
             saveDraftContent();
@@ -74,19 +69,16 @@ public class QuestionContentActivity extends AppCompatActivity {
 
         buildButtonsScroll();
 
-        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
-            @Override
-            public void onVisibilityChanged(boolean isOpen) {
-                if (isOpen && binding.etMarkdown.hasFocus()) {
-                    binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
-                }
+        KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
+            if (isOpen && binding.etMarkdown.hasFocus()) {
+                binding.scrollLayout.smoothScrollTo(0, binding.scrollView.getBottom());
             }
         });
     }
 
     // pass answer content to CreateQuestionActivity
     private void saveDraftContent() {
-        String content = binding.etMarkdown.getText().toString();
+        String content = Objects.requireNonNull(binding.etMarkdown.getText()).toString();
         // put the String to pass back into an Intent and close this activity
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_TEXT, content);
@@ -132,7 +124,7 @@ public class QuestionContentActivity extends AppCompatActivity {
     }
 
     private void insertText(String text) {
-        binding.etMarkdown.getText().insert(binding.etMarkdown.getSelectionStart(), text);
+        Objects.requireNonNull(binding.etMarkdown.getText()).insert(binding.etMarkdown.getSelectionStart(), text);
     }
 
     private void buildButtonsScroll() {
@@ -153,18 +145,13 @@ public class QuestionContentActivity extends AppCompatActivity {
             btnEdit.setLayoutParams(layoutParams);
             btnEdit.setTag(i);
             int finalI = i;
-            btnEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insertText(mds[finalI]);
-                }
-            });
+            btnEdit.setOnClickListener(view -> insertText(mds[finalI]));
             binding.llBtnEdit.addView(btnEdit);
         }
     }
 
     private void refreshPreview() {
-        if (TextUtils.isEmpty(binding.etMarkdown.getText().toString())) {
+        if (TextUtils.isEmpty(Objects.requireNonNull(binding.etMarkdown.getText()).toString())) {
             binding.tvPreview.setText(R.string.no_preview);
         } else {
             MarkdownUtils.setMarkdown(getApplicationContext(), binding.etMarkdown.getText().toString(), binding.tvPreview);
