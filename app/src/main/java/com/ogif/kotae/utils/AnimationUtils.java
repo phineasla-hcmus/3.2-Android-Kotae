@@ -43,8 +43,7 @@ public final class AnimationUtils {
                 public void onAnimationRepeat(Animator animator) {
 
                 }
-            })
-                    .setInterpolator(HEADER_ANIMATION_INTERPOLATOR)
+            }).setInterpolator(HEADER_ANIMATION_INTERPOLATOR)
                     .setDuration(HEADER_ANIMATION_DURATION)
                     .start();
         }
@@ -54,28 +53,31 @@ public final class AnimationUtils {
         if (ViewExtension.getVisibilityMarker(header) && AnimationType.EXIT != ViewExtension.getAnimationMarker(header)) {
             ViewExtension.cancelAllAnimations(header);
             ViewExtension.setVisibilityMarker(header, false);
-            header.animate().translationY(-((float) header.getMeasuredHeight())).setListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animator) {
-                    setAnimationMarker(header, AnimationType.EXIT);
-                }
+            header.animate().translationY(-((float) header.getMeasuredHeight()))
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animator) {
+                            setAnimationMarker(header, AnimationType.EXIT);
+                        }
 
-                @Override
-                public void onAnimationEnd(Animator animator) {
-                    setAnimationMarker(header, AnimationType.NO_ANIMATION);
-                    header.setVisibility(View.GONE);
-                }
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+                            setAnimationMarker(header, AnimationType.NO_ANIMATION);
+                            header.setVisibility(View.GONE);
+                        }
 
-                @Override
-                public void onAnimationCancel(Animator animator) {
+                        @Override
+                        public void onAnimationCancel(Animator animator) {
 
-                }
+                        }
 
-                @Override
-                public void onAnimationRepeat(Animator animator) {
+                        @Override
+                        public void onAnimationRepeat(Animator animator) {
 
-                }
-            }).setInterpolator((TimeInterpolator) HEADER_ANIMATION_INTERPOLATOR).setDuration(HEADER_ANIMATION_DURATION).start();
+                        }
+                    }).setInterpolator((TimeInterpolator) HEADER_ANIMATION_INTERPOLATOR)
+                    .setDuration(HEADER_ANIMATION_DURATION)
+                    .start();
         }
     }
 

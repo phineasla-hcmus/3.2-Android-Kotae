@@ -1,7 +1,5 @@
 package com.ogif.kotae.data.repository;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
@@ -89,16 +87,16 @@ public class AnswerRepository {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public String getOrderBy() {
+    public String getOrderByField() {
         return orderBy;
     }
 
-    public AnswerRepository setOrderBy(String orderBy) {
+    public AnswerRepository setOrderByField(String orderBy) {
         this.orderBy = orderBy;
         return this;
     }
 
-    public AnswerRepository setOrderBy(String orderBy, Query.Direction direction) {
+    public AnswerRepository setOrderByField(String orderBy, Query.Direction direction) {
         this.orderBy = orderBy;
         this.orderByDirection = direction;
         return this;

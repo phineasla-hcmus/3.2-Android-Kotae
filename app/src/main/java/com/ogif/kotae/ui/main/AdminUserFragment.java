@@ -20,7 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.User;
-import com.ogif.kotae.utils.AdminUserAdapter;
+import com.ogif.kotae.ui.admin.AdminUserAdapter;
 
 import java.util.ArrayList;
 

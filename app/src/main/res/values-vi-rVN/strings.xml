@@ -95,4 +95,7 @@
     <string name="create_answer_content_title">Nội dung</string>
     <string name="create_answer_images_title">HÌnh ảnh</string>
     <string name="fab_post_answer">Đăng</string>
+    <string name="timestamp_just_now">Nóng hổi</string>
+    <string name="timestamp_minutes">%1$d phút trước</string>
+    <string name="timestamp_hours">%1$d giờ trước</string>
 </resources>

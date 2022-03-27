@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -20,9 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.data.model.User;
-import com.ogif.kotae.utils.AdminQuestionAdapter;
-import com.ogif.kotae.utils.AdminUserAdapter;
+import com.ogif.kotae.ui.admin.AdminQuestionAdapter;
 
 import java.util.ArrayList;
 

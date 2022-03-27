@@ -27,7 +27,7 @@ import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.utils.GradeAdapter;
 import com.ogif.kotae.utils.SubjectAdapter;
-import com.ogif.kotae.utils.model.MarkdownUtils;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.ogif.kotae.utils.model.QuestionUtils;
 import com.ogif.kotae.utils.text.TextValidator;
 

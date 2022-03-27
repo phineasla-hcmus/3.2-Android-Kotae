@@ -20,8 +20,8 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
-import com.ogif.kotae.utils.model.DateUtils;
-import com.ogif.kotae.utils.model.MarkdownUtils;
+import com.ogif.kotae.utils.DateUtils;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,9 +47,9 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         //holder.content.setText(model.getContent());
         holder.report.setVisibility(View.INVISIBLE);
         holder.reportCounter.setVisibility(View.INVISIBLE);
-        MarkdownUtils.setMarkdown(context,model.getContent(),holder.content);
+        MarkdownUtils.setMarkdown(context, model.getContent(), holder.content);
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
-        DateUtils.formatDate(model.getPostTime(),holder.postTime);
+        holder.postTime.setText(DateUtils.formatDate(model.getPostTime(), context));
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
 
@@ -117,8 +117,8 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
             downClicked = false;
             upClicked = false;
 
-            QuestionViewModel questionViewModel =  new QuestionViewModel();
-            questionViewModel.hideReport(report,reportCounter);
+            QuestionViewModel questionViewModel = new QuestionViewModel();
+            questionViewModel.hideReport(report, reportCounter);
 
             upvote.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.ui.admin;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -8,7 +8,7 @@ import java.util.List;
 
 
 public final class DataProvider implements Serializable {
-//    private List initialSearchQueries = CollectionsKt.mutableListOf(new String[]{"dinosoaring", "liquidathor", "cobrawl", "advicewalker", "coachsoul", "lightqueen", "messymosquito", "coldox", "froghurt", "rangerman"});
+    // private List initialSearchQueries = CollectionsKt.mutableListOf(new String[]{"dinosoaring", "liquidathor", "cobrawl", "advicewalker", "coachsoul", "lightqueen", "messymosquito", "coldox", "froghurt", "rangerman"});
 
     private final List<String> initialSearchQueries = new ArrayList<>();
 
@@ -30,11 +30,11 @@ public final class DataProvider implements Serializable {
                     throw new NullPointerException("null cannot be cast to non-null type java.lang.String");
                 }
 
-//                String var10000 = it.toLowerCase();
-//                String var10001 = query.toLowerCase();
-//                if (StringsKt.startsWith$default(var10000, var10001, false, 2, (Object) null)) {
-//                    pickedSuggestions.add(it);
-//                }
+                // String var10000 = it.toLowerCase();
+                // String var10001 = query.toLowerCase();
+                // if (StringsKt.startsWith$default(var10000, var10001, false, 2, (Object) null)) {
+                //     pickedSuggestions.add(it);
+                // }
                 pickedSuggestions.add(it);
             }
         }

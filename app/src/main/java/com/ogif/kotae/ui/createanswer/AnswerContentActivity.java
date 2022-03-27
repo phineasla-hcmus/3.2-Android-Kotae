@@ -19,7 +19,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityAnswerContentBinding;
-import com.ogif.kotae.utils.model.MarkdownUtils;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 

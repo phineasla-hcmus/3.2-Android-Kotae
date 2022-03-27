@@ -103,4 +103,7 @@
     <string name="sign_up_error_existed">User existed</string>
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
+    <string name="timestamp_just_now">Just now</string>
+    <string name="timestamp_minutes">Posted %1$d minutes ago</string>
+    <string name="timestamp_hours">Posted %1$d hours ago</string>
 </resources>
