@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.main;
+package com.ogif.kotae.ui.search;
 
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
-import com.ogif.kotae.adapters.SearchRecyclerViewAdapter;
-import com.ogif.kotae.adapters.model.SearchItem;
+import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.databinding.ActivitySearchBinding;
+import com.ogif.kotae.ui.SearchViewModel;
 import com.ogif.kotae.utils.AnimationUtils;
 import com.ogif.kotae.utils.DataProvider;
 import com.ogif.kotae.utils.HeaderedRecyclerViewListener;
@@ -48,7 +47,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private OnSearchConfirmedListener mOnSearchConfirmedListener;
     private OnSearchQueryChangeListener mOnSearchQueryChangeListener;
     private OnSuggestionChangeListener mOnSuggestionChangeListener;
-    private SearchRecyclerViewAdapter adapter;
+    private SearchAdapter adapter;
     private SearchViewModel viewModel;
 
     @Override
@@ -144,8 +143,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         return new LinearLayoutManager((Context) this);
     }
 
-    private final SearchRecyclerViewAdapter initAdapter() {
-        SearchRecyclerViewAdapter adapter = new SearchRecyclerViewAdapter((Context) this, this.items);
+    private final SearchAdapter initAdapter() {
+        SearchAdapter adapter = new SearchAdapter((Context) this, this.items);
         this.adapter = adapter;
 
         return adapter;

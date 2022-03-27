@@ -1,4 +1,4 @@
-package com.ogif.kotae.adapters.model;
+package com.ogif.kotae.ui.search;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -118,9 +118,9 @@ public final class SearchItem extends BaseItem {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             this.tvTitle = (TextView) itemView.findViewById(R.id.tv_search_item_title);
-            this.tvUsername = (TextView) itemView.findViewById(R.id.tv_item_username);
-            this.tvPoint = (TextView) itemView.findViewById(R.id.tv_item_point);
-            this.ivAvatar = (ImageView) itemView.findViewById(R.id.civ_item_avatar);
+            this.tvUsername = (TextView) itemView.findViewById(R.id.tv_leaderboard_username);
+            this.tvPoint = (TextView) itemView.findViewById(R.id.tv_leaderboard_point);
+            this.ivAvatar = (ImageView) itemView.findViewById(R.id.civ_leaderboard_avatar);
             this.rlContentContainer = (RelativeLayout) itemView.findViewById(R.id.rl_content_container);
             this.ivComment = (ImageView) itemView.findViewById(R.id.iv_comment);
         }

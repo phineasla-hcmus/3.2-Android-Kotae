@@ -78,8 +78,10 @@ public class QuestionRepository {
     }
 
     public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {
-        Task<QuerySnapshot> query = questionsRef.whereEqualTo("title", keyword)
-                .orderBy("postTime", orderByDirection)
+        Task<QuerySnapshot> query = questionsRef
+                .orderBy("title")
+                .startAt(keyword.toUpperCase())
+                .endAt(keyword.toLowerCase() + "\uf8ff")
                 .limit(limit)
                 .get();
         onQueryListComplete(query, callback);

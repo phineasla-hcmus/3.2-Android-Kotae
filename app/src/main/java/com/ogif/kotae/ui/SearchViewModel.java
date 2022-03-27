@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.main;
+package com.ogif.kotae.ui;
 
 import android.util.Log;
 

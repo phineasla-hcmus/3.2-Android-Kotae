@@ -19,6 +19,8 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
+import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
+import com.ogif.kotae.ui.search.SearchActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,19 +54,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) binding.includedToolBar.toolbar;
         this.setSupportActionBar(toolbar);
 
-        binding.includedToolBar.btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSearchActivity();
-            }
-        });
+        binding.includedToolBar.btnSearch.setOnClickListener(v -> startSearchActivity());
 
-        binding.includedToolBar.btnFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startFilterActivity();
-            }
-        });
+        binding.includedToolBar.btnFilter.setOnClickListener(v -> startFilterActivity());
+
+        binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
 
         // Initialize home screen
         loadFragment(new HomeFragment());
@@ -94,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    private void startLeaderboardActivity() {
+        Intent intent = new Intent(getApplicationContext(), LeaderboardActivity.class);
+        startActivity(intent);
     }
 
     private void startSearchActivity() {

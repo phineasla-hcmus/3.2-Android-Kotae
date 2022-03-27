@@ -16,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotae">
         <activity
-            android:name=".ui.main.SearchActivity"
+            android:name=".ui.leaderboard.LeaderboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.AdminActivity"
@@ -42,7 +45,7 @@
         <activity
             android:name=".ui.createquestion.QuestionContentActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.createquestion.CreateQuestionActivity"
             android:exported="false" />

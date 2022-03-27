@@ -1,4 +1,4 @@
-package com.ogif.kotae.adapters;
+package com.ogif.kotae.ui.search.adapter;
 
 import android.content.Context;
 
@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.arthurivanets.adapster.recyclerview.TrackableRecyclerViewAdapter;
-import com.ogif.kotae.adapters.model.SearchItem;
+import com.ogif.kotae.ui.search.SearchItem;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public final class SearchRecyclerViewAdapter extends TrackableRecyclerViewAdapter {
+public final class SearchAdapter extends TrackableRecyclerViewAdapter {
     @Nullable
     private OnItemClickListener<SearchItem> mOnItemClickListener;
 
@@ -37,7 +37,7 @@ public final class SearchRecyclerViewAdapter extends TrackableRecyclerViewAdapte
         this.assignListeners((SearchItem.ViewHolder) var1, var2, (SearchItem) var3);
     }
 
-    public SearchRecyclerViewAdapter(@NonNull Context context, @NonNull List items) {
+    public SearchAdapter(@NonNull Context context, @NonNull List items) {
         super(context, items);
     }
 
