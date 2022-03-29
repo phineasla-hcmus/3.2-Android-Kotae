@@ -54,7 +54,8 @@ public class UserRepository {
 
     public void getById(@NonNull String id, TaskListener.State<User> callback) {
         usersRef.document(id).get().addOnSuccessListener(documentSnapshot -> {
-            callback.onSuccess(documentSnapshot.toObject(User.class));
+            if (callback != null)
+                callback.onSuccess(documentSnapshot.toObject(User.class));
         }).addOnFailureListener(callback::onFailure);
     }
 

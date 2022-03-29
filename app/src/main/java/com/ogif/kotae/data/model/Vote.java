@@ -20,6 +20,7 @@ public class Vote {
     @DocumentId
     private String id;
     private String authorId;
+    private String recordId;
     private boolean upvote;
 
     public Vote() {
@@ -31,7 +32,8 @@ public class Vote {
     }
 
     public static class Field {
-        public static final String user = "user";
+        public static final String authorId = "authorId";
+        public static final String recordId = "recordId";
         public static final String upvote = "upvote";
     }
 
@@ -50,6 +52,15 @@ public class Vote {
 
     public Vote setAuthorId(String authorId) {
         this.authorId = authorId;
+        return this;
+    }
+
+    public String getRecordId() {
+        return recordId;
+    }
+
+    public Vote setRecordId(String recordId) {
+        this.recordId = recordId;
         return this;
     }
 

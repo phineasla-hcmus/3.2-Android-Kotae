@@ -176,8 +176,6 @@ public abstract class Post implements Parcelable {
         return post;
     }
 
-    // public void increment
-
     public String getId() {
         return id;
     }
