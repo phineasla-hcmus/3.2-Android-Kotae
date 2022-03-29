@@ -20,7 +20,7 @@ public class GradeRepository {
 
     public GradeRepository() {
         this.db = FirebaseFirestore.getInstance();
-        this.gradesRef = db.collection("grade");
+        this.gradesRef = db.collection("grades");
     }
 
     public Task<DocumentSnapshot> get(String id) {

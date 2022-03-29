@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.ui.main.adapter;
 
 import android.content.Context;
 import android.graphics.Color;

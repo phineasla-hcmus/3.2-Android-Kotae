@@ -37,11 +37,26 @@ public class QuestionRepository {
         this.mutableLiveData = new MutableLiveData<>();
     }
 
-    public Task<DocumentSnapshot> get(@NonNull String id) {
+    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
+        query.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                questions.add(document.toObject(Question.class));
+            }
+            callback.onSuccess(questions);
+        }).addOnFailureListener(callback::onFailure);
+    }
+
+    @NonNull
+    private Task<DocumentSnapshot> get(@NonNull String id) {
         return questionsRef.document(id).get();
     }
 
-    public void get(@NonNull String id, TaskListener.State<Question> callback) {
+    public DocumentReference toDocumentRef(@NonNull Question question) {
+        return questionsRef.document(question.getId());
+    }
+
+    public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {
         get(id).addOnSuccessListener(documentSnapshot -> callback.onSuccess(documentSnapshot.toObject(Question.class)))
                 .addOnFailureListener(callback::onFailure);
     }
@@ -86,15 +101,4 @@ public class QuestionRepository {
                 .get();
         onQueryListComplete(query, callback);
     }
-
-    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                questions.add(document.toObject(Question.class));
-            }
-            callback.onSuccess(questions);
-        }).addOnFailureListener(callback::onFailure);
-    }
-
 }

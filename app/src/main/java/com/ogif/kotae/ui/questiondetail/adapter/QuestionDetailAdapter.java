@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -47,13 +48,15 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         protected final RecyclerView images;
         protected final AuthorView author;
         protected final VoteView vote;
+        protected final MaterialButton comment;
 
-        public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int vote) {
+        public PostHolder(@NonNull View itemView, @IdRes int content, @IdRes int images, @IdRes int author, @IdRes int vote, @IdRes int comment) {
             super(itemView);
             this.content = itemView.findViewById(content);
             this.images = itemView.findViewById(images);
             this.author = itemView.findViewById(author);
             this.vote = itemView.findViewById(vote);
+            this.comment = itemView.findViewById(comment);
         }
     }
 
@@ -67,7 +70,8 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     R.id.tv_question_detail_content,
                     R.id.recycler_view_question_detail_images,
                     R.id.author_view_question_detail,
-                    R.id.vote_view_question_detail);
+                    R.id.vote_view_question_detail,
+                    R.id.btn_question_detail_comment);
             this.title = itemView.findViewById(R.id.tv_question_detail_title);
             this.subject = itemView.findViewById(R.id.chip_question_detail_subject);
             this.grade = itemView.findViewById(R.id.chip_question_detail_grade);
@@ -82,7 +86,9 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     R.id.tv_answer_content,
                     R.id.recycler_view_answer_images,
                     R.id.author_view_answer,
-                    R.id.vote_view_answer);
+                    R.id.vote_view_answer,
+                    R.id.btn_answer_comment);
+
             this.more = itemView.findViewById(R.id.btn_answer_more);
         }
     }
@@ -153,6 +159,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.content.setText(post.getContent());
         holder.images.setLayoutManager(imagesLayoutManager);
         holder.author.setAuthorName(post.getAuthor());
+        // holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), state);
         // TODO aw s, now we need to either fetch the User or store reputation in Post :facepalm:
         // holder.author.setReputation(post);
         // TODO bind author avatar

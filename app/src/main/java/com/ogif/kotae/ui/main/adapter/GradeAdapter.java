@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.ui.main.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -43,7 +43,7 @@ public class GradeAdapter extends ArrayAdapter<Grade> {
     // This is for the "passive" state of the spinner
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+        // I created a dynamic TextView here, but you can reference your own custom layout for each spinner item
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         // Then you can get the current item using the values array (Users array) and the current position

@@ -36,9 +36,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         MaterialToolbar toolbar = binding.toolbarQuestionDetail;
-        toolbar.setNavigationOnClickListener(nav -> {
-            NavUtils.navigateUpFromSameTask(this);
-        });
+        toolbar.setNavigationOnClickListener(nav -> NavUtils.navigateUpFromSameTask(this));
         setSupportActionBar(toolbar);
 
         adapter = new QuestionDetailAdapter(this);
@@ -56,16 +54,30 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         questionDetailViewModel.getAnswers();
 
-        questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
-            adapter.updateQuestion(question);
-        });
-        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
-            adapter.updateAnswers(answers);
-        });
+        questionDetailViewModel.getQuestionLiveData()
+                .observe(this, question -> adapter.updateQuestion(question));
+        questionDetailViewModel.getAnswerLiveData()
+                .observe(this, answers -> adapter.updateAnswers(answers));
 
-        binding.btnQuestionAnswer.setOnClickListener(v -> {
-            startCreateAnswerActivity();
-        });
+        binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
+
+        // FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // db.collection("votes")
+        //         .whereEqualTo("authorId", "0FDZ97sbxRf17ac07Sx260inaPR2")
+        //         .whereIn(FieldPath.documentId(), Arrays.asList("5dEcqTo35b9QA1XoGg2o",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI"))
+        //         .get()
+        //         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        //             @Override
+        //             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+        //                 for (DocumentSnapshot doc : queryDocumentSnapshots) {
+        //                     Vote v = doc.toObject(Vote.class);
+        //                     Log.d("TEST", v.getId());
+        //                 }
+        //             }
+        //         });
     }
 
     private void startCreateAnswerActivity() {

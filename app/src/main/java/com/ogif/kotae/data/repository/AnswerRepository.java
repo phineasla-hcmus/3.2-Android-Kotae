@@ -44,6 +44,10 @@ public class AnswerRepository {
         }).addOnFailureListener(callback::onFailure);
     }
 
+    public DocumentReference toDocumentRef(@NonNull Answer answer) {
+        return answersRef.document(answer.getId());
+    }
+
     public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {
         get(id).addOnSuccessListener(documentSnapshot -> {
             callback.onSuccess(documentSnapshot.toObject(Question.class));
