@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -12,6 +13,7 @@ import com.ogif.kotae.R;
 import java.util.Locale;
 
 public class VerticalVoteView extends VoteView {
+
     private TextView upvoteCounter;
     private TextView downvoteCounter;
 
@@ -34,6 +36,9 @@ public class VerticalVoteView extends VoteView {
     @Override
     protected void inflate() {
         inflate(getContext(), R.layout.partial_vertical_vote_view, this);
+        RES_TOGGLE_GROUP = R.id.toggle_group_vertical_vote_view;
+        RES_UPVOTE = R.id.btn_vertical_vote_view_upvote;
+        RES_DOWNVOTE = R.id.btn_vertical_vote_view_downvote;
     }
 
     @Override
