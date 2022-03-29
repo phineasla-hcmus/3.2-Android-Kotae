@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
@@ -74,7 +75,7 @@ public class QuestionRepository {
     public Query getHomeQuestions() {
         return questionsRef.whereEqualTo("blocked", false)
                 .orderBy("postTime", Query.Direction.DESCENDING)
-                .limit(20);
+                .limit(Global.QUERY_LIMIT);
     }
 
     public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {
@@ -96,5 +97,29 @@ public class QuestionRepository {
             callback.onSuccess(questions);
         }).addOnFailureListener(callback::onFailure);
     }
+    public void updateUpvote(String id ){
+            get(id, new TaskListener.State<Question>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
+            }
+            @Override
+            public void onSuccess(Question result) {
+                Log.d("Upvote counter", Integer.toString(result.getUpvote()));
+                questionsRef.document(id).update("upvote",result.getUpvote()+1)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("[Upvote]", "DocumentSnapshot successfully updated!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("[Upvote]", "Error updating document", e);
+                    }
+                });
+            }
+        });
+
+    }
 }
