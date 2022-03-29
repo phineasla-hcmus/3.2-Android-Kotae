@@ -62,6 +62,7 @@
     <string name="fab_post_question">Đăng</string>
     <string name="field_error_missing">Có cái gì đó thiếu thiếu</string>
     <string name="filter_cancel">Hủy bỏ</string>
+    <string name="filter_reset">Đặt lại</string>
     <string name="filter_submit">Đồng ý</string>
     <string name="leaderboard_day">Ngày</string>
     <string name="leaderboard_week">Tuần</string>

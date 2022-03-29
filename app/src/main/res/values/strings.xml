@@ -73,6 +73,7 @@
     <string name="fab_post_answer">Post</string>
     <string name="field_error_missing">Missing required field(s)</string>
     <string name="filter_cancel">Cancel</string>
+    <string name="filter_reset">Reset</string>
     <string name="filter_submit">Submit</string>
     <string name="leaderboard_day">Day</string>
     <string name="leaderboard_week">Week</string>
