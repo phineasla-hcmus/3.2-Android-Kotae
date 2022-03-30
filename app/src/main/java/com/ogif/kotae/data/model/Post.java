@@ -215,4 +215,8 @@ public abstract class Post implements Parcelable {
     public boolean isBlocked() {
         return blocked;
     }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
 }

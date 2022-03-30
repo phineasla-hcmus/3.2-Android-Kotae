@@ -47,7 +47,7 @@ public class VoteRepository {
         getDocumentSnapshot(authorId, recordId, new TaskListener.State<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot result) {
-                callback.onSuccess(result.toObject(Vote.class);
+                callback.onSuccess(result.toObject(Vote.class));
             }
 
             @Override
