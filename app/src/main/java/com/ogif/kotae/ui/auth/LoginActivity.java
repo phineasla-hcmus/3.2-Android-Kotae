@@ -8,15 +8,15 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.databinding.ActivityLoginBinding;
-import com.ogif.kotae.ui.UserViewModel;
 import com.ogif.kotae.ui.main.MainActivity;
 
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
-    private UserViewModel viewModel;
+    private AuthViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +25,8 @@ public class LoginActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        viewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        viewModel.getLiveData().observe(this, user -> {
+        viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        viewModel.getUserLiveData().observe(this, (FirebaseUser user) -> {
             if (user == null) {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
                 return;

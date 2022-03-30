@@ -17,7 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
-import com.ogif.kotae.ui.UserViewModel;
+import com.ogif.kotae.ui.auth.AuthViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
 import com.ogif.kotae.ui.search.SearchActivity;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private Toolbar toolbar;
-    private UserViewModel viewModel;
+    private AuthViewModel viewModel;
     final int REQUEST_CODE_FILTER = 10;
 
     @Override
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 ? AppCompatDelegate.MODE_NIGHT_YES
                 : AppCompatDelegate.MODE_NIGHT_NO);
 
-        this.viewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
 
         if (!this.viewModel.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);

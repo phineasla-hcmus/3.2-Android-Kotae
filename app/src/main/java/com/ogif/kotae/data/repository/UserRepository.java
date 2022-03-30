@@ -5,6 +5,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -20,43 +22,44 @@ public class UserRepository {
     private final FirebaseAuth auth;
     private final FirebaseFirestore db;
     private final CollectionReference usersRef;
-    private final MutableLiveData<StateWrapper<FirebaseUser>> mutableLiveData;
 
     public UserRepository() {
         this.auth = FirebaseAuth.getInstance();
-        this.mutableLiveData = new MutableLiveData<>();
         this.db = FirebaseFirestore.getInstance();
         this.usersRef = db.collection("users");
-        FirebaseUser user = auth.getCurrentUser();
-        if (user != null) {
-            mutableLiveData.postValue(StateWrapper.success(user));
-        }
     }
 
-    public void login(@NonNull String email, @NonNull String password) {
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                FirebaseUser user = auth.getCurrentUser();
-                mutableLiveData.postValue(StateWrapper.success(user));
-            } else {
-                String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.w(TAG, message);
-                mutableLiveData.postValue(StateWrapper.fail(message));
-            }
-        });
-    }
-
-    public void getCurrentUser(TaskListener.State<User> callback) {
+    public void getCurrentUser(@NonNull TaskListener.State<User> callback) {
         if (auth.getCurrentUser() == null)
-            callback.onFailure(new NullPointerException("User haven't logged in"));
+            callback.onFailure(new NullPointerException("getCurrentUser returns null"));
         getById(auth.getCurrentUser().getUid(), callback);
     }
 
-    public void getById(@NonNull String id, TaskListener.State<User> callback) {
+    public void getById(@NonNull String id, @NonNull TaskListener.State<User> callback) {
         usersRef.document(id).get().addOnSuccessListener(documentSnapshot -> {
-            if (callback != null)
-                callback.onSuccess(documentSnapshot.toObject(User.class));
+            callback.onSuccess(documentSnapshot.toObject(User.class));
         }).addOnFailureListener(callback::onFailure);
+    }
+
+    // public void login(@NonNull String email, @NonNull String password) {
+    //     auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+    //         if (task.isSuccessful()) {
+    //             FirebaseUser user = auth.getCurrentUser();
+    //             mutableLiveData.postValue(StateWrapper.success(user));
+    //         } else {
+    //             String message = Objects.requireNonNull(task.getException()).getMessage();
+    //             Log.w(TAG, message);
+    //             mutableLiveData.postValue(StateWrapper.fail(message));
+    //         }
+    //     });
+    // }
+
+    public void login(@NonNull String email, @NonNull String password, TaskListener.State<FirebaseUser> callback) {
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener((AuthResult authResult) -> {
+                    if (callback != null)
+                        callback.onSuccess(authResult.getUser());
+                }).addOnFailureListener(callback::onFailure);
     }
 
     /**
@@ -74,29 +77,21 @@ public class UserRepository {
      * </li>
      * </ol>
      */
-    public void createUser(@NonNull String email, @NonNull String password, @NonNull User extraInfo) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful() && auth.getCurrentUser() != null) {
-                FirebaseUser user = auth.getCurrentUser();
-                // Insert extraInfo into Firestore
-                usersRef.document(user.getUid()).set(extraInfo).addOnCompleteListener(extraTask -> {
-                    if (task.isSuccessful())
-                        mutableLiveData.postValue(StateWrapper.success(user));
-                    else {
-                        String message = Objects.requireNonNull(extraTask.getException())
-                                .getMessage();
-                        Log.w(TAG, message);
-                        // Rollback user authentication
-                        user.delete();
-                        mutableLiveData.postValue(StateWrapper.fail(message));
+    public void createUser(@NonNull String email, @NonNull String password, @NonNull User extraInfo, TaskListener.State<FirebaseUser> callback) {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener((AuthResult authResult) -> {
+                    FirebaseUser user = authResult.getUser();
+                    if (user == null) {
+                        Log.w(TAG, "createUserWithEmailAndPassword returns null");
+                        return;
                     }
-                });
-            } else {
-                String message = Objects.requireNonNull(task.getException()).getMessage();
-                Log.w(TAG, message);
-                mutableLiveData.postValue(StateWrapper.fail(message));
-            }
-        });
+                    // Insert extraInfo into Firestore
+                    usersRef.document(user.getUid()).set(extraInfo).addOnSuccessListener(aVoid -> {
+                        if (callback != null)
+                            callback.onSuccess(user);
+                    }).addOnFailureListener(callback::onFailure);
+                })
+                .addOnFailureListener(callback::onFailure);
     }
 
     public void reload(@NonNull FirebaseUser user) {
@@ -115,9 +110,5 @@ public class UserRepository {
      */
     public boolean isEmailVerified() {
         return Objects.requireNonNull(auth.getCurrentUser()).isEmailVerified();
-    }
-
-    public MutableLiveData<StateWrapper<FirebaseUser>> getMutableLiveData() {
-        return mutableLiveData;
     }
 }
