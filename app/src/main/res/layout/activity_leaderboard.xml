@@ -56,7 +56,6 @@
         android:overScrollMode="never"
         android:paddingStart="2dp"
         android:paddingLeft="2dp"
-        android:paddingTop="60dp"
         android:paddingEnd="2dp"
         android:paddingRight="2dp"
         android:paddingBottom="4dp"
