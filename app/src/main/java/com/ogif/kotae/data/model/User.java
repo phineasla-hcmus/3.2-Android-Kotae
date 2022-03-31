@@ -109,4 +109,13 @@ public class User {
         this.avatar = avatar;
         return this;
     }
+
+    public int getReputation() {
+        return reputation;
+    }
+
+    public User setReputation(int reputation) {
+        this.reputation = reputation;
+        return this;
+    }
 }

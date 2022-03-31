@@ -68,7 +68,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
 //    @Override
 //    public void onBindViewHolder(ViewHolder holder, int position) {
-//        UserRepository userRepository = new UserRepository();
+//        AuthRepository userRepository = new AuthRepository();
 //        Question question = questionList.get(position);
 //        holder.content.setText(question.getContent());
 //        // holder.postTime.setText((int) questionList.get(position).getPostTime());

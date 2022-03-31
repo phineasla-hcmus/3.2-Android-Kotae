@@ -17,6 +17,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityMainBinding;
+import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.AuthViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
@@ -26,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     private Toolbar toolbar;
-    private AuthViewModel viewModel;
+    private AuthViewModel authViewModel;
+    private ProfileViewModel profileViewModel;
     final int REQUEST_CODE_FILTER = 10;
 
     @Override
@@ -38,14 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         boolean isNightModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(Global.SETTING_KEY_NIGHT_MODE, false);
-
         AppCompatDelegate.setDefaultNightMode(isNightModeEnabled
                 ? AppCompatDelegate.MODE_NIGHT_YES
                 : AppCompatDelegate.MODE_NIGHT_NO);
 
-        this.viewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        this.authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        this.profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
-        if (!this.viewModel.isLoggedIn()) {
+        if (!this.authViewModel.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
@@ -100,14 +102,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void startFilterActivity(){
+    private void startFilterActivity() {
         Intent intent = new Intent(getApplicationContext(), FilterQuestionActivity.class);
         startActivityForResult(intent, REQUEST_CODE_FILTER);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null) {
             // Get questions after filter & render
         }
         super.onActivityResult(requestCode, resultCode, data);

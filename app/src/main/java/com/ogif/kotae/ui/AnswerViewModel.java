@@ -11,10 +11,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
-import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AnswerRepository;
-import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
 public class AnswerViewModel extends ViewModel {

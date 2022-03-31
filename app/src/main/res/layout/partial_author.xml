@@ -13,18 +13,18 @@
         android:layout_width="@dimen/avatar_size_sm"
         android:layout_height="@dimen/avatar_size_sm"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder_user"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_author_username"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="8dp"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_author_avatar"
         app:layout_constraintTop_toTopOf="parent"

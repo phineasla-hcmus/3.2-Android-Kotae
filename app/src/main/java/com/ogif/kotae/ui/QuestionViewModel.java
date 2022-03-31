@@ -14,13 +14,14 @@ import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
 public class QuestionViewModel extends ViewModel {
     private final QuestionRepository questionRepository;
-    private final MutableLiveData<StateWrapper<Question>> mutableLiveData;
     private final UserRepository userRepository;
+    private final MutableLiveData<StateWrapper<Question>> mutableLiveData;
 
     public QuestionViewModel() {
         this.questionRepository = new QuestionRepository();

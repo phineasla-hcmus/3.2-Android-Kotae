@@ -8,14 +8,14 @@ import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
-import com.ogif.kotae.data.repository.UserRepository;
+import com.ogif.kotae.data.repository.AuthRepository;
 
 public class AuthViewModel extends ViewModel {
-    private final UserRepository authRepository;
+    private final AuthRepository authRepository;
     private final MutableLiveData<FirebaseUser> userMutableLiveData;
 
     public AuthViewModel() {
-        this.authRepository = new UserRepository();
+        this.authRepository = new AuthRepository();
         this.userMutableLiveData = new MutableLiveData<>();
     }
 
