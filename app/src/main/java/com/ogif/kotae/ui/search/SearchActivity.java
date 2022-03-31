@@ -167,6 +167,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         this.dataProvider.saveSearchQuery(query);
     }
 
+    /**
+     * @see <a href="https://stackoverflow.com/questions/61841088/given-a-string-generate-all-2-consecutive-characters-3-consecutive-characters">
+     * */
+
+    public void combo(List<String> combinations, String s) {
+        int len = s.length();
+        int gap = len - 1; // This determines the consecutive character size.
+        for (int set = 0; set <= len; set++) {
+            if ((set + gap) <= len) {
+                String subString = s.substring(set, set + gap);
+                combinations.add(subString);
+            }
+        }
+        combinations.add(s);
+    }
+
     private void performSearch(String query) {
         ViewUtils.makeGone((View) binding.llSearchEmptyView);
         binding.rvSearch.setAlpha(0.0F);
@@ -175,11 +191,23 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         this.viewModel.getQuestions(query);
 
+        List<String> combinations = new ArrayList<>();
+        combo(combinations, query);
+
         this.viewModel.getQuestionLiveData().observe(this, questions -> {
             this.items.clear();
             if (questions != null) {
                 for (int i = 0; i < questions.size(); i++) {
-                    this.items.add(new SearchItem(questions.get(i)));
+                    boolean flag = false;
+                    for (int j = 0; j < combinations.size(); j++) {
+                        if (questions.get(i).getTitle().contains(combinations.get(j)))
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag)
+                        this.items.add(new SearchItem(questions.get(i)));
                 }
             }
 
