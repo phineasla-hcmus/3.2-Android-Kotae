@@ -15,6 +15,8 @@ import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
+import java.util.ArrayList;
+
 public class AnswerViewModel extends ViewModel {
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
@@ -49,7 +51,10 @@ public class AnswerViewModel extends ViewModel {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("data", "Error adding document", e);
-
+                        Answer answer1 = new Answer.Builder().content("bc")
+                                .imageIds(new ArrayList<>())
+                                .content("abc")
+                                .build();
                     }
                 });
             }

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
@@ -50,7 +49,7 @@ public class ProfileFragment extends Fragment {
             if (user == null)
                 return;
             binding.tvProfileUsername.setText(user.getUsername());
-            binding.tvProfileXp.setText(user.getReputation());
+            binding.tvProfileXp.setText(user.getXp());
             if (user.getRole().equals(User.ROLE_ADMIN))
                 binding.tvProfileAdmin.setVisibility(View.VISIBLE);
         });

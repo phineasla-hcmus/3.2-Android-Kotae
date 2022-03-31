@@ -28,7 +28,7 @@ public class QuestionRepository {
     private final CollectionReference questionsRef;
     private final MutableLiveData<StateWrapper<Question>> mutableLiveData;
 
-    private String orderBy = Question.Field.postTime;
+    private String orderBy = Question.Field.POST_TIME;
     private Query.Direction orderByDirection = Query.Direction.DESCENDING;
 
     public QuestionRepository() {

@@ -31,57 +31,27 @@ public abstract class Record {
     protected int downvote;
     protected int report;
     protected boolean blocked;
-    
+
     /**
      * Firestore
      */
     public static class Field {
-        public static final String authorId = "authorId";
-        public static final String authorName = "authorName";
-        public static final String content = "content";
-        public static final String postTime = "postTime";
-        public static final String upvote = "upvote";
-        public static final String downvote = "downvote";
-        public static final String report = "report";
-        public static final String blocked = "blocked";
+        public static final String AUTHOR_ID = "authorId";
+        public static final String AUTHOR_NAME = "authorName";
+        public static final String CONTENT = "content";
+        public static final String POST_TIME = "postTime";
+        public static final String UPVOTE = "upvote";
+        public static final String DOWNVOTE = "downvote";
+        public static final String REPORT = "report";
+        public static final String BLOCKED = "blocked";
     }
 
-    @Nullable
-    protected static <T extends Record> T fromDocument(@NonNull DocumentSnapshot document, @NonNull Class<T> clazz) {
-        T record;
-        if (!document.exists())
-            return null;
-        try {
-            record = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            return null;
-        }
-        record.id = document.getId();
-        record.authorId = document.getString(Record.Field.authorId);
-        record.author = document.getString(Record.Field.authorName);
-        record.content = document.getString(Record.Field.content);
-        record.postTime = document.getDate(Record.Field.postTime);
-        Integer checkNull = document.get(Record.Field.upvote, int.class);
-        if (checkNull != null)
-            record.upvote = checkNull;
-        checkNull = document.get(Record.Field.downvote, int.class);
-        if (checkNull != null)
-            record.downvote = checkNull;
-        checkNull = document.get(Record.Field.report, int.class);
-        if (checkNull != null)
-            record.report = checkNull;
-        Boolean blocked = document.getBoolean(Record.Field.blocked);
-        if (blocked != null)
-            record.blocked = blocked;
-        return record;
-    }
-
-    public abstract static class Builder<T extends Record.Builder<T>> {
+    public abstract static class Builder<T> {
         private String id;
         private String authorId;
         private String authorName;
         private String content;
-        private boolean block;
+        private boolean blocked;
 
         public Builder() {
         }
@@ -116,9 +86,12 @@ public abstract class Record {
 
         @TestOnly
         public T block(boolean block) {
-            this.block = block;
+            this.blocked = block;
             return getThis();
         }
+    }
+
+    public Record() {
     }
 
     public Record(@NonNull Builder<?> builder) {
@@ -126,9 +99,40 @@ public abstract class Record {
         this.authorId = builder.authorId;
         this.author = builder.authorName;
         this.content = builder.content;
-        this.blocked = builder.block;
+        this.blocked = builder.blocked;
         this.postTime = new Date();
     }
+
+    @Nullable
+    protected static <T extends Record> T fromDocument(@NonNull DocumentSnapshot document, @NonNull Class<T> clazz) {
+        T record;
+        if (!document.exists())
+            return null;
+        try {
+            record = clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            return null;
+        }
+        record.id = document.getId();
+        record.authorId = document.getString(Record.Field.AUTHOR_ID);
+        record.author = document.getString(Record.Field.AUTHOR_NAME);
+        record.content = document.getString(Record.Field.CONTENT);
+        record.postTime = document.getDate(Record.Field.POST_TIME);
+        Integer checkNull = document.get(Record.Field.UPVOTE, int.class);
+        if (checkNull != null)
+            record.upvote = checkNull;
+        checkNull = document.get(Record.Field.DOWNVOTE, int.class);
+        if (checkNull != null)
+            record.downvote = checkNull;
+        checkNull = document.get(Record.Field.REPORT, int.class);
+        if (checkNull != null)
+            record.report = checkNull;
+        Boolean blocked = document.getBoolean(Record.Field.BLOCKED);
+        if (blocked != null)
+            record.blocked = blocked;
+        return record;
+    }
+
 
     public String getId() {
         return id;
@@ -146,7 +150,7 @@ public abstract class Record {
         return content;
     }
 
-    public Date getRecordTime() {
+    public Date getPostTime() {
         return postTime;
     }
 
@@ -164,5 +168,9 @@ public abstract class Record {
 
     public boolean isBlocked() {
         return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }
