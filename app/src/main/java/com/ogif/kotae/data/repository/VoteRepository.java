@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.android.gms.tasks.Tasks;
+import com.google.common.collect.Lists;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -12,7 +15,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Vote;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.rxjava3.annotations.Nullable;
 
@@ -59,6 +65,44 @@ public class VoteRepository {
 
     public void get(@NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
         get(userId, recordId, callback);
+    }
+
+    /**
+     * @param recordIds if size() > 10, it will be processed in batches
+     * @param callback  return type is a map of record ID and Vote that is in either state: {@link
+     *                  Vote#UPVOTE}
+     *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,
+     *                  Object)}
+     */
+    public void getList(@NonNull String authorId, @NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
+        List<List<String>> batches = Lists.partition(recordIds, 10);
+        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
+        for (List<String> batch : batches) {
+            tasks.add(votesRef.whereEqualTo(Vote.Field.authorId, authorId)
+                    .whereIn(Vote.Field.recordId, batch).get());
+        }
+        Tasks.whenAllSuccess(tasks).addOnSuccessListener((List<Object> objects) -> {
+            for (Object object : objects) {
+                QuerySnapshot snapshots = (QuerySnapshot) object;
+                Map<String, Vote> result = new HashMap<>();
+                for (DocumentSnapshot snapshot : snapshots) {
+                    Vote vote = snapshot.toObject(Vote.class);
+                    if (vote != null)
+                        result.put(vote.getRecordId(), vote);
+                }
+            }
+        }).addOnFailureListener(callback::onFailure);
+    }
+
+    /**
+     * @param recordIds if {@code size() > 10}, it will be processed in batches
+     * @param callback  return type is a map of record ID and Vote that is in either state: {@link
+     *                  Vote#UPVOTE}
+     *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,
+     *                  Object)}
+     */
+    public void getList(@NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
+        getList(userId, recordIds, callback);
     }
 
     public void set(@NonNull String authorId, @NonNull String recordId, @Vote.State int state, TaskListener.State<Void> callback) {

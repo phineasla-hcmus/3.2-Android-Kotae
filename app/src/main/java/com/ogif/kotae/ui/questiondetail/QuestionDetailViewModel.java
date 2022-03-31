@@ -12,8 +12,12 @@ import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
+import com.ogif.kotae.data.repository.UserRepository;
+import com.ogif.kotae.data.repository.VoteRepository;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,14 +26,22 @@ public class QuestionDetailViewModel extends ViewModel {
     private static final String TAG = "QuestionDetailViewModel";
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final VoteRepository voteRepository;
     private final MutableLiveData<Question> questionLiveData;
     private final MutableLiveData<List<Answer>> answerLiveData;
+    private final MutableLiveData<List<Vote>> voteLiveData;
 
     public QuestionDetailViewModel() {
+        UserRepository userRepository = new UserRepository();
+        String userId = Objects.requireNonNull(userRepository.getCurrentUser()).getUid();
+
         this.questionRepository = new QuestionRepository();
         this.answerRepository = new AnswerRepository();
+        this.voteRepository = new VoteRepository(userId);
+
         this.questionLiveData = new MutableLiveData<>();
         this.answerLiveData = new MutableLiveData<>();
+        this.voteLiveData = new MutableLiveData<>();
     }
 
     public QuestionDetailViewModel(Question question) {
@@ -67,8 +79,13 @@ public class QuestionDetailViewModel extends ViewModel {
             public void onFailure(@NonNull Exception e) {
                 Log.w(TAG, "Failed to getAnswer()");
                 answerLiveData.postValue(null);
+
             }
         });
+    }
+
+    public void getVoteStates() {
+        // voteRepository.g
     }
 
     public LiveData<Question> getQuestionLiveData() {

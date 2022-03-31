@@ -3,6 +3,7 @@ package com.ogif.kotae.data.repository;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +28,11 @@ public class UserRepository {
         this.auth = FirebaseAuth.getInstance();
         this.db = FirebaseFirestore.getInstance();
         this.usersRef = db.collection("users");
+    }
+
+    @Nullable
+    public FirebaseUser getCurrentUser() {
+        return auth.getCurrentUser();
     }
 
     public void getCurrentUser(@NonNull TaskListener.State<User> callback) {
