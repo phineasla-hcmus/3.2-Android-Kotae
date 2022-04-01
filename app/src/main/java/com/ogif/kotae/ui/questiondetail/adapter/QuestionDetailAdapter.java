@@ -135,7 +135,9 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case ITEM_TYPE_ANSWER: {
                 // Because question always at position 0
                 Answer answer = answers.get(position - 1);
-                bindCommonView(viewHolder, answer, answerVotes.get(position - 1));
+                bindCommonView(viewHolder, answer, answerVotes.isEmpty()
+                        ? null
+                        : answerVotes.get(position - 1));
                 bindAnswer((AnswerHolder) viewHolder, answer);
                 break;
             }
