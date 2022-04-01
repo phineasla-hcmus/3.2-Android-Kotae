@@ -4,35 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.answer.CreateQuestionActivity">
+    tools:context=".ui.createanswer.CreateAnswerActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abl_create_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_create_answer"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back"
+            app:titleTextColor="?android:attr/textColorPrimary" />
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/abl_create_answer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/abl_create_answer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tb_create_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:navigationIcon="@drawable/ic_baseline_arrow_back"
-                    app:titleTextColor="?android:attr/textColorPrimary" />
-            </com.google.android.material.appbar.AppBarLayout>
 
             <TextView
                 android:id="@+id/tv_answer_content_title"
@@ -42,10 +41,9 @@
                 android:layout_marginTop="@dimen/margin_y"
                 android:fontFamily="@font/roboto"
                 android:text="@string/create_answer_content_title"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/abl_create_answer" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_answer_content"
@@ -72,6 +70,7 @@
                     android:imeOptions="flagNoExtractUi"
                     android:isScrollContainer="true"
                     android:scrollbars="vertical"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:theme="@style/TextInputEditTextStyle" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -84,8 +83,7 @@
                 android:layout_marginTop="@dimen/margin_y"
                 android:fontFamily="@font/roboto"
                 android:text="@string/create_answer_images_title"
-                android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/til_answer_content" />
 

@@ -1,11 +1,11 @@
 package com.ogif.kotae;
 
 public class Global {
-    public static final int CONTENT_MIN = 50;
+    public static final int CONTENT_MIN = 30;
     public static final int PASSWORD_MIN = 6;
     public static final int PASSWORD_MAX = 16;
-    public static final int TITLE_MIN = 16;
-    public static final int TITLE_MAX = 100;
+    public static final int TITLE_MIN = 10;
+    public static final int TITLE_MAX = 40;
     public static final int USERNAME_MIN = 3;
     public static final int USERNAME_MAX = 16;
 

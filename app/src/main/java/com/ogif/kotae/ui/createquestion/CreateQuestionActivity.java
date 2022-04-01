@@ -40,7 +40,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
-    private String content, selectedGradeId, selectedSubjectId, selectedGradeName, selectedSubjectName;
+    private String content, selectedGradeId, selectedSubjectId, selectedGradeName="", selectedSubjectName="";
     private QuestionViewModel viewModel;
 
     @Override
@@ -124,17 +124,25 @@ public class CreateQuestionActivity extends AppCompatActivity {
         });
 
         binding.fabPostQuestion.setOnClickListener(v -> {
-            for (EditText et : ets) {
-                if (TextUtils.isEmpty(et.getText())) {
-                    Toast.makeText(this, getResources().getString(R.string.field_error_missing), Toast.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
-            }
             String title = Objects.requireNonNull(binding.etCreateQuestionTitle.getText())
                     .toString();
+            if (QuestionUtils.isTitleValid(title) == QuestionUtils.INVALID_TITLE_LENGTH) {
+                Toast.makeText(this, getResources().getString(R.string.et_error_question_title_length), Toast.LENGTH_SHORT).show();
+                return;
+            }
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
-
+            if (QuestionUtils.isContentValid(content) == QuestionUtils.INVALID_CONTENT_LENGTH) {
+                Toast.makeText(this, getResources().getString(R.string.invalid_question_content_length), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (QuestionUtils.isGradeValid(selectedGradeName) == QuestionUtils.NOT_SELECTED_GRADE) {
+                Toast.makeText(this, getResources().getString(R.string.missing_selected_grade), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (QuestionUtils.isSubjectValid(selectedSubjectName) == QuestionUtils.NOT_SELECTED_SUBJECT) {
+                Toast.makeText(this, getResources().getString(R.string.missing_selected_subject), Toast.LENGTH_SHORT).show();
+                return;
+            }
             binding.fabPostQuestion.setEnabled(false);
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
             this.finish();

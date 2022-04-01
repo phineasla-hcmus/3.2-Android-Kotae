@@ -63,7 +63,7 @@
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>
-    <string name="et_error_question_title_length">Question title must be between 16 to 100 characters</string>
+    <string name="et_error_question_title_length">Question title must be between 10 to 40 characters</string>
     <string name="et_error_username_first_char">Username must start with a letter </string>
     <string name="et_error_username_invalid_char">Username contains invalid character</string>
     <string name="et_error_username_length">Username must be between 3 to 16 characters</string>
@@ -82,6 +82,10 @@
     <string name="login_header" translatable="false">Already have an account?</string>
     <string name="login_to_sign_up">New member? Sign up now</string>
     <string name="markdown" translatable="false">Markdown</string>
+    <string name="missing_answer_content">PLease enter your answer</string>
+    <string name="missing_selected_grade">PLease select your grade</string>
+    <string name="missing_selected_subject">PLease select your subject</string>
+    <string name="invalid_question_content_length">Question content must have at least 30 characters</string>
     <string name="no_preview">No preview available</string>
     <string name="post_image">Post image</string>
     <string name="preview">Preview</string>
