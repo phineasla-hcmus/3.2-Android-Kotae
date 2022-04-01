@@ -102,4 +102,5 @@
     <string name="missing_selected_grade">Vui lòng chọn lớp của bạn</string>
     <string name="missing_selected_subject">Vui lòng chọn môn học của bạn</string>
     <string name="invalid_question_content_length">Nội dung câu hỏi phải chứa ít nhất 30 ký tự</string>
+    <string name="all_image">Hình ảnh</string>
 </resources>

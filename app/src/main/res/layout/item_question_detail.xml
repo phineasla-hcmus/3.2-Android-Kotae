@@ -55,16 +55,27 @@
         tools:layout_height="100dp"
         tools:text="@tools:sample/lorem/random" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_question_detail_images"
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--    android:id="@+id/recycler_view_question_detail_images"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:layout_marginTop="@dimen/margin_between_y_md"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    app:layout_constraintHorizontal_bias="0.0"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content"-->
+    <!--    tools:itemCount="3" />-->
+
+    <ImageView
+        android:id="@+id/img_question_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_between_y_md"
+        android:contentDescription="@string/all_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content"
-        tools:itemCount="3" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_question_detail_tags"
@@ -74,7 +85,7 @@
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recycler_view_question_detail_images"
+        app:layout_constraintTop_toBottomOf="@id/img_question_detail"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip

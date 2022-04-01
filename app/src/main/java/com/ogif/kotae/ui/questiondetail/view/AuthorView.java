@@ -52,7 +52,7 @@ public class AuthorView extends ConstraintLayout {
         return avatar;
     }
 
-    public void setAuthorName(String username) {
+    public void setName(String username) {
         this.username.setText(username);
     }
 

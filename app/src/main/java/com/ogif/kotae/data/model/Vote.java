@@ -26,8 +26,9 @@ public class Vote {
     public Vote() {
     }
 
-    public Vote(String user, boolean isUpvote) {
-        this.authorId = user;
+    public Vote(String authorId, String recordId, boolean isUpvote) {
+        this.authorId = authorId;
+        this.recordId = recordId;
         this.upvote = isUpvote;
     }
 

@@ -69,10 +69,10 @@ public class VoteRepository {
 
     /**
      * @param recordIds if size() > 10, it will be processed in batches
-     * @param callback  return type is a map of record ID and Vote that is in either state: {@link
-     *                  Vote#UPVOTE}
-     *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,
-     *                  Object)}
+     * @param callback  return type is a map of record ID and Vote that is in either state:
+     *                  {@link Vote#UPVOTE} or {@link Vote#DOWNVOTE}.
+     *                  Caller should use {@link Map#getOrDefault(Object, Object)} as
+     *                  {@link Vote#NONE} are not present.
      */
     public void getList(@NonNull String authorId, @NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
         List<List<String>> batches = Lists.partition(recordIds, 10);
@@ -82,15 +82,16 @@ public class VoteRepository {
                     .whereIn(Vote.Field.recordId, batch).get());
         }
         Tasks.whenAllSuccess(tasks).addOnSuccessListener((List<Object> objects) -> {
+            Map<String, Vote> result = new HashMap<>();
             for (Object object : objects) {
                 QuerySnapshot snapshots = (QuerySnapshot) object;
-                Map<String, Vote> result = new HashMap<>();
                 for (DocumentSnapshot snapshot : snapshots) {
                     Vote vote = snapshot.toObject(Vote.class);
                     if (vote != null)
                         result.put(vote.getRecordId(), vote);
                 }
             }
+            callback.onSuccess(result);
         }).addOnFailureListener(callback::onFailure);
     }
 

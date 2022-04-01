@@ -25,9 +25,11 @@ import java.util.List;
 public abstract class Post extends Record implements Parcelable {
     protected int bookmark;
     protected int comment;
+    protected int xp;
     protected List<String> imageIds;
 
     public abstract static class Builder<T extends Builder<T>> extends Record.Builder<T> {
+        private int xp;
         private List<String> imageIds;
 
         public Builder() {
@@ -35,10 +37,16 @@ public abstract class Post extends Record implements Parcelable {
 
         public abstract T getThis();
 
+        public Builder<T> authorXp(int xp) {
+            this.xp = xp;
+            return getThis();
+        }
+
         public Builder<T> imageIds(List<String> ids) {
             this.imageIds = ids;
             return getThis();
         }
+
     }
 
     /**
@@ -47,6 +55,7 @@ public abstract class Post extends Record implements Parcelable {
     public static class Field extends Record.Field {
         public static final String BOOKMARK = "bookmark";
         public static final String COMMENT = "comment";
+        public static final String AUTHOR_XP = "xp";
         public static final String IMAGE_IDS = "imageIds";
     }
 
@@ -56,6 +65,7 @@ public abstract class Post extends Record implements Parcelable {
 
     public Post(@NonNull Builder<?> builder) {
         super(builder);
+        this.xp = builder.xp;
         this.imageIds = builder.imageIds;
     }
 
@@ -72,6 +82,7 @@ public abstract class Post extends Record implements Parcelable {
         blocked = parcel.readInt() == 1;
         bookmark = parcel.readInt();
         comment = parcel.readInt();
+        xp = parcel.readInt();
         imageIds = new ArrayList<>();
         parcel.readList(imageIds, String.class.getClassLoader());
     }
@@ -95,6 +106,7 @@ public abstract class Post extends Record implements Parcelable {
         parcel.writeInt(blocked ? 1 : 0);
         parcel.writeInt(bookmark);
         parcel.writeInt(comment);
+        parcel.writeInt(xp);
         parcel.writeList(imageIds);
     }
 
@@ -106,10 +118,13 @@ public abstract class Post extends Record implements Parcelable {
             return null;
         Integer checkNull = document.get(Field.BOOKMARK, int.class);
         if (checkNull != null)
-            post.upvote = checkNull;
+            post.bookmark = checkNull;
         checkNull = document.get(Field.COMMENT, int.class);
         if (checkNull != null)
             post.comment = checkNull;
+        checkNull = document.get(Field.AUTHOR_XP, int.class);
+        if (checkNull != null)
+            post.xp = checkNull;
         // https://github.com/googleapis/java-firestore/issues/60
         post.imageIds = (List<String>) document.get(Field.IMAGE_IDS);
         return (T) post;
@@ -123,6 +138,10 @@ public abstract class Post extends Record implements Parcelable {
         return comment;
     }
 
+    public int getXp() {
+        return xp;
+    }
+
     public List<String> getImageIds() {
         return imageIds;
     }
@@ -130,4 +149,6 @@ public abstract class Post extends Record implements Parcelable {
     public String getImageId(int i) {
         return imageIds.get(i);
     }
+
+
 }

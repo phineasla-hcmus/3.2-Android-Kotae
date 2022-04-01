@@ -15,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
@@ -54,10 +58,28 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         questionDetailViewModel.getAnswers();
 
-        questionDetailViewModel.getQuestionLiveData()
-                .observe(this, question -> adapter.updateQuestion(question));
-        questionDetailViewModel.getAnswerLiveData()
-                .observe(this, answers -> adapter.updateAnswers(answers));
+        questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
+            if (question == null) {
+                // TODO fetch question failed
+                return;
+            }
+            adapter.updateQuestion(question);
+        });
+        questionDetailViewModel.getQuestionVoteLiveData().observe(this, vote -> {
+            if (vote == null) {
+                // Current vote for question is NONE or fetching failed
+                return;
+            }
+            adapter.updateQuestionVote(vote);
+        });
+        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
+            adapter.updateAnswers(answers);
+            List<String> ids = new ArrayList<>();
+            for (Answer answer : answers) {
+                ids.add(answer.getId());
+            }
+            questionDetailViewModel.getAnswerVotes(ids);
+        });
 
         binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
 
