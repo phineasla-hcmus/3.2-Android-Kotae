@@ -8,8 +8,6 @@ import java.util.List;
 
 
 public final class DataProvider implements Serializable {
-    // private List initialSearchQueries = CollectionsKt.mutableListOf(new String[]{"dinosoaring", "liquidathor", "cobrawl", "advicewalker", "coachsoul", "lightqueen", "messymosquito", "coldox", "froghurt", "rangerman"});
-
     private final List<String> initialSearchQueries = new ArrayList<>();
 
     @NonNull

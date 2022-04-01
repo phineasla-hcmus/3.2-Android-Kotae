@@ -23,6 +23,8 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("rawtypes")
 public final class LeaderboardItem extends BaseItem {
 
+    private String category;
+
     @NonNull
     public LeaderboardItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
         View view = inflater.inflate(R.layout.item_leaderboard, parent, false);
@@ -42,17 +44,10 @@ public final class LeaderboardItem extends BaseItem {
         this.bindProfileImage((LeaderboardItem.ViewHolder) viewHolder, user);
         this.bindUsername((LeaderboardItem.ViewHolder) viewHolder, user);
         this.bindPoint((LeaderboardItem.ViewHolder) viewHolder, user);
-//        this.setOnItemClickListener((LeaderboardItem.ViewHolder) viewHolder, new OnItemClickListener() {
-//            @Override
-//            public void onItemClicked(View view, Object item, int position) {
-//                Intent intent = UserDetailActivity.newInstance(view.getContext(), user);
-//                view.getContext().startActivity(intent);
-//            }
-//        });
     }
 
     private void bindProfileImage(LeaderboardItem.ViewHolder viewHolder, User User) {
-        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_teacher);
+        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_placeholder_user);
     }
 
     private void bindUsername(LeaderboardItem.ViewHolder viewHolder, User User) {
@@ -62,8 +57,9 @@ public final class LeaderboardItem extends BaseItem {
 
     private void bindPoint(LeaderboardItem.ViewHolder viewHolder, User User) {
         TextView tvPoint = viewHolder.getTvPoint();
-        //TODO: get point of current user
-        tvPoint.setText(String.valueOf(20));
+        if (category.equals("day"))
+            tvPoint.setText(String.valueOf(User.getXpDaily()));
+        else tvPoint.setText(String.valueOf(User.getXp()));
     }
 
     public final void setOnItemClickListener(@NonNull LeaderboardItem.ViewHolder viewHolder, @Nullable OnItemClickListener onItemClickListener) {
@@ -74,8 +70,9 @@ public final class LeaderboardItem extends BaseItem {
         return R.layout.item_leaderboard;
     }
 
-    public LeaderboardItem(@NonNull User itemModel) {
+    public LeaderboardItem(@NonNull User itemModel, @NonNull String category) {
         super(itemModel);
+        this.category = category;
     }
 
     public static final class ViewHolder extends com.arthurivanets.adapster.model.BaseItem.ViewHolder {

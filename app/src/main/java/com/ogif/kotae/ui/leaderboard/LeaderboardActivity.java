@@ -95,7 +95,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         this.viewModel.getUserLiveData().observe(this, users -> {
             this.items.clear();
             for (int i = 0; i < users.size(); i++) {
-                this.items.add(new LeaderboardItem(users.get(i)));
+                this.items.add(new LeaderboardItem(users.get(i), category));
             }
             this.adapter.setItems(this.items);
         });

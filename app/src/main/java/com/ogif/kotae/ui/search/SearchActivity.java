@@ -41,7 +41,7 @@ import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySearchBinding binding;
-    private final DataProvider dataProvider = new DataProvider();
+    private DataProvider dataProvider = new DataProvider();
     private final List<SearchItem> items = new ArrayList<>();
     private PersistentSearchView persistentSearchView;
     private SearchAdapter adapter;
@@ -57,8 +57,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         this.viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-//        onRestoreState(savedInstanceState)
+        onRestoreState(savedInstanceState);
         init();
+    }
+
+    private void onRestoreState(Bundle savedState) {
+        if (savedState != null) {
+            dataProvider = (DataProvider) savedState.getSerializable("data-provider");
+        }
+//        items = savedState.getSerializableOrThrow(SAVED_STATE_ITEMS)
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedState) {
+        super.onSaveInstanceState(savedState);
+        savedState.putSerializable("data-provider", dataProvider);
     }
 
     private void init() {

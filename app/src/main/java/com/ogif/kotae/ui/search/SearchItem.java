@@ -53,7 +53,7 @@ public final class SearchItem extends BaseItem {
     }
 
     private void bindProfileImage(SearchItem.ViewHolder viewHolder) {
-        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_teacher);
+        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_placeholder_user);
         viewHolder.getIvComment().setImageResource(R.drawable.ic_baseline_comment);
     }
 
