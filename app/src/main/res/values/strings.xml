@@ -76,8 +76,7 @@
     <string name="filter_cancel">Cancel</string>
     <string name="filter_reset">Reset</string>
     <string name="filter_submit">Submit</string>
-    <string name="leaderboard_day">Day</string>
-    <string name="leaderboard_week">Week</string>
+    <string name="leaderboard_day">Daily</string>
     <string name="leaderboard_all">All</string>
     <string name="login_error">Invalid email or password</string>
     <string name="login_header" translatable="false">Already have an account?</string>

@@ -8,12 +8,14 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
-import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.ActivityLeaderboardBinding;
+import com.ogif.kotae.ui.LeaderboardViewModel;
+import com.ogif.kotae.ui.leaderboard.adapter.LeaderboardAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,7 @@ public class LeaderboardActivity extends AppCompatActivity {
     private List<LeaderboardItem> items = new ArrayList<>();
     private LeaderboardAdapter adapter;
     private ActivityLeaderboardBinding binding;
+    private LeaderboardViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,8 @@ public class LeaderboardActivity extends AppCompatActivity {
         binding = ActivityLeaderboardBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        this.viewModel = new ViewModelProvider(this).get(LeaderboardViewModel.class);
 
         this.setSupportActionBar(binding.tbLeaderboard);
 
@@ -75,10 +80,6 @@ public class LeaderboardActivity extends AppCompatActivity {
                 break;
             }
             case 1: {
-                refreshLayout("week");
-                break;
-            }
-            case 2: {
                 refreshLayout("all");
                 break;
             }
@@ -89,15 +90,15 @@ public class LeaderboardActivity extends AppCompatActivity {
 
     private void refreshLayout(String category) {
         this.adapter.clear();
-        this.items.clear();
-        if (category.equals("day")) {
-            this.items.add(new LeaderboardItem(new User("tmnguyen", "dev", 2001)));
-        } else if (category.equals("week")) {
-            this.items.add(new LeaderboardItem(new User("phineasla", "dev", 2001)));
-        } else {
-            this.items.add(new LeaderboardItem(new User("chaung", "dev", 2001)));
-        }
-        this.adapter.setItems(this.items);
+
+        this.viewModel.getLeaderboard(category);
+        this.viewModel.getUserLiveData().observe(this, users -> {
+            this.items.clear();
+            for (int i = 0; i < users.size(); i++) {
+                this.items.add(new LeaderboardItem(users.get(i)));
+            }
+            this.adapter.setItems(this.items);
+        });
     }
 
     private void initRecyclerView() {
