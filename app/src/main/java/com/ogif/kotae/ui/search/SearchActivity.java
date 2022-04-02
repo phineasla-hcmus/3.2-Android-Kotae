@@ -5,7 +5,9 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 
 import android.animation.TimeInterpolator;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -13,12 +15,17 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.ui.main.FilterQuestionActivity;
 import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.databinding.ActivitySearchBinding;
 import com.ogif.kotae.ui.SearchViewModel;
@@ -26,6 +33,7 @@ import com.ogif.kotae.utils.AnimationUtils;
 import com.ogif.kotae.utils.DataProvider;
 import com.ogif.kotae.utils.HeaderedRecyclerViewListener;
 import com.ogif.kotae.utils.VerticalSpacingItemDecorator;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.paulrybitskyi.commons.ktx.NumberUtils;
 import com.paulrybitskyi.persistentsearchview.PersistentSearchView;
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem;
@@ -38,14 +46,18 @@ import com.paulrybitskyi.persistentsearchview.utils.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySearchBinding binding;
     private DataProvider dataProvider = new DataProvider();
     private final List<SearchItem> items = new ArrayList<>();
+    private ArrayList<Question> results = new ArrayList<>();
     private PersistentSearchView persistentSearchView;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     private SearchAdapter adapter;
     private SearchViewModel viewModel;
+    final int REQUEST_CODE_FILTER = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +66,21 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        this.items.clear();
+                        // There are no request codes
+                        Intent data = result.getData();
+                        ArrayList<Question> questions = data.getParcelableArrayListExtra("filteredQuestions");
+                        for (int i = 0; i < questions.size(); i++) {
+                            this.items.add(new SearchItem(questions.get(i)));
+                        }
+                        adapter.setItems(this.items);
+                    }
+                });
 
         this.viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
@@ -72,6 +99,27 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     protected void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
         savedState.putSerializable("data-provider", dataProvider);
+    }
+
+    private void startFilterActivity() {
+        if (this.items.size() == 0) {
+            Toast.makeText(this, getResources().getString(R.string.filter_empty_list), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent intent = new Intent(getApplicationContext(), FilterQuestionActivity.class);
+        intent.putExtra(Intent.EXTRA_TEXT, "FILTER_SEARCH");
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("searchResults", results);
+        intent.putExtras(bundle);
+        activityResultLauncher.launch(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null) {
+            // Get questions after filter & render
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void init() {
@@ -182,7 +230,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * @see <a href="https://stackoverflow.com/questions/61841088/given-a-string-generate-all-2-consecutive-characters-3-consecutive-characters">
-     * */
+     */
 
     public void combo(List<String> combinations, String s) {
         int len = s.length();
@@ -209,18 +257,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         this.viewModel.getQuestionLiveData().observe(this, questions -> {
             this.items.clear();
+            this.results.clear();
             if (questions != null) {
+
                 for (int i = 0; i < questions.size(); i++) {
                     boolean flag = false;
                     for (int j = 0; j < combinations.size(); j++) {
-                        if (questions.get(i).getTitle().contains(combinations.get(j)))
-                        {
+                        if (questions.get(i).getTitle().contains(combinations.get(j))) {
                             flag = true;
                             break;
                         }
                     }
                     if (flag)
+                    {
                         this.items.add(new SearchItem(questions.get(i)));
+                        this.results.add(questions.get(i));
+                    }
                 }
             }
 
@@ -302,6 +354,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private void onRightButtonClicked() {
-        Toast.makeText(this, "Right button clicked", Toast.LENGTH_SHORT).show();
+        startFilterActivity();
     }
 }

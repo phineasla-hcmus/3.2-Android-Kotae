@@ -66,6 +66,7 @@
     <string name="filter_cancel">Hủy bỏ</string>
     <string name="filter_reset">Đặt lại</string>
     <string name="filter_submit">Đồng ý</string>
+    <string name="filter_empty_list">Chưa có kết quả tìm kiếm nào để lọc</string>
     <string name="leaderboard_day">Ngày</string>
     <string name="leaderboard_all">Tất cả</string>
     <string name="login_error">Email hoặc mật khẩu không hợp lệ</string>

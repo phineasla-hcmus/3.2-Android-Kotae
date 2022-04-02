@@ -78,6 +78,7 @@
     <string name="filter_cancel">Cancel</string>
     <string name="filter_reset">Reset</string>
     <string name="filter_submit">Submit</string>
+    <string name="filter_empty_list">No search results to filter yet</string>
     <string name="leaderboard_day">Daily</string>
     <string name="leaderboard_all">All</string>
     <string name="login_error">Invalid email or password</string>

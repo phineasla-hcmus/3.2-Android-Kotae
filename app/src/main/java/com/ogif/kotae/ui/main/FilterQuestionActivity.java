@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -33,11 +34,18 @@ import java.util.List;
 public class FilterQuestionActivity extends AppCompatActivity {
     private TextView tvCancel, tvSubmit, tvReset;
     private FirebaseFirestore db;
+    private String activity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_question);
+
+        Intent intent = getIntent();
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (!TextUtils.isEmpty(text)) {
+            activity = "search";
+        }
 
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvSubmit = (TextView) findViewById(R.id.tv_submit);
@@ -89,6 +97,12 @@ public class FilterQuestionActivity extends AppCompatActivity {
                                     answers.add(answer);
                                 }
 
+                                // get filtered results for search
+                                if (activity.equals("search")) {
+                                    ArrayList<Question> searchResults = intent.getParcelableArrayListExtra("searchResults");
+                                    filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, searchResults, answers);
+                                    return;
+                                }
                                 // To Do
                                 filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, filteredQuestions, answers);
                             }
@@ -265,15 +279,15 @@ public class FilterQuestionActivity extends AppCompatActivity {
         questions = filterQuestionByGrade(questions, lstGrades);
         questions = filterQuestionBySubject(questions, lstCourses);
 
-        printQuestions(questions);
+//        printQuestions(questions);
 
         // Set Result
-//        Intent intent = new Intent();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("filteredQuestions", questions);
-//        intent.putExtras(bundle);
-//        setResult(RESULT_OK, intent);
-//        finish();
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("filteredQuestions", questions);
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {

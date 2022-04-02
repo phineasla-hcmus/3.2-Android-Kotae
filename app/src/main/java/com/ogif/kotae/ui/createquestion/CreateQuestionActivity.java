@@ -40,7 +40,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private ActivityCreateQuestionBinding binding;
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
-    private ActivityResultLauncher<Intent> someActivityResultLauncher;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
     private String content, selectedGradeId, selectedSubjectId, selectedGradeName = "", selectedSubjectName = "";
     private QuestionViewModel viewModel;
     private List<Subject> subjects = new ArrayList<>();
@@ -121,7 +121,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         });
 
         // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
-        someActivityResultLauncher = registerForActivityResult(
+        activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
@@ -180,7 +180,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
         if (!content.equals(description)) {
             intent.putExtra(Intent.EXTRA_TEXT, content);
         }
-        someActivityResultLauncher.launch(intent);
+        activityResultLauncher.launch(intent);
     }
 
     @Override
