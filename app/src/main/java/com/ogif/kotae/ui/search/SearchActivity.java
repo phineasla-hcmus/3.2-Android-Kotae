@@ -151,7 +151,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         persistentSearchView.setOnSearchConfirmedListener(mOnSearchConfirmedListener);
         OnSearchQueryChangeListener mOnSearchQueryChangeListener = (searchView, oldQuery, newQuery) -> {
             if (newQuery.isEmpty()) {
-                setSuggestions(dataProvider.getInitialSearchQueries(), true);
+                setSuggestions(dataProvider.getInitialSearchQueries(this), true);
             } else {
                 setSuggestions(dataProvider.getSuggestionsForQuery(newQuery), true);
             }
@@ -268,8 +268,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                             break;
                         }
                     }
-                    if (flag)
-                    {
+                    if (flag) {
                         this.items.add(new SearchItem(questions.get(i)));
                         this.results.add(questions.get(i));
                     }
@@ -323,7 +322,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private void loadInitialDataIfNecessary() {
         if (persistentSearchView.isInputQueryEmpty()) {
-            setSuggestions(dataProvider.getInitialSearchQueries(), false);
+            setSuggestions(dataProvider.getInitialSearchQueries(this), false);
         } else {
             setSuggestions(dataProvider.getSuggestionsForQuery(persistentSearchView.getInputQuery()), false);
         }
