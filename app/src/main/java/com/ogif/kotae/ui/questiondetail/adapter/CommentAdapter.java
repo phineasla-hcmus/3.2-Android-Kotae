@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,12 +31,15 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private static class CommentHolder extends RecyclerView.ViewHolder {
         private final TextView username, content;
         private final CircleImageView avatar;
+        private final Button upvote, downvote;
 
         public CommentHolder(@NonNull View itemView) {
             super(itemView);
             this.avatar = itemView.findViewById(R.id.tv_comment_avatar);
             this.username = itemView.findViewById(R.id.tv_comment_username);
             this.content = itemView.findViewById(R.id.tv_comment_content);
+            this.upvote = itemView.findViewById(R.id.btn_comment_upvote);
+            this.downvote = itemView.findViewById(R.id.btn_comment_downvote);
         }
     }
 
@@ -55,6 +59,8 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         commentHolder.avatar.setImageResource(R.drawable.ic_placeholder_user);
         commentHolder.content.setText(comment.getContent());
         commentHolder.username.setText(comment.getAuthor());
+        commentHolder.upvote.setText(String.valueOf(comment.getUpvote()));
+        commentHolder.downvote.setText(String.valueOf(comment.getDownvote()));
     }
 
     @Override
