@@ -2,6 +2,7 @@ package com.ogif.kotae.ui.createquestion;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -44,7 +46,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private String content, selectedGradeId, selectedSubjectId, selectedGradeName = "", selectedSubjectName = "";
     private QuestionViewModel viewModel;
     private List<Subject> subjects = new ArrayList<>();
-
+    private final int PICK_IMAGE_MULTIPLE = 1;
+    private Uri imageUri;
+    private ArrayList<Uri> imageList =  new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +173,15 @@ public class CreateQuestionActivity extends AppCompatActivity {
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
             this.finish();
         });
+
+        binding.btnQuestionImages.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageList!= null)
+                    imageList.clear();
+                selectImage();
+            }
+        });
     }
 
     public void startQuestionContentActivity() {
@@ -190,5 +203,45 @@ public class CreateQuestionActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_MULTIPLE);
+
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==PICK_IMAGE_MULTIPLE ){
+            if (resultCode == RESULT_OK){
+                if (data.getData()!=null){
+                    imageUri = data.getData();
+                    imageList.add(imageUri);
+                    binding.tvImageSelectedNumber.setText("You have selected 1 image");
+                }
+                else
+                {
+                    if (data.getClipData()!= null){
+                        int countClipData = data.getClipData().getItemCount();
+                        int currentImageSelect = 0;
+                        while (currentImageSelect<countClipData){
+                            imageUri = data.getClipData().getItemAt(currentImageSelect).getUri();
+                            imageList.add(imageUri);
+                            currentImageSelect++;
+                        }
+
+                    }
+                }
+                binding.tvImageSelectedNumber.setText("You have selected "+ imageList.size() + " images");
+            }
+        }
     }
 }
