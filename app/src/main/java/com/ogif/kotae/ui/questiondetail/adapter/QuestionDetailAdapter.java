@@ -1,15 +1,19 @@
 package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -201,8 +205,30 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.author.setName(post.getAuthor());
         holder.author.setReputation(post.getXp());
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+        bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        ImageButton btnSend = bottomSheetDialog.findViewById(R.id.btn_comment_send);
+        EditText etContent = bottomSheetDialog.findViewById(R.id.et_comment_input);
+
+        btnSend.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(etContent.getText().toString())) {
+                Toast.makeText(context, context.getResources().getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ((QuestionDetailActivity) context).createComment(post.getId(), etContent.getText().toString());
+            bottomSheetDialog.hide();
+            etContent.setText("");
+        });
+
+        setupFullHeight(bottomSheetDialog);
         holder.comment.setOnClickListener(v -> {
-            showBottomSheetDialog(post.getId());
+            showBottomSheetDialog(bottomSheetDialog, recyclerView, post.getId());
         });
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(),
                 vote == null
@@ -211,18 +237,8 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         // TODO bind author avatar
     }
 
-    private void showBottomSheetDialog(@NonNull String postId) {
-
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
-
-        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        setupFullHeight(bottomSheetDialog);
-
+    private void showBottomSheetDialog(BottomSheetDialog bottomSheetDialog, RecyclerView recyclerView, @NonNull String postId) {
         ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
-
         bottomSheetDialog.show();
     }
 

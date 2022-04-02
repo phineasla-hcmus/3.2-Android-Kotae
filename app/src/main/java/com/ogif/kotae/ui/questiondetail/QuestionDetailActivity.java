@@ -110,6 +110,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         //         });
     }
 
+    public void createComment(@NonNull String postId, @NonNull String content) {
+        commentViewModel.createComment(postId, content);
+    }
+
     public void updateComments(RecyclerView recyclerView, @NonNull String postId) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments(postId);

@@ -1,46 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_bottom_sheet"
+    >
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/margin_x" />
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/comment_input_background"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <EditText
-            android:id="@+id/et_comment_input"
-            android:layout_width="0dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_bottom_sheet"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            android:hint="@string/comment_hint"
-            android:padding="10dp"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textCursorDrawable="@null" />
+            android:padding="@dimen/margin_x" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/comment_input_background"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <EditText
+                android:id="@+id/et_comment_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@android:color/white"
+                android:hint="@string/comment_hint"
+                android:padding="10dp"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textCursorDrawable="@null" />
 
 
-        <ImageButton
-            android:id="@+id/btn_comment_send"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:background="@android:color/white"
-            android:src="@drawable/ic_outline_send"
-            app:tint="?attr/colorPrimary" />
+            <ImageButton
+                android:id="@+id/btn_comment_send"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:src="@drawable/ic_outline_send"
+                app:tint="?attr/colorPrimary" />
 
-    </LinearLayout>
-</RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
