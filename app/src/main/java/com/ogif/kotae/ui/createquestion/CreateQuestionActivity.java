@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -27,10 +27,11 @@ import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.main.adapter.GradeAdapter;
 import com.ogif.kotae.ui.main.adapter.SubjectAdapter;
-import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.ogif.kotae.utils.model.QuestionUtils;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.ogif.kotae.utils.text.TextValidator;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,8 +41,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private GradeAdapter gradeAdapter;
     private SubjectAdapter subjectAdapter;
     private ActivityResultLauncher<Intent> someActivityResultLauncher;
-    private String content, selectedGradeId, selectedSubjectId, selectedGradeName="", selectedSubjectName="";
+    private String content, selectedGradeId, selectedSubjectId, selectedGradeName = "", selectedSubjectName = "";
     private QuestionViewModel viewModel;
+    private List<Subject> subjects = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +58,6 @@ public class CreateQuestionActivity extends AppCompatActivity {
         this.setSupportActionBar(binding.tbCreateQuestion);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Create question");
-
-        EditText[] ets = {binding.etCreateQuestionTitle,
-                binding.etContent,
-                binding.actvQuestionCategoryGrade,
-                binding.atcvQuestionCategorySubject};
 
         binding.etContent.setOnClickListener(view -> startQuestionContentActivity());
 
@@ -79,17 +76,42 @@ public class CreateQuestionActivity extends AppCompatActivity {
             }
         });
 
+        SubjectRepository subjectRepository = new SubjectRepository();
+        subjectRepository.getAllSubjects(subjects -> {
+            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, this.subjects.toArray(new Subject[0]));
+            this.subjects = subjects;
+            binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
+        });
+
         binding.actvQuestionCategoryGrade.setOnItemClickListener((adapterView, view, i, l) -> {
             Grade grade = (Grade) adapterView.getItemAtPosition(i);
             selectedGradeId = grade.getId();
             selectedGradeName = grade.getName();
-        });
+            List<Subject> temp = new ArrayList<>(this.subjects);
 
-        SubjectRepository subjectRepository = new SubjectRepository();
-        subjectRepository.getAllSubjects(subjects -> {
-            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, subjects
-                    .toArray(new Subject[0]));
-            binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
+            int level = Integer.valueOf(selectedGradeId.substring(1));
+            
+            if (level <= 7) {
+                temp.removeIf(subject -> subject.getName().equals("Chemistry"));
+            }
+
+            if (level <= 2) {
+                temp.removeIf(subject -> subject.getName().equals("Informatics"));
+                temp.removeIf(subject -> subject.getName().equals("Technology"));
+            }
+
+            if (level <= 3) {
+                temp.removeIf(subject -> subject.getName().equals("History"));
+                temp.removeIf(subject -> subject.getName().equals("Geography"));
+            }
+
+            if (level <= 5)
+            {
+                temp.removeIf(subject -> subject.getName().equals("Physics"));
+                temp.removeIf(subject -> subject.getName().equals("Biology"));
+            }
+
+            subjectAdapter.setItems(temp.toArray(new Subject[0]));
         });
 
         binding.atcvQuestionCategorySubject.setOnItemClickListener((adapterView, view, i, l) -> {

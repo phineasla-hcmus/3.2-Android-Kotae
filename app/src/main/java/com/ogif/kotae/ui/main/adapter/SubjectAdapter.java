@@ -14,13 +14,18 @@ import com.ogif.kotae.data.model.Subject;
 public class SubjectAdapter extends ArrayAdapter<Subject> {
 
     // Your custom values for the spinner (User)
-    private final Subject[] values;
+    private Subject[] values;
 
     public SubjectAdapter(Context context, int textViewResourceId,
                           Subject[] values) {
         super(context, textViewResourceId, values);
         // Your sent context
         this.values = values;
+    }
+
+    public void setItems(Subject[] items) {
+        values = items;
+        notifyDataSetChanged();
     }
 
     @Override
