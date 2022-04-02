@@ -28,11 +28,13 @@
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_sign_up.xml" value="0.24444444444444444" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_test.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.25" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/bottom_sheet_dialog_layout.xml" value="0.2" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/content_test_input.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/dropdown_item.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_admin.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_profile.xml" value="0.26721014492753625" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_comment.xml" value="0.176" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_leaderboard.xml" value="0.264" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_question.xml" value="0.19195046439628483" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_question_detail.xml" value="0.25" />
@@ -40,6 +42,7 @@
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_author.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_bottom_nav_bar.xml" value="0.1125" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_main_content.xml" value="0.21203703703703702" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_post_action.xml" value="0.176" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_question_item.xml" value="0.1" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/partial_tool_bar.xml" value="0.2" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/sample_edit_text.xml" value="0.21203703703703702" />

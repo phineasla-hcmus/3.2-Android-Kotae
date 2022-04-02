@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -12,8 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
@@ -22,6 +27,7 @@ import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 
 import java.util.ArrayList;
@@ -195,11 +201,38 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.author.setName(post.getAuthor());
         holder.author.setReputation(post.getXp());
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
+        holder.comment.setOnClickListener(v -> {
+            showBottomSheetDialog(post.getId());
+        });
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(),
                 vote == null
                         ? Vote.NONE
                         : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE);
         // TODO bind author avatar
+    }
+
+    private void showBottomSheetDialog(@NonNull String postId) {
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
+
+        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        setupFullHeight(bottomSheetDialog);
+
+        ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
+
+        bottomSheetDialog.show();
+    }
+
+    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
+        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        bottomSheet.setLayoutParams(layoutParams);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder) {

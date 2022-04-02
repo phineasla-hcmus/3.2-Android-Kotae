@@ -18,7 +18,9 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
+import com.ogif.kotae.ui.CommentViewModel;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
+import com.ogif.kotae.ui.questiondetail.adapter.CommentAdapter;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 import java.util.ArrayList;
@@ -28,7 +30,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
     private ActivityQuestionDetailBinding binding;
     private QuestionDetailAdapter adapter;
+    private CommentAdapter commentAdapter;
     private QuestionDetailViewModel questionDetailViewModel;
+    private static CommentViewModel commentViewModel;
     private RecyclerView recyclerView;
     private String questionId;
 
@@ -48,6 +52,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
+
+        commentAdapter = new CommentAdapter(this);
+
+        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
         questionId = questionFromExtra.getId();
@@ -100,6 +108,15 @@ public class QuestionDetailActivity extends AppCompatActivity {
         //                 }
         //             }
         //         });
+    }
+
+    public void updateComments(RecyclerView recyclerView, @NonNull String postId) {
+        recyclerView.setAdapter(commentAdapter);
+        commentViewModel.getComments(postId);
+
+        commentViewModel.getCommentLiveData().observe(this, comments -> {
+            commentAdapter.updateComments(comments);
+        });
     }
 
     private void startCreateAnswerActivity() {
