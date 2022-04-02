@@ -51,6 +51,7 @@
     <string name="create_question_content_title">Nội dung</string>
     <string name="create_question_images_title">Hình ảnh</string>
     <string name="create_question_title">Tiêu đề</string>
+    <string name="comment_hint">Nhập bình luận của bạn</string>
     <string name="et_error_email">Email không hợp lệ</string>
     <string name="et_error_email_existed">Email đã tồn tại</string>
     <string name="et_error_password">Mật khẩu phải từ 6 đến 16 ký tự</string>

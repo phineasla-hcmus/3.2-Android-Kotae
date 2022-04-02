@@ -90,7 +90,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
             List<Subject> temp = new ArrayList<>(this.subjects);
 
             int level = Integer.valueOf(selectedGradeId.substring(1));
-            
+
             if (level <= 7) {
                 temp.removeIf(subject -> subject.getName().equals("Chemistry"));
             }

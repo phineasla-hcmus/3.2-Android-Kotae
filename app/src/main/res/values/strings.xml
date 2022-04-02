@@ -60,6 +60,7 @@
     <string name="create_question_images_title">Images</string>
     <string name="create_answer_images_title">Images</string>
     <string name="create_question_title">Title</string>
+    <string name="comment_hint">Enter your comment</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>
