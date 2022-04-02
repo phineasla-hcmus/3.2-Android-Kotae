@@ -10,9 +10,9 @@
         android:layout_width="@dimen/avatar_size_sm"
         android:layout_height="@dimen/avatar_size_sm"
         android:scaleType="centerCrop"
+        android:src="@drawable/ic_placeholder_user"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_comment_username"
@@ -40,32 +40,11 @@
         app:layout_constraintTop_toBottomOf="@id/tv_comment_username"
         tools:text="@tools:sample/lorem/random" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_comment_upvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
+    <com.ogif.kotae.ui.VoteView
+        android:id="@+id/tv_comment_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/all_upvote"
-        android:textColor="@color/color_toggle_button"
-        app:icon="@drawable/ic_baseline_arrow_upward"
-        app:iconTint="@color/color_toggle_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_comment_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
-        tools:text="10" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_comment_downvote"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_between_y"
-        android:contentDescription="@string/all_downvote"
-        android:textColor="@color/color_toggle_button"
-        app:icon="@drawable/ic_baseline_arrow_downward"
-        app:iconTint="@color/color_toggle_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_comment_upvote"
-        app:layout_constraintTop_toBottomOf="@id/tv_comment_content"
-        tools:text="2" />
+        app:layout_constraintStart_toStartOf="@id/tv_comment_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_comment_content" />
 </androidx.constraintlayout.widget.ConstraintLayout>
