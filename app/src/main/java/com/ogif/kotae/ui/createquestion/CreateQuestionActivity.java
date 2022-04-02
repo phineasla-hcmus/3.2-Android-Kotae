@@ -1,6 +1,7 @@
 package com.ogif.kotae.ui.createquestion;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Grade;
@@ -45,10 +51,14 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private String content, selectedGradeId, selectedSubjectId, selectedGradeName = "", selectedSubjectName = "";
     private QuestionViewModel viewModel;
+
     private List<Subject> subjects = new ArrayList<>();
     private final int PICK_IMAGE_MULTIPLE = 1;
     private Uri imageUri;
     private ArrayList<Uri> imageList =  new ArrayList<>();
+    private  FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef = storage.getReference();
+    private int uploadCount = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,16 +181,15 @@ public class CreateQuestionActivity extends AppCompatActivity {
             }
             binding.fabPostQuestion.setEnabled(false);
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
+
+            if (imageList!=null){ uploadImage();}
             this.finish();
         });
 
-        binding.btnQuestionImages.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imageList!= null)
-                    imageList.clear();
-                selectImage();
-            }
+        binding.btnQuestionImages.setOnClickListener(v -> {
+            if (imageList!= null)
+                imageList.clear();
+            selectImage();
         });
     }
 
@@ -216,6 +225,45 @@ public class CreateQuestionActivity extends AppCompatActivity {
                         "Select Image from here..."),
                 PICK_IMAGE_MULTIPLE);
 
+    }
+    public void uploadImage(){
+        ProgressDialog progressDialog
+                = new ProgressDialog(CreateQuestionActivity.this);
+        progressDialog.setMessage("The process may take a little long");
+        progressDialog.show();
+        StorageReference ref
+                = storageRef
+                .child(
+                        "questions/");
+        for (uploadCount =0; uploadCount<imageList.size();uploadCount++) {
+            Uri IndividualImage = imageList.get(uploadCount);
+            StorageReference ImageName = ref.child(IndividualImage.getLastPathSegment());
+            ImageName.putFile(IndividualImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast
+                            .makeText(CreateQuestionActivity.this,
+                                    "Image Uploaded!!",
+                                    Toast.LENGTH_SHORT)
+                            .show();
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    // Error, Image not uploaded
+                    progressDialog.dismiss();
+                    Toast
+                            .makeText(CreateQuestionActivity.this,
+                                    "Failed " + e.getMessage(),
+                                    Toast.LENGTH_SHORT)
+                            .show();
+
+                }
+            });
+        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
