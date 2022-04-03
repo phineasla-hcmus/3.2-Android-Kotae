@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,6 +34,7 @@ import com.ogif.kotae.data.repository.GradeRepository;
 import com.ogif.kotae.data.repository.SubjectRepository;
 import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
 import com.ogif.kotae.ui.QuestionViewModel;
+import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.main.adapter.GradeAdapter;
 import com.ogif.kotae.ui.main.adapter.SubjectAdapter;
 import com.ogif.kotae.utils.model.QuestionUtils;
@@ -59,6 +61,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private  FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private int uploadCount = 0;
+    private ImageAdapter imageAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -268,28 +271,45 @@ public class CreateQuestionActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==PICK_IMAGE_MULTIPLE ){
-            if (resultCode == RESULT_OK){
-                if (data.getData()!=null){
+        try {
+            if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK && data != null) {
+
+                if (data.getData() != null) {
+                    binding.hsv.setVisibility(View.VISIBLE);
                     imageUri = data.getData();
                     imageList.add(imageUri);
-                    binding.tvImageSelectedNumber.setText("You have selected 1 image");
-                }
-                else
-                {
-                    if (data.getClipData()!= null){
+
+                    imageAdapter = new ImageAdapter(getApplicationContext(),imageList);
+                    binding.gvQuestionImage.setAdapter(imageAdapter);
+                    binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
+                    ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
+                            .getLayoutParams();
+                    mlp.setMargins(0, binding.gvQuestionImage.getHorizontalSpacing(), 0, 0);
+
+                } else {
+                    if (data.getClipData() != null) {
+                        binding.hsv.setVisibility(View.VISIBLE);
                         int countClipData = data.getClipData().getItemCount();
                         int currentImageSelect = 0;
-                        while (currentImageSelect<countClipData){
+                        while (currentImageSelect < countClipData) {
                             imageUri = data.getClipData().getItemAt(currentImageSelect).getUri();
                             imageList.add(imageUri);
                             currentImageSelect++;
                         }
 
+                        imageAdapter = new ImageAdapter(getApplicationContext(),imageList);
+                        binding.gvQuestionImage.setAdapter(imageAdapter);
+                        binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
+                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
+                                .getLayoutParams();
+                        mlp.setMargins(0, binding.gvQuestionImage.getHorizontalSpacing(), 0, 0);
                     }
                 }
-                binding.tvImageSelectedNumber.setText("You have selected "+ imageList.size() + " images");
             }
+
+        }catch (Exception e){
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }
