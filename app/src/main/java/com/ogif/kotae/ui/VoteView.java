@@ -17,6 +17,8 @@ import java.util.Locale;
 
 public class VoteView extends ConstraintLayout {
 
+    public static final int NONE = 0;
+    public static final int DOWNVOTE = -1;
     @IdRes
     protected int RES_UPVOTE = R.id.btn_vote_view_upvote;
     @IdRes

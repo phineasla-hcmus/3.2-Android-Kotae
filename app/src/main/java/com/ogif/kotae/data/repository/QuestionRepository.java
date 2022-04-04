@@ -103,39 +103,6 @@ public class QuestionRepository {
         onQueryListComplete(query, callback);
     }
 
-    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                questions.add(document.toObject(Question.class));
-            }
-            callback.onSuccess(questions);
-        }).addOnFailureListener(callback::onFailure);
-    }
-    public void updateUpvote(String id ){
-            get(id, new TaskListener.State<Question>() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
 
-            }
-            @Override
-            public void onSuccess(Question result) {
-                Log.d("Upvote counter", Integer.toString(result.getUpvote()));
-                questionsRef.document(id).update("upvote",result.getUpvote()+1)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                Log.d("[Upvote]", "DocumentSnapshot successfully updated!");
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("[Upvote]", "Error updating document", e);
-                    }
-                });
-            }
-        });
-
-    }
 
 }
