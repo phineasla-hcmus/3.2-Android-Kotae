@@ -2,6 +2,7 @@ package com.ogif.kotae.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -16,12 +17,15 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.AuthViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
 import com.ogif.kotae.ui.search.SearchActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -111,7 +115,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null) {
             // Get questions after filter & render
+            ArrayList<Question> questions = data.getParcelableArrayListExtra("filteredQuestions");
+            printQuestions(questions);
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -121,5 +128,12 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    // For Testing
+    private void printQuestions(ArrayList<Question> questions) {
+        for (Question question : questions) {
+            Log.d("AAA", question.getTitle());
+        }
     }
 }
