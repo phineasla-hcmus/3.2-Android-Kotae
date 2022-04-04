@@ -66,7 +66,6 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         tvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,8 +78,14 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 ArrayList<Question> filteredQuestions = new ArrayList<Question>();
                 ArrayList<Answer> answers = new ArrayList<Answer>();
 
+                ArrayList<Question> searchResults = null;
+                // get filtered results for search
+                if (activity.equals("search")) {
+                    searchResults = intent.getParcelableArrayListExtra("searchResults");
+                }
+
                 QuestionRepository questionRepository = new QuestionRepository();
-                questionRepository.getFilterQuestions(sort, status, lstGrades, lstCourses, new TaskListener.State<ArrayList<Question>>() {
+                questionRepository.getFilterQuestions(sort, status, lstGrades, lstCourses, searchResults, new TaskListener.State<ArrayList<Question>>() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("AAA", e.toString());
@@ -88,7 +93,7 @@ public class FilterQuestionActivity extends AppCompatActivity {
 
                     @Override
                     public void onSuccess(ArrayList<Question> result) {
-                        printQuestions(result);
+//                      printQuestions(result);
                         // Set Result
                         Intent intent = new Intent();
                         Bundle bundle = new Bundle();

@@ -112,8 +112,13 @@ public class QuestionRepository {
         onQueryListComplete(query, callback);
     }
 
-    public void getFilterQuestions(String sort, String status, List<String> lstGrades, List<String> lstCourses, @NonNull TaskListener.State<ArrayList<Question>> callback) {
-        ArrayList<Question> filteredQuestions = new ArrayList<Question>();
+    public void getFilterQuestions(String sort, String status, List<String> lstGrades, List<String> lstCourses, ArrayList<Question> questionsInput, @NonNull TaskListener.State<ArrayList<Question>> callback) {
+        ArrayList<Question> filteredQuestions;
+        if (questionsInput != null) {
+            filteredQuestions = questionsInput;
+        } else {
+            filteredQuestions = new ArrayList<Question>();
+        }
         ArrayList<Answer> answers = new ArrayList<Answer>();
 
         final ArrayList<Question>[] result = new ArrayList[]{new ArrayList<Question>()};
