@@ -185,13 +185,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
             binding.fabPostQuestion.setEnabled(false);
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
 
-            if (imageList!=null){ uploadImage();}
+            if (!imageList.isEmpty()){ uploadImage();}
             this.finish();
         });
 
         binding.btnQuestionImages.setOnClickListener(v -> {
-            if (imageList!= null)
-                imageList.clear();
             selectImage();
         });
     }
@@ -218,6 +216,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
     }
 
     public void selectImage(){
+        if (imageList!= null)
+            imageList.clear();
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
@@ -250,7 +250,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
                                     "Image Uploaded!!",
                                     Toast.LENGTH_SHORT)
                             .show();
-
+                    imageList.clear();
+                    imageAdapter.notifyDataSetChanged();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -263,7 +264,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
                                     "Failed " + e.getMessage(),
                                     Toast.LENGTH_SHORT)
                             .show();
-
+                    imageList.clear();
+                    imageAdapter.notifyDataSetChanged();
                 }
             });
         }
