@@ -22,6 +22,22 @@ public class User {
     private int report;
     private boolean blocked;
 
+    /**
+     * Firestore
+     */
+    public static class Field extends Record.Field {
+        public static final String USERNAME = "username";
+        public static final String JOB = "job";
+        public static final String YOB = "yob";
+        public static final String ROLE = "role";
+        public static final String AVATAR = "avatar";
+        public static final String XP = "xp";
+        public static final String XP_DAILY = "xpDaily";
+        public static final String XP_DAILY_LAST_UPDATE = "xpDailyLastUpdate";
+        public static final String REPORT = "report";
+        public static final String BLOCKED = "blocked";
+    }
+
     public User() {
     }
 

@@ -16,9 +16,6 @@ import com.ogif.kotae.data.model.Vote;
 import java.util.Locale;
 
 public class VoteView extends ConstraintLayout {
-
-    public static final int NONE = 0;
-    public static final int DOWNVOTE = -1;
     @IdRes
     protected int RES_UPVOTE = R.id.btn_vote_view_upvote;
     @IdRes
@@ -36,9 +33,9 @@ public class VoteView extends ConstraintLayout {
     protected OnStateChangeListener listener;
 
     interface OnStateChangeListener {
-        void onUpvote(boolean isActive);
+        void onUpvote(VoteView view, boolean isActive);
 
-        void onDownvote(boolean isActive);
+        void onDownvote(VoteView view, boolean isActive);
     }
 
     public VoteView(@NonNull Context context) {
@@ -66,24 +63,24 @@ public class VoteView extends ConstraintLayout {
             if (isChecked) {
                 setUpvoteValue(getUpvoteValue() + 1);
                 if (listener != null)
-                    listener.onUpvote(true);
+                    listener.onUpvote(this, true);
                 this.currentState = Vote.UPVOTE;
             } else {
                 setUpvoteValue(getUpvoteValue() - 1);
                 if (listener != null)
-                    listener.onUpvote(false);
+                    listener.onUpvote(this, false);
                 this.currentState = Vote.NONE;
             }
         } else if (checkedId == RES_DOWNVOTE) {
             if (isChecked) {
                 setDownvoteValue(getDownvoteValue() + 1);
                 if (listener != null)
-                    listener.onDownvote(true);
+                    listener.onDownvote(this, true);
                 this.currentState = Vote.DOWNVOTE;
             } else {
                 setDownvoteValue(getDownvoteValue() - 1);
                 if (listener != null)
-                    listener.onDownvote(false);
+                    listener.onDownvote(this, false);
                 this.currentState = Vote.NONE;
             }
         }
@@ -94,9 +91,8 @@ public class VoteView extends ConstraintLayout {
     }
 
     protected void init() {
-
-        this.currentState = NONE;
         inflate();
+        this.currentState = Vote.NONE;
         this.toggleGroup = findViewById(RES_TOGGLE_GROUP);
         this.upvote = findViewById(RES_UPVOTE);
         this.downvote = findViewById(RES_DOWNVOTE);
