@@ -55,7 +55,6 @@ public class QuestionViewModel extends ViewModel {
             public void onFailure(@NonNull Exception e) {
 
             }
-
             @Override
             public void onSuccess(User result) {
                 String role = result.getRole();
@@ -69,4 +68,5 @@ public class QuestionViewModel extends ViewModel {
             }
         });
     }
+
 }

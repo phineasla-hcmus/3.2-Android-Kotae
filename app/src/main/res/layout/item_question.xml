@@ -46,9 +46,9 @@
             android:layout_width="52dp"
             android:layout_height="45dp"
             android:layout_marginTop="148dp"
+            android:src="@drawable/ic_baseline_account_circle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
-            android:src="@drawable/ic_baseline_account_circle" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_title" />
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
@@ -74,6 +74,7 @@
                 android:text="Tiếng anh"
                 android:textSize="@dimen/text_size_medium"
                 tools:ignore="HardcodedText" />
+
         </com.google.android.material.chip.ChipGroup>
 
         <TextView
@@ -103,63 +104,62 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
             tools:ignore="HardcodedText" />
 
-        <ImageButton
-            android:id="@+id/ib_report"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="140dp"
-            android:background="?attr/colorOnSurfaceInverse"
-            app:layout_constraintEnd_toStartOf="@+id/ib_up"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
-            app:srcCompat="@drawable/ic_outline_report" />
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/ib_up"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginTop="140dp"-->
+        <!--            android:background="?attr/colorOnSurfaceInverse"-->
+        <!--            app:layout_constraintEnd_toStartOf="@+id/ib_down"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"-->
+        <!--            app:srcCompat="@drawable/ic_baseline_arrow_upward" />-->
 
-        <ImageButton
-            android:id="@+id/ib_up"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="140dp"
-            android:background="?attr/colorOnSurfaceInverse"
-            app:layout_constraintEnd_toStartOf="@+id/ib_down"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
-            app:srcCompat="@drawable/ic_baseline_arrow_upward" />
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/ib_down"-->
+        <!--            android:layout_width="50dp"-->
+        <!--            android:layout_height="50dp"-->
+        <!--            android:layout_marginTop="140dp"-->
+        <!--            android:background="?attr/colorOnSurfaceInverse"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"-->
+        <!--            app:srcCompat="@drawable/ic_baseline_arrow_downward" />-->
 
-        <ImageButton
-            android:id="@+id/ib_down"
-            android:layout_width="50dp"
+        <com.ogif.kotae.ui.VerticalVoteView
+            android:id="@+id/verticalVoteView"
+            android:layout_width="100dp"
             android:layout_height="50dp"
-            android:layout_marginTop="140dp"
-            android:background="?attr/colorOnSurfaceInverse"
+            android:layout_marginTop="144dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
-            app:srcCompat="@drawable/ic_baseline_arrow_downward" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_title" />
 
-        <TextView
-            android:id="@+id/tv_down"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ib_down"
-            tools:text="100" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_down"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="@dimen/text_size_medium"-->
+<!--            app:layout_constraintEnd_toStartOf="@+id/tv_up"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/toggle_group_vertical_vote_view"-->
+<!--            tools:text="100" />-->
 
-        <TextView
-            android:id="@+id/tv_up"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toStartOf="@+id/tv_down"
-            app:layout_constraintTop_toBottomOf="@+id/ib_up"
-            tools:text="100" />
+<!--        <TextView-->
+<!--            android:id="@+id/tv_up"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textSize="@dimen/text_size_medium"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/toggle_group_vertical_vote_view"-->
+<!--            tools:text="100" />-->
 
         <TextView
             android:id="@+id/tv_report"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="100dp"
             android:textAlignment="center"
             android:textSize="@dimen/text_size_medium"
-            app:layout_constraintEnd_toStartOf="@+id/tv_up"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ib_report"
             tools:text="100" />
 
@@ -167,12 +167,25 @@
             android:id="@+id/ib_block"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="144dp"
             android:background="?attr/colorOnSurfaceInverse"
             android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/ib_report"
             app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
             app:srcCompat="@drawable/ic_baseline_block" />
+
+        <ImageButton
+            android:id="@+id/ib_report"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="144dp"
+            android:layout_marginEnd="100dp"
+            android:background="?attr/colorOnSurfaceInverse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_title"
+            app:srcCompat="@drawable/ic_outline_report" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

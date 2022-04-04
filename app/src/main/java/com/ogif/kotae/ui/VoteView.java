@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.Button;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -15,6 +16,15 @@ import com.ogif.kotae.data.model.Vote;
 import java.util.Locale;
 
 public class VoteView extends ConstraintLayout {
+
+    public static final int NONE = 0;
+    public static final int DOWNVOTE = -1;
+    @IdRes
+    protected int RES_UPVOTE = R.id.btn_vote_view_upvote;
+    @IdRes
+    protected int RES_DOWNVOTE = R.id.btn_vote_view_downvote;
+    @IdRes
+    protected int RES_TOGGLE_GROUP = R.id.toggle_group_vote_view;
 
     protected String id;
     protected int upvoteCount;
@@ -51,8 +61,8 @@ public class VoteView extends ConstraintLayout {
         init();
     }
 
-    private void onVoteStateChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-        if (checkedId == R.id.btn_vote_view_upvote) {
+    protected void onVoteStateChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+        if (checkedId == RES_UPVOTE) {
             if (isChecked) {
                 setUpvoteValue(getUpvoteValue() + 1);
                 if (listener != null)
@@ -64,7 +74,7 @@ public class VoteView extends ConstraintLayout {
                     listener.onUpvote(false);
                 this.currentState = Vote.NONE;
             }
-        } else if (checkedId == R.id.btn_vote_view_downvote) {
+        } else if (checkedId == RES_DOWNVOTE) {
             if (isChecked) {
                 setDownvoteValue(getDownvoteValue() + 1);
                 if (listener != null)
@@ -84,12 +94,12 @@ public class VoteView extends ConstraintLayout {
     }
 
     protected void init() {
-        inflate();
-        this.currentState = Vote.NONE;
-        this.toggleGroup = findViewById(R.id.toggle_group_vote_view);
-        this.upvote = findViewById(R.id.btn_vote_view_upvote);
-        this.downvote = findViewById(R.id.btn_vote_view_downvote);
 
+        this.currentState = NONE;
+        inflate();
+        this.toggleGroup = findViewById(RES_TOGGLE_GROUP);
+        this.upvote = findViewById(RES_UPVOTE);
+        this.downvote = findViewById(RES_DOWNVOTE);
         toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
     }
 

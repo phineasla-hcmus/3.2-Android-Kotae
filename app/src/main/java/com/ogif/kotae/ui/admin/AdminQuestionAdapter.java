@@ -63,9 +63,11 @@ public class AdminQuestionAdapter extends BaseAdapter {
         TextView tvQuestionContent = (TextView) view.findViewById(R.id.tv_question_content);
         TextView tvQuestionPosttime = (TextView) view.findViewById(R.id.tv_question_post_time);
         TextView tvQuestionAuthor = (TextView) view.findViewById(R.id.tv_author);
-        TextView tvQuestionUpvote = (TextView) view.findViewById(R.id.tv_up);
-        TextView tvQuestionDownvote = (TextView) view.findViewById(R.id.tv_down);
-        TextView tvQuestionReport = (TextView) view.findViewById(R.id.tv_report);
+
+//        TextView tvQuestionUpvote = (TextView) view.findViewById(R.id.tv_up);
+//        TextView tvQuestionDownvote= (TextView) view.findViewById(R.id.tv_down);
+        TextView tvQuestionReport= (TextView) view.findViewById(R.id.tv_report);
+
         Chip chipSubject = (Chip) view.findViewById(R.id.chip_subject);
         Chip chipGrade = (Chip) view.findViewById(R.id.chip_grade);
         ImageButton ibBlock = (ImageButton) view.findViewById(R.id.ib_block);
@@ -75,8 +77,8 @@ public class AdminQuestionAdapter extends BaseAdapter {
         tvQuestionContent.setText(question.getContent());
 //        tvQuestionPosttime.setText(question.getPostTime().toString());
         tvQuestionAuthor.setText(question.getAuthor());
-        tvQuestionUpvote.setText(String.valueOf(question.getUpvote()));
-        tvQuestionDownvote.setText(String.valueOf(question.getDownvote()));
+//        tvQuestionUpvote.setText(String.valueOf(question.getUpvote()));
+//        tvQuestionDownvote.setText(String.valueOf(question.getDownvote()));
         tvQuestionReport.setText(String.valueOf(question.getReport()));
         chipSubject.setText(question.getSubject());
         chipGrade.setText(question.getGrade());
