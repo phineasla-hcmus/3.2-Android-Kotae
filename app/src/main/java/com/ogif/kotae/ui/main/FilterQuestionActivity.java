@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -23,6 +24,7 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,17 +32,32 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class FilterQuestionActivity extends AppCompatActivity {
-    private TextView tvCancel, tvSubmit;
+    private TextView tvCancel, tvSubmit, tvReset;
     private FirebaseFirestore db;
+    private String activity = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter_question);
 
+        Intent intent = getIntent();
+        String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (!TextUtils.isEmpty(text)) {
+            activity = "search";
+        }
+
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvSubmit = (TextView) findViewById(R.id.tv_submit);
+        tvReset = (TextView) findViewById(R.id.tv_reset);
 
+        tvReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearSelected();
+            }
+
+        });
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +97,12 @@ public class FilterQuestionActivity extends AppCompatActivity {
                                     answers.add(answer);
                                 }
 
+                                // get filtered results for search
+                                if (activity.equals("search")) {
+                                    ArrayList<Question> searchResults = intent.getParcelableArrayListExtra("searchResults");
+                                    filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, searchResults, answers);
+                                    return;
+                                }
                                 // To Do
                                 filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, filteredQuestions, answers);
                             }
@@ -103,6 +126,56 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void clearSelected() {
+        ArrayList<RadioButton> radioButtonArrayList = new ArrayList<RadioButton>();
+        radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_sort_most_view));
+        radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_sort_top_week));
+        radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_sort_top_month));
+        radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_status_answered));
+        radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_status_unanswered));
+
+
+        ArrayList<CheckBox> checkBoxArrayList = new ArrayList<CheckBox>();
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_2));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_3));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_4));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_5));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_6));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_7));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_8));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_9));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_10));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_11));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_12));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_math));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_physic));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_chemistry));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_english));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_literature));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_biology));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_history));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_geography));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_ethic));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_informatics));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_technology));
+
+        for (CheckBox chkItem : checkBoxArrayList) {
+            chkItem.setChecked(false);
+        }
+
+        for (RadioButton radItem : radioButtonArrayList) {
+            radItem.setChecked(false);
+        }
+
+        RadioButton radQuestionSortAll = (RadioButton) findViewById(R.id.rad_question_sort_all);
+        RadioButton radQuestionStatusAll = (RadioButton) findViewById(R.id.rad_question_status_all);
+
+        radQuestionSortAll.setChecked(true);
+        radQuestionStatusAll.setChecked(true);
     }
 
     private String getSort() {
@@ -206,15 +279,15 @@ public class FilterQuestionActivity extends AppCompatActivity {
         questions = filterQuestionByGrade(questions, lstGrades);
         questions = filterQuestionBySubject(questions, lstCourses);
 
-        printQuestions(questions);
+//        printQuestions(questions);
 
         // Set Result
-//        Intent intent = new Intent();
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("filteredQuestions", questions);
-//        intent.putExtras(bundle);
-//        setResult(RESULT_OK, intent);
-//        finish();
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("filteredQuestions", questions);
+        intent.putExtras(bundle);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
@@ -302,9 +375,9 @@ public class FilterQuestionActivity extends AppCompatActivity {
 
         // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple grade?)
         LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
-        for(String gradeId :lstGrades){
-            for(Question question : questions){
-                if(question.getGradeId().equals(gradeId)){
+        for (String gradeId : lstGrades) {
+            for (Question question : questions) {
+                if (question.getGradeId().equals(gradeId)) {
                     tempQuestions.add(question);
                 }
             }
@@ -320,9 +393,9 @@ public class FilterQuestionActivity extends AppCompatActivity {
 
         // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple subject?)
         LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
-        for(String courseId :lstCourses){
-            for(Question question : questions){
-                if(question.getSubjectId().equals(courseId)){
+        for (String courseId : lstCourses) {
+            for (Question question : questions) {
+                if (question.getSubjectId().equals(courseId)) {
                     tempQuestions.add(question);
                 }
             }

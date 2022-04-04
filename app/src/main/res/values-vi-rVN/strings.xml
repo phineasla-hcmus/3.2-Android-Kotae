@@ -51,6 +51,8 @@
     <string name="create_question_content_title">Nội dung</string>
     <string name="create_question_images_title">Hình ảnh</string>
     <string name="create_question_title">Tiêu đề</string>
+    <string name="comment_hint">Nhập bình luận của bạn</string>
+    <string name="comment_empty">Vui lòng nhập bình luận của bạn</string>
     <string name="et_error_email">Email không hợp lệ</string>
     <string name="et_error_email_existed">Email đã tồn tại</string>
     <string name="et_error_password">Mật khẩu phải từ 6 đến 16 ký tự</string>
@@ -62,9 +64,10 @@
     <string name="fab_post_question">Đăng</string>
     <string name="field_error_missing">Có cái gì đó thiếu thiếu</string>
     <string name="filter_cancel">Hủy bỏ</string>
+    <string name="filter_reset">Đặt lại</string>
     <string name="filter_submit">Đồng ý</string>
+    <string name="filter_empty_list">Chưa có kết quả tìm kiếm nào để lọc</string>
     <string name="leaderboard_day">Ngày</string>
-    <string name="leaderboard_week">Tuần</string>
     <string name="leaderboard_all">Tất cả</string>
     <string name="login_error">Email hoặc mật khẩu không hợp lệ</string>
     <string name="login_to_sign_up">Đăng ký</string>
@@ -98,4 +101,9 @@
     <string name="timestamp_just_now">Nóng hổi</string>
     <string name="timestamp_minutes">%1$d phút trước</string>
     <string name="timestamp_hours">%1$d giờ trước</string>
+    <string name="missing_answer_content">Vui lòng nhập câu trả lời của bạn</string>
+    <string name="missing_selected_grade">Vui lòng chọn lớp của bạn</string>
+    <string name="missing_selected_subject">Vui lòng chọn môn học của bạn</string>
+    <string name="invalid_question_content_length">Nội dung câu hỏi phải chứa ít nhất 30 ký tự</string>
+    <string name="all_image">Hình ảnh</string>
 </resources>

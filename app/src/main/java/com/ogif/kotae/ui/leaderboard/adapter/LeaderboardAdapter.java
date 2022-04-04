@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.leaderboard;
+package com.ogif.kotae.ui.leaderboard.adapter;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.arthurivanets.adapster.recyclerview.TrackableRecyclerViewAdapter;
+import com.ogif.kotae.ui.leaderboard.LeaderboardItem;
 
 import org.jetbrains.annotations.Nullable;
 

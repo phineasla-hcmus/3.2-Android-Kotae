@@ -22,7 +22,7 @@ public class AnswerRepository {
     private final FirebaseFirestore db;
     private final CollectionReference answersRef;
 
-    private String orderBy = Answer.Field.upvote;
+    private String orderBy = Answer.Field.UPVOTE;
     private Query.Direction orderByDirection = Query.Direction.DESCENDING;
 
     public AnswerRepository() {
@@ -42,6 +42,10 @@ public class AnswerRepository {
             }
             callback.onSuccess(answers);
         }).addOnFailureListener(callback::onFailure);
+    }
+
+    public DocumentReference toDocumentRef(@NonNull Answer answer) {
+        return answersRef.document(answer.getId());
     }
 
     public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {

@@ -89,6 +89,7 @@
                         android:imeOptions="flagNoExtractUi"
                         android:isScrollContainer="true"
                         android:scrollbars="vertical"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         android:theme="@style/TextInputEditTextStyle"
                         app:textInputLayoutFocusedRectEnabled="false" />
 
@@ -101,6 +102,7 @@
                     android:background="@drawable/answer_preview_background"
                     android:gravity="start|top"
                     android:includeFontPadding="false"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                     android:visibility="gone" />
 
                 <HorizontalScrollView

@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.ui.main.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,15 +9,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.ogif.kotae.data.model.Subject;
+import com.ogif.kotae.data.model.Grade;
 
-public class SubjectAdapter extends ArrayAdapter<Subject> {
+public class GradeAdapter extends ArrayAdapter<Grade> {
 
     // Your custom values for the spinner (User)
-    private final Subject[] values;
+    private final Grade[] values;
 
-    public SubjectAdapter(Context context, int textViewResourceId,
-                          Subject[] values) {
+    public GradeAdapter(Context context, int textViewResourceId,
+                        Grade[] values) {
         super(context, textViewResourceId, values);
         // Your sent context
         this.values = values;
@@ -29,7 +29,7 @@ public class SubjectAdapter extends ArrayAdapter<Subject> {
     }
 
     @Override
-    public Subject getItem(int position) {
+    public Grade getItem(int position) {
         return values[position];
     }
 
@@ -43,7 +43,7 @@ public class SubjectAdapter extends ArrayAdapter<Subject> {
     // This is for the "passive" state of the spinner
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // I created a dynamic TextView here, but you can reference your own  custom layout for each spinner item
+        // I created a dynamic TextView here, but you can reference your own custom layout for each spinner item
         TextView label = (TextView) super.getView(position, convertView, parent);
         label.setTextColor(Color.BLACK);
         // Then you can get the current item using the values array (Users array) and the current position

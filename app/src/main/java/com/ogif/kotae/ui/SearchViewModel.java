@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
-import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 

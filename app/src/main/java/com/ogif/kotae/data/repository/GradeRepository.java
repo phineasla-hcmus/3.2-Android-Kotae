@@ -1,6 +1,6 @@
 package com.ogif.kotae.data.repository;
 
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -31,8 +31,7 @@ public class GradeRepository {
         return gradesRef.get();
     }
 
-    public void getAll(TaskListener.State<List<Grade>> callback) {
-        // Log.d("data", "Error getting documents: ", task.getException());
+    public void getAll(@NonNull TaskListener.State<List<Grade>> callback) {
         getAll().addOnSuccessListener(result -> {
             List<Grade> grades = new ArrayList<>();
             for (QueryDocumentSnapshot document : result) {
@@ -42,7 +41,7 @@ public class GradeRepository {
         }).addOnFailureListener(callback::onFailure);
     }
 
-    public void get(String id, TaskListener.State<Grade> callback) {
+    public void get(@NonNull String id, @NonNull TaskListener.State<Grade> callback) {
         get(id).addOnSuccessListener(documentSnapshot -> callback.onSuccess(documentSnapshot.toObject(Grade.class)))
                 .addOnFailureListener(callback::onFailure);
     }

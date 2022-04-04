@@ -87,23 +87,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_between_y_lg"
-            android:drawableStart="@drawable/ic_night_mode"
+            android:drawableStart="@drawable/ic_circle_night_mode"
             android:text="@string/profile_night_mode"
-            app:layout_constraintBottom_toTopOf="@+id/tv_profile_language"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_admin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraint_layout_profile_user" />
 
         <!--DEPRECATED-->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tv_profile_language"
+            android:id="@+id/tv_profile_admin"
             style="@style/ProfileItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:text="@string/all_language"
+            android:text="@string/all_admin"
             android:visibility="gone"
-            app:drawableStartCompat="@drawable/ic_language"
+            app:drawableStartCompat="@drawable/ic_circle_profile"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_section_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +117,7 @@
             android:text="@string/profile_category_profile"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_edit"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_profile_language" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_profile_admin" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tv_profile_edit"
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/profile_edit"
-            app:drawableStartCompat="@drawable/ic_profile"
+            app:drawableStartCompat="@drawable/ic_circle_profile"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_change_password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/profile_change_password"
-            app:drawableStartCompat="@drawable/ic_password"
+            app:drawableStartCompat="@drawable/ic_circle_password"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_logout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:text="@string/profile_logout"
-            app:drawableStartCompat="@drawable/ic_logout"
+            app:drawableStartCompat="@drawable/ic_circle_logout"
             app:layout_constraintBottom_toTopOf="@+id/tv_profile_app_version"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

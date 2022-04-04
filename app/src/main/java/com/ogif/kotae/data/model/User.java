@@ -3,6 +3,8 @@ package com.ogif.kotae.data.model;
 import com.google.firebase.firestore.DocumentId;
 import com.ogif.kotae.Global;
 
+import java.util.Date;
+
 public class User {
     public static final String ROLE_USER = "user";
     public static final String ROLE_ADMIN = "admin";
@@ -14,7 +16,9 @@ public class User {
     private int yob;
     private String role;
     private String avatar;
-    private int reputation;
+    private int xp;
+    private int xpDaily;
+    private Date xpDailyLastUpdate;
     private int report;
     private boolean blocked;
 
@@ -30,7 +34,6 @@ public class User {
         this.yob = yob;
         this.role = "user";
         this.avatar = Global.DEFAULT_USER_AVATAR;
-        this.reputation = 0;
     }
 
     public User(String username, String avatar, int report, boolean blocked) {
@@ -108,5 +111,37 @@ public class User {
     public User setAvatar(String avatarUrl) {
         this.avatar = avatar;
         return this;
+    }
+
+    public int getXp() {
+        return xp;
+    }
+
+    public User setXp(int xp) {
+        this.xp = xp;
+        return this;
+    }
+
+    public int getXpDaily() {
+        return xpDaily;
+    }
+
+    public User setXpDaily(int xpDaily) {
+        this.xpDaily = xpDaily;
+        return this;
+    }
+
+    public Date getXpDailyLastUpdate() {
+        return xpDailyLastUpdate;
+    }
+
+    public User setXpDailyLastUpdate(Date xpDailyLastUpdate) {
+        this.xpDailyLastUpdate = xpDailyLastUpdate;
+        return this;
+    }
+
+    public void resetXpDaily() {
+        this.xpDaily = 0;
+        this.xpDailyLastUpdate = new Date();
     }
 }

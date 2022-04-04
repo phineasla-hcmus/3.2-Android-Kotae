@@ -26,10 +26,10 @@ public class QuestionUtils {
     }
 
     public static int isGradeValid(@NonNull CharSequence grade) {
-        return (grade.length() > 0) ? NOT_SELECTED_GRADE : OK;
+        return (grade.length() == 0) ? NOT_SELECTED_GRADE : OK;
     }
 
     public static int isSubjectValid(@NonNull CharSequence subject) {
-        return (subject.length() > 0) ? NOT_SELECTED_SUBJECT : OK;
+        return (subject.length() == 0) ? NOT_SELECTED_SUBJECT : OK;
     }
 }

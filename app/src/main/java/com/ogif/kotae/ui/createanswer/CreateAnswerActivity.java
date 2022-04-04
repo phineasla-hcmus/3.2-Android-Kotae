@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -45,7 +46,10 @@ public class CreateAnswerActivity extends AppCompatActivity {
 
         binding.fabPostAnswer.setOnClickListener(v -> {
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
-
+            if (TextUtils.isEmpty(content)) {
+                Toast.makeText(this, getResources().getString(R.string.missing_answer_content), Toast.LENGTH_SHORT).show();
+                return;
+            }
             binding.fabPostAnswer.setEnabled(false);
             String id = getIntent().getStringExtra("questionId");
             this.viewModel.createAnswer(id, content);

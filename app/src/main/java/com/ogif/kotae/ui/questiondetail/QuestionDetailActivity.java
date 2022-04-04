@@ -15,16 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
+import com.ogif.kotae.ui.CommentViewModel;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
+import com.ogif.kotae.ui.questiondetail.adapter.CommentAdapter;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
     private ActivityQuestionDetailBinding binding;
     private QuestionDetailAdapter adapter;
+    private CommentAdapter commentAdapter;
     private QuestionDetailViewModel questionDetailViewModel;
+    private static CommentViewModel commentViewModel;
     private RecyclerView recyclerView;
     private String questionId;
 
@@ -36,9 +44,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         MaterialToolbar toolbar = binding.toolbarQuestionDetail;
-        toolbar.setNavigationOnClickListener(nav -> {
-            NavUtils.navigateUpFromSameTask(this);
-        });
+        toolbar.setNavigationOnClickListener(nav -> NavUtils.navigateUpFromSameTask(this));
         setSupportActionBar(toolbar);
 
         adapter = new QuestionDetailAdapter(this);
@@ -46,6 +52,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
+
+        commentAdapter = new CommentAdapter(this);
+
+        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
         questionId = questionFromExtra.getId();
@@ -57,14 +67,59 @@ public class QuestionDetailActivity extends AppCompatActivity {
         questionDetailViewModel.getAnswers();
 
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
+            if (question == null) {
+                // TODO fetch question failed
+                return;
+            }
             adapter.updateQuestion(question);
+        });
+        questionDetailViewModel.getQuestionVoteLiveData().observe(this, vote -> {
+            if (vote == null) {
+                // Current vote for question is NONE or fetching failed
+                return;
+            }
+            adapter.updateQuestionVote(vote);
         });
         questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
             adapter.updateAnswers(answers);
+            List<String> ids = new ArrayList<>();
+            for (Answer answer : answers) {
+                ids.add(answer.getId());
+            }
+            questionDetailViewModel.getAnswerVotes(ids);
         });
 
-        binding.btnQuestionAnswer.setOnClickListener(v -> {
-            startCreateAnswerActivity();
+        binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
+
+        // FirebaseFirestore db = FirebaseFirestore.getInstance();
+        // db.collection("votes")
+        //         .whereEqualTo("authorId", "0FDZ97sbxRf17ac07Sx260inaPR2")
+        //         .whereIn(FieldPath.documentId(), Arrays.asList("5dEcqTo35b9QA1XoGg2o",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
+        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI"))
+        //         .get()
+        //         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        //             @Override
+        //             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+        //                 for (DocumentSnapshot doc : queryDocumentSnapshots) {
+        //                     Vote v = doc.toObject(Vote.class);
+        //                     Log.d("TEST", v.getId());
+        //                 }
+        //             }
+        //         });
+    }
+
+    public void createComment(@NonNull String postId, @NonNull String content) {
+        commentViewModel.createComment(postId, content);
+    }
+
+    public void updateComments(RecyclerView recyclerView, @NonNull String postId) {
+        recyclerView.setAdapter(commentAdapter);
+        commentViewModel.getComments(postId);
+
+        commentViewModel.getCommentLiveData().observe(this, comments -> {
+            commentAdapter.updateComments(comments);
         });
     }
 

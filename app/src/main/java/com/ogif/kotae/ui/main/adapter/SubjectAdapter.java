@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.ui.main.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,18 +9,23 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.ogif.kotae.data.model.Grade;
+import com.ogif.kotae.data.model.Subject;
 
-public class GradeAdapter extends ArrayAdapter<Grade> {
+public class SubjectAdapter extends ArrayAdapter<Subject> {
 
     // Your custom values for the spinner (User)
-    private final Grade[] values;
+    private Subject[] values;
 
-    public GradeAdapter(Context context, int textViewResourceId,
-                        Grade[] values) {
+    public SubjectAdapter(Context context, int textViewResourceId,
+                          Subject[] values) {
         super(context, textViewResourceId, values);
         // Your sent context
         this.values = values;
+    }
+
+    public void setItems(Subject[] items) {
+        values = items;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -29,7 +34,7 @@ public class GradeAdapter extends ArrayAdapter<Grade> {
     }
 
     @Override
-    public Grade getItem(int position) {
+    public Subject getItem(int position) {
         return values[position];
     }
 

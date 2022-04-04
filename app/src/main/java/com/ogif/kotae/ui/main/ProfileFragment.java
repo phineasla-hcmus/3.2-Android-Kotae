@@ -2,7 +2,6 @@ package com.ogif.kotae.ui.main;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.FragmentProfileBinding;
+import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.utils.LocaleHelper;
 
 import java.util.Objects;
@@ -27,32 +29,30 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment {
+    @Deprecated
     private static final String[] languages = {"English", "Tiếng Việt"};
     private FragmentProfileBinding binding;
+    private ProfileViewModel profileViewModel;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View v = binding.getRoot();
+
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+
+        profileViewModel.getCurrentUser();
+        profileViewModel.getUserLiveData().observe(requireActivity(), user -> {
+            if (user == null)
+                return;
+            binding.tvProfileUsername.setText(user.getUsername());
+            binding.tvProfileXp.setText(user.getXp());
+            if (user.getRole().equals(User.ROLE_ADMIN))
+                binding.tvProfileAdmin.setVisibility(View.VISIBLE);
+        });
 
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         prefsEditor = prefs.edit();
@@ -68,8 +68,20 @@ public class ProfileFragment extends Fragment {
             requireActivity().recreate();
         });
 
-        binding.tvProfileLanguage.setOnClickListener(view -> {
-            showLanguageDialog();
+        // binding.tvProfileLanguage.setOnClickListener(view -> {
+        //     showLanguageDialog();
+        // });
+
+        binding.tvProfileAdmin.setOnClickListener(view -> {
+            // Launch admin activity
+        });
+
+        binding.tvProfileEdit.setOnClickListener(view -> {
+            // Launch change profile info activity
+        });
+
+        binding.tvProfileChangePassword.setOnClickListener(view -> {
+            // Launch change password activity
         });
 
         return v;
@@ -91,6 +103,7 @@ public class ProfileFragment extends Fragment {
                 .show();
     }
 
+    @Deprecated(since = "Change language is no longer supported")
     private void showLanguageDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(getResources().getString(R.string.all_language))
@@ -98,7 +111,6 @@ public class ProfileFragment extends Fragment {
                     if (i == 0) {
                         LocaleHelper.setLocale(requireContext(), "en");
                     } else if (i == 1) {
-                        Log.d("TESTING", "Set VN");
                         LocaleHelper.setLocale(requireContext(), "vi");
                     }
                     requireActivity().recreate();

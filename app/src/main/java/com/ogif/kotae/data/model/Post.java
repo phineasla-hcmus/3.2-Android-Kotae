@@ -6,12 +6,11 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import org.jetbrains.annotations.TestOnly;
-
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Interface for Question, Answer
@@ -23,80 +22,51 @@ import java.util.Date;
  * Apply builder pattern with inheritatance
  * </a>
  */
-public abstract class Post implements Parcelable {
-    public abstract static class Builder<T extends Builder<T>> {
-        private String id;
-        private String authorId;
-        private String authorName;
-        private String content;
-        private boolean block;
+public abstract class Post extends Record implements Parcelable {
+    protected int bookmark;
+    protected int comment;
+    protected int xp;
+    protected List<String> imageIds;
+
+    public abstract static class Builder<T extends Builder<T>> extends Record.Builder<T> {
+        private int xp;
+        private List<String> imageIds;
 
         public Builder() {
         }
 
         public abstract T getThis();
 
-        /**
-         * @implNote Should only be used when fetch data from database, not when insert data into
-         * database, as <a href="https://firebase.google.com/docs/reference/android/com/google/firebase/firestore/DocumentId">
-         * ID will be ignored
-         * </a>
-         */
-        public T id(String id) {
-            this.id = id;
+        public Builder<T> authorXp(int xp) {
+            this.xp = xp;
             return getThis();
         }
 
-        /**
-         * @param id   should be the same User as "name"
-         * @param name should be the same User as "id"
-         */
-        public T author(String id, String name) {
-            this.authorId = id;
-            this.authorName = name;
+        public Builder<T> imageIds(List<String> ids) {
+            this.imageIds = ids;
             return getThis();
         }
 
-        public T content(String content) {
-            this.content = content;
-            return getThis();
-        }
-
-        @TestOnly
-        public T block(boolean block) {
-            this.block = block;
-            return getThis();
-        }
     }
 
     /**
      * Firestore
      */
-    public static class Field {
-        public static final String authorId = "authorId";
-        public static final String authorName = "authorName";
-        public static final String content = "content";
-        public static final String postTime = "postTime";
-        public static final String upvote = "upvote";
-        public static final String downvote = "downvote";
-        public static final String report = "report";
-        public static final String comment = "comment";
-        public static final String blocked = "blocked";
+    public static class Field extends Record.Field {
+        public static final String BOOKMARK = "bookmark";
+        public static final String COMMENT = "comment";
+        public static final String AUTHOR_XP = "xp";
+        public static final String IMAGE_IDS = "imageIds";
     }
 
-    @DocumentId
-    protected String id;
-    protected String authorId;
-    protected String author;
-    protected String content;
-    protected Date postTime;
-    protected int upvote;
-    protected int downvote;
-    protected int report;
-    protected int comment;
-    protected boolean blocked;
-
     public Post() {
+        super();
+    }
+
+    public Post(@NonNull Builder<?> builder) {
+        super(builder);
+        this.xp = builder.xp;
+        this.imageIds = builder.imageIds;
     }
 
     public Post(@NonNull Parcel parcel) {
@@ -109,17 +79,12 @@ public abstract class Post implements Parcelable {
         upvote = parcel.readInt();
         downvote = parcel.readInt();
         report = parcel.readInt();
-        comment = parcel.readInt();
         blocked = parcel.readInt() == 1;
-    }
-
-    public Post(@NonNull Builder<?> builder) {
-        this.id = builder.id;
-        this.authorId = builder.authorId;
-        this.author = builder.authorName;
-        this.content = builder.content;
-        this.blocked = builder.block;
-        this.postTime = new Date();
+        bookmark = parcel.readInt();
+        comment = parcel.readInt();
+        xp = parcel.readInt();
+        imageIds = new ArrayList<>();
+        parcel.readList(imageIds, String.class.getClassLoader());
     }
 
     @Override
@@ -138,83 +103,52 @@ public abstract class Post implements Parcelable {
         parcel.writeInt(upvote);
         parcel.writeInt(downvote);
         parcel.writeInt(report);
-        parcel.writeInt(comment);
         parcel.writeInt(blocked ? 1 : 0);
+        parcel.writeInt(bookmark);
+        parcel.writeInt(comment);
+        parcel.writeInt(xp);
+        parcel.writeList(imageIds);
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
-    protected static <T extends Post> T fromDocument(@NonNull DocumentSnapshot document, @NonNull Class<T> clazz) {
-        T post;
-        if (!document.exists())
+    protected static <T extends Record> T fromDocument(@NonNull DocumentSnapshot document, @NonNull Class<T> clazz) {
+        Post post = (Post) Record.fromDocument(document, clazz);
+        if (post == null)
             return null;
-        try {
-            post = clazz.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            return null;
-        }
-        post.id = document.getId();
-        post.authorId = document.getString(Field.authorId);
-        post.author = document.getString(Field.authorName);
-        post.content = document.getString(Field.content);
-        post.postTime = document.getDate(Field.postTime);
-        Integer checkNull = document.get(Field.upvote, int.class);
+        Integer checkNull = document.get(Field.BOOKMARK, int.class);
         if (checkNull != null)
-            post.upvote = checkNull;
-        checkNull = document.get(Field.downvote, int.class);
+            post.bookmark = checkNull;
+        checkNull = document.get(Field.COMMENT, int.class);
         if (checkNull != null)
-            post.downvote = checkNull;
-        checkNull = document.get(Field.report, int.class);
-        if (checkNull != null)
-            post.report = checkNull;
-        checkNull = document.get(Field.comment, int.class);
-        if (checkNull != null) {
             post.comment = checkNull;
-        }
-        Boolean blocked = document.getBoolean(Field.blocked);
-        if (blocked != null)
-            post.blocked = blocked;
-        return post;
+        checkNull = document.get(Field.AUTHOR_XP, int.class);
+        if (checkNull != null)
+            post.xp = checkNull;
+        // https://github.com/googleapis/java-firestore/issues/60
+        post.imageIds = (List<String>) document.get(Field.IMAGE_IDS);
+        return (T) post;
     }
 
-    // public void increment
-
-    public String getId() {
-        return id;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Date getPostTime() {
-        return postTime;
-    }
-
-    public int getUpvote() {
-        return upvote;
-    }
-
-    public int getDownvote() {
-        return downvote;
-    }
-
-    public int getReport() {
-        return report;
+    public int getBookmark() {
+        return bookmark;
     }
 
     public int getComment() {
         return comment;
     }
 
-    public boolean isBlocked() {
-        return blocked;
+    public int getXp() {
+        return xp;
     }
+
+    public List<String> getImageIds() {
+        return imageIds;
+    }
+
+    public String getImageId(int i) {
+        return imageIds.get(i);
+    }
+
+
 }
