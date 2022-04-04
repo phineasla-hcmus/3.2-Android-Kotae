@@ -3,6 +3,7 @@ package com.ogif.kotae.ui.admin;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.ui.main.AdminQuestionFragment;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 import java.util.ArrayList;
 
@@ -92,6 +94,22 @@ public class AdminQuestionAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Log.d("AAA", String.valueOf(i) + questionArrayList.get(i).getTitle());
                 confirmAndHandleBlockOrUnblockQuestion(i);
+            }
+        });
+
+        tvQuestionTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = QuestionDetailActivity.newInstance(context, questionArrayList.get(i));
+                context.startActivity(intent);
+            }
+        });
+
+        tvQuestionContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = QuestionDetailActivity.newInstance(context, questionArrayList.get(i));
+                context.startActivity(intent);
             }
         });
 
