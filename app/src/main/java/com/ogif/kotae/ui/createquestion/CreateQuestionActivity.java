@@ -31,8 +31,10 @@ import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Grade;
 import com.ogif.kotae.data.model.Subject;
 import com.ogif.kotae.data.repository.GradeRepository;
+import com.ogif.kotae.data.repository.StorageRepository;
 import com.ogif.kotae.data.repository.SubjectRepository;
 import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
+import com.ogif.kotae.ui.LoadingDialog;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.main.adapter.GradeAdapter;
@@ -230,45 +232,16 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     }
     public void uploadImage(){
-        ProgressDialog progressDialog
-                = new ProgressDialog(CreateQuestionActivity.this);
-        progressDialog.setMessage("The process may take a little long");
-        progressDialog.show();
-        StorageReference ref
-                = storageRef
-                .child(
-                        "questions/");
-        for (uploadCount =0; uploadCount<imageList.size();uploadCount++) {
-            Uri IndividualImage = imageList.get(uploadCount);
-            StorageReference ImageName = ref.child(IndividualImage.getLastPathSegment());
-            ImageName.putFile(IndividualImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast
-                            .makeText(CreateQuestionActivity.this,
-                                    "Image Uploaded!!",
-                                    Toast.LENGTH_SHORT)
-                            .show();
-                    imageList.clear();
-                    imageAdapter.notifyDataSetChanged();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
+//        ProgressDialog progressDialog
+//                = new ProgressDialog(CreateQuestionActivity.this);
+//        progressDialog.setMessage("The process may take a little long");
+//        progressDialog.show();
+//        LoadingDialog loadingDialog = new LoadingDialog(CreateQuestionActivity.this);
+//        loadingDialog.startLoadingDialog();
+        StorageRepository storageRepository = new StorageRepository();
+        storageRepository.uploadQuestionImages(imageList,uploadCount,
+                CreateQuestionActivity.this,imageAdapter);
 
-                    // Error, Image not uploaded
-                    progressDialog.dismiss();
-                    Toast
-                            .makeText(CreateQuestionActivity.this,
-                                    "Failed " + e.getMessage(),
-                                    Toast.LENGTH_SHORT)
-                            .show();
-                    imageList.clear();
-                    imageAdapter.notifyDataSetChanged();
-                }
-            });
-        }
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
