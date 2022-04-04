@@ -61,7 +61,6 @@ public class AdminQuestionFragment extends Fragment {
                     Question question = documentSnapshot.toObject(Question.class);
                     questionArrayList.add(question);
                 }
-
                 questionAdapter = new AdminQuestionAdapter(getActivity(), R.layout.item_question, questionArrayList);
                 lvQuestion.setAdapter(questionAdapter);
             }
@@ -74,54 +73,4 @@ public class AdminQuestionFragment extends Fragment {
 
         return view;
     }
-
-    public void confirmAndHandleBlockOrUnblockQuestion(int pos) {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity());
-        // Handle Block
-        if (!questionArrayList.get(pos).isBlocked()) {
-            alertBuilder.setTitle("Confirm Block Question");
-            alertBuilder.setMessage("Are you sure you want to block this question?");
-            alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    questionArrayList.get(pos).setBlocked(true);
-                    questionAdapter.notifyDataSetChanged();
-
-//                    updateBlockFireStore(pos, true);
-                }
-
-
-            });
-            alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-            alertBuilder.show();
-        }
-        // Handle Unblock
-        else {
-            alertBuilder.setTitle("Confirm Unblock Question");
-            alertBuilder.setMessage("Are you sure you want to unblock this user?");
-            alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    questionArrayList.get(pos).setBlocked(false);
-                    questionAdapter.notifyDataSetChanged();
-
-//                    updateBlockFireStore(pos, false);
-                }
-            });
-            alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            });
-            alertBuilder.show();
-        }
-    }
-
-
 }
