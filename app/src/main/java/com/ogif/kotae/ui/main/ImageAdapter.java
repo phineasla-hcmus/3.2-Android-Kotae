@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.ogif.kotae.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,13 +18,17 @@ public class ImageAdapter extends BaseAdapter {
     private int pos;
     private LayoutInflater inflater;
     private ImageView ivGallery;
-    ArrayList<Uri> mArrayUri;
+    private ArrayList<Uri> mArrayUri;
+    private ArrayList<String> arrayLink;
 
-    public ImageAdapter(Context ctx, ArrayList<Uri> mArrayUri) {
+    public ImageAdapter(Context ctx, ArrayList<Uri> mArrayUri,ArrayList<String> arrayLink) {
 
         this.ctx = ctx;
         this.mArrayUri = mArrayUri;
+        this.arrayLink = arrayLink;
     }
+
+
 
     @Override
     public int getCount() {
@@ -50,9 +55,11 @@ public class ImageAdapter extends BaseAdapter {
         View itemView = inflater.inflate(R.layout.item_question_image, parent, false);
 
         ivGallery = (ImageView) itemView.findViewById(R.id.iv_image);
-
-        ivGallery.setImageURI(mArrayUri.get(position));
-
+        if (arrayLink == null)
+            //ivGallery.setImageURI(mArrayUri.get(position));
+            Picasso.get().load(mArrayUri.get(position)).into(ivGallery);
+        if (mArrayUri == null)
+            Picasso.get().load(arrayLink.get(position)).into(ivGallery);
         return itemView;
     }
 }

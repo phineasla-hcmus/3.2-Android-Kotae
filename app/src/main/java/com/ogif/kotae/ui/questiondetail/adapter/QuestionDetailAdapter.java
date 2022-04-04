@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -69,7 +70,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     private abstract static class PostHolder extends RecyclerView.ViewHolder {
         protected final TextView content;
-        protected final ImageView images;
+        protected final GridView images;
         protected final AuthorView author;
         protected final VoteView vote;
         protected final MaterialButton comment;
@@ -92,7 +93,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         public QuestionDetailHolder(@NonNull View itemView) {
             super(itemView,
                     R.id.tv_question_detail_content,
-                    R.id.img_question_detail,
+                    R.id.gv_question_detail_image,
                     R.id.author_view_question_detail,
                     R.id.vote_view_question_detail,
                     R.id.btn_question_detail_comment);

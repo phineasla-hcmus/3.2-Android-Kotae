@@ -209,11 +209,13 @@
 
             <LinearLayout
                 android:id="@+id/hsv"
-                android:layout_width="379dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-
+                android:layout_marginTop="@dimen/margin_between_y_md"
+                android:layout_marginStart="@dimen/margin_x"
+                android:layout_marginEnd="@dimen/margin_x"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_question_images">
 

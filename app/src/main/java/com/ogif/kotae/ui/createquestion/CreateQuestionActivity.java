@@ -34,7 +34,6 @@ import com.ogif.kotae.data.repository.GradeRepository;
 import com.ogif.kotae.data.repository.StorageRepository;
 import com.ogif.kotae.data.repository.SubjectRepository;
 import com.ogif.kotae.databinding.ActivityCreateQuestionBinding;
-import com.ogif.kotae.ui.LoadingDialog;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.main.adapter.GradeAdapter;
@@ -254,7 +253,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     imageList.add(imageUri);
 
-                    imageAdapter = new ImageAdapter(getApplicationContext(),imageList);
+                    imageAdapter = new ImageAdapter(getApplicationContext(),imageList,null);
                     binding.gvQuestionImage.setAdapter(imageAdapter);
                     binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
                     ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
@@ -272,7 +271,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             currentImageSelect++;
                         }
 
-                        imageAdapter = new ImageAdapter(getApplicationContext(),imageList);
+                        imageAdapter = new ImageAdapter(getApplicationContext(),imageList,null);
                         binding.gvQuestionImage.setAdapter(imageAdapter);
                         binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
                         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
