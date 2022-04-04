@@ -66,8 +66,8 @@
     <!--    app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content"-->
     <!--    tools:itemCount="3" />-->
 
-    <ImageView
-        android:id="@+id/img_question_detail"
+    <LinearLayout
+        android:id="@+id/img_question_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_between_y_md"
@@ -75,7 +75,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_question_detail_content" >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <GridView
+                android:id="@+id/gv_question_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="3">
+
+            </GridView>
+        </ScrollView>
+
+    </LinearLayout>
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group_question_detail_tags"
@@ -85,7 +99,7 @@
         android:clipToPadding="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/img_question_detail"
+        app:layout_constraintTop_toBottomOf="@id/img_question_detail_layout"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
