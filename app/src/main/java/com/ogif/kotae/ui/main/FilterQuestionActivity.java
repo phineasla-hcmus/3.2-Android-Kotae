@@ -21,8 +21,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.QuestionRepository;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -77,50 +79,22 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 ArrayList<Question> filteredQuestions = new ArrayList<Question>();
                 ArrayList<Answer> answers = new ArrayList<Answer>();
 
-                db = FirebaseFirestore.getInstance();
-                Query queryQuestion = db.collection("questions").whereEqualTo("blocked", false)
-                        .orderBy("upvote", Query.Direction.DESCENDING);
-                queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshotsQuestions) {
-                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshotsQuestions) {
-                            Question question = documentSnapshot.toObject(Question.class);
-                            filteredQuestions.add(question);
-                        }
-
-                        Query queryAnswer = db.collection("answers");
-                        queryAnswer.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshotsAnswers) {
-                                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshotsAnswers) {
-                                    Answer answer = documentSnapshot.toObject(Answer.class);
-                                    answers.add(answer);
-                                }
-
-                                // get filtered results for search
-                                if (activity.equals("search")) {
-                                    ArrayList<Question> searchResults = intent.getParcelableArrayListExtra("searchResults");
-                                    filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, searchResults, answers);
-                                    return;
-                                }
-                                // To Do
-                                filterQuestionsAndSetResult(sort, status, lstGrades, lstCourses, filteredQuestions, answers);
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.d("AAA", e.toString());
-                                Toast.makeText(FilterQuestionActivity.this, "Query Answers Failed...", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        });
-
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+                QuestionRepository questionRepository = new QuestionRepository();
+                questionRepository.getFilterQuestions(sort, status, lstGrades, lstCourses, new TaskListener.State<ArrayList<Question>>() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("AAA", e.toString());
-                        Toast.makeText(FilterQuestionActivity.this, "Query Questions Failed...", Toast.LENGTH_SHORT).show();
+                        Log.e("AAA", e.toString());
+                    }
+
+                    @Override
+                    public void onSuccess(ArrayList<Question> result) {
+                        printQuestions(result);
+                        // Set Result
+                        Intent intent = new Intent();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("filteredQuestions", result);
+                        intent.putExtras(bundle);
+                        setResult(RESULT_OK, intent);
                         finish();
                     }
                 });
@@ -262,144 +236,10 @@ public class FilterQuestionActivity extends AppCompatActivity {
         return lstCourses;
     }
 
-    private Timestamp getFirstDayOfWeek(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return new Timestamp(calendar.getTime());
-    }
-
-    private Timestamp getFirstDayOfMonth(Date date) {
-        return new Timestamp(new Date(date.getYear(), date.getMonth(), 1));
-    }
-
-    private void filterQuestionsAndSetResult(String sort, String status, List<String> lstGrades, List<String> lstCourses, ArrayList<Question> questions, ArrayList<Answer> answers) {
-        questions = sortQuestionByUpvote(questions, sort);
-        questions = filterQuestionByStatus(questions, answers, status);
-        questions = filterQuestionByGrade(questions, lstGrades);
-        questions = filterQuestionBySubject(questions, lstCourses);
-
-//        printQuestions(questions);
-
-        // Set Result
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("filteredQuestions", questions);
-        intent.putExtras(bundle);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
-
-    private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
-        ArrayList<Question> newQuestions = new ArrayList<Question>();
-
-        if (sort.equals("MOST_VIEW")) {
-            // Get all
-            // Default : Order by vote desc
-            return questions;
-        } else if (sort.equals("TOP_WEEK")) {
-            Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
-
-            for (Question question : questions) {
-                if (question.getPostTime().compareTo(firstDayOfWeek.toDate()) != -1) {
-                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
-                    newQuestions.add(question);
-                }
-            }
-
-            return newQuestions;
-        } else if (sort.equals("TOP_MONTH")) {
-            Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
-
-            for (Question question : questions) {
-                if (question.getPostTime().compareTo(firstDayOfMonth.toDate()) != -1) {
-                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
-                    newQuestions.add(question);
-                }
-            }
-
-            return newQuestions;
-        }
-        // ELSE => Get all (Do nothing)
-        return questions;
-    }
-
-    private ArrayList<Question> filterAnsweredQuestions(ArrayList<Question> questions, ArrayList<Answer> answers) {
-        // No Duplicate
-        LinkedHashSet<Question> setAnsweredQuestions = new LinkedHashSet<Question>();
-
-        for (Answer answer : answers) {
-            for (Question question : questions) {
-                if (answer.getQuestionId().equals(question.getId())) {
-                    setAnsweredQuestions.add(question);
-                }
-            }
-        }
-        return new ArrayList<Question>(setAnsweredQuestions);
-    }
-
     // For Testing
     private void printQuestions(ArrayList<Question> questions) {
         for (Question question : questions) {
             Log.d("AAA", question.getTitle());
         }
-    }
-
-    private ArrayList<Question> filterQuestionByStatus(ArrayList<Question> questions, ArrayList<Answer> answers, String status) {
-        if (status.equals("ANSWERED")) {
-            ArrayList<Question> answeredQuestions = filterAnsweredQuestions(questions, answers);
-            // TEST
-            // printQuestions(answeredQuestions);
-            return answeredQuestions;
-
-        } else if (status.equals("UNANSWERED")) {
-            ArrayList<Question> answeredQuestions = filterAnsweredQuestions(questions, answers);
-            for (Question question : answeredQuestions) {
-                questions.remove(question);
-            }
-            // TEST
-            // printQuestions(questions);
-            return questions;
-        }
-        // ELSE => ALL => Get all (Do Nothing)
-        // TEST
-        // printQuestions(questions);
-        return questions;
-    }
-
-    private ArrayList<Question> filterQuestionByGrade(ArrayList<Question> questions, List<String> lstGrades) {
-        // size == 0 => Get all (Do nothing)
-        if (lstGrades.size() == 0) {
-            return questions;
-        }
-
-        // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple grade?)
-        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
-        for (String gradeId : lstGrades) {
-            for (Question question : questions) {
-                if (question.getGradeId().equals(gradeId)) {
-                    tempQuestions.add(question);
-                }
-            }
-        }
-        return new ArrayList<Question>(tempQuestions);
-    }
-
-    private ArrayList<Question> filterQuestionBySubject(ArrayList<Question> questions, List<String> lstCourses) {
-        // size == 0 => Get all (Do nothing)
-        if (lstCourses.size() == 0) {
-            return questions;
-        }
-
-        // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple subject?)
-        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
-        for (String courseId : lstCourses) {
-            for (Question question : questions) {
-                if (question.getSubjectId().equals(courseId)) {
-                    tempQuestions.add(question);
-                }
-            }
-        }
-        return new ArrayList<Question>(tempQuestions);
     }
 }
