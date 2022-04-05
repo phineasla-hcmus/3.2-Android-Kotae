@@ -1,5 +1,7 @@
 package com.ogif.kotae;
 
+import android.graphics.Bitmap;
+
 import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 

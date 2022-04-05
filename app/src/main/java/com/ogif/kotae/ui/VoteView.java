@@ -11,19 +11,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 
 import java.util.Locale;
 
 public class VoteView extends ConstraintLayout {
     @IdRes
-    protected int RES_UPVOTE = R.id.btn_vote_view_upvote;
+    protected int RES_UPVOTE;
     @IdRes
-    protected int RES_DOWNVOTE = R.id.btn_vote_view_downvote;
+    protected int RES_DOWNVOTE;
     @IdRes
-    protected int RES_TOGGLE_GROUP = R.id.toggle_group_vote_view;
+    protected int RES_TOGGLE_GROUP;
 
-    protected String id;
+    protected Record holder;
     protected int upvoteCount;
     protected int downvoteCount;
     protected int currentState;
@@ -32,7 +33,7 @@ public class VoteView extends ConstraintLayout {
     protected Button downvote;
     protected OnStateChangeListener listener;
 
-    interface OnStateChangeListener {
+    public interface OnStateChangeListener {
         void onUpvote(VoteView view, boolean isActive);
 
         void onDownvote(VoteView view, boolean isActive);
@@ -88,6 +89,9 @@ public class VoteView extends ConstraintLayout {
 
     protected void inflate() {
         inflate(getContext(), R.layout.partial_vote_view, this);
+        RES_UPVOTE = R.id.btn_vote_view_upvote;
+        RES_DOWNVOTE = R.id.btn_vote_view_downvote;
+        RES_TOGGLE_GROUP = R.id.toggle_group_vote_view;
     }
 
     protected void init() {
@@ -184,11 +188,12 @@ public class VoteView extends ConstraintLayout {
         return downvoteCount;
     }
 
-    public void setHolderId(String id) {
-        this.id = id;
+    public void setHolder(Record holder) {
+        this.holder = holder;
     }
 
-    public String getHolderId() {
-        return this.id;
+    @Nullable
+    public Record getHolder() {
+        return holder;
     }
 }

@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -140,15 +139,17 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if (question == null)
                     return;
                 bindCommonView(viewHolder, question, questionVote);
+                bindBottomSheetDialog(viewHolder, question);
                 bindQuestion((QuestionDetailHolder) viewHolder);
                 break;
             }
             case ITEM_TYPE_ANSWER: {
                 // Because question always at position 0
                 Answer answer = answers.get(position - 1);
-                bindCommonView(viewHolder, answer, answerVotes.isEmpty()
-                        ? null
-                        : answerVotes.get(position - 1));
+                // answerVotes might not done fetching yet
+                Vote v = answerVotes.isEmpty() ? null : answerVotes.get(position - 1);
+                bindCommonView(viewHolder, answer, v);
+                bindBottomSheetDialog(viewHolder, answer);
                 bindAnswer((AnswerHolder) viewHolder, answer);
                 break;
             }
@@ -172,7 +173,10 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemChanged(0);
     }
 
-    public void updateQuestionVote(@NonNull Vote vote) {
+    /**
+     * @implNote will be stored as null if current user hasn't voted the question
+     */
+    public void updateQuestionVote(@Nullable Vote vote) {
         this.questionVote = vote;
         notifyItemChanged(0);
     }
@@ -183,7 +187,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     /**
-     * @implNote any answer that don't have vote (aka answerVotes.containKey(answerId) == false)
+     * @implNote any answer that user hasn't voted (aka answerVotes.containKey(answerId) == false)
      * will be stored as null
      */
     public void updateAnswerVote(@NonNull Map<String, Vote> answerVotes) {
@@ -193,6 +197,19 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
         this.answerVotes.addAll(votes);
         notifyItemRangeInserted(1, answerVotes.size());
+    }
+
+    public void clear() {
+        question = null;
+        questionVote = null;
+        answers.clear();
+        answerVotes.clear();
+    }
+
+    public void clearAndNotify() {
+        int n = getItemCount();
+        clear();
+        notifyItemRangeRemoved(0, n);
     }
 
     /**
@@ -206,50 +223,10 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.author.setName(post.getAuthor());
         holder.author.setReputation(post.getXp());
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
-
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout);
-        bottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        ImageButton btnSend = bottomSheetDialog.findViewById(R.id.btn_comment_send);
-        EditText etContent = bottomSheetDialog.findViewById(R.id.et_comment_input);
-
-        btnSend.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(etContent.getText().toString())) {
-                Toast.makeText(context, context.getResources().getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            ((QuestionDetailActivity) context).createComment(post.getId(), etContent.getText().toString());
-            bottomSheetDialog.hide();
-            etContent.setText("");
-        });
-
-        setupFullHeight(bottomSheetDialog);
-        holder.comment.setOnClickListener(v -> {
-            showBottomSheetDialog(bottomSheetDialog, recyclerView, post.getId());
-        });
-        holder.vote.setVoteState(post.getUpvote(), post.getDownvote(),
-                vote == null
-                        ? Vote.NONE
-                        : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE);
+        int voteState = vote == null ? Vote.NONE : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE;
+        holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), voteState);
+        holder.vote.setHolder(post);
         // TODO bind author avatar
-    }
-
-    private void showBottomSheetDialog(BottomSheetDialog bottomSheetDialog, RecyclerView recyclerView, @NonNull String postId) {
-        ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
-        bottomSheetDialog.show();
-    }
-
-    private void setupFullHeight(BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet = (FrameLayout) bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-        bottomSheet.setLayoutParams(layoutParams);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder) {
@@ -273,6 +250,53 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             popup.show();
         });
     }
+
+    public void bindBottomSheetDialog(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post) {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        PostHolder holder = (PostHolder) viewHolder;
+
+        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout_comment);
+        bottomSheetDialog.getWindow()
+                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        ImageButton btnSend = bottomSheetDialog.findViewById(R.id.btn_comment_send);
+        EditText etContent = bottomSheetDialog.findViewById(R.id.et_comment_input);
+
+        btnSend.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(etContent.getText().toString())) {
+                Toast.makeText(context, context.getResources()
+                        .getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ((QuestionDetailActivity) context).createComment(post.getId(), etContent.getText()
+                    .toString());
+            bottomSheetDialog.hide();
+            etContent.setText("");
+        });
+
+        setupFullHeight(bottomSheetDialog);
+        holder.comment.setOnClickListener(v -> {
+            showBottomSheetDialog(bottomSheetDialog, recyclerView, post.getId());
+        });
+    }
+
+    private void showBottomSheetDialog(BottomSheetDialog bottomSheetDialog, RecyclerView recyclerView, @NonNull String postId) {
+        ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
+        bottomSheetDialog.show();
+    }
+
+    private void setupFullHeight(@NonNull BottomSheetDialog bottomSheetDialog) {
+        FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
+        bottomSheet.setLayoutParams(layoutParams);
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+
 
     public void showReportDialog(Post post) {
 

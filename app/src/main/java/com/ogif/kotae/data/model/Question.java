@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.ogif.kotae.Global;
 
 import java.util.ArrayList;
 
@@ -145,5 +146,10 @@ public final class Question extends Post {
 
     public String getGrade() {
         return grade;
+    }
+
+    @Override
+    public String getCollectionName() {
+        return Global.COLLECTION_QUESTION;
     }
 }

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.ogif.kotae.Global;
 
 public final class Answer extends Post {
     public static final Parcelable.Creator<Answer> CREATOR = new Parcelable.Creator<Answer>() {
@@ -86,5 +87,10 @@ public final class Answer extends Post {
 
     public String getQuestionId() {
         return questionId;
+    }
+
+    @Override
+    public String getCollectionName() {
+        return Global.COLLECTION_ANSWER;
     }
 }

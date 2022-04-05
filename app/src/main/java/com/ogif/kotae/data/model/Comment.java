@@ -1,5 +1,7 @@
 package com.ogif.kotae.data.model;
 
+import com.ogif.kotae.Global;
+
 public final class Comment extends Record {
 
     private String parentId;
@@ -42,5 +44,10 @@ public final class Comment extends Record {
 
     public String getParentId() {
         return parentId;
+    }
+
+    @Override
+    public String getCollectionName() {
+        return Global.COLLECTION_COMMENT;
     }
 }
