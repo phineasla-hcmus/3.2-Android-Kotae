@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,15 +24,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.ui.main.FilterQuestionActivity;
-import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.databinding.ActivitySearchBinding;
 import com.ogif.kotae.ui.SearchViewModel;
+import com.ogif.kotae.ui.main.FilterQuestionActivity;
+import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.utils.AnimationUtils;
 import com.ogif.kotae.utils.DataProvider;
 import com.ogif.kotae.utils.HeaderedRecyclerViewListener;
 import com.ogif.kotae.utils.VerticalSpacingItemDecorator;
-import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.paulrybitskyi.commons.ktx.NumberUtils;
 import com.paulrybitskyi.persistentsearchview.PersistentSearchView;
 import com.paulrybitskyi.persistentsearchview.adapters.model.SuggestionItem;
@@ -46,7 +44,6 @@ import com.paulrybitskyi.persistentsearchview.utils.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySearchBinding binding;
@@ -57,7 +54,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private SearchAdapter adapter;
     private SearchViewModel viewModel;
-    final int REQUEST_CODE_FILTER = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,21 +80,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         this.viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
-        onRestoreState(savedInstanceState);
         init();
-    }
-
-    private void onRestoreState(Bundle savedState) {
-        if (savedState != null) {
-            dataProvider = (DataProvider) savedState.getSerializable("data-provider");
-        }
-//        items = savedState.getSerializableOrThrow(SAVED_STATE_ITEMS)
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle savedState) {
-        super.onSaveInstanceState(savedState);
-        savedState.putSerializable("data-provider", dataProvider);
     }
 
     private void startFilterActivity() {
@@ -112,14 +94,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         bundle.putParcelableArrayList("searchResults", results);
         intent.putExtras(bundle);
         activityResultLauncher.launch(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null) {
-            // Get questions after filter & render
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void init() {
@@ -142,13 +116,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         persistentSearchView.showRightButton();
         persistentSearchView.setVoiceRecognitionDelegate(new VoiceRecognitionDelegate(this));
         OnSearchConfirmedListener mOnSearchConfirmedListener = (searchView, query) -> {
-            Toast.makeText(SearchActivity.this, "Search confirmed", Toast.LENGTH_SHORT).show();
             SearchActivity.this.saveSearchQueryIfNecessary(query);
             searchView.collapse();
 
             SearchActivity.this.performSearch(query);
         };
         persistentSearchView.setOnSearchConfirmedListener(mOnSearchConfirmedListener);
+
         OnSearchQueryChangeListener mOnSearchQueryChangeListener = (searchView, oldQuery, newQuery) -> {
             if (newQuery.isEmpty()) {
                 setSuggestions(dataProvider.getInitialSearchQueries(this), true);
@@ -157,6 +131,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         };
         persistentSearchView.setOnSearchQueryChangeListener(mOnSearchQueryChangeListener);
+
         OnSuggestionChangeListener mOnSuggestionChangeListener = new OnSuggestionChangeListener() {
             @Override
             public void onSuggestionPicked(SuggestionItem suggestion) {

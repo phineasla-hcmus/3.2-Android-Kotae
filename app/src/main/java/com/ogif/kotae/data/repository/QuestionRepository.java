@@ -128,9 +128,11 @@ public class QuestionRepository {
         queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshotsQuestions) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshotsQuestions) {
-                    Question question = documentSnapshot.toObject(Question.class);
-                    filteredQuestions.add(question);
+                if (filteredQuestions.size() == 0) {
+                    for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshotsQuestions) {
+                        Question question = documentSnapshot.toObject(Question.class);
+                        filteredQuestions.add(question);
+                    }
                 }
 
                 Query queryAnswer = db.collection("answers");

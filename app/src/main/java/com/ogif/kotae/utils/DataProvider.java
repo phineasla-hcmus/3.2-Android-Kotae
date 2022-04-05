@@ -9,13 +9,12 @@ import androidx.preference.PreferenceManager;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public final class DataProvider implements Serializable {
+public final class DataProvider {
     private List<String> initialSearchQueries = new ArrayList<>();
     private Context context;
     private String key = "search";
@@ -49,7 +48,7 @@ public final class DataProvider implements Serializable {
 
     /**
      * @see <a href="https://stackoverflow.com/a/56682835">
-     * */
+     */
 
     public void saveArrayList(ArrayList<String> list, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
