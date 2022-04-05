@@ -46,7 +46,7 @@ import java.util.Map;
  * <li>{@link Vote#NONE is represented by null value}</li>
  * </ul>
  * @see <a href="https://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-types">
- * Multi ViewHolder
+ * Multiple ViewHolder
  * </a>
  */
 public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -58,7 +58,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private Vote questionVote;
     private final List<Answer> answers;
     private final List<Vote> answerVotes;
-
+    private VoteView.OnStateChangeListener voteChangeListener;
 
     public QuestionDetailAdapter(Context context) {
         this.context = context;
@@ -181,7 +181,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyItemChanged(0);
     }
 
-    public void updateAnswers(@NonNull List<Answer> answers) {
+    public void addAnswers(@NonNull List<Answer> answers) {
         this.answers.addAll(answers);
         notifyItemRangeInserted(1, answers.size());
     }
@@ -190,7 +190,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      * @implNote any answer that user hasn't voted (aka answerVotes.containKey(answerId) == false)
      * will be stored as null
      */
-    public void updateAnswerVote(@NonNull Map<String, Vote> answerVotes) {
+    public void addAnswerVotes(@NonNull Map<String, Vote> answerVotes) {
         List<Vote> votes = new ArrayList<>(answers.size());
         for (Answer answer : answers) {
             votes.add(answerVotes.getOrDefault(answer.getId(), null));
@@ -226,6 +226,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         int voteState = vote == null ? Vote.NONE : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE;
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), voteState);
         holder.vote.setHolder(post);
+        holder.vote.setOnStateChangeListener(voteChangeListener);
         // TODO bind author avatar
     }
 
@@ -300,5 +301,13 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void showReportDialog(Post post) {
 
+    }
+
+    public VoteView.OnStateChangeListener getOnVoteChangeListener() {
+        return voteChangeListener;
+    }
+
+    public void setOnVoteChangeListener(@Nullable VoteView.OnStateChangeListener listener) {
+        this.voteChangeListener = listener;
     }
 }

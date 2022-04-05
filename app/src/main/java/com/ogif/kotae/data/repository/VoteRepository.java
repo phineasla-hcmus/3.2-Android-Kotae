@@ -96,7 +96,7 @@ public class VoteRepository {
     }
 
     /**
-     * @param recordIds if {@code size() > 10}, it will be processed in batches
+     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
      * @param callback  return type is a map of record ID and Vote that is in either state: {@link
      *                  Vote#UPVOTE}
      *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,

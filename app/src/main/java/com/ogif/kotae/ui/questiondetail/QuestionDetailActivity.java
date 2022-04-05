@@ -9,6 +9,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,17 +18,21 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.ui.CommentViewModel;
+import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.CommentAdapter;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String BUNDLE_QUESTION = "question";
+
     private ActivityQuestionDetailBinding binding;
     private QuestionDetailAdapter adapter;
     private CommentAdapter commentAdapter;
@@ -47,15 +52,25 @@ public class QuestionDetailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(nav -> NavUtils.navigateUpFromSameTask(this));
         setSupportActionBar(toolbar);
 
+        binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
+
         adapter = new QuestionDetailAdapter(this);
         recyclerView = binding.recyclerViewQuestionDetail;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
 
-        commentAdapter = new CommentAdapter(this);
+        adapter.setOnVoteChangeListener(new VoteView.OnStateChangeListener() {
+            @Override
+            public void onUpvote(VoteView view, boolean isActive) {
+                // TODO change vote state on firebase
+            }
 
-        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+            @Override
+            public void onDownvote(VoteView view, boolean isActive) {
+                // TODO change vote state on firebase
+            }
+        });
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
         questionId = questionFromExtra.getId();
@@ -64,33 +79,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         questionDetailViewModel = new ViewModelProvider(this, factory)
                 .get(QuestionDetailViewModel.class);
 
-        questionDetailViewModel.getAnswers();
+        fetchAndObserve();
 
-        questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
-            if (question == null) {
-                // TODO fetch question failed
-                return;
-            }
-            adapter.updateQuestion(question);
-        });
-        questionDetailViewModel.getQuestionVoteLiveData().observe(this, vote -> {
-            if (vote == null) {
-                // Current vote for question is NONE or fetching failed
-                return;
-            }
-            adapter.updateQuestionVote(vote);
-        });
-        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
-            adapter.updateAnswers(answers);
-            List<String> ids = new ArrayList<>();
-            for (Answer answer : answers) {
-                ids.add(answer.getId());
-            }
-            questionDetailViewModel.getAnswerVotes(ids);
-        });
-
-        binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
-
+        commentAdapter = new CommentAdapter(this);
+        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         // FirebaseFirestore db = FirebaseFirestore.getInstance();
         // db.collection("votes")
         //         .whereEqualTo("authorId", "0FDZ97sbxRf17ac07Sx260inaPR2")
@@ -110,11 +102,50 @@ public class QuestionDetailActivity extends AppCompatActivity {
         //         });
     }
 
+    public void fetchAndObserve() {
+        questionDetailViewModel.getAnswers();
+
+        questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
+            if (question == null) {
+                // TODO fetch question failed
+                return;
+            }
+            adapter.updateQuestion(question);
+        });
+        questionDetailViewModel.getQuestionVoteLiveData().observe(this, vote -> {
+            if (vote == null) {
+                // Current vote for question is NONE or fetching failed, ignore
+                return;
+            }
+            adapter.updateQuestionVote(vote);
+        });
+        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
+            if (answers == null) {
+                // TODO fetch failed
+                return;
+            }
+            adapter.addAnswers(answers);
+            // Extract answer ids to fetch votes
+            List<String> ids = new ArrayList<>();
+            for (Answer answer : answers) {
+                ids.add(answer.getId());
+            }
+            questionDetailViewModel.getAnswerVotes(ids);
+        });
+        questionDetailViewModel.getAnswerVoteLiveData().observe(this, stringVoteMap -> {
+            if (stringVoteMap == null) {
+                // TODO fetch failed
+                return;
+            }
+            adapter.addAnswerVotes(stringVoteMap);
+        });
+    }
+
     public void createComment(@NonNull String postId, @NonNull String content) {
         commentViewModel.createComment(postId, content);
     }
 
-    public void updateComments(RecyclerView recyclerView, @NonNull String postId) {
+    public void updateComments(@NonNull RecyclerView recyclerView, @NonNull String postId) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments(postId);
 

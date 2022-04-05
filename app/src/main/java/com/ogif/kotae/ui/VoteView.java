@@ -23,11 +23,11 @@ public class VoteView extends ConstraintLayout {
     protected int RES_DOWNVOTE;
     @IdRes
     protected int RES_TOGGLE_GROUP;
-
-    protected Record holder;
+    @Vote.State
+    protected int currentState;
     protected int upvoteCount;
     protected int downvoteCount;
-    protected int currentState;
+    protected Record holder;
     protected MaterialButtonToggleGroup toggleGroup;
     protected Button upvote;
     protected Button downvote;
@@ -59,6 +59,18 @@ public class VoteView extends ConstraintLayout {
         init();
     }
 
+    /**
+     * On state change from {@link Vote#UPVOTE} to {@link Vote#DOWNVOTE} or vice versa,
+     * this callback will be invoked twice.
+     * Example, when switch from {@link Vote#DOWNVOTE} to {@link Vote#UPVOTE}, the following code
+     * will be executed:
+     * <ol>
+     *     <li><code>onVoteStateChanged(group, RES_DOWNVOTE, false)</code></li>
+     *     <li><code>onVoteStateChanged(group, RES_UPVOTE, true)</code></li>
+     * </ol>
+     *
+     * @see MaterialButtonToggleGroup.OnButtonCheckedListener
+     */
     protected void onVoteStateChanged(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
         if (checkedId == RES_UPVOTE) {
             if (isChecked) {
@@ -101,6 +113,14 @@ public class VoteView extends ConstraintLayout {
         this.upvote = findViewById(RES_UPVOTE);
         this.downvote = findViewById(RES_DOWNVOTE);
         toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
+    }
+
+    protected void setUpvoteText() {
+        upvote.setText(String.format(Locale.getDefault(), "%d", upvoteCount));
+    }
+
+    protected void setDownvoteText() {
+        downvote.setText(String.format(Locale.getDefault(), "%d", downvoteCount));
     }
 
     // public void setVoteState(int state) {
@@ -152,14 +172,6 @@ public class VoteView extends ConstraintLayout {
 
     public int getVoteState() {
         return currentState;
-    }
-
-    protected void setUpvoteText() {
-        upvote.setText(String.format(Locale.getDefault(), "%d", upvoteCount));
-    }
-
-    protected void setDownvoteText() {
-        downvote.setText(String.format(Locale.getDefault(), "%d", downvoteCount));
     }
 
     public void setOnStateChangeListener(@Nullable OnStateChangeListener listener) {
