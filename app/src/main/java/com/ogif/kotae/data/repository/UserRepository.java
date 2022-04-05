@@ -2,9 +2,12 @@ package com.ogif.kotae.data.repository;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -65,5 +68,44 @@ public class UserRepository {
         }
 
         onQueryListComplete(query, callback);
+    }
+
+    public void getUserOrderByReport(@NonNull TaskListener.State<ArrayList<User>> callback) {
+        ArrayList<User> userArrayList = new ArrayList<User>();
+
+        Query queryUser = usersRef.orderBy("report", Query.Direction.DESCENDING);
+        queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    User user = documentSnapshot.toObject(User.class);
+                    user.setId(documentSnapshot.getId());
+                    userArrayList.add(user);
+                }
+                callback.onSuccess(userArrayList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e);
+            }
+        });
+    }
+
+    public void blockUser(String userID, boolean blocked, TaskListener.State<Void> callback) {
+        DocumentReference ref = usersRef.document(userID);
+        ref.update(
+                "blocked", blocked
+        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                callback.onSuccess(unused);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e);
+            }
+        });
     }
 }

@@ -23,7 +23,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.QuestionRepository;
+import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.ui.admin.AdminUserAdapter;
 
 import java.util.ArrayList;
@@ -31,9 +34,9 @@ import java.util.ArrayList;
 
 public class AdminUserFragment extends Fragment {
     private ArrayList<User> userArrayList;
-    private FirebaseFirestore db;
     private ListView lvUser;
     private AdminUserAdapter userAdapter;
+    private UserRepository userRepository;
 
 
     public AdminUserFragment() {
@@ -53,18 +56,17 @@ public class AdminUserFragment extends Fragment {
 
         userArrayList = new ArrayList<User>();
 
-        db = FirebaseFirestore.getInstance();
-        Query queryUser = db.collection("users").orderBy("report", Query.Direction.DESCENDING);
-        queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        userRepository = new UserRepository();
+        userRepository.getUserOrderByReport(new TaskListener.State<ArrayList<User>>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    User user = documentSnapshot.toObject(User.class);
-                    user.setId(documentSnapshot.getId());
-                    userArrayList.add(user);
-                }
+            public void onFailure(@NonNull Exception e) {
+                Log.e("AAA", e.toString());
+            }
 
-                userAdapter = new AdminUserAdapter(getActivity(), R.layout.item_user_admin, userArrayList);
+            @Override
+            public void onSuccess(ArrayList<User> result) {
+                userArrayList.addAll(result);
+                userAdapter = new AdminUserAdapter(getActivity(), R.layout.item_user_admin, result);
                 lvUser.setAdapter(userAdapter);
                 lvUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
@@ -73,13 +75,7 @@ public class AdminUserFragment extends Fragment {
                     }
                 });
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("AAA", e.toString());
-            }
         });
-
         return view;
     }
 
@@ -95,10 +91,18 @@ public class AdminUserFragment extends Fragment {
                     userArrayList.get(pos).setBlocked(true);
                     userAdapter.notifyDataSetChanged();
 
-                    updateBlockFireStore(pos, true);
+                    userRepository.blockUser(userArrayList.get(pos).getId(), true, new TaskListener.State<Void>() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("AAA", e.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(Void result) {
+                            // TO DO
+                        }
+                    });
                 }
-
-
             });
             alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
@@ -118,7 +122,17 @@ public class AdminUserFragment extends Fragment {
                     userArrayList.get(pos).setBlocked(false);
                     userAdapter.notifyDataSetChanged();
 
-                    updateBlockFireStore(pos, false);
+                    userRepository.blockUser(userArrayList.get(pos).getId(), false, new TaskListener.State<Void>() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("AAA", e.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(Void result) {
+                            // TO DO
+                        }
+                    });
                 }
             });
             alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -129,14 +143,5 @@ public class AdminUserFragment extends Fragment {
             });
             alertBuilder.show();
         }
-    }
-
-    private void updateBlockFireStore(int pos, boolean blocked) {
-        db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("users")
-                .document(userArrayList.get(pos).getId());
-        ref.update(
-                "blocked", blocked
-        );
     }
 }
