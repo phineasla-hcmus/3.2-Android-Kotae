@@ -1,28 +1,19 @@
 package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
@@ -31,6 +22,7 @@ import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.ui.questiondetail.BottomSheetDialogCommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 
@@ -253,51 +245,18 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     public void bindBottomSheetDialog(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post) {
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         PostHolder holder = (PostHolder) viewHolder;
-
-        bottomSheetDialog.setContentView(R.layout.bottom_sheet_dialog_layout_comment);
-        bottomSheetDialog.getWindow()
-                .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-
-        RecyclerView recyclerView = bottomSheetDialog.findViewById(R.id.recycler_view_bottom_sheet);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        ImageButton btnSend = bottomSheetDialog.findViewById(R.id.btn_comment_send);
-        EditText etContent = bottomSheetDialog.findViewById(R.id.et_comment_input);
-
-        btnSend.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(etContent.getText().toString())) {
-                Toast.makeText(context, context.getResources()
-                        .getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
-                return;
-            }
-            ((QuestionDetailActivity) context).createComment(post.getId(), etContent.getText()
-                    .toString());
-            bottomSheetDialog.hide();
-            etContent.setText("");
-        });
-
-        setupFullHeight(bottomSheetDialog);
+        BottomSheetDialogCommentFragment bottomSheetDialogCommentFragment = new BottomSheetDialogCommentFragment(context, post.getId());
         holder.comment.setOnClickListener(v -> {
-            showBottomSheetDialog(bottomSheetDialog, recyclerView, post.getId());
+            showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
         });
     }
 
-    private void showBottomSheetDialog(BottomSheetDialog bottomSheetDialog, RecyclerView recyclerView, @NonNull String postId) {
-        ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
-        bottomSheetDialog.show();
+    private void showBottomSheetDialogFragment(BottomSheetDialogCommentFragment bottomSheet) {
+        if (!bottomSheet.isAdded()) {
+            bottomSheet.show(((QuestionDetailActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
+        }
     }
-
-    private void setupFullHeight(@NonNull BottomSheetDialog bottomSheetDialog) {
-        FrameLayout bottomSheet = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-        ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
-        bottomSheet.setLayoutParams(layoutParams);
-        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-    }
-
 
     public void showReportDialog(Post post) {
 

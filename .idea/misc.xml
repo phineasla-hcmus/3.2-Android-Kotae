@@ -30,11 +30,14 @@
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_test.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/activity_user.xml" value="0.25" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/bottom_sheet_dialog_layout.xml" value="0.2" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/bottom_sheet_dialog_layout_comment.xml" value="0.264" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/content_test_input.xml" value="0.12360688956433637" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/dropdown_item.xml" value="0.21203703703703702" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_admin.xml" value="0.21203703703703702" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_bottom_sheet_dialog_comment.xml" value="0.2" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/fragment_profile.xml" value="0.26721014492753625" />
+        <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_answer.xml" value="0.1" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_comment.xml" value="0.176" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_leaderboard.xml" value="0.264" />
         <entry key="..\:/3.2-Android-Kotae/app/src/main/res/layout/item_question.xml" value="0.5" />

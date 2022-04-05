@@ -54,7 +54,7 @@
     <!--    app:layout_constraintTop_toBottomOf="@+id/tv_answer_content"-->
     <!--    tools:itemCount="3" />-->
 
-    <ImageView
+    <GridView
         android:id="@+id/img_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
