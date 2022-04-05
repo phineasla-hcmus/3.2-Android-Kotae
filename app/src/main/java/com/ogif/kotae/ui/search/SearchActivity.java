@@ -232,6 +232,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         this.viewModel.getQuestionLiveData().observe(this, questions -> {
             this.items.clear();
+//            this.adapter.notifyDataSetChanged();
             this.results.clear();
             if (questions != null) {
 
@@ -256,6 +257,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             persistentSearchView.hideProgressBar(false);
             persistentSearchView.showLeftButton();
             adapter.setItems(items);
+//            adapter.notifyItemRangeInserted(0, items.size());
             ViewUtils.makeGone((View) binding.pbSearch);
             binding.rvSearch.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
         };
