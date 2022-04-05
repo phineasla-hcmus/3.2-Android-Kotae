@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -20,8 +21,11 @@ import com.google.android.material.chip.Chip;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.QuestionRepository;
+import com.ogif.kotae.ui.VerticalVoteView;
 import com.ogif.kotae.ui.main.AdminQuestionFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
@@ -32,7 +36,6 @@ public class AdminQuestionAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private ArrayList<Question> questionArrayList;
-    private FirebaseFirestore db;
 
 
     public AdminQuestionAdapter(Context context, int layout, ArrayList<Question> questionArrayList) {
@@ -65,22 +68,21 @@ public class AdminQuestionAdapter extends BaseAdapter {
         TextView tvQuestionContent = (TextView) view.findViewById(R.id.tv_question_content);
         TextView tvQuestionPosttime = (TextView) view.findViewById(R.id.tv_question_post_time);
         TextView tvQuestionAuthor = (TextView) view.findViewById(R.id.tv_author);
+//        TextView tvUpvote = (TextView) view.findViewById(R.id.tv_vertical_vote_view_upvote);
+//        TextView tvDownvote = (TextView) view.findViewById(R.id.tv_vertical_vote_view_downvote);
 
-//        TextView tvQuestionUpvote = (TextView) view.findViewById(R.id.tv_up);
-//        TextView tvQuestionDownvote= (TextView) view.findViewById(R.id.tv_down);
-        TextView tvQuestionReport= (TextView) view.findViewById(R.id.tv_report);
+        TextView tvQuestionReport = (TextView) view.findViewById(R.id.tv_report);
 
         Chip chipSubject = (Chip) view.findViewById(R.id.chip_subject);
         Chip chipGrade = (Chip) view.findViewById(R.id.chip_grade);
         ImageButton ibBlock = (ImageButton) view.findViewById(R.id.ib_block);
-
         Question question = questionArrayList.get(i);
         tvQuestionTitle.setText(question.getTitle());
         tvQuestionContent.setText(question.getContent());
 //        tvQuestionPosttime.setText(question.getPostTime().toString());
+//        tvUpvote.setText(String.valueOf(question.getUpvote()));
+//        tvDownvote.setText(String.valueOf(question.getDownvote()));
         tvQuestionAuthor.setText(question.getAuthor());
-//        tvQuestionUpvote.setText(String.valueOf(question.getUpvote()));
-//        tvQuestionDownvote.setText(String.valueOf(question.getDownvote()));
         tvQuestionReport.setText(String.valueOf(question.getReport()));
         chipSubject.setText(question.getSubject());
         chipGrade.setText(question.getGrade());
@@ -92,7 +94,7 @@ public class AdminQuestionAdapter extends BaseAdapter {
         ibBlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("AAA", String.valueOf(i) + questionArrayList.get(i).getTitle());
+//                Log.d("AAA", String.valueOf(i) + questionArrayList.get(i).getTitle());
                 confirmAndHandleBlockOrUnblockQuestion(i);
             }
         });
@@ -119,6 +121,7 @@ public class AdminQuestionAdapter extends BaseAdapter {
     public void confirmAndHandleBlockOrUnblockQuestion(int pos) {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
         // Handle Block
+        QuestionRepository questionRepository = new QuestionRepository();
         if (!questionArrayList.get(pos).isBlocked()) {
             alertBuilder.setTitle("Confirm Block Question");
             alertBuilder.setMessage("Are you sure you want to block this question?");
@@ -127,7 +130,17 @@ public class AdminQuestionAdapter extends BaseAdapter {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     questionArrayList.get(pos).setBlocked(true);
                     notifyDataSetChanged();
-                    updateBlockFireStore(pos, true);
+                    questionRepository.blockQuestion(questionArrayList.get(pos).getId(), true, new TaskListener.State<Void>() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("AAA", e.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(Void result) {
+                            //TO DO
+                        }
+                    });
                 }
             });
             alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,6 +151,8 @@ public class AdminQuestionAdapter extends BaseAdapter {
             });
             alertBuilder.show();
         }
+
+
         // Handle Unblock
         else {
             alertBuilder.setTitle("Confirm Unblock Question");
@@ -147,7 +162,17 @@ public class AdminQuestionAdapter extends BaseAdapter {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     questionArrayList.get(pos).setBlocked(false);
                     notifyDataSetChanged();
-                    updateBlockFireStore(pos, false);
+                    questionRepository.blockQuestion(questionArrayList.get(pos).getId(), false, new TaskListener.State<Void>() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("AAA", e.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(Void result) {
+                            //TO DO
+                        }
+                    });
                 }
             });
             alertBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -158,14 +183,5 @@ public class AdminQuestionAdapter extends BaseAdapter {
             });
             alertBuilder.show();
         }
-    }
-
-    private void updateBlockFireStore(int pos, boolean blocked) {
-        db = FirebaseFirestore.getInstance();
-        DocumentReference ref = db.collection("questions")
-                .document(questionArrayList.get(pos).getId());
-        ref.update(
-                "blocked", blocked
-        );
     }
 }
