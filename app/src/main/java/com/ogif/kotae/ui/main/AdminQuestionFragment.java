@@ -23,14 +23,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.admin.AdminQuestionAdapter;
 
 import java.util.ArrayList;
 
 public class AdminQuestionFragment extends Fragment {
-    private FirebaseFirestore db;
-    private ArrayList<Question> questionArrayList;
     private ListView lvQuestion;
     public AdminQuestionAdapter questionAdapter;
 
@@ -50,27 +50,19 @@ public class AdminQuestionFragment extends Fragment {
 
         lvQuestion = (ListView) view.findViewById(R.id.lv_question_admin);
 
-        questionArrayList = new ArrayList<Question>();
-
-        db = FirebaseFirestore.getInstance();
-        Query queryQuestion = db.collection("questions").orderBy("report", Query.Direction.DESCENDING);
-        queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Question question = documentSnapshot.toObject(Question.class);
-                    questionArrayList.add(question);
-                }
-                questionAdapter = new AdminQuestionAdapter(getActivity(), R.layout.item_question, questionArrayList);
-                lvQuestion.setAdapter(questionAdapter);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        QuestionRepository questionRepository = new QuestionRepository();
+        questionRepository.getQuestionsOrderByReport(new TaskListener.State<ArrayList<Question>>() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("AAA", e.toString());
+                Log.e("AAA", e.toString());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<Question> result) {
+                questionAdapter = new AdminQuestionAdapter(getActivity(), R.layout.item_question, result);
+                lvQuestion.setAdapter(questionAdapter);
             }
         });
-
         return view;
     }
 }

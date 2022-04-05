@@ -286,4 +286,42 @@ public class QuestionRepository {
         }
         return new ArrayList<Question>(tempQuestions);
     }
+
+    public void getQuestionsOrderByReport(@NonNull TaskListener.State<ArrayList<Question>> callback) {
+        ArrayList<Question> questionArrayList = new ArrayList<Question>();
+
+        Query queryQuestion = questionsRef.orderBy("report", Query.Direction.DESCENDING);
+        queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Question question = documentSnapshot.toObject(Question.class);
+                    questionArrayList.add(question);
+                }
+                callback.onSuccess(questionArrayList);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e);
+            }
+        });
+    }
+
+    public void blockQuestion(String questionID, boolean blocked, @NonNull TaskListener.State<Void> callback) {
+        DocumentReference ref = questionsRef.document(questionID);
+        ref.update(
+                "blocked", blocked
+        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                callback.onSuccess(unused);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e);
+            }
+        });
+    }
 }
