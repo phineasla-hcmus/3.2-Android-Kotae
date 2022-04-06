@@ -28,6 +28,16 @@ public class UserRepository {
         usersRef = db.collection("users");
     }
 
+    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<User>> callback) {
+        query.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<User> users = new ArrayList<>(queryDocumentSnapshots.size());
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                users.add(document.toObject(User.class));
+            }
+            callback.onSuccess(users);
+        }).addOnFailureListener(callback::onFailure);
+    }
+
     public void getCurrentUser(@NonNull TaskListener.State<User> callback) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null)
@@ -38,16 +48,6 @@ public class UserRepository {
     public void getById(@NonNull String id, @NonNull TaskListener.State<User> callback) {
         usersRef.document(id).get().addOnSuccessListener(documentSnapshot -> {
             callback.onSuccess(documentSnapshot.toObject(User.class));
-        }).addOnFailureListener(callback::onFailure);
-    }
-
-    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<User>> callback) {
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<User> users = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                users.add(document.toObject(User.class));
-            }
-            callback.onSuccess(users);
         }).addOnFailureListener(callback::onFailure);
     }
 
@@ -71,7 +71,7 @@ public class UserRepository {
     }
 
     public void getUserOrderByReport(@NonNull TaskListener.State<ArrayList<User>> callback) {
-        ArrayList<User> userArrayList = new ArrayList<User>();
+        ArrayList<User> userArrayList = new ArrayList<>();
 
         Query queryUser = usersRef.orderBy("report", Query.Direction.DESCENDING);
         queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -94,9 +94,7 @@ public class UserRepository {
 
     public void blockUser(String userID, boolean blocked, TaskListener.State<Void> callback) {
         DocumentReference ref = usersRef.document(userID);
-        ref.update(
-                "blocked", blocked
-        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+        ref.update("blocked", blocked).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 callback.onSuccess(unused);

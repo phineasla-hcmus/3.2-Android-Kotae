@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,12 +28,15 @@ public class AuthRepository extends UserRepository {
         return auth.getCurrentUser();
     }
 
-    public void login(@NonNull String email, @NonNull String password, TaskListener.State<FirebaseUser> callback) {
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener((AuthResult authResult) -> {
-                    if (callback != null)
-                        callback.onSuccess(authResult.getUser());
-                }).addOnFailureListener(callback::onFailure);
+    public void login(@NonNull String email, @NonNull String password, @Nullable TaskListener.State<FirebaseUser> callback) {
+        Task<AuthResult> task = auth.signInWithEmailAndPassword(email, password);
+        if (callback != null)
+            task.addOnSuccessListener((AuthResult authResult) -> callback.onSuccess(authResult.getUser()))
+                    .addOnFailureListener(callback::onFailure);
+    }
+
+    public void logout() {
+        auth.signOut();
     }
 
     /**

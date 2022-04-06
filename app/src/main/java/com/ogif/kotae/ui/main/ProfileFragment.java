@@ -1,5 +1,6 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +21,8 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.FragmentProfileBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
+import com.ogif.kotae.ui.auth.LoginActivity;
+import com.ogif.kotae.ui.auth.SignUpActivity;
 import com.ogif.kotae.utils.LocaleHelper;
 
 import java.util.Objects;
@@ -82,6 +85,14 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileChangePassword.setOnClickListener(view -> {
             // Launch change password activity
+        });
+
+        binding.tvProfileLogout.setOnClickListener(view -> {
+            profileViewModel.logout();
+            Intent intent = new Intent(v.getContext(), LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+            startActivity(intent);
+            requireActivity().finish();
         });
 
         return v;
