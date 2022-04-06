@@ -24,9 +24,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.Device;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AuthRepository;
+import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.VerticalVoteView;
@@ -100,23 +102,27 @@ public class AdminQuestionAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Log.d("AAA", String.valueOf(i) + questionArrayList.get(i).getTitle());
-                confirmAndHandleBlockOrUnblockQuestion(i);
+//                confirmAndHandleBlockOrUnblockQuestion(i);
 
                 // For Testing
-//                Notification notification = new Notification();
-//                notification.getToken(new TaskListener.State<String>() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.e(TAG, "onFailure: " + e.toString() );
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(String result) {
-//                        Log.d("AAA", result);
-////                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-////                        Log.d("AAA", user.getUid());
-//                    }
-//                });
+                Notification notification = new Notification();
+                notification.getToken(new TaskListener.State<String>() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "onFailure: " + e.toString() );
+                    }
+
+                    @Override
+                    public void onSuccess(String result) {
+                        Log.d("AAA", result);
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        Log.d("AAA", user.getUid());
+                        Device device = new Device(user.getUid(), result);
+                        DeviceRepository deviceRepository = new DeviceRepository();
+//                        deviceRepository.addDevice(device);
+                        deviceRepository.removeDevice(device);
+                    }
+                });
             }
         });
 
