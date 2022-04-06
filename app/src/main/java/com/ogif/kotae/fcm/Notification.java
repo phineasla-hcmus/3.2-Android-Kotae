@@ -4,43 +4,62 @@ import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.Question;
 
 import java.util.Date;
 
-public class Notification extends Activity {
+public class Notification {
+    private static final String TAG = Notification.class.getName();
     public static final String CHANNEL_UPVOTE_DOWNVOTE_ID = "UPVOTE_DOWNVOTE";
     public static final String CHANNEL_COMMENT_ID = "COMMENT";
 
     public Notification() {
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create Channel Upvote/Downvote
-            CharSequence channelUpvoteDownvoteName = getString(R.string.channel_upvote_downvote_name);
-            String channelUpvoteDownvoteDescription = getString(R.string.channel_upvote_downvote_description);
-            NotificationChannel channelUpvoteDownvote = new NotificationChannel(CHANNEL_UPVOTE_DOWNVOTE_ID, channelUpvoteDownvoteName, NotificationManager.IMPORTANCE_DEFAULT);
-            channelUpvoteDownvote.setDescription(channelUpvoteDownvoteDescription);
-
-            // Create Channel Comment
-            CharSequence channelCommentName = getString(R.string.channel_comment_name);
-            String channelCommentDescription = getString(R.string.channel_comment_description);
-            NotificationChannel channelComment = new NotificationChannel(CHANNEL_COMMENT_ID, channelCommentName, NotificationManager.IMPORTANCE_HIGH);
-            channelComment.setDescription(channelCommentDescription);
-
-
-            // Register two channels with the system;
-            // You can't change the importance or other notification behaviors after this
-            // If you want to change => Clear data of this app or uninstall and install again.
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channelUpvoteDownvote);
-            notificationManager.createNotificationChannel(channelComment);
-        }
+    public int getNotificationId() {
+        return (int) new Date().getTime();
     }
 
-    private int getNotificationId() {
-        return (int) new Date().getTime();
+
+    public void getToken(@NonNull TaskListener.State<String> callback) {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            callback.onFailure(task.getException());
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        callback.onSuccess(token);
+                    }
+                });
+    }
+
+
+    public void pushUpvote(Question question, String userID) {
+
+    }
+
+    public void pushDownvoteNotification(Question question, String userID) {
+
+    }
+
+    public void pushCommentNotification(Question question, String userID) {
+
     }
 }

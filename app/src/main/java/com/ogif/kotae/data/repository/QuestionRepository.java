@@ -326,4 +326,20 @@ public class QuestionRepository {
             }
         });
     }
+
+    public void getQuestionById(String questionID, @NonNull TaskListener.State<Question> callback) {
+        DocumentReference ref = questionsRef.document(questionID);
+        ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Question question = documentSnapshot.toObject(Question.class);
+                callback.onSuccess(question);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                callback.onFailure(e);
+            }
+        });
+    }
 }
