@@ -36,17 +36,30 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         super.onMessageReceived(remoteMessage);
         context = this;
         createNotificationChannel();
-        Log.d(TAG, "onMessageReceived: HELLOOOOOOOOOOOOOOO");
         Map<String, String> strMap = remoteMessage.getData();
 
-        // 3 Cases: upvote, downvote, comment
         String questionId = strMap.get("question_id");
         String username = strMap.get("username");
+        String clarification = strMap.get("action");
+
         Log.d(TAG, questionId);
         Log.d(TAG, username);
-        // Testing
-        sendNotificationByUpvote(questionId, username);
-        Log.d(TAG, "onMessageReceived: HELLOOOOOOOOOOOOOOO");
+        Log.d(TAG, clarification);
+
+        switch (clarification) {
+            case "UPVOTE": {
+                sendNotificationByUpvote(questionId, username);
+                break;
+            }
+            case "DOWNVOTE": {
+                sendNotificationByDownvote(questionId, username);
+                break;
+            }
+            case "COMMENT": {
+                sendNotificationByComment(questionId, username);
+                break;
+            }
+        }
     }
 
     @Override
@@ -65,7 +78,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             @Override
             public void onSuccess(Question result) {
                 int notificationId = getNotificationId();
-                String content = usernameUpvote + " was upvote your question.";
+                String content = usernameUpvote + " just upvote your question.";
 
                 Intent resultIntent = QuestionDetailActivity.newInstance(context, result);
                 TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -77,9 +90,83 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_UPVOTE_DOWNVOTE_ID)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.ic_upvote)
                         .setLargeIcon(bitmap)
                         .setContentTitle("Question upvote")
+                        .setContentText(content)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.notify(notificationId, builder.build());
+            }
+        });
+    }
+
+    private void sendNotificationByDownvote(String questionID, String usernameDownvote) {
+        QuestionRepository questionRepository = new QuestionRepository();
+        questionRepository.getQuestionById(questionID, new TaskListener.State<Question>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+
+            @Override
+            public void onSuccess(Question result) {
+                int notificationId = getNotificationId();
+                String content = usernameDownvote + " just downvote your question.";
+
+                Intent resultIntent = QuestionDetailActivity.newInstance(context, result);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+                stackBuilder.addNextIntentWithParentStack(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(notificationId,
+                                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_UPVOTE_DOWNVOTE_ID)
+                        .setSmallIcon(R.drawable.ic_downvote)
+                        .setLargeIcon(bitmap)
+                        .setContentTitle("Question downvote")
+                        .setContentText(content)
+                        .setContentIntent(resultPendingIntent)
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+                notificationManager.notify(notificationId, builder.build());
+            }
+        });
+    }
+
+    private void sendNotificationByComment(String questionID, String usernameComment) {
+        QuestionRepository questionRepository = new QuestionRepository();
+        questionRepository.getQuestionById(questionID, new TaskListener.State<Question>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "onFailure: " + e.toString());
+            }
+
+            @Override
+            public void onSuccess(Question result) {
+                int notificationId = getNotificationId();
+                String content = usernameComment + " just commented your question.";
+
+                Intent resultIntent = QuestionDetailActivity.newInstance(context, result);
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+
+                stackBuilder.addNextIntentWithParentStack(resultIntent);
+                PendingIntent resultPendingIntent =
+                        stackBuilder.getPendingIntent(notificationId,
+                                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_UPVOTE_DOWNVOTE_ID)
+                        .setSmallIcon(R.drawable.ic_baseline_comment)
+                        .setLargeIcon(bitmap)
+                        .setContentTitle("Question comment")
                         .setContentText(content)
                         .setContentIntent(resultPendingIntent)
                         .setAutoCancel(true)
