@@ -115,4 +115,8 @@
     <string name="timestamp_minutes">Posted %1$d minutes ago</string>
     <string name="timestamp_hours">Posted %1$d hours ago</string>
     <string name="all_image">Image</string>
+    <string name="channel_upvote_downvote_name">Upvote/Downvote channel</string>
+    <string name="channel_upvote_downvote_description">To show notification about upvote, down vote of your questions</string>
+    <string name="channel_comment_name">Comment channel</string>
+    <string name="channel_comment_description">To show notification about comments of your questions</string>
 </resources>

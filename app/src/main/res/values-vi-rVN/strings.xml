@@ -106,4 +106,8 @@
     <string name="missing_selected_subject">Vui lòng chọn môn học của bạn</string>
     <string name="invalid_question_content_length">Nội dung câu hỏi phải chứa ít nhất 30 ký tự</string>
     <string name="all_image">Hình ảnh</string>
+    <string name="channel_upvote_downvote_name">Kênh upvote, downvote</string>
+    <string name="channel_upvote_downvote_description">Hiển thị thông báo về lượt upvote, downvote cho các câu hỏi của bạn.</string>
+    <string name="channel_comment_name">Kênh bình luận, trã lời câu hỏi</string>
+    <string name="channel_comment_description">Để hiển thị thông báo về những câu trã lời cho câu hỏi của bạn.</string>
 </resources>
