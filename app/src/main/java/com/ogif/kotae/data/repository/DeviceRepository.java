@@ -63,7 +63,7 @@ public class DeviceRepository {
                     devices.add(deviceTemp);
                 }
                 if (devices.size() == 0) {
-                    // ADD device
+                    // Add device
                     Map<String, Object> docData = new HashMap<>();
                     docData.put("userId", device.getUserId());
                     docData.put("token", device.getToken());

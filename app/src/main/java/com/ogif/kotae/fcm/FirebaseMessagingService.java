@@ -12,6 +12,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -22,23 +23,37 @@ import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
     public static final String CHANNEL_UPVOTE_DOWNVOTE_ID = "UPVOTE_DOWNVOTE";
     public static final String CHANNEL_COMMENT_ID = "COMMENT";
     private static final String TAG = FirebaseMessagingService.class.getName();
     private Context context;
+    private Map<String, String> upvoteIds;
+    private Map<String, String> downvoteIds;
+    private Map<String, String> commentIds;
+
+    public FirebaseMessagingService() {
+        super();
+        upvoteIds = new HashMap<>();
+        downvoteIds = new HashMap<>();
+        commentIds = new HashMap<>();
+        context = this;
+        createNotificationChannel();
+    }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-        context = this;
-        createNotificationChannel();
         Map<String, String> strMap = remoteMessage.getData();
 
-        String questionId = strMap.get("question_id");
+        String questionId = strMap.get("questionId");
         String username = strMap.get("username");
         String clarification = strMap.get("action");
 
@@ -67,9 +82,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         super.onNewToken(s);
     }
 
-    private void sendNotificationByUpvote(String questionID, String usernameUpvote) {
+    private void sendNotificationByUpvote(String questionId, String usernameUpvote) {
+        int notificationId;
+        if (upvoteIds.containsKey(questionId)) {
+            notificationId = Integer.parseInt(Objects.requireNonNull(upvoteIds.get(questionId)));
+        } else {
+            notificationId = getNotificationId();
+            upvoteIds.put(questionId, String.valueOf(notificationId));
+        }
+
         QuestionRepository questionRepository = new QuestionRepository();
-        questionRepository.getQuestionById(questionID, new TaskListener.State<Question>() {
+        questionRepository.getQuestionById(questionId, new TaskListener.State<Question>() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString());
@@ -77,7 +100,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
             @Override
             public void onSuccess(Question result) {
-                int notificationId = getNotificationId();
                 String content = usernameUpvote + " just upvote your question.";
 
                 Intent resultIntent = QuestionDetailActivity.newInstance(context, result);
@@ -104,9 +126,16 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         });
     }
 
-    private void sendNotificationByDownvote(String questionID, String usernameDownvote) {
+    private void sendNotificationByDownvote(String questionId, String usernameDownvote) {
+        int notificationId;
+        if (downvoteIds.containsKey(questionId)) {
+            notificationId = Integer.parseInt(Objects.requireNonNull(downvoteIds.get(questionId)));
+        } else {
+            notificationId = getNotificationId();
+            downvoteIds.put(questionId, String.valueOf(notificationId));
+        }
         QuestionRepository questionRepository = new QuestionRepository();
-        questionRepository.getQuestionById(questionID, new TaskListener.State<Question>() {
+        questionRepository.getQuestionById(questionId, new TaskListener.State<Question>() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString());
@@ -114,7 +143,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
             @Override
             public void onSuccess(Question result) {
-                int notificationId = getNotificationId();
                 String content = usernameDownvote + " just downvote your question.";
 
                 Intent resultIntent = QuestionDetailActivity.newInstance(context, result);
@@ -141,9 +169,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         });
     }
 
-    private void sendNotificationByComment(String questionID, String usernameComment) {
+    private void sendNotificationByComment(String questionId, String usernameComment) {
+        int notificationId;
+        if (commentIds.containsKey(questionId)) {
+            notificationId = Integer.parseInt(Objects.requireNonNull(commentIds.get(questionId)));
+        } else {
+            notificationId = getNotificationId();
+            commentIds.put(questionId, String.valueOf(notificationId));
+        }
+
         QuestionRepository questionRepository = new QuestionRepository();
-        questionRepository.getQuestionById(questionID, new TaskListener.State<Question>() {
+        questionRepository.getQuestionById(questionId, new TaskListener.State<Question>() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString());
@@ -151,7 +187,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
             @Override
             public void onSuccess(Question result) {
-                int notificationId = getNotificationId();
                 String content = usernameComment + " just commented your question.";
 
                 Intent resultIntent = QuestionDetailActivity.newInstance(context, result);

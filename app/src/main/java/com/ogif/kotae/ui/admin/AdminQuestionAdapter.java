@@ -105,24 +105,27 @@ public class AdminQuestionAdapter extends BaseAdapter {
 //                confirmAndHandleBlockOrUnblockQuestion(i);
 
                 // For Testing
-                Notification notification = new Notification();
-                notification.getToken(new TaskListener.State<String>() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "onFailure: " + e.toString() );
-                    }
-
-                    @Override
-                    public void onSuccess(String result) {
-                        Log.d("AAA", result);
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        Log.d("AAA", user.getUid());
-                        Device device = new Device(user.getUid(), result);
-                        DeviceRepository deviceRepository = new DeviceRepository();
-//                        deviceRepository.addDevice(device);
-                        deviceRepository.removeDevice(device);
-                    }
-                });
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Log.d("AAA", user.getUid());
+//                Notification notification = new Notification();
+//                notification.pushUpvote(context, questionArrayList.get(i));
+//                notification.getToken(new TaskListener.State<String>() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.e(TAG, "onFailure: " + e.toString() );
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(String result) {
+//                        Log.d("AAA", result);
+//                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                        Log.d("AAA", user.getUid());
+//                        Device device = new Device(user.getUid(), result);
+//                        DeviceRepository deviceRepository = new DeviceRepository();
+////                        deviceRepository.addDevice(device);
+////                        deviceRepository.removeDevice(device);
+//                    }
+//                });
             }
         });
 
