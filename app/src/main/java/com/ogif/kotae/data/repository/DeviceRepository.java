@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,6 +16,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Device;
+import com.ogif.kotae.fcm.Notification;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,40 +53,67 @@ public class DeviceRepository {
     }
 
 
-    public void addDevice(Device device) {
-        // Add new if token isn't exist
-        Query query = devicesRef.whereEqualTo("userId", device.getUserId())
-                .whereEqualTo("token", device.getToken());
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<Device> devices = new ArrayList<Device>();
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Device deviceTemp = documentSnapshot.toObject(Device.class);
-                    devices.add(deviceTemp);
-                }
-                if (devices.size() == 0) {
-                    // Add device
-                    Map<String, Object> docData = new HashMap<>();
-                    docData.put("userId", device.getUserId());
-                    docData.put("token", device.getToken());
-                    devicesRef.add(docData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "Device added: " + documentReference.getId());
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "onFailure: " + e.toString());
-                        }
-                    });
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+    private void getDevice(@NonNull TaskListener.State<Device> callback) {
+        Notification notification = new Notification();
+        notification.getToken(new TaskListener.State<String>() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("AAA", "onFailure: " + e.toString());
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onSuccess(String token) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                Device device = new Device(user.getUid(), token);
+                callback.onSuccess(device);
+            }
+        });
+    }
+
+    public void addDevice() {
+        getDevice(new TaskListener.State<Device>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(Device device) {
+                // Add new if token isn't exist
+                Query query = devicesRef.whereEqualTo("userId", device.getUserId())
+                        .whereEqualTo("token", device.getToken());
+                query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<Device> devices = new ArrayList<Device>();
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            Device deviceTemp = documentSnapshot.toObject(Device.class);
+                            devices.add(deviceTemp);
+                        }
+                        if (devices.size() == 0) {
+                            // Add device
+                            Map<String, Object> docData = new HashMap<>();
+                            docData.put("userId", device.getUserId());
+                            docData.put("token", device.getToken());
+                            devicesRef.add(docData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "Device added: " + documentReference.getId());
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "onFailure: " + e.toString());
+                                }
+                            });
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("AAA", "onFailure: " + e.toString());
+                    }
+                });
             }
         });
     }
@@ -109,7 +139,7 @@ public class DeviceRepository {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Delete Failed: " + e.toString() );
+                            Log.e(TAG, "Delete Failed: " + e.toString());
                         }
                     });
                 }

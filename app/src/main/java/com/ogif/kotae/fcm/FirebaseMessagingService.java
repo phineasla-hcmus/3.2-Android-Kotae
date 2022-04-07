@@ -45,12 +45,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         downvoteIds = new HashMap<>();
         commentIds = new HashMap<>();
         context = this;
-        createNotificationChannel();
     }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        createNotificationChannel();
+
         Map<String, String> strMap = remoteMessage.getData();
 
         String questionId = strMap.get("questionId");
@@ -220,14 +221,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create Channel Upvote/Downvote
-            CharSequence channelUpvoteDownvoteName = getString(R.string.channel_upvote_downvote_name);
-            String channelUpvoteDownvoteDescription = getString(R.string.channel_upvote_downvote_description);
+            CharSequence channelUpvoteDownvoteName = context.getResources().getString(R.string.channel_upvote_downvote_name);
+            String channelUpvoteDownvoteDescription = context.getResources().getString(R.string.channel_upvote_downvote_description);
             NotificationChannel channelUpvoteDownvote = new NotificationChannel(CHANNEL_UPVOTE_DOWNVOTE_ID, channelUpvoteDownvoteName, NotificationManager.IMPORTANCE_DEFAULT);
             channelUpvoteDownvote.setDescription(channelUpvoteDownvoteDescription);
 
             // Create Channel Comment
-            CharSequence channelCommentName = getString(R.string.channel_comment_name);
-            String channelCommentDescription = getString(R.string.channel_comment_description);
+            CharSequence channelCommentName = context.getResources().getString(R.string.channel_comment_name);
+            String channelCommentDescription = context.getResources().getString(R.string.channel_comment_description);
             NotificationChannel channelComment = new NotificationChannel(CHANNEL_COMMENT_ID, channelCommentName, NotificationManager.IMPORTANCE_HIGH);
             channelComment.setDescription(channelCommentDescription);
 

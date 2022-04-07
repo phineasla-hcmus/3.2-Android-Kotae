@@ -105,10 +105,10 @@ public class AdminQuestionAdapter extends BaseAdapter {
 //                confirmAndHandleBlockOrUnblockQuestion(i);
 
                 // For Testing
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Log.d("AAA", user.getUid());
-//                Notification notification = new Notification();
-//                notification.pushUpvote(context, questionArrayList.get(i));
+//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                Log.d("AAA", user.getUid());
+                Notification notification = new Notification();
+                notification.pushUpvote(context, questionArrayList.get(i));
 //                notification.getToken(new TaskListener.State<String>() {
 //                    @Override
 //                    public void onFailure(@NonNull Exception e) {
