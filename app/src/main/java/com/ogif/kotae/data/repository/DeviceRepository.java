@@ -118,36 +118,46 @@ public class DeviceRepository {
         });
     }
 
-    public void removeDevice(Device device) {
-        Query query = devicesRef.whereEqualTo("userId", device.getUserId())
-                .whereEqualTo("token", device.getToken());
-        query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<Device> devices = new ArrayList<Device>();
-                String deviceId = "";
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    deviceId = documentSnapshot.getId();
-                }
-                if (!deviceId.equals("")) {
-                    // Delete device
-                    devicesRef.document(deviceId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Log.d(TAG, "Device deleted");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Delete Failed: " + e.toString());
-                        }
-                    });
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+    public void removeDevice() {
+        getDevice(new TaskListener.State<Device>() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("AAA", "onFailure: " + e.toString());
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onSuccess(Device device) {
+                Query query = devicesRef.whereEqualTo("userId", device.getUserId())
+                        .whereEqualTo("token", device.getToken());
+                query.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        ArrayList<Device> devices = new ArrayList<Device>();
+                        String deviceId = "";
+                        for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                            deviceId = documentSnapshot.getId();
+                        }
+                        if (!deviceId.equals("")) {
+                            // Delete device
+                            devicesRef.document(deviceId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.d(TAG, "Device deleted");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.e(TAG, "Delete Failed: " + e.toString());
+                                }
+                            });
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("AAA", "onFailure: " + e.toString());
+                    }
+                });
             }
         });
     }
