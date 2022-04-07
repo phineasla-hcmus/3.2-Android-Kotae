@@ -138,7 +138,7 @@ public class Notification {
         });
     }
 
-    public void pushUpvote(Context context, Question question) {
+    public void pushUpvoteNotification(Context context, Question question) {
         String action = "UPVOTE";
         pushNotification(context, question, action);
     }
