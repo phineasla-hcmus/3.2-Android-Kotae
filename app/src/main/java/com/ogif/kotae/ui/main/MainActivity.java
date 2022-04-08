@@ -1,10 +1,13 @@
 package com.ogif.kotae.ui.main;
 
+import android.bluetooth.BluetoothClass;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -15,9 +18,15 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.DeviceRepository;
+import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.AuthViewModel;
@@ -56,44 +65,65 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        // Get toolbar
-        toolbar = (Toolbar) binding.includedToolBar.toolbar;
-        this.setSupportActionBar(toolbar);
 
-        binding.includedToolBar.btnSearch.setOnClickListener(v -> startSearchActivity());
+        UserRepository userRepository = new UserRepository();
+        userRepository.getCurrentUser(new TaskListener.State<User>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-        binding.includedToolBar.btnFilter.setOnClickListener(v -> startFilterActivity());
-
-        binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
-
-        // Initialize home screen
-        loadFragment(new HomeFragment());
-
-        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
-        bottomNav.setOnItemSelectedListener(item -> {
-            Fragment fragment;
-            switch (item.getItemId()) {
-                case R.id.page_home:
-                    fragment = new HomeFragment();
-                    loadFragment(fragment);
-                    break;
-                case R.id.page_bookmark:
-                    fragment = new BookmarkFragment();
-                    loadFragment(fragment);
-                    break;
-                case R.id.page_noti:
-                    fragment = new NotiFragment();
-                    loadFragment(fragment);
-                    break;
-                case R.id.page_profile:
-                    fragment = new ProfileFragment();
-                    loadFragment(fragment);
-                    break;
             }
-            return true;
+
+            @Override
+            public void onSuccess(User user) {
+                if (user.getRole().equals("admin")) {
+                    startAdminActivity();
+                } else {
+                    // Get toolbar
+                    toolbar = (Toolbar) binding.includedToolBar.toolbar;
+                    MainActivity.this.setSupportActionBar(toolbar);
+                    binding.includedToolBar.btnSearch.setOnClickListener(v -> startSearchActivity());
+
+                    binding.includedToolBar.btnFilter.setOnClickListener(v -> startFilterActivity());
+
+                    binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
+
+                    // Initialize home screen
+                    loadFragment(new HomeFragment());
+
+                    // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                    BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
+                    bottomNav.setOnItemSelectedListener(item -> {
+                        Fragment fragment;
+                        switch (item.getItemId()) {
+                            case R.id.page_home:
+                                fragment = new HomeFragment();
+                                loadFragment(fragment);
+                                break;
+                            case R.id.page_bookmark:
+                                fragment = new BookmarkFragment();
+                                loadFragment(fragment);
+                                break;
+                            case R.id.page_noti:
+                                fragment = new NotiFragment();
+                                loadFragment(fragment);
+                                break;
+                            case R.id.page_profile:
+                                fragment = new ProfileFragment();
+                                loadFragment(fragment);
+                                break;
+                        }
+                        return true;
+                    });
+                }
+            }
         });
+    }
+
+
+    private void startAdminActivity() {
+        Intent intent = new Intent(this, AdminActivity.class);
+        startActivity(intent);
     }
 
     private void startLeaderboardActivity() {
