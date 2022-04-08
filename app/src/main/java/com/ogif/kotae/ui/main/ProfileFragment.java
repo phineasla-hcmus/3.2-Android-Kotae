@@ -22,15 +22,10 @@ import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.databinding.FragmentProfileBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
-import com.ogif.kotae.ui.auth.SignUpActivity;
 import com.ogif.kotae.utils.LocaleHelper;
 
 import java.util.Objects;
 
-/**
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
     @Deprecated
     private static final String[] languages = {"English", "Tiếng Việt"};
@@ -114,7 +109,9 @@ public class ProfileFragment extends Fragment {
                 .show();
     }
 
-    @Deprecated(since = "Change language is no longer supported")
+    @SuppressWarnings("unused")
+    // Change language is no longer supported
+    @Deprecated
     private void showLanguageDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(getResources().getString(R.string.all_language))

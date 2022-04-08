@@ -9,13 +9,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AuthRepository;
+import com.ogif.kotae.data.repository.DeviceRepository;
 
 public class AuthViewModel extends ViewModel {
     private final AuthRepository authRepository;
+    private final DeviceRepository deviceRepository;
     private final MutableLiveData<FirebaseUser> userMutableLiveData;
 
     public AuthViewModel() {
         this.authRepository = new AuthRepository();
+        this.deviceRepository = new DeviceRepository();
         this.userMutableLiveData = new MutableLiveData<>();
     }
 
@@ -24,6 +27,7 @@ public class AuthViewModel extends ViewModel {
             @Override
             public void onSuccess(FirebaseUser result) {
                 userMutableLiveData.postValue(result);
+                deviceRepository.addDevice();
             }
 
             @Override

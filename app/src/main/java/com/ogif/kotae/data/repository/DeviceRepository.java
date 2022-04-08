@@ -95,17 +95,19 @@ public class DeviceRepository {
                             Map<String, Object> docData = new HashMap<>();
                             docData.put("userId", device.getUserId());
                             docData.put("token", device.getToken());
-                            devicesRef.add(docData).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "Device added: " + documentReference.getId());
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "onFailure: " + e.toString());
-                                }
-                            });
+                            devicesRef.add(docData)
+                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Log.d(TAG, "Device added: " + documentReference.getId());
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e(TAG, "onFailure: " + e.toString());
+                                        }
+                                    });
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -139,17 +141,20 @@ public class DeviceRepository {
                         }
                         if (!deviceId.equals("")) {
                             // Delete device
-                            devicesRef.document(deviceId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d(TAG, "Device deleted");
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.e(TAG, "Delete Failed: " + e.toString());
-                                }
-                            });
+                            devicesRef.document(deviceId)
+                                    .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d(TAG, "Device deleted");
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e(TAG, "Delete Failed: " + e.toString());
+                                        }
+                                    });
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {

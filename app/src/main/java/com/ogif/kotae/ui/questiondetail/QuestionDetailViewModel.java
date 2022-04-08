@@ -120,6 +120,8 @@ public class QuestionDetailViewModel extends ViewModel {
         });
     }
 
+    // public void
+
     public LiveData<Question> getQuestionLiveData() {
         return questionLiveData;
     }

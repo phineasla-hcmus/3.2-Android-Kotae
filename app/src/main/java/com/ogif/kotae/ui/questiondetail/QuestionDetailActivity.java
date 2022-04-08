@@ -37,7 +37,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     private QuestionDetailAdapter adapter;
     private CommentAdapter commentAdapter;
     private QuestionDetailViewModel questionDetailViewModel;
-    private static CommentViewModel commentViewModel;
+    private CommentViewModel commentViewModel;
     private RecyclerView recyclerView;
     private String questionId;
 

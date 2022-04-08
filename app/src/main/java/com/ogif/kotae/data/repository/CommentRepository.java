@@ -34,7 +34,6 @@ public class CommentRepository {
     }
 
     public void createComment(@NonNull String postId, @NonNull String authorId, @NonNull String authorName, @NonNull String content) {
-
         Comment comment = new Comment.Builder()
                 .author(authorId, authorName)
                 .content(content)

@@ -8,14 +8,17 @@ import androidx.lifecycle.ViewModel;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AuthRepository;
+import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
 public class ProfileViewModel extends ViewModel {
     private final AuthRepository authRepository;
+    private final DeviceRepository deviceRepository;
     private final MutableLiveData<User> userLiveData;
 
     public ProfileViewModel() {
         authRepository = new AuthRepository();
+        deviceRepository = new DeviceRepository();
         userLiveData = new MutableLiveData<>();
     }
 
@@ -34,6 +37,7 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void logout() {
+        deviceRepository.removeDevice();
         authRepository.logout();
     }
 

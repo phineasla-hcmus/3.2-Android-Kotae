@@ -54,8 +54,8 @@ public class AuthRepository extends UserRepository {
      * </li>
      * </ol>
      */
-    public void createUser(@NonNull String email, @NonNull String password, @NonNull User extraInfo, TaskListener.State<FirebaseUser> callback) {
-        auth.createUserWithEmailAndPassword(email, password)
+    public void createUser(@NonNull String email, @NonNull String password, @NonNull User extraInfo, @Nullable TaskListener.State<FirebaseUser> callback) {
+        Task<AuthResult> authTask = auth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener((AuthResult authResult) -> {
                     FirebaseUser user = authResult.getUser();
                     if (user == null) {
@@ -63,12 +63,17 @@ public class AuthRepository extends UserRepository {
                         return;
                     }
                     // Insert extraInfo into Firestore
-                    usersRef.document(user.getUid()).set(extraInfo).addOnSuccessListener(aVoid -> {
-                        if (callback != null)
-                            callback.onSuccess(user);
-                    }).addOnFailureListener(callback::onFailure);
-                })
-                .addOnFailureListener(callback::onFailure);
+                    Task<Void> userTask = usersRef.document(user.getUid())
+                            .set(extraInfo)
+                            .addOnSuccessListener(aVoid -> {
+                                if (callback != null)
+                                    callback.onSuccess(user);
+                            });
+                    if (callback != null)
+                        userTask.addOnFailureListener(callback::onFailure);
+                });
+        if (callback != null)
+            authTask.addOnFailureListener(callback::onFailure);
     }
 
     public void reload(@NonNull FirebaseUser user) {
