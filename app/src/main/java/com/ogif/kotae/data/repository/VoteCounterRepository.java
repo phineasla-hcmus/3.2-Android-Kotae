@@ -40,8 +40,8 @@ public class VoteCounterRepository {
         return batch.commit();
     }
 
-    public Task<Void> increment(@NonNull Comment comment, boolean isUpvote) {
-        return increment(comment, Global.COLLECTION_COMMENT, isUpvote, false);
+    public Task<Void> increment(@NonNull Comment c, boolean isUpvote) {
+        return increment(c, Global.COLLECTION_COMMENT, isUpvote, false);
     }
 
     public Task<Void> increment(@NonNull Question q, boolean isUpvote) {
@@ -66,8 +66,8 @@ public class VoteCounterRepository {
         return batch.commit();
     }
 
-    public Task<Void> decrement(@NonNull Comment comment, boolean isUpvote) {
-        return decrement(comment, Global.COLLECTION_COMMENT, isUpvote, false);
+    public Task<Void> decrement(@NonNull Comment c, boolean isUpvote) {
+        return decrement(c, Global.COLLECTION_COMMENT, isUpvote, false);
     }
 
     public Task<Void> decrement(@NonNull Question q, boolean isUpvote) {

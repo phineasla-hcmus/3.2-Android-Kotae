@@ -2,7 +2,6 @@ package com.ogif.kotae.data.repository;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
@@ -32,6 +31,24 @@ public class VoteRepository {
         this.db = FirebaseFirestore.getInstance();
         this.votesRef = db.collection("votes");
         this.userId = userId;
+    }
+
+    public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId) {
+        TaskCompletionSource<DocumentSnapshot> taskCompletionSource = new TaskCompletionSource<>();
+        votesRef.whereEqualTo(Vote.Field.authorId, authorId)
+                .whereEqualTo(Vote.Field.recordId, recordId)
+                .get()
+                .addOnSuccessListener(snapshots -> {
+                    if (snapshots.isEmpty())
+                        taskCompletionSource.setResult(null);
+                    else
+                        taskCompletionSource.setResult(snapshots.getDocuments().get(0));
+                }).addOnFailureListener(taskCompletionSource::setException);
+        return taskCompletionSource.getTask();
+    }
+
+    public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String recordId) {
+        return getDocumentSnapshot(userId, recordId);
     }
 
     public void getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable DocumentSnapshot> callback) {
@@ -106,14 +123,61 @@ public class VoteRepository {
         getList(userId, recordIds, callback);
     }
 
-    public void set(@NonNull String authorId, @NonNull String recordId, @Vote.State int state, TaskListener.State<Void> callback) {
+    /**
+     * The task will success even recordId doesn't exist.
+     * For create, update or delete vote,
+     * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or delete
+     * existing vote
+     */
+    public Task<Void> set(@NonNull String authorId, @NonNull String recordId, @Vote.State int state) {
+        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+        if (state != Vote.NONE)
+            votesRef.add(new Vote().setAuthorId(authorId)
+                    .setRecordId(recordId)
+                    .setVote(state == Vote.UPVOTE))
+                    .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(null))
+                    .addOnFailureListener(taskCompletionSource::setException);
+        else {
+            getDocumentSnapshot(authorId, recordId).addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot == null) {
+                    taskCompletionSource.setResult(null);
+                    return;
+                }
+                votesRef.document(documentSnapshot.getId())
+                        .delete()
+                        .addOnSuccessListener(taskCompletionSource::setResult)
+                        .addOnFailureListener(taskCompletionSource::setException);
+            }).addOnFailureListener(taskCompletionSource::setException);
+        }
+        return taskCompletionSource.getTask();
+    }
+
+    /**
+     * For update or delete existing vote
+     */
+    public Task<Void> set(@NonNull Vote existingVote, @Vote.State int newState) {
+        DocumentReference ref = votesRef.document(existingVote.getId());
+        return newState != Vote.NONE
+                ? ref.update(Vote.Field.upvote, newState == Vote.UPVOTE)
+                : ref.delete();
+    }
+
+    /**
+     * For create, update or delete vote,
+     * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or delete
+     * existing vote
+     */
+    public void set(@NonNull String authorId, @NonNull String recordId, @Vote.State int state, @Nullable TaskListener.State<Void> callback) {
         if (state != Vote.NONE)
             votesRef.add(new Vote().setAuthorId(authorId)
                     .setRecordId(recordId)
                     .setVote(state == Vote.UPVOTE))
                     .addOnSuccessListener(documentReference -> {
                         if (callback != null) callback.onSuccess(null);
-                    }).addOnFailureListener(callback::onFailure);
+                    })
+                    .addOnFailureListener(e -> {
+                        if (callback != null) callback.onFailure(e);
+                    });
         else
             getDocumentSnapshot(recordId, new TaskListener.State<DocumentSnapshot>() {
                 @Override
@@ -125,26 +189,44 @@ public class VoteRepository {
 
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    if (callback != null)
-                        callback.onFailure(e);
+                    if (callback != null) callback.onFailure(e);
                 }
             });
     }
 
-    public void set(@NonNull String recordId, @Vote.State int state, TaskListener.State<Void> callback) {
+    /**
+     * For create, update or delete vote, authorId is used from {@link
+     * VoteRepository#setUserId(String)}
+     * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or
+     * delete
+     * existing vote
+     */
+    public Task<Void> set(@NonNull String recordId, @Vote.State int state) {
+        return set(userId, recordId, state);
+    }
+
+    /**
+     * For create, update or delete vote, authorId is used from {@link
+     * VoteRepository#setUserId(String)}
+     * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or
+     * delete
+     * existing vote
+     */
+    public void set(@NonNull String recordId, @Vote.State int state, @Nullable TaskListener.State<Void> callback) {
         set(userId, recordId, state, callback);
     }
 
     /**
      * For update or delete existing vote
      */
-    public void set(@NonNull Vote existingVote, @Vote.State int newState, TaskListener.State<Void> callback) {
+    public void set(@NonNull Vote existingVote, @Vote.State int newState, @Nullable TaskListener.State<Void> callback) {
         DocumentReference ref = votesRef.document(existingVote.getId());
         Task<Void> result = newState != Vote.NONE
                 ? ref.update(Vote.Field.upvote, newState == Vote.UPVOTE)
                 : ref.delete();
-        result.addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
+        if (callback != null)
+            result.addOnSuccessListener(callback::onSuccess)
+                    .addOnFailureListener(callback::onFailure);
     }
 
     public String getUserId() {
