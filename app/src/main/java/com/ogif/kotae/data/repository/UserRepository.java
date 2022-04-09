@@ -55,13 +55,13 @@ public class UserRepository {
         Task<QuerySnapshot> query = null;
         if (category.equals("day")) {
             query = usersRef
-                    .whereEqualTo("blocked", false)
+                    .whereEqualTo("blocked", true)
                     .orderBy("xpDaily", Query.Direction.DESCENDING)
                     .limit(limit)
                     .get();
         } else {
             query = usersRef
-                    .whereEqualTo("blocked", false)
+                    .whereEqualTo("blocked", true)
                     .orderBy("xp", Query.Direction.DESCENDING)
                     .limit(limit)
                     .get();

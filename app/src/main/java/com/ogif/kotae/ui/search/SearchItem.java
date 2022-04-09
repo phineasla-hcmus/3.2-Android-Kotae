@@ -24,6 +24,7 @@ import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.VerticalVoteView;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
+import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.utils.DateUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
@@ -57,8 +58,7 @@ public final class SearchItem extends BaseItem {
         //holder.content.setText(model.getContent());
         holder.report.setVisibility(View.INVISIBLE);
         holder.reportCounter.setVisibility(View.INVISIBLE);
-        MarkdownUtils.setMarkdown(context, model.getContent(), holder.content);
-        // holder.postTime.setText((int) questionList.get(position).getPostTime());
+        holder.setMarkdown(model.getContent());
         holder.postTime.setText(DateUtils.formatDate(model.getPostTime(), context));
         // TODO support avatar
         holder.avatar.setImageResource(R.drawable.ic_baseline_account_circle);
@@ -126,6 +126,9 @@ public final class SearchItem extends BaseItem {
 
         }
 
+        public void setMarkdown(String content) {
+            SearchAdapter.setMarkdown(content, this.content);
+        }
 
     }
 

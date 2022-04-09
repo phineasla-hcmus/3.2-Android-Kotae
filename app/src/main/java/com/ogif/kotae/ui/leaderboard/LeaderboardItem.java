@@ -1,10 +1,10 @@
 package com.ogif.kotae.ui.leaderboard;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 public final class LeaderboardItem extends BaseItem {
 
     private String category;
+    private int rank;
 
     @NonNull
     public LeaderboardItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
@@ -41,13 +42,28 @@ public final class LeaderboardItem extends BaseItem {
     public void bind(@Nullable Adapter adapter, @NonNull BaseItem.ViewHolder viewHolder, @Nullable ItemResources resources) {
         super.bind(adapter, viewHolder, resources);
         User user = (User) this.getItemModel();
-        this.bindProfileImage((LeaderboardItem.ViewHolder) viewHolder, user);
+        this.bindRank((LeaderboardItem.ViewHolder) viewHolder);
         this.bindUsername((LeaderboardItem.ViewHolder) viewHolder, user);
         this.bindPoint((LeaderboardItem.ViewHolder) viewHolder, user);
     }
 
-    private void bindProfileImage(LeaderboardItem.ViewHolder viewHolder, User User) {
-        viewHolder.getIvAvatar().setImageResource(R.drawable.ic_placeholder_user);
+    private void bindRank(LeaderboardItem.ViewHolder viewHolder) {
+        TextView tvRank = viewHolder.getTvRank();
+        tvRank.setText(String.valueOf(rank));
+        switch (rank) {
+            case 1:
+                tvRank.setBackgroundColor(Color.parseColor("#FF6347"));
+                break;
+            case 2:
+                tvRank.setBackgroundColor(Color.parseColor("#FBEC5D"));
+                break;
+            case 3:
+                tvRank.setBackgroundColor(Color.parseColor("#0B0B45"));
+                break;
+            default:
+                tvRank.setBackgroundColor(Color.parseColor("#34B233"));
+                break;
+        }
     }
 
     private void bindUsername(LeaderboardItem.ViewHolder viewHolder, User User) {
@@ -70,14 +86,14 @@ public final class LeaderboardItem extends BaseItem {
         return R.layout.item_leaderboard;
     }
 
-    public LeaderboardItem(@NonNull User itemModel, @NonNull String category) {
+    public LeaderboardItem(@NonNull User itemModel, @NonNull String category, @NonNull int rank) {
         super(itemModel);
         this.category = category;
+        this.rank = rank;
     }
 
     public static final class ViewHolder extends com.arthurivanets.adapster.model.BaseItem.ViewHolder {
-        private final TextView tvUsername, tvPoint;
-        private final ImageView ivAvatar;
+        private final TextView tvUsername, tvPoint, tvRank;
         private final RelativeLayout rlContentContainer;
 
         public final TextView getTvUsername() {
@@ -88,8 +104,8 @@ public final class LeaderboardItem extends BaseItem {
             return this.tvPoint;
         }
 
-        public final ImageView getIvAvatar() {
-            return this.ivAvatar;
+        public final TextView getTvRank() {
+            return this.tvRank;
         }
 
         public final RelativeLayout getRlContentContainer() {
@@ -100,7 +116,7 @@ public final class LeaderboardItem extends BaseItem {
             super(itemView);
             this.tvUsername = (TextView) itemView.findViewById(R.id.tv_leaderboard_username);
             this.tvPoint = (TextView) itemView.findViewById(R.id.tv_leaderboard_point);
-            this.ivAvatar = (ImageView) itemView.findViewById(R.id.civ_leaderboard_avatar);
+            this.tvRank = (TextView) itemView.findViewById(R.id.tv_leaderboard_rank);
             this.rlContentContainer = (RelativeLayout) itemView.findViewById(R.id.rl_content_container);
         }
     }
