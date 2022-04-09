@@ -66,57 +66,42 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        UserRepository userRepository = new UserRepository();
-        userRepository.getCurrentUser(new TaskListener.State<User>() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
+        // Get toolbar
+        toolbar = (Toolbar) binding.includedToolBar.toolbar;
+        MainActivity.this.setSupportActionBar(toolbar);
+        binding.includedToolBar.btnSearch.setOnClickListener(v -> startSearchActivity());
 
+        binding.includedToolBar.btnFilter.setOnClickListener(v -> startFilterActivity());
+
+        binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
+
+        // Initialize home screen
+        loadFragment(new HomeFragment());
+
+        // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.page_home:
+                    fragment = new HomeFragment();
+                    loadFragment(fragment);
+                    break;
+                case R.id.page_bookmark:
+                    fragment = new BookmarkFragment();
+                    loadFragment(fragment);
+                    break;
+                case R.id.page_noti:
+                    fragment = new NotiFragment();
+                    loadFragment(fragment);
+                    break;
+                case R.id.page_profile:
+                    fragment = new ProfileFragment();
+                    loadFragment(fragment);
+                    break;
             }
-
-            @Override
-            public void onSuccess(User user) {
-                if (user.getRole().equals("admin")) {
-                    startAdminActivity();
-                } else {
-                    // Get toolbar
-                    toolbar = (Toolbar) binding.includedToolBar.toolbar;
-                    MainActivity.this.setSupportActionBar(toolbar);
-                    binding.includedToolBar.btnSearch.setOnClickListener(v -> startSearchActivity());
-
-                    binding.includedToolBar.btnFilter.setOnClickListener(v -> startFilterActivity());
-
-                    binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
-
-                    // Initialize home screen
-                    loadFragment(new HomeFragment());
-
-                    // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-                    BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
-                    bottomNav.setOnItemSelectedListener(item -> {
-                        Fragment fragment;
-                        switch (item.getItemId()) {
-                            case R.id.page_home:
-                                fragment = new HomeFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.page_bookmark:
-                                fragment = new BookmarkFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.page_noti:
-                                fragment = new NotiFragment();
-                                loadFragment(fragment);
-                                break;
-                            case R.id.page_profile:
-                                fragment = new ProfileFragment();
-                                loadFragment(fragment);
-                                break;
-                        }
-                        return true;
-                    });
-                }
-            }
+            return true;
         });
     }
 
