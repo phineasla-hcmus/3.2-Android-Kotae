@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,17 +19,35 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.ogif.kotae.R;
-import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
+import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
+import com.ogif.kotae.utils.model.UserUtils;
 
 
 public class CommentFragment extends BottomSheetDialogFragment {
     private Context context;
     private String postId;
     private RecyclerView recyclerView;
+    private CommentAdapter commentAdapter;
+    private CommentViewModel commentViewModel;
 
     public CommentFragment(Context context, String postId) {
         this.context = context;
         this.postId = postId;
+        this.commentAdapter = new CommentAdapter(context);
+
+    }
+
+    public void createComment(@NonNull String postId, @NonNull String content) {
+        commentViewModel.createComment(postId, content);
+    }
+
+    public void updateComments(@NonNull RecyclerView recyclerView, @NonNull String postId) {
+        recyclerView.setAdapter(commentAdapter);
+        commentViewModel.getComments(postId);
+
+        commentViewModel
+                .getCommentLiveData()
+                .observe(this, comments -> commentAdapter.updateComments(comments));
     }
 
     public RecyclerView getRecyclerView() {
@@ -38,6 +57,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        String userId = UserUtils.getCachedUserId(context);
+        String username = UserUtils.getCachedUsername(context);
+        CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username);
+        this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         dialog.setContentView(R.layout.fragment_bottom_sheet_dialog_comment);
@@ -52,7 +75,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
                         .getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
                 return;
             }
-            ((QuestionDetailActivity) context).createComment(postId, etContent.getText().toString());
+            createComment(postId, etContent.getText().toString());
             dialog.hide();
             etContent.setText("");
         });
@@ -68,7 +91,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
             layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
             bottomSheet.setLayoutParams(layoutParams);
 
-            ((QuestionDetailActivity) context).updateComments(recyclerView, postId);
+            updateComments(recyclerView, postId);
         });
 
         return dialog;

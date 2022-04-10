@@ -21,10 +21,8 @@ import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
-import com.ogif.kotae.ui.comment.CommentViewModel;
 import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
-import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 import java.util.ArrayList;
@@ -36,9 +34,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     private ActivityQuestionDetailBinding binding;
     private QuestionDetailAdapter adapter;
-    private CommentAdapter commentAdapter;
     private QuestionDetailViewModel questionDetailViewModel;
-    private CommentViewModel commentViewModel;
     private RecyclerView recyclerView;
     private String questionId;
 
@@ -84,8 +80,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         fetchAndObserve();
 
-        commentAdapter = new CommentAdapter(this);
-        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         // FirebaseFirestore db = FirebaseFirestore.getInstance();
         // db.collection("votes")
         //         .whereEqualTo("authorId", "0FDZ97sbxRf17ac07Sx260inaPR2")
@@ -142,19 +136,6 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
             adapter.addAnswerVotes(stringVoteMap);
         });
-    }
-
-    public void createComment(@NonNull String postId, @NonNull String content) {
-        commentViewModel.createComment(postId, content);
-    }
-
-    public void updateComments(@NonNull RecyclerView recyclerView, @NonNull String postId) {
-        recyclerView.setAdapter(commentAdapter);
-        commentViewModel.getComments(postId);
-
-        commentViewModel
-                .getCommentLiveData()
-                .observe(this, comments -> commentAdapter.updateComments(comments));
     }
 
     private void startCreateAnswerActivity() {
