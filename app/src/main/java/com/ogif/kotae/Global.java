@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
+import com.ogif.kotae.data.model.User;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -40,9 +42,11 @@ public class Global {
 
     public static final int QUERY_LIMIT = 20;
 
-    public static final String SETTING_KEY_NIGHT_MODE = "night_mode";
+    public static final String SHARED_PREF_NIGHT_MODE = "nightMode";
     @Deprecated
-    public static final String SETTING_KEY_LANGUAGES = "languages";
+    public static final String SHARED_PREF_LANGUAGES = "languages";
+    public static final String SHARED_PREF_USER_ID = "userId";
+    public static final String SHARED_PREF_USERNAME = "username";
 
     public static final String DEFAULT_USER_AVATAR = "avatars/profile3.png";
 }

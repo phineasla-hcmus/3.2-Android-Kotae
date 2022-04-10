@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -18,10 +17,7 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
-import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.data.model.User;
-import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.AuthViewModel;
@@ -47,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         boolean isNightModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(Global.SETTING_KEY_NIGHT_MODE, false);
+                .getBoolean(Global.SHARED_PREF_NIGHT_MODE, false);
         AppCompatDelegate.setDefaultNightMode(isNightModeEnabled
                 ? AppCompatDelegate.MODE_NIGHT_YES
                 : AppCompatDelegate.MODE_NIGHT_NO);

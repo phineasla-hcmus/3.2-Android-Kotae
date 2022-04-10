@@ -19,29 +19,29 @@ import java.util.List;
 public class CommentViewModel extends ViewModel {
     private static final String TAG = "CommentViewModel";
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final MutableLiveData<List<Comment>> commentLiveData;
 
-    public CommentViewModel() {
-        this.commentRepository = new CommentRepository();
-        this.userRepository = new UserRepository();
+    public CommentViewModel(String userId, String username) {
+        this.commentRepository = new CommentRepository(userId, username);
         this.commentLiveData = new MutableLiveData<>();
     }
 
     public void createComment(@NonNull String postId, @NonNull String content) {
-        userRepository.getCurrentUser(new TaskListener.State<User>() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("TAG", "Fail");
-            }
+        // userRepository.getCurrentUser(new TaskListener.State<User>() {
+        //     @Override
+        //     public void onSuccess(User result) {
+        //         String authorId = result.getId();
+        //         String authorName = result.getUsername();
+        //         commentRepository.createComment(postId, authorId, authorName, content);
+        //     }
+        //
+        //     @Override
+        //     public void onFailure(@NonNull Exception e) {
+        //         Log.d(TAG, "Fail");
+        //     }
+        // });
 
-            @Override
-            public void onSuccess(User result) {
-                String authorId = result.getId();
-                String authorName = result.getUsername();
-                commentRepository.createComment(postId, authorId, authorName, content);
-            }
-        });
+        // commentRepository.createComment()
     }
 
     public void getComments(String postId) {

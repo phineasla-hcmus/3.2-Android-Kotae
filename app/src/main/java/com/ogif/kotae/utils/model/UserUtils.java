@@ -1,6 +1,11 @@
 package com.ogif.kotae.utils.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.preference.PreferenceManager;
 
 import com.ogif.kotae.Global;
 
@@ -34,5 +39,25 @@ public class UserUtils {
 
     public static int getYearOfBirth(int age) {
         return Year.now().getValue() - age;
+    }
+
+    public static void cacheUser(@NonNull String userId, @NonNull String username, @NonNull Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putString(Global.SHARED_PREF_USER_ID, userId);
+        prefsEditor.putString(Global.SHARED_PREF_USERNAME, username);
+        prefsEditor.apply();
+    }
+
+    @Nullable
+    public static String getCachedUsername(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Global.SHARED_PREF_USERNAME, null);
+    }
+
+    @Nullable
+    public static String getCachedUserId(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString(Global.SHARED_PREF_USER_ID, null);
     }
 }

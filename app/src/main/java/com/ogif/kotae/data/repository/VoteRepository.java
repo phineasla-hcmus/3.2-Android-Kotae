@@ -25,12 +25,12 @@ public class VoteRepository {
     private final FirebaseFirestore db;
     private final CollectionReference votesRef;
 
-    private String userId;
+    private String authorId;
 
-    public VoteRepository(String userId) {
+    public VoteRepository(String authorId) {
         this.db = FirebaseFirestore.getInstance();
         this.votesRef = db.collection("votes");
-        this.userId = userId;
+        this.authorId = authorId;
     }
 
     public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId) {
@@ -48,7 +48,7 @@ public class VoteRepository {
     }
 
     public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String recordId) {
-        return getDocumentSnapshot(userId, recordId);
+        return getDocumentSnapshot(authorId, recordId);
     }
 
     public void getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable DocumentSnapshot> callback) {
@@ -63,7 +63,7 @@ public class VoteRepository {
     }
 
     public void getDocumentSnapshot(@NonNull String recordId, @NonNull TaskListener.State<@Nullable DocumentSnapshot> callback) {
-        getDocumentSnapshot(userId, recordId, callback);
+        getDocumentSnapshot(authorId, recordId, callback);
     }
 
     public void get(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
@@ -81,7 +81,7 @@ public class VoteRepository {
     }
 
     public void get(@NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
-        get(userId, recordId, callback);
+        get(authorId, recordId, callback);
     }
 
     /**
@@ -120,7 +120,7 @@ public class VoteRepository {
      *                  Object)}
      */
     public void getList(@NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
-        getList(userId, recordIds, callback);
+        getList(authorId, recordIds, callback);
     }
 
     /**
@@ -196,24 +196,24 @@ public class VoteRepository {
 
     /**
      * For create, update or delete vote, authorId is used from {@link
-     * VoteRepository#setUserId(String)}
+     * VoteRepository#setAuthorId(String)}
      * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or
      * delete
      * existing vote
      */
     public Task<Void> set(@NonNull String recordId, @Vote.State int state) {
-        return set(userId, recordId, state);
+        return set(authorId, recordId, state);
     }
 
     /**
      * For create, update or delete vote, authorId is used from {@link
-     * VoteRepository#setUserId(String)}
+     * VoteRepository#setAuthorId(String)}
      * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or
      * delete
      * existing vote
      */
     public void set(@NonNull String recordId, @Vote.State int state, @Nullable TaskListener.State<Void> callback) {
-        set(userId, recordId, state, callback);
+        set(authorId, recordId, state, callback);
     }
 
     /**
@@ -229,11 +229,11 @@ public class VoteRepository {
                     .addOnFailureListener(callback::onFailure);
     }
 
-    public String getUserId() {
-        return userId;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 }

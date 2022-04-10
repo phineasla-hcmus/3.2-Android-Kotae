@@ -56,9 +56,9 @@ public class ProfileFragment extends Fragment {
         prefsEditor = prefs.edit();
 
         SwitchMaterial switchNightMode = binding.switchProfileNightMode;
-        switchNightMode.setChecked(prefs.getBoolean(Global.SETTING_KEY_NIGHT_MODE, false));
+        switchNightMode.setChecked(prefs.getBoolean(Global.SHARED_PREF_NIGHT_MODE, false));
         switchNightMode.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            prefsEditor.putBoolean(Global.SETTING_KEY_NIGHT_MODE, isChecked);
+            prefsEditor.putBoolean(Global.SHARED_PREF_NIGHT_MODE, isChecked);
             prefsEditor.commit();
             AppCompatDelegate.setDefaultNightMode(isChecked
                     ? AppCompatDelegate.MODE_NIGHT_YES

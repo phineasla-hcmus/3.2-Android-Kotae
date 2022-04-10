@@ -52,8 +52,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
                         .getString(R.string.comment_empty), Toast.LENGTH_SHORT).show();
                 return;
             }
-            ((QuestionDetailActivity) context).createComment(postId, etContent.getText()
-                    .toString());
+            ((QuestionDetailActivity) context).createComment(postId, etContent.getText().toString());
             dialog.hide();
             etContent.setText("");
         });
