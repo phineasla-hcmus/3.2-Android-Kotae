@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
 import com.ogif.kotae.Global;
 
 import org.jetbrains.annotations.TestOnly;
@@ -174,6 +175,7 @@ public abstract class Record {
         this.blocked = blocked;
     }
 
+    @Exclude
     @Global.Collection
     public abstract String getCollectionName();
 }

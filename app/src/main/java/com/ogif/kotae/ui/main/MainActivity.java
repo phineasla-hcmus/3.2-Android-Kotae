@@ -1,7 +1,5 @@
 package com.ogif.kotae.ui.main;
 
-import android.bluetooth.BluetoothClass;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,14 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
-import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.databinding.ActivityMainBinding;
 import com.ogif.kotae.ui.ProfileViewModel;

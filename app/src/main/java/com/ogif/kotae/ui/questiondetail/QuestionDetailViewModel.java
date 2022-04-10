@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
@@ -16,6 +18,7 @@ import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
+import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
 
 import java.util.List;
@@ -26,7 +29,10 @@ public class QuestionDetailViewModel extends ViewModel {
     private static final String TAG = "QuestionDetailViewModel";
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    // Create new vote
     private final VoteRepository voteRepository;
+    // Increment/decrement counter for both answer and question
+    private final VoteCounterRepository voteCounterRepository;
     private final MutableLiveData<Question> questionLiveData;
     private final MutableLiveData<Vote> questionVoteLiveData;
     private final MutableLiveData<List<Answer>> answerLiveData;
@@ -39,6 +45,7 @@ public class QuestionDetailViewModel extends ViewModel {
         this.questionRepository = new QuestionRepository();
         this.answerRepository = new AnswerRepository();
         this.voteRepository = new VoteRepository(userId);
+        this.voteCounterRepository = new VoteCounterRepository();
 
         this.questionLiveData = new MutableLiveData<>();
         this.questionVoteLiveData = new MutableLiveData<>();
@@ -100,6 +107,48 @@ public class QuestionDetailViewModel extends ViewModel {
         });
     }
 
+    public void setQuestionVote(@Vote.State int previousState, @Vote.State int currentState) {
+        Question question = questionLiveData.getValue();
+        Vote vote = questionVoteLiveData.getValue();
+        if (question == null)
+            return;
+        // User hasn't voted yet
+        if (vote == null) {
+            // Vote.NONE is the same as vote == null (not existed on database) -> no change -> ignore
+            if (currentState == Vote.NONE)
+                return;
+            // Create new vote on database
+            Task<Void> voteTask = voteRepository.set(question.getId(), currentState);
+            Task<Void> counterTask = voteCounterRepository.increment(question, currentState == Vote.UPVOTE);
+            Tasks.whenAll(voteTask, counterTask).addOnSuccessListener(aVoid -> {
+                // TODO do something
+            }).addOnFailureListener(e -> {
+                // TODO idk help me
+            });
+        }
+        // Existing vote, just update it
+        else {
+            Task<Void> voteTask = voteRepository.set(vote, currentState);
+            Task<Void> counterTask;
+
+
+        }
+    }
+
+    public void setAnswerVote(Answer holder, @Vote.State int previousState, @Vote.State int currentState) {
+        Question question = questionLiveData.getValue();
+        Vote vote = questionVoteLiveData.getValue();
+        if (question == null)
+            return;
+        if (vote == null) {
+            if (currentState == Vote.NONE)
+                return;
+            if (currentState == Vote.UPVOTE) {
+                // voteRepository.set
+            }
+        }
+    }
+
     /**
      * Fetch all votes related to the user, the result will be in
      * {@link QuestionDetailViewModel#answerVoteLiveData}, if fetching data failed,
@@ -119,8 +168,6 @@ public class QuestionDetailViewModel extends ViewModel {
             }
         });
     }
-
-    // public void
 
     public LiveData<Question> getQuestionLiveData() {
         return questionLiveData;

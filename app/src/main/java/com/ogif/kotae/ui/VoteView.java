@@ -24,6 +24,8 @@ public class VoteView extends ConstraintLayout {
     @IdRes
     protected int RES_TOGGLE_GROUP;
     @Vote.State
+    protected int previousState;
+    @Vote.State
     protected int currentState;
     protected int upvoteCount;
     protected int downvoteCount;
@@ -77,24 +79,24 @@ public class VoteView extends ConstraintLayout {
                 setUpvoteValue(getUpvoteValue() + 1);
                 if (listener != null)
                     listener.onUpvote(this, true);
-                this.currentState = Vote.UPVOTE;
+                setVoteState(Vote.UPVOTE);
             } else {
                 setUpvoteValue(getUpvoteValue() - 1);
                 if (listener != null)
                     listener.onUpvote(this, false);
-                this.currentState = Vote.NONE;
+                setVoteState(Vote.NONE);
             }
         } else if (checkedId == RES_DOWNVOTE) {
             if (isChecked) {
                 setDownvoteValue(getDownvoteValue() + 1);
                 if (listener != null)
                     listener.onDownvote(this, true);
-                this.currentState = Vote.DOWNVOTE;
+                setVoteState(Vote.DOWNVOTE);
             } else {
                 setDownvoteValue(getDownvoteValue() - 1);
                 if (listener != null)
                     listener.onDownvote(this, false);
-                this.currentState = Vote.NONE;
+                setVoteState(Vote.NONE);
             }
         }
     }
@@ -108,6 +110,7 @@ public class VoteView extends ConstraintLayout {
 
     protected void init() {
         inflate();
+        this.previousState = Vote.NONE;
         this.currentState = Vote.NONE;
         this.toggleGroup = findViewById(RES_TOGGLE_GROUP);
         this.upvote = findViewById(RES_UPVOTE);
@@ -150,6 +153,28 @@ public class VoteView extends ConstraintLayout {
     //     this.currentState = state;
     // }
 
+    protected void setVoteState(@Vote.State int state) {
+        this.previousState = this.currentState;
+        this.currentState = state;
+    }
+
+    public void revert() {
+        if (previousState == currentState)
+            return;
+        if (previousState == Vote.NONE)
+            setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
+                    currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
+                    previousState);
+        else if (previousState == Vote.UPVOTE)
+            setVoteState(upvoteCount + 1,
+                    currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
+                    previousState);
+        else if (previousState == Vote.DOWNVOTE)
+            setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
+                    downvoteCount + 1,
+                    previousState);
+    }
+
     /**
      * Set state without calling {@link OnStateChangeListener}
      *
@@ -167,7 +192,7 @@ public class VoteView extends ConstraintLayout {
         else if (state == Vote.DOWNVOTE)
             toggleGroup.check(R.id.btn_vote_view_downvote);
         toggleGroup.addOnButtonCheckedListener(this::onVoteStateChanged);
-        this.currentState = state;
+        setVoteState(state);
     }
 
     public int getVoteState() {

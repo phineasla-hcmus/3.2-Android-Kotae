@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityCreateAnswerBinding;
-import com.ogif.kotae.ui.AnswerViewModel;
+import com.ogif.kotae.ui.questiondetail.AnswerViewModel;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import java.util.Objects;

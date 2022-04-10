@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 
 public class AdminQuestionAdapter extends BaseAdapter {
-    public static final String TAG = AdminQuestionAdapter.class.getName();
+    public static final String TAG = "AdminQuestionAdapter";
     private Context context;
     private int layout;
     private ArrayList<Question> questionArrayList;

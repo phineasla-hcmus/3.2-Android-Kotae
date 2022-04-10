@@ -15,6 +15,7 @@ import com.ogif.kotae.databinding.PartialPostActionBinding;
 
 import java.util.Locale;
 
+@Deprecated
 public class PostActionView extends ConstraintLayout {
     public static final int UPVOTE = 1;
     public static final int DOWNVOTE = -1;

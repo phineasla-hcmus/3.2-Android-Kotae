@@ -3,13 +3,13 @@ package com.ogif.kotae.ui.questiondetail;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
@@ -28,9 +29,9 @@ import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class QuestionDetailActivity extends AppCompatActivity {
+    public static final String TAG = "QuestionDetailActivity";
     public static final String BUNDLE_QUESTION = "question";
 
     private ActivityQuestionDetailBinding binding;
@@ -63,12 +64,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
         adapter.setOnVoteChangeListener(new VoteView.OnStateChangeListener() {
             @Override
             public void onUpvote(VoteView view, boolean isActive) {
-                // TODO change vote state on firebase
+                onVoteChange(view, isActive ? Vote.NONE : Vote.UPVOTE,
+                        isActive ? Vote.UPVOTE : Vote.NONE);
             }
 
             @Override
             public void onDownvote(VoteView view, boolean isActive) {
-                // TODO change vote state on firebase
+                onVoteChange(view, isActive ? Vote.NONE : Vote.DOWNVOTE,
+                        isActive ? Vote.DOWNVOTE : Vote.NONE);
             }
         });
 
@@ -149,15 +152,28 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments(postId);
 
-        commentViewModel.getCommentLiveData().observe(this, comments -> {
-            commentAdapter.updateComments(comments);
-        });
+        commentViewModel
+                .getCommentLiveData()
+                .observe(this, comments -> commentAdapter.updateComments(comments));
     }
 
     private void startCreateAnswerActivity() {
         Intent intent = new Intent(getApplicationContext(), CreateAnswerActivity.class);
         intent.putExtra("questionId", questionId);
         startActivity(intent);
+    }
+
+    public void onVoteChange(VoteView view, @Vote.State int previousState, @Vote.State int currentState) {
+        Post post = (Post) view.getHolder();
+        if (post == null) {
+            Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
+            return;
+        }
+        if (post.getClass() == Question.class) {
+            questionDetailViewModel.setQuestionVote(previousState, currentState);
+        } else if (post.getClass() == Answer.class) {
+            questionDetailViewModel.setAnswerVote((Answer) post, previousState, currentState);
+        }
     }
 
     @Override
