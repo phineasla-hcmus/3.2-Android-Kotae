@@ -20,7 +20,6 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
-import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class AdminQuestionAdapter extends BaseAdapter {
         chipSubject.setText(question.getSubject());
         chipGrade.setText(question.getGrade());
         ibBlock.setVisibility(View.VISIBLE);
-        if (question.isBlocked()) {
+        if (question.getBlocked()) {
             ibBlock.setColorFilter(ContextCompat.getColor(context, R.color.design_default_color_error));
         }
 
@@ -121,7 +120,7 @@ public class AdminQuestionAdapter extends BaseAdapter {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
         // Handle Block
         QuestionRepository questionRepository = new QuestionRepository();
-        if (!questionArrayList.get(pos).isBlocked()) {
+        if (!questionArrayList.get(pos).getBlocked()) {
             alertBuilder.setTitle("Confirm Block Question");
             alertBuilder.setMessage("Are you sure you want to block this question?");
             alertBuilder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {

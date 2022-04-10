@@ -112,7 +112,7 @@ public class QuestionDetailViewModel extends ViewModel {
         Vote vote = questionVoteLiveData.getValue();
         if (question == null)
             return;
-        // User hasn't voted yet
+        // User hasn't voted yet, previousState should also be NONE, if not, recheck the logic
         if (vote == null) {
             // Vote.NONE is the same as vote == null (not existed on database) -> no change -> ignore
             if (currentState == Vote.NONE)
@@ -130,8 +130,12 @@ public class QuestionDetailViewModel extends ViewModel {
         else {
             Task<Void> voteTask = voteRepository.set(vote, currentState);
             Task<Void> counterTask;
-
-
+            if (currentState == Vote.NONE) {
+                counterTask = voteCounterRepository.decrement(question, previousState == Vote.UPVOTE);
+                Tasks.whenAll(voteTask, counterTask).addOnSuccessListener(aVoid -> {
+                    questionVoteLiveData.setValue(null);
+                });
+            }
         }
     }
 

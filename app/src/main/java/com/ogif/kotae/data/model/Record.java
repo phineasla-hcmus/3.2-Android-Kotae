@@ -34,6 +34,12 @@ public abstract class Record {
     protected int report;
     protected boolean blocked;
 
+    @Exclude
+    protected String voteId;
+    @Exclude
+    @Vote.State
+    protected int voteState;
+
     /**
      * Firestore
      */
@@ -167,12 +173,30 @@ public abstract class Record {
         return report;
     }
 
-    public boolean isBlocked() {
+    public boolean getBlocked() {
         return blocked;
     }
 
     public void setBlocked(boolean blocked) {
         this.blocked = blocked;
+    }
+
+    @Exclude
+    @Nullable
+    public String getVoteId() {
+        return voteId;
+    }
+
+    @Exclude
+    @Vote.State
+    public int getVoteState() {
+        return voteState;
+    }
+
+    @Exclude
+    public void setVoteState(String voteId, @Vote.State int voteState) {
+        this.voteId = voteId;
+        this.voteState = voteState;
     }
 
     @Exclude
