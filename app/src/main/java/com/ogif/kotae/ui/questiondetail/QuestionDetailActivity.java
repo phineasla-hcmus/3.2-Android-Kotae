@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
-    public static final String TAG = QuestionDetailActivity.class.getSimpleName();
+    public static final String TAG = "QuestionDetailActivity";
     public static final String BUNDLE_QUESTION = "question";
 
     private ActivityQuestionDetailBinding binding;

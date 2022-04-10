@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class QuestionDetailViewModel extends ViewModel {
-    private static final String TAG = QuestionDetailViewModel.class.getSimpleName();
+    private static final String TAG = "QuestionDetailViewModel";
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     // Create new vote

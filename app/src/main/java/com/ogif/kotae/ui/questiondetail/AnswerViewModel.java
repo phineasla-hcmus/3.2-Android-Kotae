@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui;
+package com.ogif.kotae.ui.questiondetail;
 
 import android.util.Log;
 
