@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.questiondetail;
+package com.ogif.kotae.ui.comment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -18,14 +18,15 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.ogif.kotae.R;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 
-public class BottomSheetDialogCommentFragment extends BottomSheetDialogFragment {
+public class CommentFragment extends BottomSheetDialogFragment {
     private Context context;
     private String postId;
     private RecyclerView recyclerView;
 
-    public BottomSheetDialogCommentFragment(Context context, String postId) {
+    public CommentFragment(Context context, String postId) {
         this.context = context;
         this.postId = postId;
     }

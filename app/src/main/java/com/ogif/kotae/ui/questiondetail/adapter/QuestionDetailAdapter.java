@@ -22,7 +22,7 @@ import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.VoteView;
-import com.ogif.kotae.ui.questiondetail.BottomSheetDialogCommentFragment;
+import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 
@@ -246,13 +246,13 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     public void bindBottomSheetDialog(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post) {
         PostHolder holder = (PostHolder) viewHolder;
-        BottomSheetDialogCommentFragment bottomSheetDialogCommentFragment = new BottomSheetDialogCommentFragment(context, post.getId());
+        CommentFragment bottomSheetDialogCommentFragment = new CommentFragment(context, post.getId());
         holder.comment.setOnClickListener(v -> {
             showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
         });
     }
 
-    private void showBottomSheetDialogFragment(BottomSheetDialogCommentFragment bottomSheet) {
+    private void showBottomSheetDialogFragment(CommentFragment bottomSheet) {
         if (!bottomSheet.isAdded()) {
             bottomSheet.show(((QuestionDetailActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
         }

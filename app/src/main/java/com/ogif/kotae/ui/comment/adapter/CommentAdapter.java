@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.questiondetail.adapter;
+package com.ogif.kotae.ui.comment.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -21,10 +21,10 @@ import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
-import com.ogif.kotae.ui.CommentViewModel;
+import com.ogif.kotae.ui.comment.CommentViewModel;
 import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
-import com.ogif.kotae.ui.questiondetail.adapter.CommentAdapter;
+import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
 import java.util.ArrayList;
