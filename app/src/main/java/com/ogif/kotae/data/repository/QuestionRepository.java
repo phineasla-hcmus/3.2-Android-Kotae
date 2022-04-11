@@ -186,11 +186,11 @@ public class QuestionRepository {
     private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
         ArrayList<Question> newQuestions = new ArrayList<Question>();
 
-        if (sort.equals("MOST_VIEW")) {
+        if (sort.equals(FilterQuestionActivity.SORT_MOST_VIEW)) {
             // Get all
             // Default : Order by vote desc
             return questions;
-        } else if (sort.equals("TOP_WEEK")) {
+        } else if (sort.equals(FilterQuestionActivity.SORT_TOP_WEEK)) {
             Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
 
             for (Question question : questions) {
@@ -201,7 +201,7 @@ public class QuestionRepository {
             }
 
             return newQuestions;
-        } else if (sort.equals("TOP_MONTH")) {
+        } else if (sort.equals(FilterQuestionActivity.SORT_TOP_MONTH)) {
             Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
 
             for (Question question : questions) {
@@ -232,19 +232,15 @@ public class QuestionRepository {
     }
 
     private ArrayList<Question> filterQuestionByStatus(ArrayList<Question> questions, ArrayList<Answer> answers, String status) {
-        if (status.equals("ANSWERED")) {
+        if (status.equals(FilterQuestionActivity.STATUS_ANSWERED)) {
             ArrayList<Question> answeredQuestions = filterAnsweredQuestions(questions, answers);
-            // TEST
-            // printQuestions(answeredQuestions);
             return answeredQuestions;
 
-        } else if (status.equals("UNANSWERED")) {
+        } else if (status.equals(FilterQuestionActivity.STATUS_UNANSWERED)) {
             ArrayList<Question> answeredQuestions = filterAnsweredQuestions(questions, answers);
             for (Question question : answeredQuestions) {
                 questions.remove(question);
             }
-            // TEST
-            // printQuestions(questions);
             return questions;
         }
         // ELSE => ALL => Get all (Do Nothing)
@@ -341,5 +337,41 @@ public class QuestionRepository {
                 callback.onFailure(e);
             }
         });
+    }
+
+    public Query getFilterQuestionQuery(String sort, String status, ArrayList<String> lstGrades, ArrayList<String> lstCourses) {
+        Query query = questionsRef.whereEqualTo("blocked", false);
+        switch (sort) {
+            case FilterQuestionActivity.SORT_MOST_VIEW: {
+                query = query.orderBy("upvote", Query.Direction.DESCENDING);
+                break;
+            }
+            case FilterQuestionActivity.SORT_TOP_WEEK: {
+                Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
+                query = query.whereGreaterThanOrEqualTo("postTime", firstDayOfWeek);
+//                query = query.orderBy("upvote", Query.Direction.DESCENDING);
+                break;
+            }
+            case FilterQuestionActivity.SORT_TOP_MONTH: {
+                Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
+//                query = query.orderBy("upvote", Query.Direction.DESCENDING);
+                query = query.whereGreaterThanOrEqualTo("postTime", firstDayOfMonth);
+                break;
+            }
+            default: {
+                query = query.orderBy("postTime", Query.Direction.DESCENDING);
+                break;
+            }
+        }
+
+        if (lstCourses.size() != 0) {
+            query = query.whereIn("subjectId", lstCourses);
+        }
+
+        // Can only select 1 option
+        if (lstGrades.size() != 0) {
+            query = query.whereEqualTo("gradeId", lstGrades.get(0));
+        }
+        return query;
     }
 }

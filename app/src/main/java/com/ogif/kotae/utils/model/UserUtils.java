@@ -42,7 +42,7 @@ public class UserUtils {
     }
 
     public static void cache(@NonNull String userId, @NonNull String username, @NonNull Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(Global.SHARED_PREF_USER_ID, userId);
         prefsEditor.putString(Global.SHARED_PREF_USERNAME, username);

@@ -26,6 +26,8 @@ import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
 import com.ogif.kotae.ui.search.SearchActivity;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     private void startLeaderboardActivity() {
         Intent intent = new Intent(getApplicationContext(), LeaderboardActivity.class);
         startActivity(intent);
@@ -115,9 +116,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_FILTER && resultCode == RESULT_OK && data != null) {
-            // Get questions after filter & render
-            ArrayList<Question> questions = data.getParcelableArrayListExtra("filteredQuestions");
-            printQuestions(questions);
+            String sort = data.getStringExtra("sort");
+            String status = data.getStringExtra("status");
+            ArrayList<String> lstGrades = data.getStringArrayListExtra("lstGrades");
+            ArrayList<String> lstCourses = data.getStringArrayListExtra("lstCourses");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("sort", sort);
+            bundle.putString("status", status);
+            bundle.putStringArrayList("lstGrades", lstGrades);
+            bundle.putStringArrayList("lstCourses", lstCourses);
+
+            Fragment fragment = new HomeFragment();
+            fragment.setArguments(bundle);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commitAllowingStateLoss();
         }
 
         super.onActivityResult(requestCode, resultCode, data);

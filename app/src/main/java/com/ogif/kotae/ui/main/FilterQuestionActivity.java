@@ -34,6 +34,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 public class FilterQuestionActivity extends AppCompatActivity {
+    public static final String SORT_MOST_VIEW = "MOST_VIEW";
+    public static final String SORT_TOP_WEEK = "TOP_WEEK";
+    public static final String SORT_TOP_MONTH = "TOP_MONTH";
+    public static final String SORT_ALL = "SORT_ALL";
+    public static final String STATUS_ALL = "ALL";
+    public static final String STATUS_ANSWERED = "ANSWERED";
+    public static final String STATUS_UNANSWERED = "UNANSWERED";
+
     private TextView tvCancel, tvSubmit, tvReset;
     private FirebaseFirestore db;
     private String activity = "";
@@ -74,6 +82,8 @@ public class FilterQuestionActivity extends AppCompatActivity {
                 // If list is empty => No filter => Get all
                 List<String> lstGrades = getGrades();
                 List<String> lstCourses = getCourses();
+                ArrayList<String> arrLstGrades = new ArrayList<>(lstGrades);
+                ArrayList<String> arrLstCourses = new ArrayList<>(lstCourses);
 
                 ArrayList<Question> filteredQuestions = new ArrayList<Question>();
                 ArrayList<Answer> answers = new ArrayList<Answer>();
@@ -96,9 +106,16 @@ public class FilterQuestionActivity extends AppCompatActivity {
 //                      printQuestions(result);
                         // Set Result
                         Intent intent = new Intent();
+//                        Bundle bundleFilterInput = new Bundle();
                         Bundle bundle = new Bundle();
+                        bundle.putString("sort", sort);
+                        bundle.putString("status", status);
+                        bundle.putStringArrayList("lstGrades", arrLstGrades);
+                        bundle.putStringArrayList("lstCourses", arrLstCourses);
+
                         bundle.putParcelableArrayList("filteredQuestions", result);
                         intent.putExtras(bundle);
+//                        intent.putExtras(bundleFilterInput);
                         setResult(RESULT_OK, intent);
                         finish();
                     }
@@ -162,21 +179,21 @@ public class FilterQuestionActivity extends AppCompatActivity {
         RadioButton radTopWeek = (RadioButton) findViewById(R.id.rad_question_sort_top_week);
         RadioButton radTopMonth = (RadioButton) findViewById(R.id.rad_question_sort_top_month);
 
-        if (radMostView.isChecked()) return "MOST_VIEW";
-        if (radTopWeek.isChecked()) return "TOP_WEEK";
-        if (radTopMonth.isChecked()) return "TOP_MONTH";
+        if (radMostView.isChecked()) return SORT_MOST_VIEW;
+        if (radTopWeek.isChecked()) return SORT_TOP_WEEK;
+        if (radTopMonth.isChecked()) return SORT_TOP_MONTH;
 
-        return "ALL";
+        return SORT_ALL;
     }
 
     private String getStatus() {
         RadioButton radAnswered = (RadioButton) findViewById(R.id.rad_question_status_answered);
         RadioButton radUnanswered = (RadioButton) findViewById(R.id.rad_question_status_unanswered);
 
-        if (radAnswered.isChecked()) return "ANSWERED";
-        if (radUnanswered.isChecked()) return "UNANSWERED";
+        if (radAnswered.isChecked()) return STATUS_ANSWERED;
+        if (radUnanswered.isChecked()) return STATUS_UNANSWERED;
 
-        return "ALL";
+        return STATUS_ALL;
     }
 
     private List<String> getGrades() {

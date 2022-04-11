@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.ui.createquestion.CreateQuestionActivity;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
@@ -84,13 +87,24 @@ public class HomeFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
 
-        FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
-                .setQuery(questionRepository.getHomeQuestions(), Question.class)
-                .build();
+        FirestoreRecyclerOptions<Question> options;
+
+        if (getArguments() != null) {
+            String sort = getArguments().getString("sort");
+            String status = getArguments().getString("status");
+            ArrayList<String> lstCourses = getArguments().getStringArrayList("lstCourses");
+            ArrayList<String> lstGrades = getArguments().getStringArrayList("lstGrades");
+            options = new FirestoreRecyclerOptions.Builder<Question>()
+                    .setQuery(questionRepository.getFilterQuestionQuery(sort, status, lstGrades, lstCourses), Question.class)
+                    .build();
+        } else {
+            options = new FirestoreRecyclerOptions.Builder<Question>()
+                    .setQuery(questionRepository.getHomeQuestions(), Question.class)
+                    .build();
+        }
         adapter = new HomeAdapter(options, this.getContext());
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
-
     }
 
     //    private List<Question> questionList() {
