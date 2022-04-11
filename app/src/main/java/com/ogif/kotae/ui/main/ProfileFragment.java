@@ -72,6 +72,8 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileAdmin.setOnClickListener(view -> {
             // Launch admin activity
+            Intent intent = new Intent(getActivity(), AdminActivity.class);
+            startActivity(intent);
         });
 
         binding.tvProfileEdit.setOnClickListener(view -> {
