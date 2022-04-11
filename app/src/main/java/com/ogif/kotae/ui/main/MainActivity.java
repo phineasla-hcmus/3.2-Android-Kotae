@@ -97,11 +97,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void startAdminActivity() {
-        Intent intent = new Intent(this, AdminActivity.class);
-        startActivity(intent);
-    }
-
     private void startLeaderboardActivity() {
         Intent intent = new Intent(getApplicationContext(), LeaderboardActivity.class);
         startActivity(intent);
