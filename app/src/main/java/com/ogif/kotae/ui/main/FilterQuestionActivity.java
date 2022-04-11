@@ -57,6 +57,18 @@ public class FilterQuestionActivity extends AppCompatActivity {
             activity = "search";
         }
 
+        boolean fromHome = intent.getBooleanExtra("FROM_HOME", false);
+        if (fromHome) {
+            TextView tvStatus = (TextView) findViewById(R.id.tv_question_status);
+            RadioButton radStatusAll = (RadioButton) findViewById(R.id.rad_question_status_all);
+            RadioButton radStatusAnswered = (RadioButton) findViewById(R.id.rad_question_status_answered);
+            RadioButton radStatusUnanswered = (RadioButton) findViewById(R.id.rad_question_status_unanswered);
+            tvStatus.setVisibility(View.GONE);
+            radStatusAll.setVisibility(View.GONE);
+            radStatusAnswered.setVisibility(View.GONE);
+            radStatusUnanswered.setVisibility(View.GONE);
+        }
+
         tvCancel = (TextView) findViewById(R.id.tv_cancel);
         tvSubmit = (TextView) findViewById(R.id.tv_submit);
         tvReset = (TextView) findViewById(R.id.tv_reset);
@@ -132,46 +144,22 @@ public class FilterQuestionActivity extends AppCompatActivity {
         radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_status_answered));
         radioButtonArrayList.add((RadioButton) findViewById(R.id.rad_question_status_unanswered));
 
-
-        ArrayList<CheckBox> checkBoxArrayList = new ArrayList<CheckBox>();
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_2));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_3));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_4));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_5));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_6));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_7));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_8));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_9));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_10));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_11));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_12));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_math));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_physic));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_chemistry));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_english));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_literature));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_biology));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_history));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_geography));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_ethic));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_informatics));
-        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_technology));
-
-        for (CheckBox chkItem : checkBoxArrayList) {
-            chkItem.setChecked(false);
-        }
-
         for (RadioButton radItem : radioButtonArrayList) {
             radItem.setChecked(false);
         }
 
+        clearAllSubjects();
+        clearAllGrades();
+
         RadioButton radQuestionSortAll = (RadioButton) findViewById(R.id.rad_question_sort_all);
         RadioButton radQuestionStatusAll = (RadioButton) findViewById(R.id.rad_question_status_all);
+        CheckBox chkGradeAll = (CheckBox) findViewById(R.id.chk_grade_all);
+        CheckBox chkSubjectAll = (CheckBox) findViewById(R.id.chk_subject_all);
 
         radQuestionSortAll.setChecked(true);
         radQuestionStatusAll.setChecked(true);
+        chkGradeAll.setChecked(true);
+        chkSubjectAll.setChecked(true);
     }
 
     private String getSort() {
@@ -263,5 +251,60 @@ public class FilterQuestionActivity extends AppCompatActivity {
         for (Question question : questions) {
             Log.d("AAA", question.getTitle());
         }
+    }
+
+    public void selectGrade(View view) {
+        clearAllGrades();
+        CheckBox checked = (CheckBox) view;
+        checked.setChecked(true);
+    }
+
+    private void clearAllSubjects() {
+        ArrayList<CheckBox> checkBoxArrayList = new ArrayList<CheckBox>();
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_math));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_physic));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_chemistry));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_english));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_literature));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_biology));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_history));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_geography));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_ethic));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_informatics));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_technology));
+
+        for (CheckBox chkItem : checkBoxArrayList) {
+            chkItem.setChecked(false);
+        }
+    }
+
+    private void clearAllGrades() {
+        ArrayList<CheckBox> checkBoxArrayList = new ArrayList<CheckBox>();
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_all));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_1));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_2));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_3));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_4));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_5));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_6));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_7));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_8));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_9));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_10));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_11));
+        checkBoxArrayList.add((CheckBox) findViewById(R.id.chk_grade_12));
+        for (CheckBox chkItem : checkBoxArrayList) {
+            chkItem.setChecked(false);
+        }
+    }
+
+    public void selectSubjectAll(View view) {
+        clearAllSubjects();
+    }
+
+    public void selectSubject(View view) {
+        CheckBox chkAllSubjects = (CheckBox) findViewById(R.id.chk_subject_all);
+        chkAllSubjects.setChecked(false);
     }
 }

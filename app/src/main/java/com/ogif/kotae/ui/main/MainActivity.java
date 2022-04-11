@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startFilterActivity() {
         Intent intent = new Intent(getApplicationContext(), FilterQuestionActivity.class);
+        intent.putExtra("FROM_HOME", true);
         startActivityForResult(intent, REQUEST_CODE_FILTER);
     }
 
