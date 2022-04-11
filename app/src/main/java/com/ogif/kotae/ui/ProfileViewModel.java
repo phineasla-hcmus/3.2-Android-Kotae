@@ -10,6 +10,7 @@ import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.UserRepository;
+import com.ogif.kotae.utils.model.UserUtils;
 
 public class ProfileViewModel extends ViewModel {
     private final AuthRepository authRepository;

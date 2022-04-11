@@ -24,7 +24,7 @@ public class AuthRepository extends UserRepository {
     }
 
     @Nullable
-    public FirebaseUser getCurrentUser() {
+    public FirebaseUser getCurrentFirebaseUser() {
         return auth.getCurrentUser();
     }
 

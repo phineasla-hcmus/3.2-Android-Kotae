@@ -31,6 +31,8 @@ public class LoginActivity extends AppCompatActivity {
                 binding.tvLoginError.setVisibility(View.VISIBLE);
                 return;
             }
+            // Store username and ID in shared preference
+            viewModel.cacheCurrentUser(this);
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();

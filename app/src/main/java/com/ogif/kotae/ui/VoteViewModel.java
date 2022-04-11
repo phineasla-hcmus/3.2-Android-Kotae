@@ -21,7 +21,7 @@ public class VoteViewModel extends ViewModel {
 
     public VoteViewModel() {
         AuthRepository userRepository = new AuthRepository();
-        String userId = Objects.requireNonNull(userRepository.getCurrentUser()).getUid();
+        String userId = Objects.requireNonNull(userRepository.getCurrentFirebaseUser()).getUid();
 
         voteRepository = new VoteRepository(userId);
         voteCounterRepository = new VoteCounterRepository();

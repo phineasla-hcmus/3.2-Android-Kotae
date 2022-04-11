@@ -23,6 +23,7 @@ import com.ogif.kotae.databinding.FragmentProfileBinding;
 import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.utils.LocaleHelper;
+import com.ogif.kotae.utils.model.UserUtils;
 
 import java.util.Objects;
 
@@ -84,6 +85,7 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileLogout.setOnClickListener(view -> {
             profileViewModel.logout();
+            UserUtils.clearCache(requireContext());
             Intent intent = new Intent(v.getContext(), LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             startActivity(intent);

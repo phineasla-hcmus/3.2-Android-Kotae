@@ -52,48 +52,31 @@ public class UserRepository {
     }
 
     public void getLeaderboard(@NonNull String category, int limit, @NonNull TaskListener.State<List<User>> callback) {
-        Task<QuerySnapshot> query = null;
-        if (category.equals("day")) {
-            query = usersRef
-                    .whereEqualTo("blocked", true)
-                    .orderBy("xpDaily", Query.Direction.DESCENDING)
-                    .limit(limit)
-                    .get();
-        } else {
-            query = usersRef
-                    .whereEqualTo("blocked", true)
-                    .orderBy("xp", Query.Direction.DESCENDING)
-                    .limit(limit)
-                    .get();
-        }
-
+        Task<QuerySnapshot> query = usersRef.whereEqualTo(User.Field.BLOCKED, true)
+                .orderBy(category.equals("day")
+                        ? User.Field.XP_DAILY
+                        : User.Field.XP, Query.Direction.DESCENDING)
+                .limit(limit)
+                .get();
         onQueryListComplete(query, callback);
     }
 
     public void getUserOrderByReport(@NonNull TaskListener.State<ArrayList<User>> callback) {
         ArrayList<User> userArrayList = new ArrayList<>();
 
-        Query queryUser = usersRef.orderBy("report", Query.Direction.DESCENDING);
-        queryUser.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    User user = documentSnapshot.toObject(User.class);
-                    user.setId(documentSnapshot.getId());
-                    userArrayList.add(user);
-                }
-                callback.onSuccess(userArrayList);
+        Query queryUser = usersRef.orderBy(User.Field.REPORT, Query.Direction.DESCENDING);
+        queryUser.get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                User user = documentSnapshot.toObject(User.class);
+                user.setId(documentSnapshot.getId());
+                userArrayList.add(user);
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFailure(e);
-            }
-        });
+            callback.onSuccess(userArrayList);
+        }).addOnFailureListener(callback::onFailure);
     }
 
-    public void blockUser(String userID, boolean blocked, TaskListener.State<Void> callback) {
-        DocumentReference ref = usersRef.document(userID);
+    public void blockUser(String userId, boolean blocked, TaskListener.State<Void> callback) {
+        DocumentReference ref = usersRef.document(userId);
         ref.update("blocked", blocked).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

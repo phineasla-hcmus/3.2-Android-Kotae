@@ -40,7 +40,7 @@ public class QuestionDetailViewModel extends ViewModel {
 
     public QuestionDetailViewModel() {
         AuthRepository userRepository = new AuthRepository();
-        String userId = Objects.requireNonNull(userRepository.getCurrentUser()).getUid();
+        String userId = Objects.requireNonNull(userRepository.getCurrentFirebaseUser()).getUid();
 
         this.questionRepository = new QuestionRepository();
         this.answerRepository = new AnswerRepository();

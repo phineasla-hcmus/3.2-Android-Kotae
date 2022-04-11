@@ -41,11 +41,19 @@ public class UserUtils {
         return Year.now().getValue() - age;
     }
 
-    public static void cacheUser(@NonNull String userId, @NonNull String username, @NonNull Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    public static void cache(@NonNull String userId, @NonNull String username, @NonNull Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences();
         SharedPreferences.Editor prefsEditor = prefs.edit();
         prefsEditor.putString(Global.SHARED_PREF_USER_ID, userId);
         prefsEditor.putString(Global.SHARED_PREF_USERNAME, username);
+        prefsEditor.apply();
+    }
+
+    public static void clearCache(@NonNull Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.remove(Global.SHARED_PREF_USER_ID);
+        prefsEditor.remove(Global.SHARED_PREF_USERNAME);
         prefsEditor.apply();
     }
 
