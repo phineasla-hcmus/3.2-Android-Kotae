@@ -10,6 +10,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Vote;
@@ -33,83 +34,87 @@ public class VoteRepository {
         this.authorId = authorId;
     }
 
-    public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId) {
-        TaskCompletionSource<DocumentSnapshot> taskCompletionSource = new TaskCompletionSource<>();
+    public Task<Vote> get(@NonNull String authorId, @NonNull String recordId) {
+        TaskCompletionSource<Vote> taskCompletionSource = new TaskCompletionSource<>();
         votesRef.whereEqualTo(Vote.Field.authorId, authorId)
                 .whereEqualTo(Vote.Field.recordId, recordId)
                 .get()
                 .addOnSuccessListener(snapshots -> {
                     if (snapshots.isEmpty())
                         taskCompletionSource.setResult(null);
-                    else
-                        taskCompletionSource.setResult(snapshots.getDocuments().get(0));
+                    else {
+                        Vote vote = snapshots.getDocuments().get(0).toObject(Vote.class);
+                        taskCompletionSource.setResult(vote);
+                    }
                 }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
 
-    public Task<@Nullable DocumentSnapshot> getDocumentSnapshot(@NonNull String recordId) {
-        return getDocumentSnapshot(authorId, recordId);
+    public Task<Vote> get(@NonNull String recordId) {
+        return get(authorId, recordId);
     }
 
-    public void getDocumentSnapshot(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable DocumentSnapshot> callback) {
-        votesRef.whereEqualTo(Vote.Field.authorId, authorId)
-                .whereEqualTo(Vote.Field.recordId, recordId)
-                .get()
-                .addOnSuccessListener(snapshots -> {
-                    if (snapshots.isEmpty())
-                        callback.onSuccess(null);
-                    else callback.onSuccess(snapshots.getDocuments().get(0));
-                }).addOnFailureListener(callback::onFailure);
-    }
-
-    public void getDocumentSnapshot(@NonNull String recordId, @NonNull TaskListener.State<@Nullable DocumentSnapshot> callback) {
-        getDocumentSnapshot(authorId, recordId, callback);
-    }
-
+    @Deprecated
     public void get(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
-        getDocumentSnapshot(authorId, recordId, new TaskListener.State<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot result) {
-                callback.onSuccess(result.toObject(Vote.class));
-            }
-
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                callback.onFailure(e);
-            }
-        });
+        get(authorId, recordId).addOnSuccessListener(callback::onSuccess)
+                .addOnFailureListener(callback::onFailure);
     }
 
+    @Deprecated
     public void get(@NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
         get(authorId, recordId, callback);
     }
 
     /**
-     * @param recordIds if size() > 10, it will be processed in batches
+     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
+     * @return return type is a map of record ID and Vote that is in either state:
+     * {@link Vote#UPVOTE} or {@link Vote#DOWNVOTE}. Caller should use
+     * {@link Map#getOrDefault(Object, Object)} as {@link Vote#NONE} are not exist in the map.
+     */
+    public Task<Map<String, Vote>> getList(@NonNull String authorId, @NonNull List<String> recordIds) {
+        TaskCompletionSource<Map<String, Vote>> taskCompletionSource = new TaskCompletionSource<>();
+        List<List<String>> groups = Lists.partition(recordIds, 10);
+        List<Task<QuerySnapshot>> queryTasks = new ArrayList<>();
+        for (List<String> batch : groups) {
+            queryTasks.add(votesRef.whereEqualTo(Vote.Field.authorId, authorId)
+                    .whereIn(Vote.Field.recordId, batch).get());
+        }
+        Tasks.whenAllSuccess(queryTasks).addOnSuccessListener((List<Object> objectGroups) -> {
+            Map<String, Vote> result = new HashMap<>();
+            // Each objectGroup is the result of a single queryTask
+            for (Object objectGroup : objectGroups) {
+                QuerySnapshot snapshots = (QuerySnapshot) objectGroup;
+                for (QueryDocumentSnapshot snapshot : snapshots) {
+                    Vote vote = snapshot.toObject(Vote.class);
+                    result.put(vote.getRecordId(), vote);
+                }
+            }
+            taskCompletionSource.setResult(result);
+        }).addOnFailureListener(taskCompletionSource::setException);
+        return taskCompletionSource.getTask();
+    }
+
+    /**
+     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
+     * @return return type is a map of record ID and Vote that is in either state:
+     * {@link Vote#UPVOTE} or {@link Vote#DOWNVOTE}. Caller should use
+     * {@link Map#getOrDefault(Object, Object)} as {@link Vote#NONE} are not exist in the map.
+     */
+    public Task<Map<String, Vote>> getList(@NonNull List<String> recordIds) {
+        return getList(authorId, recordIds);
+    }
+
+    /**
+     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
      * @param callback  return type is a map of record ID and Vote that is in either state:
      *                  {@link Vote#UPVOTE} or {@link Vote#DOWNVOTE}.
      *                  Caller should use {@link Map#getOrDefault(Object, Object)} as
      *                  {@link Vote#NONE} are not present.
      */
+    @Deprecated
     public void getList(@NonNull String authorId, @NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
-        List<List<String>> batches = Lists.partition(recordIds, 10);
-        List<Task<QuerySnapshot>> tasks = new ArrayList<>();
-        for (List<String> batch : batches) {
-            tasks.add(votesRef.whereEqualTo(Vote.Field.authorId, authorId)
-                    .whereIn(Vote.Field.recordId, batch).get());
-        }
-        Tasks.whenAllSuccess(tasks).addOnSuccessListener((List<Object> objects) -> {
-            Map<String, Vote> result = new HashMap<>();
-            for (Object object : objects) {
-                QuerySnapshot snapshots = (QuerySnapshot) object;
-                for (DocumentSnapshot snapshot : snapshots) {
-                    Vote vote = snapshot.toObject(Vote.class);
-                    if (vote != null)
-                        result.put(vote.getRecordId(), vote);
-                }
-            }
-            callback.onSuccess(result);
-        }).addOnFailureListener(callback::onFailure);
+        getList(authorId, recordIds).addOnSuccessListener(callback::onSuccess)
+                .addOnFailureListener(callback::onFailure);
     }
 
     /**
@@ -119,6 +124,7 @@ public class VoteRepository {
      *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,
      *                  Object)}
      */
+    @Deprecated
     public void getList(@NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
         getList(authorId, recordIds, callback);
     }
@@ -138,18 +144,28 @@ public class VoteRepository {
                     .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(null))
                     .addOnFailureListener(taskCompletionSource::setException);
         else {
-            getDocumentSnapshot(authorId, recordId).addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot == null) {
+            get(authorId, recordId).addOnSuccessListener(vote -> {
+                if (vote == null) {
                     taskCompletionSource.setResult(null);
                     return;
                 }
-                votesRef.document(documentSnapshot.getId())
+                votesRef.document(vote.getId())
                         .delete()
                         .addOnSuccessListener(taskCompletionSource::setResult)
                         .addOnFailureListener(taskCompletionSource::setException);
             }).addOnFailureListener(taskCompletionSource::setException);
         }
         return taskCompletionSource.getTask();
+    }
+
+    /**
+     * For create, update or delete vote, authorId is used from
+     * {@link VoteRepository#setAuthorId(String)} use
+     * {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can to update or delete
+     * existing vote
+     */
+    public Task<Void> set(@NonNull String recordId, @Vote.State int state) {
+        return set(authorId, recordId, state);
     }
 
     /**
@@ -167,6 +183,7 @@ public class VoteRepository {
      * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or delete
      * existing vote
      */
+    @Deprecated
     public void set(@NonNull String authorId, @NonNull String recordId, @Vote.State int state, @Nullable TaskListener.State<Void> callback) {
         if (state != Vote.NONE)
             votesRef.add(new Vote().setAuthorId(authorId)
@@ -179,9 +196,9 @@ public class VoteRepository {
                         if (callback != null) callback.onFailure(e);
                     });
         else
-            getDocumentSnapshot(recordId, new TaskListener.State<DocumentSnapshot>() {
+            get(recordId, new TaskListener.State<Vote>() {
                 @Override
-                public void onSuccess(DocumentSnapshot result) {
+                public void onSuccess(Vote result) {
                     votesRef.document(result.getId()).delete().addOnSuccessListener(aVoid -> {
                         if (callback != null) callback.onSuccess(null);
                     }).addOnFailureListener(callback::onFailure);
@@ -201,17 +218,7 @@ public class VoteRepository {
      * delete
      * existing vote
      */
-    public Task<Void> set(@NonNull String recordId, @Vote.State int state) {
-        return set(authorId, recordId, state);
-    }
-
-    /**
-     * For create, update or delete vote, authorId is used from {@link
-     * VoteRepository#setAuthorId(String)}
-     * use {@link VoteRepository#set(Vote, int, TaskListener.State)} if you can for update or
-     * delete
-     * existing vote
-     */
+    @Deprecated
     public void set(@NonNull String recordId, @Vote.State int state, @Nullable TaskListener.State<Void> callback) {
         set(authorId, recordId, state, callback);
     }
@@ -219,6 +226,7 @@ public class VoteRepository {
     /**
      * For update or delete existing vote
      */
+    @Deprecated
     public void set(@NonNull Vote existingVote, @Vote.State int newState, @Nullable TaskListener.State<Void> callback) {
         DocumentReference ref = votesRef.document(existingVote.getId());
         Task<Void> result = newState != Vote.NONE
