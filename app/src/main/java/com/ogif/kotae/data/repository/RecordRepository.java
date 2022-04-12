@@ -9,9 +9,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.model.Record;
+import com.ogif.kotae.data.model.Vote;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public abstract class RecordRepository<T extends Record> {
 
     protected abstract List<T> toObjects(QuerySnapshot snapshots);
 
-    public Task<DocumentSnapshot> getDocumentSnapshot(@NonNull String id) {
+    protected Task<DocumentSnapshot> getDocumentSnapshot(@NonNull String id) {
         return collectionReference.document(id).get();
     }
 
@@ -57,16 +57,49 @@ public abstract class RecordRepository<T extends Record> {
         return taskCompletionSource.getTask();
     }
 
-    public Task<List<T>> getList(Task<QuerySnapshot> task) {
+    protected Task<List<T>> getList(@NonNull Task<QuerySnapshot> task) {
         TaskCompletionSource<List<T>> taskCompletionSource = new TaskCompletionSource<>();
         task.addOnSuccessListener(snapshots -> taskCompletionSource.setResult(toObjects(snapshots)))
                 .addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
 
-    public Task<List<T>> getList(Query query) {
+    protected Task<List<T>> getList(@NonNull Query query) {
         return getList(query.get());
     }
 
-    // public Task<List<T>> getListWithVotes
+    protected Task<List<T>> getListWithVotes(@NonNull Task<QuerySnapshot> task) {
+        TaskCompletionSource<List<T>> taskCompletionSource = new TaskCompletionSource<>();
+        getList(task).addOnSuccessListener(records -> {
+            List<String> recordIds = new ArrayList<>();
+            for (T record : records) {
+                recordIds.add(record.getId());
+            }
+            voteRepository.getList(recordIds).addOnSuccessListener(map -> {
+                // Map all Vote objects to Record objects
+                records.replaceAll(record -> {
+                    Vote vote = map.get(record.getId());
+                    if (vote != null) {
+                        record.setVoteState(vote.getId(), vote.isUpvote() ?
+                                Vote.UPVOTE :
+                                Vote.DOWNVOTE);
+                    }
+                    return record;
+                });
+            }).addOnFailureListener(taskCompletionSource::setException);
+        }).addOnFailureListener(taskCompletionSource::setException);
+        return taskCompletionSource.getTask();
+    }
+
+    protected Task<List<T>> getListWithVotes(@NonNull Query query) {
+        return getListWithVotes(query.get());
+    }
+
+    public void setAuthorId(String authorId) {
+        voteRepository.setAuthorId(authorId);
+    }
+
+    public String getAuthorId() {
+        return voteRepository.getAuthorId();
+    }
 }
