@@ -38,6 +38,7 @@ configurations {
 
 dependencies {
     def nav_version = "2.4.1"
+    def paging_version = "3.1.1"
 
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -91,6 +92,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.0'
 
     // Paging for infinite scrolling
-    implementation 'androidx.paging:paging-guava:3.1.1'
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-guava:$paging_version"
     implementation "androidx.concurrent:concurrent-futures:1.1.0"
 }

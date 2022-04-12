@@ -6,9 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.paging.PagingLiveData;
 
 import com.ogif.kotae.Global;
-import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.repository.CommentRepository;
 
