@@ -1,92 +1,99 @@
 package com.ogif.kotae.data.repository;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.ogif.kotae.data.StateWrapper;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Comment;
-import com.ogif.kotae.data.model.Question;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CommentRepository {
+public class CommentRepository extends RecordRepository<Comment> {
     private static final String TAG = "CommentRepository";
-    private final FirebaseFirestore db;
-    private final CollectionReference commentsRef;
-    private String authorId;
     private String authorName;
-    private final VoteRepository voteRepository;
+    private String postId;
 
-    public CommentRepository(String authorId, String authorName) {
-        this.db = FirebaseFirestore.getInstance();
-        this.commentsRef = db.collection("comments");
-        this.authorId = authorId;
+    public CommentRepository(String authorId, String authorName, String postId) {
+        super(Global.COLLECTION_COMMENT, authorId);
         this.authorName = authorName;
-        this.voteRepository = new VoteRepository(authorId);
+        this.postId = postId;
     }
 
-    public Task<Void> createComment(@NonNull String postId, @NonNull String authorId, @NonNull String authorName, @NonNull String content) {
+    @Nullable
+    @Override
+    protected Comment toObject(@NonNull DocumentSnapshot snapshot) {
+        return snapshot.toObject(Comment.class);
+    }
+
+    @Override
+    protected List<Comment> toObjects(@NonNull QuerySnapshot snapshots) {
+        return snapshots.toObjects(Comment.class);
+    }
+
+    public Task<Void> create(@NonNull String postId, @NonNull String authorId, @NonNull String authorName, @NonNull String content) {
         TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
         Comment comment = new Comment.Builder()
                 .author(authorId, authorName)
                 .content(content)
                 .parent(postId)
                 .build();
-        commentsRef.add(comment)
+        collectionReference.add(comment)
                 .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(null))
                 .addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
 
-    private Task<List<Comment>> onQueryListComplete(@NonNull Task<QuerySnapshot> query) {
-        TaskCompletionSource<List<Comment>> taskCompletionSource = new TaskCompletionSource<>();
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Comment> comments = new ArrayList<>(queryDocumentSnapshots.size());
-            List<String> commentIds = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                Comment comment = document.toObject(Comment.class);
-                comments.add(comment);
-                commentIds.add(comment.getId());
-            }
-
-            taskCompletionSource.setResult(comments);
-        }).addOnFailureListener(taskCompletionSource::setException);
-        return taskCompletionSource.getTask();
+    public Task<Void> create(@NonNull String content) {
+        return create(postId, getAuthorId(), authorName, content);
     }
 
-    public Task<List<Comment>> getList(@NonNull String postId, int limit) {
-        Task<QuerySnapshot> commentQuery = commentsRef
+    public Task<List<Comment>> getListWithVotes(int limit) {
+        Task<QuerySnapshot> query = collectionReference
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
                 .limit(limit)
                 .get();
-        return onQueryListComplete(commentQuery);
+        return getListWithVotes(query);
     }
 
-    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Comment>> callback) {
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Comment> comments = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                comments.add(document.toObject(Comment.class));
-            }
-            callback.onSuccess(comments);
-        }).addOnFailureListener(callback::onFailure);
+    public Task<List<Comment>> getListWithVotesAfter(String previousId, int limit) {
+        Task<QuerySnapshot> query = collectionReference
+                .whereEqualTo(Comment.Field.PARENT_ID, postId)
+                .limit(limit)
+                .startAfter(collectionReference.document(previousId))
+                .get();
+        return getListWithVotes(query);
     }
 
-    public void getList(@NonNull String postId, int limit, @NonNull TaskListener.State<List<Comment>> callback) {
-        Task<QuerySnapshot> query = commentsRef.whereEqualTo("parentId", postId).limit(limit).get();
-        onQueryListComplete(query, callback);
+    @Deprecated
+    public void getListWithVotes(int limit, @NonNull TaskListener.State<List<Comment>> callback) {
+        // Task<QuerySnapshot> query = collectionReference.whereEqualTo(Comment.Field.PARENT_ID, postId)
+        //         .limit(limit)
+        //         .get();
+        // getListWithVotes(query).addOnSuccessListener(callback::onSuccess)
+        //         .addOnFailureListener(callback::onFailure);
+        getListWithVotes(limit).addOnSuccessListener(callback::onSuccess)
+                .addOnFailureListener(callback::onFailure);
+    }
+
+    public void setAuthor(@NonNull String authorId, @NonNull String authorName) {
+        voteRepository.setAuthorId(authorId);
+        this.authorName = authorName;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(@NonNull String postId) {
+        this.postId = postId;
     }
 }

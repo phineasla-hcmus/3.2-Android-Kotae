@@ -171,7 +171,8 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 .getValue());
     }
 
-    public static Intent newInstance(Context context, @NonNull Question question) {
+    @NonNull
+    public static Intent newInstance(@NonNull Context context, @NonNull Question question) {
         Intent intent = new Intent(context, QuestionDetailActivity.class);
         intent.putExtra(BUNDLE_QUESTION, question);
         return intent;

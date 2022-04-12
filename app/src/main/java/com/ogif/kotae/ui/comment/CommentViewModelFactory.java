@@ -12,16 +12,18 @@ import java.util.Objects;
 public class CommentViewModelFactory implements ViewModelProvider.Factory {
     private String userId;
     private String username;
+    private String postId;
 
-    public CommentViewModelFactory(String userId, String username) {
+    public CommentViewModelFactory(String userId, String username, String postId) {
         this.userId = userId;
         this.username = username;
+        this.postId = postId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return Objects.requireNonNull(modelClass.cast(new CommentViewModel(userId, username)));
+        return Objects.requireNonNull(modelClass.cast(new CommentViewModel(userId, username, postId)));
     }
 }
 

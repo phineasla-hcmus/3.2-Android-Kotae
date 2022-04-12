@@ -6,9 +6,7 @@ import androidx.paging.ListenableFuturePagingSource;
 import androidx.paging.PagingState;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.firebase.firestore.Query;
 import com.ogif.kotae.data.model.Comment;
-import com.ogif.kotae.data.model.Record;
 
 import java.util.ArrayList;
 
@@ -16,16 +14,16 @@ public class CommentPagingSource extends ListenableFuturePagingSource<String, Co
     @NonNull
     private final CommentRepository commentRepository;
     @NonNull
-    private Query query;
+    private String postId;
 
-    public CommentPagingSource(@NonNull CommentRepository commentRepository, @NonNull Query query) {
+    public CommentPagingSource(@NonNull CommentRepository commentRepository, @NonNull String postId) {
         this.commentRepository = commentRepository;
-        this.query = query;
+        this.postId = postId;
     }
 
-    public CommentPagingSource(@NonNull String authorId, @NonNull String authorName, @NonNull Query query) {
-        this.commentRepository = new CommentRepository(authorId, authorName);
-        this.query = query;
+    public CommentPagingSource(@NonNull String authorId, @NonNull String authorName, @NonNull String postId) {
+        this.commentRepository = new CommentRepository(authorId, authorName, postId);
+        this.postId = postId;
     }
 
     @Nullable
@@ -37,6 +35,9 @@ public class CommentPagingSource extends ListenableFuturePagingSource<String, Co
     @NonNull
     @Override
     public ListenableFuture<LoadResult<String, Comment>> loadFuture(@NonNull LoadParams<String> loadParams) {
+        String nextPageId = loadParams.getKey();
+
+
         return null;
     }
 

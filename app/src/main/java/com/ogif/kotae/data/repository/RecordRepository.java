@@ -34,9 +34,9 @@ public abstract class RecordRepository<T extends Record> {
     }
 
     @Nullable
-    protected abstract T toObject(DocumentSnapshot snapshot);
+    protected abstract T toObject(@NonNull DocumentSnapshot snapshot);
 
-    protected abstract List<T> toObjects(QuerySnapshot snapshots);
+    protected abstract List<T> toObjects(@NonNull QuerySnapshot snapshots);
 
     protected Task<DocumentSnapshot> getDocumentSnapshot(@NonNull String id) {
         return collectionReference.document(id).get();
@@ -95,7 +95,7 @@ public abstract class RecordRepository<T extends Record> {
         return getListWithVotes(query.get());
     }
 
-    public void setAuthorId(String authorId) {
+    public void setAuthorId(@NonNull String authorId) {
         voteRepository.setAuthorId(authorId);
     }
 

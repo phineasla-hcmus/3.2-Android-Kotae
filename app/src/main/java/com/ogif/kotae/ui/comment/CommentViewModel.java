@@ -10,9 +10,7 @@ import androidx.lifecycle.ViewModel;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Comment;
-import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.CommentRepository;
-import com.ogif.kotae.data.repository.UserRepository;
 
 import java.util.List;
 
@@ -21,12 +19,12 @@ public class CommentViewModel extends ViewModel {
     private final CommentRepository commentRepository;
     private final MutableLiveData<List<Comment>> commentLiveData;
 
-    public CommentViewModel(String userId, String username) {
-        this.commentRepository = new CommentRepository(userId, username);
+    public CommentViewModel(String userId, String username, String postId) {
+        this.commentRepository = new CommentRepository(userId, username, postId);
         this.commentLiveData = new MutableLiveData<>();
     }
 
-    public void createComment(@NonNull String postId, @NonNull String content) {
+    public void createComment(@NonNull String content) {
         // userRepository.getCurrentUser(new TaskListener.State<User>() {
         //     @Override
         //     public void onSuccess(User result) {
@@ -44,19 +42,17 @@ public class CommentViewModel extends ViewModel {
         // commentRepository.createComment()
     }
 
-    public void getComments(String postId) {
-        commentRepository.getList(postId, Global.QUERY_LIMIT, new TaskListener.State<List<Comment>>() {
-            @Override
-            public void onSuccess(List<Comment> result) {
-                commentLiveData.postValue(result);
-            }
+    public void getComments() {
+        commentRepository.getListWithVotes(Global.QUERY_LIMIT)
+                .addOnSuccessListener(commentLiveData::postValue)
+                .addOnFailureListener(e -> {
+                    Log.w(TAG, "Failed to getComments()");
+                    commentLiveData.postValue(null);
+                });
+    }
 
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Failed to getComments()");
-                commentLiveData.postValue(null);
-            }
-        });
+    public String getPostId() {
+        return commentRepository.getPostId();
     }
 
     public LiveData<List<Comment>> getCommentLiveData() {

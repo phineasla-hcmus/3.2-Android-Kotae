@@ -131,7 +131,6 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 if (question == null)
                     return;
                 bindCommonView(viewHolder, question, questionVote);
-                bindBottomSheetDialog(viewHolder, question);
                 bindQuestion((QuestionDetailHolder) viewHolder);
                 break;
             }
@@ -141,7 +140,6 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 // answerVotes might not done fetching yet
                 Vote v = answerVotes.isEmpty() ? null : answerVotes.get(position - 1);
                 bindCommonView(viewHolder, answer, v);
-                bindBottomSheetDialog(viewHolder, answer);
                 bindAnswer((AnswerHolder) viewHolder, answer);
                 break;
             }
@@ -214,11 +212,15 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         // holder.images.setLayoutManager(imagesLayoutManager);
         holder.author.setName(post.getAuthor());
         holder.author.setReputation(post.getXp());
-        holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
         int voteState = vote == null ? Vote.NONE : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE;
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), voteState);
         holder.vote.setHolder(post);
         holder.vote.setOnStateChangeListener(voteChangeListener);
+        holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
+        holder.comment.setOnClickListener(v -> {
+            CommentFragment bottomSheetDialogCommentFragment = CommentFragment.newInstance(post.getId());
+            showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
+        });
         // TODO bind author avatar
     }
 
@@ -244,17 +246,10 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
     }
 
-    public void bindBottomSheetDialog(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post) {
-        PostHolder holder = (PostHolder) viewHolder;
-        CommentFragment bottomSheetDialogCommentFragment = new CommentFragment(context, post.getId());
-        holder.comment.setOnClickListener(v -> {
-            showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
-        });
-    }
-
     private void showBottomSheetDialogFragment(CommentFragment bottomSheet) {
         if (!bottomSheet.isAdded()) {
-            bottomSheet.show(((QuestionDetailActivity) context).getSupportFragmentManager(), bottomSheet.getTag());
+            QuestionDetailActivity activity = (QuestionDetailActivity) context;
+            bottomSheet.show(activity.getSupportFragmentManager(), bottomSheet.getTag());
         }
     }
 
