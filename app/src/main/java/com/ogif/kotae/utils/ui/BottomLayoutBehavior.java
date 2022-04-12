@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.utils.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
