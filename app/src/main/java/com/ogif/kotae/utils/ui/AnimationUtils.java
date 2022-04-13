@@ -1,6 +1,6 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.utils.ui;
 
-import static com.ogif.kotae.utils.ViewExtension.setAnimationMarker;
+import static com.ogif.kotae.utils.ui.ViewExtension.setAnimationMarker;
 
 import android.animation.Animator;
 import android.animation.TimeInterpolator;

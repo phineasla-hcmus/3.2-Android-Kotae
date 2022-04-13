@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.ogif.kotae.R;
-import com.ogif.kotae.utils.ViewPager2AdminAdapter;
+import com.ogif.kotae.utils.ui.ViewPager2AdminAdapter;
 
 
 public class AdminActivity extends AppCompatActivity {

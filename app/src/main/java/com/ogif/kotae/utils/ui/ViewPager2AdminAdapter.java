@@ -1,4 +1,4 @@
-package com.ogif.kotae.utils;
+package com.ogif.kotae.utils.ui;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
