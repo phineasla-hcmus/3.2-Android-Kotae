@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
 import com.ogif.kotae.Global;
 
 public final class Answer extends Post {
@@ -89,6 +90,7 @@ public final class Answer extends Post {
         return questionId;
     }
 
+    @Exclude
     @Override
     public String getCollectionName() {
         return Global.COLLECTION_ANSWER;

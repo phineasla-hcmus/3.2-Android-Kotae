@@ -101,7 +101,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     public void fetchAndObserve() {
         questionDetailViewModel.getAnswers();
-
+    
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
             if (question == null) {
                 // TODO fetch question failed

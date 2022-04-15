@@ -86,6 +86,7 @@ public abstract class RecordRepository<T extends Record> {
                     }
                     return record;
                 });
+                taskCompletionSource.setResult(records);
             }).addOnFailureListener(taskCompletionSource::setException);
         }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();

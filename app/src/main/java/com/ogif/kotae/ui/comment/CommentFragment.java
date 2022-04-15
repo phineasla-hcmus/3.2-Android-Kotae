@@ -73,6 +73,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
             inputComment.setText("");
         });
 
+        commentViewModel
+                .getCommentLiveData()
+                .observe(this, comments -> commentAdapter.updateComments(comments));
+
         dialog.setOnShowListener(dialog1 -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;
 
@@ -97,10 +101,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public void updateComments(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments();
-
-        commentViewModel
-                .getCommentLiveData()
-                .observe(this, comments -> commentAdapter.updateComments(comments));
     }
 
     @NonNull
