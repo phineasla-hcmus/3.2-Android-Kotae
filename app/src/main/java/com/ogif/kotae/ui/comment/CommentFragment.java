@@ -38,6 +38,9 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
+        String userId = UserUtils.getCachedUserId(requireActivity());
+        String username = UserUtils.getCachedUsername(requireActivity());
+
         Bundle args = this.getArguments();
         assert args != null;
 
@@ -54,8 +57,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert inputComment != null;
 
         commentAdapter = new CommentAdapter(requireActivity());
-        String userId = UserUtils.getCachedUserId(requireActivity());
-        String username = UserUtils.getCachedUsername(requireActivity());
         CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
         this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
