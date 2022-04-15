@@ -35,20 +35,20 @@ public class CommentRepository extends RecordRepository<Comment> {
         return snapshots.toObjects(Comment.class);
     }
 
-    public Task<Void> create(@NonNull String postId, @NonNull String authorId, @NonNull String authorName, @NonNull String content) {
-        TaskCompletionSource<Void> taskCompletionSource = new TaskCompletionSource<>();
+    public Task<Comment> create(@NonNull String postId, @NonNull String authorId, @NonNull String authorName, @NonNull String content) {
+        TaskCompletionSource<Comment> taskCompletionSource = new TaskCompletionSource<>();
         Comment comment = new Comment.Builder()
                 .author(authorId, authorName)
                 .content(content)
                 .parent(postId)
                 .build();
         collectionReference.add(comment)
-                .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(null))
+                .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(comment))
                 .addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
 
-    public Task<Void> create(@NonNull String content) {
+    public Task<Comment> create(@NonNull String content) {
         return create(postId, getAuthorId(), authorName, content);
     }
 

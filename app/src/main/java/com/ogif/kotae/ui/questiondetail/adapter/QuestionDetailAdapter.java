@@ -25,6 +25,7 @@ import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,7 +208,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      */
     public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post, @Nullable Vote vote) {
         PostHolder holder = (PostHolder) viewHolder;
-        holder.content.setText(post.getContent());
+        MarkdownUtils.setMarkdown(context, post.getContent(), holder.content);
         // RecyclerView.LayoutManager imagesLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         // holder.images.setLayoutManager(imagesLayoutManager);
         holder.author.setName(post.getAuthor());

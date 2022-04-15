@@ -39,7 +39,13 @@ public class CommentViewModel extends ViewModel {
         //     }
         // });
 
-        // commentRepository.createComment()
+        commentRepository.create(content).addOnSuccessListener(comment -> {
+            List<Comment> comments = commentLiveData.getValue();
+            if (comments != null) {
+                comments.add(comment);
+                commentLiveData.postValue(comments);
+            }
+        });
     }
 
     public void getComments() {

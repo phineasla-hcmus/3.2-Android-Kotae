@@ -1,5 +1,6 @@
 package com.ogif.kotae.data.model;
 
+import com.google.firebase.firestore.Exclude;
 import com.ogif.kotae.Global;
 
 public final class Comment extends Record {
@@ -46,6 +47,7 @@ public final class Comment extends Record {
         return parentId;
     }
 
+    @Exclude
     @Override
     public String getCollectionName() {
         return Global.COLLECTION_COMMENT;

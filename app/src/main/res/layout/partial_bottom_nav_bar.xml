@@ -10,5 +10,5 @@
     app:itemActiveIndicatorStyle="@style/BottomNavigationView.Kotae.ActiveIndicator"
     app:itemIconTint="@color/color_nav_item"
     app:labelVisibilityMode="labeled"
-    app:layout_behavior="com.ogif.kotae.utils.BottomLayoutBehavior"
+    app:layout_behavior="com.ogif.kotae.utils.ui.BottomLayoutBehavior"
     app:menu="@menu/menu_bottom_navigation" />

@@ -40,6 +40,9 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
+        String userId = UserUtils.getCachedUserId(requireActivity());
+        String username = UserUtils.getCachedUsername(requireActivity());
+
         Bundle args = this.getArguments();
         assert args != null;
 
@@ -56,8 +59,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert inputComment != null;
 
         commentAdapter = new CommentAdapter(requireActivity());
-        String userId = UserUtils.getCachedUserId(requireActivity());
-        String username = UserUtils.getCachedUsername(requireActivity());
         CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
         this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
@@ -74,6 +75,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
             dialog.hide();
             inputComment.setText("");
         });
+
+        commentViewModel
+                .getCommentLiveData()
+                .observe(this, comments -> commentAdapter.updateComments(comments));
 
         dialog.setOnShowListener(dialog1 -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;
@@ -99,10 +104,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public void updateComments(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments();
-
-        commentViewModel
-                .getCommentLiveData()
-                .observe(this, comments -> commentAdapter.updateComments(comments));
     }
 
     @NonNull
