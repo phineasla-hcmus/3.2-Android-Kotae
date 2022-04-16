@@ -1,5 +1,7 @@
 package com.ogif.kotae.data.repository;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.concurrent.futures.CallbackToFutureAdapter;
@@ -13,6 +15,7 @@ import com.ogif.kotae.data.model.Comment;
 import java.util.List;
 
 public class CommentPagingSource extends ListenableFuturePagingSource<String, Comment> {
+    public static final String TAG = "CommentPagingSource";
     @NonNull
     private final CommentRepository commentRepository;
 
@@ -58,6 +61,8 @@ public class CommentPagingSource extends ListenableFuturePagingSource<String, Co
                 ? commentRepository.getListWithVotes(loadParams.getLoadSize())
                 : commentRepository.getListWithVotesAfter(nextPageId, loadParams.getLoadSize());
 
+        Log.d(TAG, "loadFuture: " + (nextPageId == null ? "null" : nextPageId));
+
         return CallbackToFutureAdapter.getFuture(completer -> task.addOnCompleteListener(completedTask -> {
             if (completedTask.isCanceled()) {
                 completer.setCancelled();
@@ -77,8 +82,9 @@ public class CommentPagingSource extends ListenableFuturePagingSource<String, Co
         }));
     }
 
+    @NonNull
     private LoadResult<String, Comment> toLoadResult(List<Comment> result) {
-        String lastKey = result.get(result.size() - 1).getId();
-        return new LoadResult.Page<>(result, null, lastKey, LoadResult.Page.COUNT_UNDEFINED, LoadResult.Page.COUNT_UNDEFINED);
+        String lastKey = result.isEmpty() ? null : result.get(result.size() - 1).getId();
+        return new LoadResult.Page<>(result, null, lastKey);
     }
 }

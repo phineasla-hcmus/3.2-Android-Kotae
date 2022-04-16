@@ -67,8 +67,9 @@ public class CommentFragment extends BottomSheetDialogFragment {
         commentAdapter = new CommentAdapter(requireActivity(), new CommentComparator());
         CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
         this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+
+        observe();
 
         sendComment.setOnClickListener(v -> {
             if (TextUtils.isEmpty(inputComment.getText().toString())) {
@@ -81,10 +82,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
             dialog.hide();
             inputComment.setText("");
         });
-
-        commentViewModel
-                .getCommentLiveData()
-                .observe(this, comments -> commentAdapter.updateComments(comments));
 
         dialog.setOnShowListener(dialog1 -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;
@@ -110,10 +107,12 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public void updateComments(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments();
-        CommentPagingSource pagingSource = new CommentPagingSource(commentRepository);
-        Pager<String, Comment> pager = new Pager<>
-                (new PagingConfig(Global.QUERY_LIMIT), () -> pagingSource);
-        PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager), this.getLifecycle());
+    }
+
+    public void observe() {
+        commentViewModel.getPagingCommentLiveData().observe(this, commentPagingData -> {
+            commentAdapter.submitData(getLifecycle(), commentPagingData);
+        });
     }
 
     @NonNull

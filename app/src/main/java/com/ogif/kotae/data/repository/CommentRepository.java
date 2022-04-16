@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
@@ -55,6 +56,7 @@ public class CommentRepository extends RecordRepository<Comment> {
     public Task<List<Comment>> getListWithVotes(int limit) {
         Task<QuerySnapshot> query = collectionReference
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
+                .orderBy(FieldPath.documentId())
                 .limit(limit)
                 .get();
         return getListWithVotes(query);
@@ -63,8 +65,9 @@ public class CommentRepository extends RecordRepository<Comment> {
     public Task<List<Comment>> getListWithVotesAfter(String previousId, int limit) {
         Task<QuerySnapshot> query = collectionReference
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
+                .orderBy(FieldPath.documentId())
                 .limit(limit)
-                .startAfter(collectionReference.document(previousId))
+                .startAfter(previousId)
                 .get();
         return getListWithVotes(query);
     }

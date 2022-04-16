@@ -33,41 +33,30 @@ public class CommentViewModel extends ViewModel {
         Pager<String, Comment> pager = new Pager<>
                 (new PagingConfig(Global.QUERY_LIMIT), () -> pagingSource);
 
-        pagingCommentLiveData = PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager),
-                ViewModelKt.getViewModelScope(this));
+        this.pagingCommentLiveData = PagingLiveData.getLiveData(pager);
+
+        // pagingCommentLiveData = PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager),
+        //         ViewModelKt.getViewModelScope(this));
+        PagingLiveData.cachedIn(pagingCommentLiveData, this);
     }
 
     public void createComment(@NonNull String content) {
-        // userRepository.getCurrentUser(new TaskListener.State<User>() {
-        //     @Override
-        //     public void onSuccess(User result) {
-        //         String authorId = result.getId();
-        //         String authorName = result.getUsername();
-        //         commentRepository.createComment(postId, authorId, authorName, content);
-        //     }
-        //
-        //     @Override
-        //     public void onFailure(@NonNull Exception e) {
-        //         Log.d(TAG, "Fail");
-        //     }
-        // });
-
         commentRepository.create(content).addOnSuccessListener(comment -> {
             List<Comment> comments = commentLiveData.getValue();
             if (comments != null) {
                 comments.add(comment);
-                commentLiveData.postValue(comments);
+                // commentLiveData.postValue(comments);
             }
         });
     }
 
     public void getComments() {
-        commentRepository.getListWithVotes(Global.QUERY_LIMIT)
-                .addOnSuccessListener(commentLiveData::postValue)
-                .addOnFailureListener(e -> {
-                    Log.w(TAG, "Failed to getComments()");
-                    commentLiveData.postValue(null);
-                });
+        // commentRepository.getListWithVotes(Global.QUERY_LIMIT)
+        //         .addOnSuccessListener(commentLiveData::postValue)
+        //         .addOnFailureListener(e -> {
+        //             Log.w(TAG, "Failed to getComments()");
+        //             commentLiveData.postValue(null);
+        //         });
     }
 
     public String getPostId() {
