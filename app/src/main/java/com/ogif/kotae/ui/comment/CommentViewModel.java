@@ -1,12 +1,8 @@
 package com.ogif.kotae.ui.comment;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelKt;
 import androidx.paging.Pager;
 import androidx.paging.PagingConfig;
 import androidx.paging.PagingData;
@@ -17,17 +13,13 @@ import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.repository.CommentPagingSource;
 import com.ogif.kotae.data.repository.CommentRepository;
 
-import java.util.List;
-
 public class CommentViewModel extends ViewModel {
     private static final String TAG = "CommentViewModel";
     private final CommentRepository commentRepository;
-    private final MutableLiveData<List<Comment>> commentLiveData;
     private final LiveData<PagingData<Comment>> pagingCommentLiveData;
 
     public CommentViewModel(String userId, String username, String postId) {
         this.commentRepository = new CommentRepository(userId, username, postId);
-        this.commentLiveData = new MutableLiveData<>();
 
         CommentPagingSource pagingSource = new CommentPagingSource(commentRepository);
         Pager<String, Comment> pager = new Pager<>
@@ -42,11 +34,6 @@ public class CommentViewModel extends ViewModel {
 
     public void createComment(@NonNull String content) {
         commentRepository.create(content).addOnSuccessListener(comment -> {
-            List<Comment> comments = commentLiveData.getValue();
-            if (comments != null) {
-                comments.add(comment);
-                // commentLiveData.postValue(comments);
-            }
         });
     }
 
@@ -61,10 +48,6 @@ public class CommentViewModel extends ViewModel {
 
     public String getPostId() {
         return commentRepository.getPostId();
-    }
-
-    public LiveData<List<Comment>> getCommentLiveData() {
-        return commentLiveData;
     }
 
     public LiveData<PagingData<Comment>> getPagingCommentLiveData() {

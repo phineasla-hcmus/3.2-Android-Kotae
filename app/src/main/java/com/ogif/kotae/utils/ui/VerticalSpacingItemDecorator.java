@@ -23,7 +23,6 @@ public final class VerticalSpacingItemDecorator extends ItemDecoration {
         } else {
             outRect.bottom = this.verticalSpacing;
         }
-
     }
 
     public VerticalSpacingItemDecorator(int verticalSpacing, int verticalSpacingCompensation) {
