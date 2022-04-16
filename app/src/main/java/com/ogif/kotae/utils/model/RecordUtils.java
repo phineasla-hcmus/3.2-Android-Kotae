@@ -52,9 +52,8 @@ public class RecordUtils {
          */
         @Override
         public final boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-            return newList.get(newItemPosition)
-                    .getId()
-                    .equals(oldList.get(oldItemPosition).getId());
+            return oldList.get(oldItemPosition).getId()
+                    .equals(newList.get(newItemPosition).getId());
         }
 
         public final boolean areContentsTheSame(@NonNull T oldItem, @NonNull T newItem) {
@@ -67,7 +66,7 @@ public class RecordUtils {
             return oldVote == newVote;
         }
 
-        public final boolean areBlockStatusesTheSame(T oldItem, T newItem) {
+        public final boolean areBlockStatusesTheSame(@NonNull T oldItem, @NonNull T newItem) {
             return oldItem.getBlocked() == newItem.getBlocked();
         }
 

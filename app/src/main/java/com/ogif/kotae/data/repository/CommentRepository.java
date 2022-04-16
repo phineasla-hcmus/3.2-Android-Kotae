@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
@@ -46,7 +45,10 @@ public class CommentRepository extends RecordRepository<Comment> {
                 .parent(postId)
                 .build();
         collectionReference.add(comment)
-                .addOnSuccessListener(documentReference -> taskCompletionSource.setResult(comment))
+                .addOnSuccessListener(documentReference -> {
+                    comment.setId(documentReference.getId());
+                    taskCompletionSource.setResult(comment);
+                })
                 .addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
