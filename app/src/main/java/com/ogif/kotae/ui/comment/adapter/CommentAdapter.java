@@ -62,8 +62,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         commentHolder.avatar.setImageResource(R.drawable.ic_placeholder_user);
         commentHolder.content.setText(comment.getContent());
         commentHolder.username.setText(comment.getAuthor());
-        // TODO pull "votes" from Firebase
-        commentHolder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), Vote.NONE);
+        commentHolder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), comment.getVoteState());
     }
 
     @Override

@@ -219,7 +219,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         holder.vote.setOnStateChangeListener(voteChangeListener);
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
         holder.comment.setOnClickListener(v -> {
-            CommentFragment bottomSheetDialogCommentFragment = CommentFragment.newInstance(post.getId());
+            CommentFragment bottomSheetDialogCommentFragment = CommentFragment.newInstance(post);
             showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
         });
         // TODO bind author avatar

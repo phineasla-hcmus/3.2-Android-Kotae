@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
 import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
@@ -27,6 +28,7 @@ import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
 
 public class CommentFragment extends BottomSheetDialogFragment {
     public static final String BUNDLE_POST_ID = "postId";
+    public static final String BUNDLE_POST_AUTHOR_ID = "postAuthorId";
 
     private RecyclerView recyclerView;
     private CommentAdapter adapter;
@@ -44,6 +46,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert args != null;
 
         String postId = args.getString(BUNDLE_POST_ID);
+        String postAuthorId = args.getString(BUNDLE_POST_AUTHOR_ID);
         String userId = UserUtils.getCachedUserId(requireActivity());
         String username = UserUtils.getCachedUsername(requireActivity());
 
@@ -114,10 +117,11 @@ public class CommentFragment extends BottomSheetDialogFragment {
     }
 
     @NonNull
-    public static CommentFragment newInstance(@NonNull String postId) {
+    public static CommentFragment newInstance(@NonNull Post holder) {
         CommentFragment fragment = new CommentFragment();
         Bundle args = new Bundle();
-        args.putString(BUNDLE_POST_ID, postId);
+        args.putString(BUNDLE_POST_ID, holder.getId());
+        args.putString(BUNDLE_POST_AUTHOR_ID, holder.getAuthorId());
         fragment.setArguments(args);
         return fragment;
     }
