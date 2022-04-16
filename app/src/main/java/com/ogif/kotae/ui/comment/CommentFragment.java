@@ -12,8 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelKt;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.paging.Pager;
+import androidx.paging.PagingConfig;
 import androidx.paging.PagingLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Comment;
+import com.ogif.kotae.data.repository.CommentPagingSource;
 import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
+import com.ogif.kotae.utils.model.CommentComparator;
 import com.ogif.kotae.utils.model.UserUtils;
 
 
@@ -58,7 +64,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert sendComment != null;
         assert inputComment != null;
 
-        commentAdapter = new CommentAdapter(requireActivity());
+        commentAdapter = new CommentAdapter(requireActivity(), new CommentComparator());
         CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
         this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
@@ -104,6 +110,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public void updateComments(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(commentAdapter);
         commentViewModel.getComments();
+        CommentPagingSource pagingSource = new CommentPagingSource(commentRepository);
+        Pager<String, Comment> pager = new Pager<>
+                (new PagingConfig(Global.QUERY_LIMIT), () -> pagingSource);
+        PagingLiveData.cachedIn(PagingLiveData.getLiveData(pager), this.getLifecycle());
     }
 
     @NonNull

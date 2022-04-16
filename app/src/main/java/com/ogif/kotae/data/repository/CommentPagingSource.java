@@ -16,7 +16,7 @@ public class CommentPagingSource extends ListenableFuturePagingSource<String, Co
     @NonNull
     private final CommentRepository commentRepository;
 
-    public CommentPagingSource(@NonNull CommentRepository commentRepository, @NonNull String postId) {
+    public CommentPagingSource(@NonNull CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 

@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.paging.PagingDataAdapter;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
@@ -20,12 +22,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentAdapter extends PagingDataAdapter<Comment, RecyclerView.ViewHolder> {
 
     private final List<Comment> comments;
     private final Context context;
 
-    public CommentAdapter(Context context) {
+    public CommentAdapter(@NonNull Context context, @NonNull DiffUtil.ItemCallback<Comment> diffCallback) {
+        super(diffCallback);
         this.context = context;
         this.comments = new ArrayList<>();
     }
