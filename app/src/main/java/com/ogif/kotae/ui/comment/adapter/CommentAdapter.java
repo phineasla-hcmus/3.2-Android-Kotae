@@ -8,12 +8,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.utils.model.CommentUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +72,11 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void updateComments(@NonNull List<Comment> comments) {
+        CommentUtils.ListComparator listComparator = new CommentUtils.ListComparator(this.comments, comments);
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(listComparator);
+
         this.comments.clear();
         this.comments.addAll(comments);
-        notifyDataSetChanged();
+        diffResult.dispatchUpdatesTo(this);
     }
 }

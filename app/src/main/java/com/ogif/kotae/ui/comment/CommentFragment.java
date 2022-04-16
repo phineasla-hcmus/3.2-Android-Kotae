@@ -22,33 +22,34 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.ogif.kotae.R;
 import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
 import com.ogif.kotae.utils.model.UserUtils;
+import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
 
 
 public class CommentFragment extends BottomSheetDialogFragment {
     public static final String BUNDLE_POST_ID = "postId";
 
     private RecyclerView recyclerView;
-    private AppCompatImageButton sendComment;
+    private CommentAdapter adapter;
+    private CommentViewModel viewModel;
+
     private EditText inputComment;
-    private CommentAdapter commentAdapter;
-    private CommentViewModel commentViewModel;
+    private AppCompatImageButton sendComment;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
-        String userId = UserUtils.getCachedUserId(requireActivity());
-        String username = UserUtils.getCachedUsername(requireActivity());
-
         Bundle args = this.getArguments();
         assert args != null;
 
         String postId = args.getString(BUNDLE_POST_ID);
+        String userId = UserUtils.getCachedUserId(requireActivity());
+        String username = UserUtils.getCachedUsername(requireActivity());
 
+        // Binding stuffs
         BottomSheetDialog dialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
         dialog.setContentView(R.layout.fragment_bottom_sheet_dialog_comment);
-
         recyclerView = dialog.findViewById(R.id.recycler_view_bottom_sheet);
         sendComment = dialog.findViewById(R.id.btn_comment_send);
         inputComment = dialog.findViewById(R.id.et_comment_input);
@@ -56,11 +57,27 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert sendComment != null;
         assert inputComment != null;
 
-        commentAdapter = new CommentAdapter(requireActivity());
         CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
-        this.commentViewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
+        this.viewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
+        // Set adapter and LazyLoadScrollListener
+        adapter = new CommentAdapter(requireActivity());
+        recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addOnScrollListener(new LazyLoadScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                viewModel.getComments();
+            }
+        });
+
+        // Observe LiveData
+        viewModel.getCommentLiveData()
+                .observe(this, comments -> adapter.updateComments(comments));
+
+        // Fetch data
+        viewModel.getComments();
 
         sendComment.setOnClickListener(v -> {
             if (TextUtils.isEmpty(inputComment.getText().toString())) {
@@ -74,9 +91,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
             inputComment.setText("");
         });
 
-        commentViewModel
-                .getCommentLiveData()
-                .observe(this, comments -> commentAdapter.updateComments(comments));
 
         dialog.setOnShowListener(dialog1 -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;
@@ -88,20 +102,13 @@ public class CommentFragment extends BottomSheetDialogFragment {
             ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
             layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT;
             bottomSheet.setLayoutParams(layoutParams);
-
-            updateComments(recyclerView);
         });
 
         return dialog;
     }
 
     public void createComment(@NonNull String content) {
-        commentViewModel.createComment(content);
-    }
-
-    public void updateComments(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(commentAdapter);
-        commentViewModel.getComments();
+        viewModel.createComment(content);
     }
 
     @NonNull

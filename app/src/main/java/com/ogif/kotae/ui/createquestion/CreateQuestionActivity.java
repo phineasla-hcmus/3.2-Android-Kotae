@@ -1,13 +1,11 @@
 package com.ogif.kotae.ui.createquestion;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,12 +18,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Grade;
@@ -58,11 +53,12 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private List<Subject> subjects = new ArrayList<>();
     private final int PICK_IMAGE_MULTIPLE = 1;
     private Uri imageUri;
-    private ArrayList<Uri> imageList =  new ArrayList<>();
-    private  FirebaseStorage storage = FirebaseStorage.getInstance();
+    private ArrayList<Uri> imageList = new ArrayList<>();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef = storage.getReference();
     private int uploadCount = 0;
     private ImageAdapter imageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +92,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         SubjectRepository subjectRepository = new SubjectRepository();
         subjectRepository.getAllSubjects(subjects -> {
-            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, this.subjects.toArray(new Subject[0]));
+            subjectAdapter = new SubjectAdapter(getApplicationContext(), R.layout.dropdown_item, this.subjects
+                    .toArray(new Subject[0]));
             this.subjects = subjects;
             binding.atcvQuestionCategorySubject.setAdapter(subjectAdapter);
         });
@@ -123,8 +120,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 temp.removeIf(subject -> subject.getName().equals("Geography"));
             }
 
-            if (level <= 5)
-            {
+            if (level <= 5) {
                 temp.removeIf(subject -> subject.getName().equals("Physics"));
                 temp.removeIf(subject -> subject.getName().equals("Biology"));
             }
@@ -154,7 +150,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
             @Override
             public void validate(Editable title) {
                 TextInputLayout til = binding.tilCreateQuestionTitle;
-                if (QuestionUtils.isTitleValid(title) == QuestionUtils.INVALID_TITLE_LENGTH) {
+                if (!QuestionUtils.isTitleValid(title)) {
                     til.setErrorEnabled(true);
                     til.setError(getResources().getString(R.string.et_error_question_title_length));
                 } else {
@@ -166,27 +162,33 @@ public class CreateQuestionActivity extends AppCompatActivity {
         binding.fabPostQuestion.setOnClickListener(v -> {
             String title = Objects.requireNonNull(binding.etCreateQuestionTitle.getText())
                     .toString();
-            if (QuestionUtils.isTitleValid(title) == QuestionUtils.INVALID_TITLE_LENGTH) {
-                Toast.makeText(this, getResources().getString(R.string.et_error_question_title_length), Toast.LENGTH_SHORT).show();
+            if (!QuestionUtils.isTitleValid(title)) {
+                Toast.makeText(this, getResources().getString(R.string.et_error_question_title_length), Toast.LENGTH_SHORT)
+                        .show();
                 return;
             }
             String content = Objects.requireNonNull(binding.etContent.getText()).toString();
-            if (QuestionUtils.isContentValid(content) == QuestionUtils.INVALID_CONTENT_LENGTH) {
-                Toast.makeText(this, getResources().getString(R.string.invalid_question_content_length), Toast.LENGTH_SHORT).show();
+            if (!QuestionUtils.isContentValid(content)) {
+                Toast.makeText(this, getResources().getString(R.string.invalid_question_content_length), Toast.LENGTH_SHORT)
+                        .show();
                 return;
             }
-            if (QuestionUtils.isGradeValid(selectedGradeName) == QuestionUtils.NOT_SELECTED_GRADE) {
-                Toast.makeText(this, getResources().getString(R.string.missing_selected_grade), Toast.LENGTH_SHORT).show();
+            if (!QuestionUtils.isGradeValid(selectedGradeName)) {
+                Toast.makeText(this, getResources().getString(R.string.missing_selected_grade), Toast.LENGTH_SHORT)
+                        .show();
                 return;
             }
-            if (QuestionUtils.isSubjectValid(selectedSubjectName) == QuestionUtils.NOT_SELECTED_SUBJECT) {
-                Toast.makeText(this, getResources().getString(R.string.missing_selected_subject), Toast.LENGTH_SHORT).show();
+            if (!QuestionUtils.isSubjectValid(selectedSubjectName)) {
+                Toast.makeText(this, getResources().getString(R.string.missing_selected_subject), Toast.LENGTH_SHORT)
+                        .show();
                 return;
             }
             binding.fabPostQuestion.setEnabled(false);
             this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
 
-            if (!imageList.isEmpty()){ uploadImage();}
+            if (!imageList.isEmpty()) {
+                uploadImage();
+            }
             this.finish();
         });
 
@@ -216,8 +218,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectImage(){
-        if (imageList!= null)
+    public void selectImage() {
+        if (imageList != null)
             imageList.clear();
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -230,7 +232,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 PICK_IMAGE_MULTIPLE);
 
     }
-    public void uploadImage(){
+
+    public void uploadImage() {
 //        ProgressDialog progressDialog
 //                = new ProgressDialog(CreateQuestionActivity.this);
 //        progressDialog.setMessage("The process may take a little long");
@@ -238,10 +241,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
 //        LoadingDialog loadingDialog = new LoadingDialog(CreateQuestionActivity.this);
 //        loadingDialog.startLoadingDialog();
         StorageRepository storageRepository = new StorageRepository();
-        storageRepository.uploadQuestionImages(imageList,uploadCount,
-                CreateQuestionActivity.this,imageAdapter);
+        storageRepository.uploadQuestionImages(imageList, uploadCount,
+                CreateQuestionActivity.this, imageAdapter);
 
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -253,7 +257,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     imageList.add(imageUri);
 
-                    imageAdapter = new ImageAdapter(getApplicationContext(),imageList,null);
+                    imageAdapter = new ImageAdapter(getApplicationContext(), imageList, null);
                     binding.gvQuestionImage.setAdapter(imageAdapter);
                     binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
                     ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
@@ -271,7 +275,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             currentImageSelect++;
                         }
 
-                        imageAdapter = new ImageAdapter(getApplicationContext(),imageList,null);
+                        imageAdapter = new ImageAdapter(getApplicationContext(), imageList, null);
                         binding.gvQuestionImage.setAdapter(imageAdapter);
                         binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
                         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
@@ -281,7 +285,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG)
                     .show();
         }
