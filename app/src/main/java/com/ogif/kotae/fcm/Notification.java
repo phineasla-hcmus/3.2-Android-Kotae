@@ -29,6 +29,7 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Device;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.UserRepository;
@@ -67,9 +68,9 @@ public class Notification {
                 });
     }
 
-    private void pushNotification(Context context, Question question, String action) {
+    private void pushNotification(Context context, Record record, String action) {
         DeviceRepository deviceRepository = new DeviceRepository();
-        deviceRepository.getDevices(question.getAuthorId(), new TaskListener.State<ArrayList<Device>>() {
+        deviceRepository.getDevices(record.getAuthorId(), new TaskListener.State<ArrayList<Device>>() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.e(TAG, "onFailure: " + e.toString());
@@ -93,7 +94,7 @@ public class Notification {
                         for (Device device : devices) {
                             try {
                                 JSONObject data = new JSONObject();
-                                data.put("questionId", question.getId());
+                                data.put("questionId", record.getId());
                                 data.put("username", userPushNotification.getUsername());
                                 data.put("action", action);
 
@@ -138,18 +139,19 @@ public class Notification {
         });
     }
 
-    public void pushUpvoteNotification(Context context, Question question) {
+    public void pushUpvoteNotification(Context context, Record record) {
+        Log.d(TAG, "pushUpvoteNotification: ");
         String action = "UPVOTE";
-        pushNotification(context, question, action);
+        pushNotification(context, record, action);
     }
 
-    public void pushDownvoteNotification(Context context, Question question) {
+    public void pushDownvoteNotification(Context context, Record record) {
         String action = "DOWNVOTE";
-        pushNotification(context, question, action);
+        pushNotification(context, record, action);
     }
 
-    public void pushCommentNotification(Context context, Question question) {
+    public void pushCommentNotification(Context context, Record record) {
         String action = "COMMENT";
-        pushNotification(context, question, action);
+        pushNotification(context, record, action);
     }
 }

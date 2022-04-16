@@ -19,8 +19,10 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
+import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
@@ -60,12 +62,20 @@ public class QuestionDetailActivity extends AppCompatActivity {
         adapter.setOnVoteChangeListener(new VoteView.OnStateChangeListener() {
             @Override
             public void onUpvote(VoteView view, boolean isActive) {
+                Record record = view.getHolder();
+                Notification notification = new Notification();
+                notification.pushUpvoteNotification(getApplicationContext(), record);
+                
                 onVoteChange(view, isActive ? Vote.NONE : Vote.UPVOTE,
                         isActive ? Vote.UPVOTE : Vote.NONE);
             }
 
             @Override
             public void onDownvote(VoteView view, boolean isActive) {
+                Record record = view.getHolder();
+                Notification notification = new Notification();
+                notification.pushDownvoteNotification(getApplicationContext(), record);
+
                 onVoteChange(view, isActive ? Vote.NONE : Vote.DOWNVOTE,
                         isActive ? Vote.DOWNVOTE : Vote.NONE);
             }
@@ -101,7 +111,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     public void fetchAndObserve() {
         questionDetailViewModel.getAnswers();
-    
+
         questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
             if (question == null) {
                 // TODO fetch question failed
