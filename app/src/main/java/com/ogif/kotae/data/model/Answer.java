@@ -90,9 +90,9 @@ public final class Answer extends Post {
         return questionId;
     }
 
+    @Global.Collection
     @Exclude
-    @Override
-    public String getCollectionName() {
+    public static String getCollectionName() {
         return Global.COLLECTION_ANSWER;
     }
 }

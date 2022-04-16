@@ -10,7 +10,7 @@ public final class Comment extends Record {
     /**
      * Firestore
      */
-    public static class Field {
+    public static class Field extends Record.Field {
         public static final String PARENT_ID = "parentId";
     }
 
@@ -47,9 +47,9 @@ public final class Comment extends Record {
         return parentId;
     }
 
+    @Global.Collection
     @Exclude
-    @Override
-    public String getCollectionName() {
+    public static String getCollectionName() {
         return Global.COLLECTION_COMMENT;
     }
 }

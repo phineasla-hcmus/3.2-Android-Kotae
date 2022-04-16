@@ -149,9 +149,9 @@ public final class Question extends Post {
         return grade;
     }
 
+    @Global.Collection
     @Exclude
-    @Override
-    public String getCollectionName() {
+    public static String getCollectionName() {
         return Global.COLLECTION_QUESTION;
     }
 }

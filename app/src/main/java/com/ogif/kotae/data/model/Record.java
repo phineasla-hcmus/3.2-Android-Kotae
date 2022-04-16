@@ -198,8 +198,4 @@ public abstract class Record {
         this.voteId = voteId;
         this.voteState = voteState;
     }
-
-    @Exclude
-    @Global.Collection
-    public abstract String getCollectionName();
 }

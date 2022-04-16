@@ -73,8 +73,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
         });
 
         // Observe LiveData
-        viewModel.getCommentLiveData()
-                .observe(this, comments -> adapter.updateComments(comments));
+        viewModel.getCommentLiveData().observe(this, comments -> {
+            if (comments != null)
+                adapter.updateComments(comments);
+        });
 
         // Fetch data
         viewModel.getComments();

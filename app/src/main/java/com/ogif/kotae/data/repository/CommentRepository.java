@@ -7,11 +7,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Comment;
 
+import java.util.Date;
 import java.util.List;
 
 public class CommentRepository extends RecordRepository<Comment> {
@@ -56,18 +58,18 @@ public class CommentRepository extends RecordRepository<Comment> {
     public Task<List<Comment>> getListWithVotes(int limit) {
         Task<QuerySnapshot> query = collectionReference
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
-                .orderBy(FieldPath.documentId())
+                .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)
                 .get();
         return getListWithVotes(query);
     }
 
-    public Task<List<Comment>> getListWithVotesAfter(String previousId, int limit) {
+    public Task<List<Comment>> getListWithVotesAfter(Date previousDate, int limit) {
         Task<QuerySnapshot> query = collectionReference
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
-                .orderBy(FieldPath.documentId())
+                .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)
-                .startAfter(previousId)
+                .startAfter(previousDate)
                 .get();
         return getListWithVotes(query);
     }

@@ -16,6 +16,7 @@ import com.ogif.kotae.data.repository.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class CommentViewModel extends ViewModel {
@@ -60,12 +61,16 @@ public class CommentViewModel extends ViewModel {
         if (comments == null || comments.isEmpty())
             task = commentRepository.getListWithVotes(Global.QUERY_LIMIT);
         else {
-            String lastId = comments.get(comments.size() - 1).getId();
-            task = commentRepository.getListWithVotesAfter(lastId, Global.QUERY_LIMIT);
+            Date lastDate = comments.get(comments.size() - 1).getPostTime();
+            // Log.d(TAG, "getComments lastId: " + lastId);
+            task = commentRepository.getListWithVotesAfter(lastDate, Global.QUERY_LIMIT);
         }
         task.addOnSuccessListener(result -> {
+            for (Comment c : result) {
+                Log.d(TAG, "getComments: " + c.getId());
+            }
             if (comments == null)
-                commentLiveData.postValue(new ArrayList<>(result));
+                commentLiveData.postValue(result);
             else {
                 comments.addAll(result);
                 commentLiveData.postValue(comments);
