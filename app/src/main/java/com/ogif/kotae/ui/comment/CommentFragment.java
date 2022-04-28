@@ -77,11 +77,13 @@ public class CommentFragment extends BottomSheetDialogFragment {
 
         // Observe LiveData
         viewModel.getCommentLiveData().observe(this, comments -> {
+            // null indicates as initial value or query error
+            // Empty list indicates as query successful but no comment
             if (comments != null)
-                adapter.updateComments(comments);
+                adapter.setData(viewModel.getLocalComments());
         });
 
-        // Fetch data
+        // Initial fetch
         viewModel.getComments();
 
         sendComment.setOnClickListener(v -> {
@@ -101,7 +103,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;
 
             // Setup full height
-            FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
             BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_EXPANDED);
 
             ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();

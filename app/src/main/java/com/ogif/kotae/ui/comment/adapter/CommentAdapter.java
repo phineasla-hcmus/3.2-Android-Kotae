@@ -70,7 +70,7 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return comments.size();
     }
 
-    public void updateComments(@NonNull List<Comment> comments) {
+    public void setData(@NonNull List<Comment> comments) {
         CommentUtils.ListComparator listComparator = new CommentUtils.ListComparator(this.comments, comments);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(listComparator);
 

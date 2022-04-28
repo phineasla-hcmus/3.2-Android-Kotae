@@ -24,6 +24,7 @@ public final class Question extends Post {
         }
     };
 
+    private int answer;
     private String title;
     private String subjectId;
     private String subject;
@@ -34,6 +35,7 @@ public final class Question extends Post {
      * Firestore
      */
     public static class Field extends Post.Field {
+        public static final String ANSWER = "answer";
         public static final String TITLE = "title";
         public static final String SUBJECT_ID = "subjectId";
         public static final String SUBJECT = "subject";
@@ -93,6 +95,7 @@ public final class Question extends Post {
 
     public Question(@NonNull Parcel parcel) {
         super(parcel);
+        answer = parcel.readInt();
         title = parcel.readString();
         subjectId = parcel.readString();
         subject = parcel.readString();
@@ -104,6 +107,7 @@ public final class Question extends Post {
     @Override
     public void writeToParcel(Parcel parcel, int flags) {
         super.writeToParcel(parcel, flags);
+        parcel.writeInt(answer);
         parcel.writeString(title);
         parcel.writeString(subjectId);
         parcel.writeString(subject);

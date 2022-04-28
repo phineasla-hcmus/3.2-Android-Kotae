@@ -19,16 +19,12 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String TAG = "QuestionDetailActivity";
@@ -56,115 +52,44 @@ public class QuestionDetailActivity extends AppCompatActivity {
         adapter = new QuestionDetailAdapter(this);
         recyclerView = binding.recyclerViewQuestionDetail;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // recyclerView.scrollToPosition(0);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnVoteChangeListener(new VoteView.OnStateChangeListener() {
-            @Override
-            public void onUpvote(VoteView view, boolean isActive) {
-                Record record = view.getHolder();
-                Notification notification = new Notification();
-                notification.pushUpvoteNotification(getApplicationContext(), record);
-                
-                onVoteChange(view, isActive ? Vote.NONE : Vote.UPVOTE,
-                        isActive ? Vote.UPVOTE : Vote.NONE);
+        adapter.setOnVoteChangeListener((voteView, position, previous, current) -> {
+            Post holder = (Post) voteView.getHolder();
+            if (holder == null) {
+                Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
+                return;
             }
-
-            @Override
-            public void onDownvote(VoteView view, boolean isActive) {
-                Record record = view.getHolder();
-                Notification notification = new Notification();
-                notification.pushDownvoteNotification(getApplicationContext(), record);
-
-                onVoteChange(view, isActive ? Vote.NONE : Vote.DOWNVOTE,
-                        isActive ? Vote.DOWNVOTE : Vote.NONE);
-            }
+            Notification notification = new Notification();
+            notification.pushUpvoteNotification(getApplicationContext(), holder);
+            questionDetailViewModel.updateVote(holder, position, previous, current);
         });
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
-        questionId = questionFromExtra.getId();
+        this.questionId = questionFromExtra.getId();
 
         QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(questionFromExtra);
         questionDetailViewModel = new ViewModelProvider(this, factory)
                 .get(QuestionDetailViewModel.class);
 
-        fetchAndObserve();
+        // questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
+        //     if (question == null) {
+        //         // TODO fetch question failed
+        //         return;
+        //     }
+        //     adapter.setQuestion(question);
+        // });
+        questionDetailViewModel.getPostLiveData().observe(this, posts -> {
+            adapter.setData(posts);
+        });
 
-        // FirebaseFirestore db = FirebaseFirestore.getInstance();
-        // db.collection("votes")
-        //         .whereEqualTo("authorId", "0FDZ97sbxRf17ac07Sx260inaPR2")
-        //         .whereIn(FieldPath.documentId(), Arrays.asList("5dEcqTo35b9QA1XoGg2o",
-        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
-        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI",
-        //                 "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI", "EZdvEFlTfBzv3QCcRhjI"))
-        //         .get()
-        //         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-        //             @Override
-        //             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-        //                 for (DocumentSnapshot doc : queryDocumentSnapshots) {
-        //                     Vote v = doc.toObject(Vote.class);
-        //                     Log.d("TEST", v.getId());
-        //                 }
-        //             }
-        //         });
-    }
-
-    public void fetchAndObserve() {
         questionDetailViewModel.getAnswers();
-
-        questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
-            if (question == null) {
-                // TODO fetch question failed
-                return;
-            }
-            adapter.updateQuestion(question);
-        });
-        questionDetailViewModel.getQuestionVoteLiveData().observe(this, vote -> {
-            if (vote == null) {
-                // Current vote for question is NONE or fetching failed, ignore
-                return;
-            }
-            adapter.updateQuestionVote(vote);
-        });
-        questionDetailViewModel.getAnswerLiveData().observe(this, answers -> {
-            if (answers == null) {
-                // TODO fetch failed
-                return;
-            }
-            adapter.addAnswers(answers);
-            // Extract answer ids to fetch votes
-            List<String> ids = new ArrayList<>();
-            for (Answer answer : answers) {
-                ids.add(answer.getId());
-            }
-            questionDetailViewModel.getAnswerVotes(ids);
-        });
-        questionDetailViewModel.getAnswerVoteLiveData().observe(this, stringVoteMap -> {
-            if (stringVoteMap == null) {
-                // TODO fetch failed
-                return;
-            }
-            adapter.addAnswerVotes(stringVoteMap);
-        });
     }
 
     private void startCreateAnswerActivity() {
         Intent intent = new Intent(getApplicationContext(), CreateAnswerActivity.class);
         intent.putExtra("questionId", questionId);
         startActivity(intent);
-    }
-
-    public void onVoteChange(VoteView view, @Vote.State int previousState, @Vote.State int currentState) {
-        Post post = (Post) view.getHolder();
-        if (post == null) {
-            Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
-            return;
-        }
-        if (post.getClass() == Question.class) {
-            questionDetailViewModel.setQuestionVote(previousState, currentState);
-        } else if (post.getClass() == Answer.class) {
-            questionDetailViewModel.setAnswerVote((Answer) post, previousState, currentState);
-        }
     }
 
     @Override
@@ -176,9 +101,9 @@ public class QuestionDetailActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel
-                .getQuestionLiveData()
-                .getValue());
+        // savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel
+        //         .getQuestionLiveData()
+        //         .getValue());
     }
 
     @NonNull

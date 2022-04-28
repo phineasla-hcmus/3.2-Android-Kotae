@@ -44,7 +44,7 @@ public class CommentRepository extends RecordRepository<Comment> {
                 .content(content)
                 .parent(postId)
                 .build();
-        collectionReference.add(comment)
+        collectionRef.add(comment)
                 .addOnSuccessListener(documentReference -> {
                     comment.setId(documentReference.getId());
                     taskCompletionSource.setResult(comment);
@@ -58,7 +58,7 @@ public class CommentRepository extends RecordRepository<Comment> {
     }
 
     public Task<List<Comment>> getListWithVotes(int limit) {
-        Task<QuerySnapshot> query = collectionReference
+        Task<QuerySnapshot> query = collectionRef
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
                 .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)
@@ -67,7 +67,7 @@ public class CommentRepository extends RecordRepository<Comment> {
     }
 
     public Task<List<Comment>> getListWithVotesAfter(Date previousDate, int limit) {
-        Task<QuerySnapshot> query = collectionReference
+        Task<QuerySnapshot> query = collectionRef
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
                 .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)

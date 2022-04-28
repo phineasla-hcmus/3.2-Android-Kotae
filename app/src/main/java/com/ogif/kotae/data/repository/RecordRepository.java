@@ -6,10 +6,12 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 
@@ -18,18 +20,22 @@ import java.util.List;
 
 public abstract class RecordRepository<T extends Record> {
     protected final FirebaseFirestore db;
-    protected final CollectionReference collectionReference;
-    protected final VoteRepository voteRepository;
+    protected final CollectionReference collectionRef;
+    @Nullable
+    protected VoteRepository voteRepository;
+
+    public RecordRepository(String collectionPath) {
+        this.db = FirebaseFirestore.getInstance();
+        this.collectionRef = db.collection(collectionPath);
+    }
 
     public RecordRepository(String collectionPath, String authorId) {
-        this.db = FirebaseFirestore.getInstance();
-        this.collectionReference = db.collection(collectionPath);
+        this(collectionPath);
         this.voteRepository = new VoteRepository(authorId);
     }
 
-    public RecordRepository(String collectionPath, VoteRepository voteRepository) {
-        this.db = FirebaseFirestore.getInstance();
-        this.collectionReference = db.collection(collectionPath);
+    public RecordRepository(String collectionPath, @NonNull VoteRepository voteRepository) {
+        this(collectionPath);
         this.voteRepository = voteRepository;
     }
 
@@ -38,8 +44,12 @@ public abstract class RecordRepository<T extends Record> {
 
     protected abstract List<T> toObjects(@NonNull QuerySnapshot snapshots);
 
+    public DocumentReference toDocumentRef(@NonNull T record) {
+        return collectionRef.document(record.getId());
+    }
+
     protected Task<DocumentSnapshot> getDocumentSnapshot(@NonNull String id) {
-        return collectionReference.document(id).get();
+        return collectionRef.document(id).get();
     }
 
     public Task<T> get(@NonNull String id) {
@@ -50,9 +60,17 @@ public abstract class RecordRepository<T extends Record> {
     }
 
     public Task<T> getWithVote(@NonNull String id) {
+        assert voteRepository != null : "voteRepository was not initialized, are you sure you want to use empty constructor RecordRepository()?";
         TaskCompletionSource<T> taskCompletionSource = new TaskCompletionSource<>();
         getDocumentSnapshot(id).addOnSuccessListener(snapshot -> {
-
+            T record = toObject(snapshot);
+            if (record == null)
+                return;
+            voteRepository.get(record.getId()).addOnSuccessListener(vote -> {
+                if (vote == null)
+                    return;
+                record.setVoteState(vote.getId(), vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE);
+            }).addOnFailureListener(taskCompletionSource::setException);
         }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
@@ -69,6 +87,7 @@ public abstract class RecordRepository<T extends Record> {
     }
 
     protected Task<List<T>> getListWithVotes(@NonNull Task<QuerySnapshot> task) {
+        assert voteRepository != null : "voteRepository was not initialized, are you sure you want to use empty constructor RecordRepository()?";
         TaskCompletionSource<List<T>> taskCompletionSource = new TaskCompletionSource<>();
         getList(task).addOnSuccessListener(records -> {
             List<String> recordIds = new ArrayList<>();

@@ -1,26 +1,20 @@
 package com.ogif.kotae.data.repository;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
-import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
@@ -32,19 +26,30 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-public class QuestionRepository {
+public class QuestionRepository extends RecordRepository<Question> {
     private static final String TAG = "QuestionRepository";
-    private final FirebaseFirestore db;
-    private final CollectionReference questionsRef;
-    private final MutableLiveData<StateWrapper<Question>> mutableLiveData;
-
-    private String orderBy = Question.Field.POST_TIME;
-    private Query.Direction orderByDirection = Query.Direction.DESCENDING;
 
     public QuestionRepository() {
-        this.db = FirebaseFirestore.getInstance();
-        this.questionsRef = db.collection("questions");
-        this.mutableLiveData = new MutableLiveData<>();
+        super(Global.COLLECTION_QUESTION);
+    }
+
+    public QuestionRepository(String authorId) {
+        super(Global.COLLECTION_QUESTION, authorId);
+    }
+
+    public QuestionRepository(VoteRepository voteRepository) {
+        super(Global.COLLECTION_QUESTION, voteRepository);
+    }
+
+    @Nullable
+    @Override
+    protected Question toObject(@NonNull DocumentSnapshot snapshot) {
+        return snapshot.toObject(Question.class);
+    }
+
+    @Override
+    protected List<Question> toObjects(@NonNull QuerySnapshot snapshots) {
+        return snapshots.toObjects(Question.class);
     }
 
     private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
@@ -57,53 +62,32 @@ public class QuestionRepository {
         }).addOnFailureListener(callback::onFailure);
     }
 
-    @NonNull
-    private Task<DocumentSnapshot> get(@NonNull String id) {
-        return questionsRef.document(id).get();
-    }
-
-    public DocumentReference toDocumentRef(@NonNull Question question) {
-        return questionsRef.document(question.getId());
-    }
-
     public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {
-        get(id).addOnSuccessListener(documentSnapshot -> callback.onSuccess(documentSnapshot.toObject(Question.class)))
+        get(id).addOnSuccessListener(callback::onSuccess)
                 .addOnFailureListener(callback::onFailure);
     }
 
     public void createQuestion(@NonNull String authorId, @NonNull String authorName, @NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
-
         Question question = new Question.Builder().title(title)
                 .author(authorId, authorName)
                 .content(content)
                 .subject(subjectId, subject)
                 .grade(gradeId, grade)
                 .build();
-        questionsRef.add(question).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error adding document", e);
-            }
-        });
-    }
-
-    public MutableLiveData<StateWrapper<Question>> getMutableLiveData() {
-        return mutableLiveData;
+        collectionRef.add(question)
+                .addOnSuccessListener(documentReference -> Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference
+                        .getId()))
+                .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
 
     public Query getHomeQuestions() {
-        return questionsRef.whereEqualTo("blocked", false)
+        return collectionRef.whereEqualTo("blocked", false)
                 .orderBy("postTime", Query.Direction.DESCENDING)
                 .limit(Global.QUERY_LIMIT);
     }
 
     public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {
-        Task<QuerySnapshot> query = questionsRef
+        Task<QuerySnapshot> query = collectionRef
                 .orderBy("title")
                 .startAt(keyword.toUpperCase())
                 .endAt(keyword.toLowerCase() + "\uf8ff")
@@ -117,13 +101,13 @@ public class QuestionRepository {
         if (questionsInput != null) {
             filteredQuestions = questionsInput;
         } else {
-            filteredQuestions = new ArrayList<Question>();
+            filteredQuestions = new ArrayList<>();
         }
-        ArrayList<Answer> answers = new ArrayList<Answer>();
+        ArrayList<Answer> answers = new ArrayList<>();
 
         final ArrayList<Question>[] result = new ArrayList[]{new ArrayList<Question>()};
 
-        Query queryQuestion = questionsRef.whereEqualTo("blocked", false)
+        Query queryQuestion = collectionRef.whereEqualTo("blocked", false)
                 .orderBy("upvote", Query.Direction.DESCENDING);
         queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -256,7 +240,7 @@ public class QuestionRepository {
         }
 
         // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple grade?)
-        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
+        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<>();
         for (String gradeId : lstGrades) {
             for (Question question : questions) {
                 if (question.getGradeId().equals(gradeId)) {
@@ -264,7 +248,7 @@ public class QuestionRepository {
                 }
             }
         }
-        return new ArrayList<Question>(tempQuestions);
+        return new ArrayList<>(tempQuestions);
     }
 
     private ArrayList<Question> filterQuestionBySubject(ArrayList<Question> questions, List<String> lstCourses) {
@@ -274,7 +258,7 @@ public class QuestionRepository {
         }
 
         // Use LinkedHashSet To Avoid Duplicate (1 Question has multiple subject?)
-        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<Question>();
+        LinkedHashSet<Question> tempQuestions = new LinkedHashSet<>();
         for (String courseId : lstCourses) {
             for (Question question : questions) {
                 if (question.getSubjectId().equals(courseId)) {
@@ -282,13 +266,13 @@ public class QuestionRepository {
                 }
             }
         }
-        return new ArrayList<Question>(tempQuestions);
+        return new ArrayList<>(tempQuestions);
     }
 
     public void getQuestionsOrderByReport(@NonNull TaskListener.State<ArrayList<Question>> callback) {
-        ArrayList<Question> questionArrayList = new ArrayList<Question>();
+        ArrayList<Question> questionArrayList = new ArrayList<>();
 
-        Query queryQuestion = questionsRef.orderBy("report", Query.Direction.DESCENDING);
+        Query queryQuestion = collectionRef.orderBy("report", Query.Direction.DESCENDING);
         queryQuestion.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -307,7 +291,7 @@ public class QuestionRepository {
     }
 
     public void blockQuestion(String questionID, boolean blocked, @NonNull TaskListener.State<Void> callback) {
-        DocumentReference ref = questionsRef.document(questionID);
+        DocumentReference ref = collectionRef.document(questionID);
         ref.update(
                 "blocked", blocked
         ).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -324,7 +308,7 @@ public class QuestionRepository {
     }
 
     public void getQuestionById(String questionID, @NonNull TaskListener.State<Question> callback) {
-        DocumentReference ref = questionsRef.document(questionID);
+        DocumentReference ref = collectionRef.document(questionID);
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -340,7 +324,7 @@ public class QuestionRepository {
     }
 
     public Query getFilterQuestionQuery(String sort, String status, ArrayList<String> lstGrades, ArrayList<String> lstCourses) {
-        Query query = questionsRef.whereEqualTo("blocked", false);
+        Query query = collectionRef.whereEqualTo("blocked", false);
         switch (sort) {
             case FilterQuestionActivity.SORT_MOST_VIEW: {
                 query = query.orderBy("upvote", Query.Direction.DESCENDING);

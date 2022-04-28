@@ -12,10 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -29,12 +25,12 @@ import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
-import com.ogif.kotae.utils.model.PostUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 
 /**
@@ -46,28 +42,25 @@ import java.util.Locale;
  * Multiple ViewHolder
  * </a>
  */
-public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class QuestionDetailAdapterOld extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int ITEM_TYPE_QUESTION = 0;
     private static final int ITEM_TYPE_ANSWER = 1;
 
     private final Context context;
-    private final List<Post> posts;
-    private OnVoteChangeListener voteChangeListener;
+    private Question question;
+    private Vote questionVote;
+    private final List<Answer> answers;
+    private final List<Vote> answerVotes;
+    private VoteView.OnStateChangeListener voteChangeListener;
 
-    /**
-     * Wrapper for {@link VoteView.OnStateChangeListener} to add position
-     */
-    public interface OnVoteChangeListener {
-        void onChange(VoteView view, int position, @Vote.State int previous, @Vote.State int current);
-    }
-
-    public QuestionDetailAdapter(Context context) {
+    public QuestionDetailAdapterOld(Context context) {
         this.context = context;
-        this.posts = new ArrayList<>();
+        this.question = null;
+        this.answers = new ArrayList<>();
+        this.answerVotes = new ArrayList<>();
     }
 
     private abstract static class PostHolder extends RecyclerView.ViewHolder {
-        // Views...
         protected final TextView content;
         protected final GridView images;
         protected final AuthorView author;
@@ -136,16 +129,18 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         switch (getItemViewType(position)) {
             case ITEM_TYPE_QUESTION: {
-                // Because question always at position 0
-                Question question = (Question) posts.get(0);
-                bindCommonView(viewHolder, question, 0);
-                bindQuestion((QuestionDetailHolder) viewHolder, question);
+                if (question == null)
+                    return;
+                bindCommonView(viewHolder, question, questionVote);
+                bindQuestion((QuestionDetailHolder) viewHolder);
                 break;
             }
             case ITEM_TYPE_ANSWER: {
                 // Because question always at position 0
-                Answer answer = (Answer) posts.get(position);
-                bindCommonView(viewHolder, answer, position);
+                Answer answer = answers.get(position - 1);
+                // answerVotes might not done fetching yet
+                Vote v = answerVotes.isEmpty() ? null : answerVotes.get(position - 1);
+                bindCommonView(viewHolder, answer, v);
                 bindAnswer((AnswerHolder) viewHolder, answer);
                 break;
             }
@@ -155,7 +150,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public int getItemCount() {
         // Answer + question
-        return posts.size();
+        return answers.size() + 1;
     }
 
     @Override
@@ -164,52 +159,64 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         return position == 0 ? ITEM_TYPE_QUESTION : ITEM_TYPE_ANSWER;
     }
 
-    public void setData(@NonNull List<Post> posts) {
-        PostUtils.ListComparator listComparator = new PostUtils.ListComparator(this.posts, posts);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(listComparator);
-
-        this.posts.clear();
-        this.posts.addAll(posts);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void setQuestion(@NonNull Question question) {
-        this.posts.set(0, question);
+    public void updateQuestion(@NonNull Question question) {
+        this.question = question;
         notifyItemChanged(0);
     }
 
-    public void addAnswer(@NonNull Answer answer) {
-        this.posts.add(answer);
-        notifyItemInserted(posts.size());
+    /**
+     * @implNote will be stored as null if current user hasn't voted the question
+     */
+    public void updateQuestionVote(@Nullable Vote vote) {
+        this.questionVote = vote;
+        notifyItemChanged(0);
     }
 
     public void addAnswers(@NonNull List<Answer> answers) {
-        this.posts.addAll(answers);
-        notifyItemRangeInserted(posts.size(), answers.size());
+        this.answers.addAll(answers);
+        notifyItemRangeInserted(1, answers.size());
+    }
+
+    /**
+     * @implNote any answer that user hasn't voted (aka answerVotes.containKey(answerId) == false)
+     * will be stored as null
+     */
+    public void addAnswerVotes(@NonNull Map<String, Vote> answerVotes) {
+        List<Vote> votes = new ArrayList<>(answers.size());
+        for (Answer answer : answers) {
+            votes.add(answerVotes.getOrDefault(answer.getId(), null));
+        }
+        this.answerVotes.addAll(votes);
+        notifyItemRangeInserted(1, answerVotes.size());
     }
 
     public void clear() {
+        question = null;
+        questionVote = null;
+        answers.clear();
+        answerVotes.clear();
+    }
+
+    public void clearAndNotify() {
         int n = getItemCount();
-        posts.clear();
+        clear();
         notifyItemRangeRemoved(0, n);
     }
 
     /**
      * Bind common Question and Answer views.
      */
-    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post, int position) {
+    public void bindCommonView(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull Post post, @Nullable Vote vote) {
         PostHolder holder = (PostHolder) viewHolder;
-
         MarkdownUtils.setMarkdown(context, post.getContent(), holder.content);
-
+        // RecyclerView.LayoutManager imagesLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+        // holder.images.setLayoutManager(imagesLayoutManager);
         holder.author.setName(post.getAuthor());
         holder.author.setReputation(post.getXp());
-        holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), post.getVoteState());
+        int voteState = vote == null ? Vote.NONE : vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE;
+        holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), voteState);
         holder.vote.setHolder(post);
-        holder.vote.setOnStateChangeListener((view, previous, current) -> {
-            if (voteChangeListener != null)
-                voteChangeListener.onChange(view, position, previous, current);
-        });
+        holder.vote.setOnStateChangeListener(voteChangeListener);
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
         holder.comment.setOnClickListener(v -> {
             CommentFragment bottomSheetDialogCommentFragment = CommentFragment.newInstance(post);
@@ -218,7 +225,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         // TODO bind author avatar
     }
 
-    public void bindQuestion(@NonNull QuestionDetailHolder holder, Question question) {
+    public void bindQuestion(@NonNull QuestionDetailHolder holder) {
         holder.title.setText(question.getTitle());
         holder.subject.setText(question.getSubject());
         holder.grade.setText(question.getGrade());
@@ -240,7 +247,7 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         });
     }
 
-    private void showBottomSheetDialogFragment(@NonNull CommentFragment bottomSheet) {
+    private void showBottomSheetDialogFragment(CommentFragment bottomSheet) {
         if (!bottomSheet.isAdded()) {
             QuestionDetailActivity activity = (QuestionDetailActivity) context;
             bottomSheet.show(activity.getSupportFragmentManager(), bottomSheet.getTag());
@@ -251,11 +258,11 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     }
 
-    public OnVoteChangeListener getOnVoteChangeListener() {
+    public VoteView.OnStateChangeListener getOnVoteChangeListener() {
         return voteChangeListener;
     }
 
-    public void setOnVoteChangeListener(@Nullable OnVoteChangeListener listener) {
+    public void setOnVoteChangeListener(@Nullable VoteView.OnStateChangeListener listener) {
         this.voteChangeListener = listener;
     }
 }

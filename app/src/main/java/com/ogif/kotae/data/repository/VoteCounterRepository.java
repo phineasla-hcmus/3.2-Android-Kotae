@@ -44,6 +44,12 @@ public class VoteCounterRepository {
         return increment(c, Global.COLLECTION_COMMENT, isUpvote, false);
     }
 
+    public Task<Void> increment(@NonNull Post p, boolean isUpvote) {
+        return p.getClass() == Question.class
+                ? increment((Question) p, isUpvote)
+                : increment((Answer) p, isUpvote);
+    }
+
     public Task<Void> increment(@NonNull Question q, boolean isUpvote) {
         return increment(q, Global.COLLECTION_QUESTION, isUpvote, true);
     }
@@ -68,6 +74,12 @@ public class VoteCounterRepository {
 
     public Task<Void> decrement(@NonNull Comment c, boolean isUpvote) {
         return decrement(c, Global.COLLECTION_COMMENT, isUpvote, false);
+    }
+
+    public Task<Void> decrement(@NonNull Post p, boolean isUpvote) {
+        return p.getClass() == Question.class
+                ? decrement((Question) p, isUpvote)
+                : decrement((Answer) p, isUpvote);
     }
 
     public Task<Void> decrement(@NonNull Question q, boolean isUpvote) {

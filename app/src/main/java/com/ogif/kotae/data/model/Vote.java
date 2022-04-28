@@ -1,6 +1,7 @@
 package com.ogif.kotae.data.model;
 
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.DocumentId;
 

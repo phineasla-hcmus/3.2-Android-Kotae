@@ -35,10 +35,20 @@ public class VoteView extends ConstraintLayout {
     protected Button downvote;
     protected OnStateChangeListener listener;
 
+    /**
+     * On state change from {@link Vote#UPVOTE} to {@link Vote#DOWNVOTE} or vice versa,
+     * this callback will be invoked twice.
+     * Example, when switch from {@link Vote#DOWNVOTE} to {@link Vote#UPVOTE}, the following code
+     * will be executed:
+     * <ol>
+     *     <li><code>onVoteStateChanged(group, RES_DOWNVOTE, false)</code></li>
+     *     <li><code>onVoteStateChanged(group, RES_UPVOTE, true)</code></li>
+     * </ol>
+     *
+     * @see MaterialButtonToggleGroup.OnButtonCheckedListener
+     */
     public interface OnStateChangeListener {
-        void onUpvote(VoteView view, boolean isActive);
-
-        void onDownvote(VoteView view, boolean isActive);
+        void onChange(VoteView view, @Vote.State int previous, @Vote.State int current);
     }
 
     public VoteView(@NonNull Context context) {
@@ -77,28 +87,22 @@ public class VoteView extends ConstraintLayout {
         if (checkedId == RES_UPVOTE) {
             if (isChecked) {
                 setUpvoteValue(getUpvoteValue() + 1);
-                if (listener != null)
-                    listener.onUpvote(this, true);
                 setVoteState(Vote.UPVOTE);
             } else {
                 setUpvoteValue(getUpvoteValue() - 1);
-                if (listener != null)
-                    listener.onUpvote(this, false);
                 setVoteState(Vote.NONE);
             }
         } else if (checkedId == RES_DOWNVOTE) {
             if (isChecked) {
                 setDownvoteValue(getDownvoteValue() + 1);
-                if (listener != null)
-                    listener.onDownvote(this, true);
                 setVoteState(Vote.DOWNVOTE);
             } else {
                 setDownvoteValue(getDownvoteValue() - 1);
-                if (listener != null)
-                    listener.onDownvote(this, false);
                 setVoteState(Vote.NONE);
             }
-        }
+        } else return;
+        if (listener != null)
+            listener.onChange(this, previousState, currentState);
     }
 
     protected void inflate() {
@@ -124,6 +128,11 @@ public class VoteView extends ConstraintLayout {
 
     protected void setDownvoteText() {
         downvote.setText(String.format(Locale.getDefault(), "%d", downvoteCount));
+    }
+
+    protected void setVoteState(@Vote.State int state) {
+        this.previousState = this.currentState;
+        this.currentState = state;
     }
 
     // public void setVoteState(int state) {
@@ -153,27 +162,22 @@ public class VoteView extends ConstraintLayout {
     //     this.currentState = state;
     // }
 
-    protected void setVoteState(@Vote.State int state) {
-        this.previousState = this.currentState;
-        this.currentState = state;
-    }
-
-    public void revert() {
-        if (previousState == currentState)
-            return;
-        if (previousState == Vote.NONE)
-            setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
-                    currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
-                    previousState);
-        else if (previousState == Vote.UPVOTE)
-            setVoteState(upvoteCount + 1,
-                    currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
-                    previousState);
-        else if (previousState == Vote.DOWNVOTE)
-            setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
-                    downvoteCount + 1,
-                    previousState);
-    }
+    // public void revert() {
+    //     if (previousState == currentState)
+    //         return;
+    //     if (previousState == Vote.NONE)
+    //         setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
+    //                 currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
+    //                 previousState);
+    //     else if (previousState == Vote.UPVOTE)
+    //         setVoteState(upvoteCount + 1,
+    //                 currentState == Vote.DOWNVOTE ? downvoteCount - 1 : downvoteCount,
+    //                 previousState);
+    //     else if (previousState == Vote.DOWNVOTE)
+    //         setVoteState(currentState == Vote.UPVOTE ? upvoteCount - 1 : upvoteCount,
+    //                 downvoteCount + 1,
+    //                 previousState);
+    // }
 
     /**
      * Set state without calling {@link OnStateChangeListener}
@@ -195,8 +199,12 @@ public class VoteView extends ConstraintLayout {
         setVoteState(state);
     }
 
-    public int getVoteState() {
+    public int getCurrentState() {
         return currentState;
+    }
+
+    public int getPreviousState() {
+        return previousState;
     }
 
     public void setOnStateChangeListener(@Nullable OnStateChangeListener listener) {

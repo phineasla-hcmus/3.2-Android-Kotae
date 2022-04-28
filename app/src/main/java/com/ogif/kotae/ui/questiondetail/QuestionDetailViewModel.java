@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.data.repository.AnswerRepository;
@@ -21,41 +22,38 @@ import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class QuestionDetailViewModel extends ViewModel {
     private static final String TAG = "QuestionDetailViewModel";
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
     // Create new vote
     private final VoteRepository voteRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
     // Increment/decrement counter for both answer and question
     private final VoteCounterRepository voteCounterRepository;
-    private final MutableLiveData<Question> questionLiveData;
-    private final MutableLiveData<Vote> questionVoteLiveData;
-    private final MutableLiveData<List<Answer>> answerLiveData;
-    private final MutableLiveData<Map<String, Vote>> answerVoteLiveData;
+
+    private final MutableLiveData<List<Post>> postLiveData;
 
     public QuestionDetailViewModel() {
         AuthRepository userRepository = new AuthRepository();
         String userId = Objects.requireNonNull(userRepository.getCurrentFirebaseUser()).getUid();
 
-        this.questionRepository = new QuestionRepository();
-        this.answerRepository = new AnswerRepository();
         this.voteRepository = new VoteRepository(userId);
+        this.questionRepository = new QuestionRepository(this.voteRepository);
+        this.answerRepository = new AnswerRepository(this.voteRepository);
         this.voteCounterRepository = new VoteCounterRepository();
 
-        this.questionLiveData = new MutableLiveData<>();
-        this.questionVoteLiveData = new MutableLiveData<>();
-        this.answerLiveData = new MutableLiveData<>();
-        this.answerVoteLiveData = new MutableLiveData<>();
+        this.postLiveData = new MutableLiveData<>(new ArrayList<>());
     }
 
     public QuestionDetailViewModel(Question question) {
         this();
-        this.questionLiveData.setValue(question);
+        List<Post> posts = getLocalPosts();
+        posts.add(question);
+        this.postLiveData.setValue(posts);
     }
 
     /**
@@ -66,130 +64,87 @@ public class QuestionDetailViewModel extends ViewModel {
         questionRepository.get(id, new TaskListener.State<Question>() {
             @Override
             public void onSuccess(@Nullable Question result) {
-                questionLiveData.postValue(result);
+                if (result == null)
+                    return;
+                List<Post> posts = getLocalPosts();
+                posts.set(0, result);
+                postLiveData.postValue(posts);
             }
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                questionLiveData.postValue(null);
+                Log.d(TAG, "getQuestion: Failed with" + e.getMessage());
             }
         });
     }
 
     public void getAnswers() {
-        String questionId = Objects.requireNonNull(questionLiveData.getValue()).getId();
+        List<Post> posts = postLiveData.getValue();
+        assert posts != null : "postLiveData should never be null";
+        String questionId = posts.get(0).getId();
         answerRepository.getListByQuestion(questionId, Global.QUERY_LIMIT, new TaskListener.State<List<Answer>>() {
             @Override
             public void onSuccess(List<Answer> result) {
-                answerLiveData.postValue(result);
+                List<Post> posts = postLiveData.getValue();
+                assert posts != null : "postLiveData should never be null";
+                posts.addAll(result);
+                postLiveData.postValue(posts);
             }
 
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Failed to getAnswer(): " + e.getMessage());
-                answerLiveData.postValue(null);
+                Log.w(TAG, "getAnswer(): Failed with" + e.getMessage());
             }
         });
     }
 
-    public void getQuestionVote(String id) {
-        voteRepository.get(id, new TaskListener.State<Vote>() {
-            @Override
-            public void onSuccess(@Nullable Vote result) {
-                questionVoteLiveData.postValue(result);
-            }
+    public void updateVote(@NonNull Post holder, int position, @Vote.State int previousState, @Vote.State int currentState) {
+        Task<?> voteTask = null;
+        Task<Void> counterTask;
 
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Failed to getQuestionVote(): " + e.getMessage());
-                questionVoteLiveData.postValue(null);
-            }
-        });
-    }
-
-    public void setQuestionVote(@Vote.State int previousState, @Vote.State int currentState) {
-        Question question = questionLiveData.getValue();
-        Vote vote = questionVoteLiveData.getValue();
-        if (question == null)
+        if (previousState == Vote.NONE && currentState == Vote.NONE) {
+            Log.w(TAG, "updateVote: previousState and currentState should not all NONE");
             return;
-        // User hasn't voted yet, previousState should also be NONE, if not, recheck the logic
-        if (vote == null) {
-            // Vote.NONE is the same as vote == null (not existed on database) -> no change -> ignore
-            if (currentState == Vote.NONE)
+        }
+        if (previousState == Vote.NONE) {
+            boolean isUpvote = currentState == Vote.UPVOTE;
+            voteTask = voteRepository.create(holder.getId(), isUpvote);
+            counterTask = voteCounterRepository.increment(holder, isUpvote);
+        } else {
+            if (holder.getVoteId() == null) {
+                Log.w(TAG, "updateVote: holder.getVoteId() == null, please recheck your logic");
                 return;
-            // Create new vote on database
-            Task<Void> voteTask = voteRepository.set(question.getId(), currentState);
-            Task<Void> counterTask = voteCounterRepository.increment(question, currentState == Vote.UPVOTE);
-            Tasks.whenAll(voteTask, counterTask).addOnSuccessListener(aVoid -> {
-                // TODO do something
-            }).addOnFailureListener(e -> {
-                // TODO idk help me
-            });
-        }
-        // Existing vote, just update it
-        else {
-            Task<Void> voteTask = voteRepository.set(vote, currentState);
-            Task<Void> counterTask;
-            if (currentState == Vote.NONE) {
-                counterTask = voteCounterRepository.decrement(question, previousState == Vote.UPVOTE);
-                Tasks.whenAll(voteTask, counterTask).addOnSuccessListener(aVoid -> {
-                    questionVoteLiveData.setValue(null);
-                });
             }
+            voteTask = voteRepository.delete(holder.getVoteId());
+            counterTask = voteCounterRepository.decrement(holder, previousState == Vote.UPVOTE);
         }
-    }
-
-    public void setAnswerVote(Answer holder, @Vote.State int previousState, @Vote.State int currentState) {
-        Question question = questionLiveData.getValue();
-        Vote vote = questionVoteLiveData.getValue();
-        if (question == null)
-            return;
-        if (vote == null) {
-            if (currentState == Vote.NONE)
-                return;
-            if (currentState == Vote.UPVOTE) {
-                // voteRepository.set
+        Tasks.whenAllComplete(voteTask, counterTask).addOnSuccessListener(tasks -> {
+            Task<?> voteResult = tasks.get(0);
+            Task<?> counterResult = tasks.get(1);
+            if (voteResult.isSuccessful() && counterResult.isSuccessful()) {
+                @Nullable String voteId = (String) voteResult.getResult();
+                Post post = getLocalPosts().get(position);
+                post.setVoteState(voteId, currentState);
             }
-        }
-    }
-
-    /**
-     * Fetch all votes related to the user, the result will be in
-     * {@link QuestionDetailViewModel#answerVoteLiveData}, if fetching data failed,
-     * {@link QuestionDetailViewModel#answerVoteLiveData} will produce null
-     */
-    public void getAnswerVotes(List<String> recordIds) {
-        voteRepository.getList(recordIds, new TaskListener.State<Map<String, Vote>>() {
-            @Override
-            public void onSuccess(Map<String, Vote> result) {
-                answerVoteLiveData.postValue(result);
-            }
-
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Failed to getAnswerVotes(): " + e.getMessage());
-                answerVoteLiveData.postValue(null);
+            if (!tasks.get(0).isSuccessful() && tasks.get(1).isSuccessful()) {
+                // TODO revert counterTask
+            } else if (!tasks.get(1).isSuccessful() && tasks.get(0).isSuccessful()) {
+                // TODO revert voteTask
             }
         });
     }
 
-    public LiveData<Question> getQuestionLiveData() {
-        return questionLiveData;
+    public Question getLocalQuestion() {
+        return (Question) getLocalPosts().get(0);
     }
 
-    public LiveData<Vote> getQuestionVoteLiveData() {
-        return questionVoteLiveData;
+    public List<Post> getLocalPosts() {
+        List<Post> posts = this.postLiveData.getValue();
+        assert posts != null : "postLiveData should never be null";
+        return posts;
     }
 
-    public LiveData<List<Answer>> getAnswerLiveData() {
-        return answerLiveData;
-    }
-
-    /**
-     * A map of record ID and Vote that is in either state: Vote.UPVOTE or Vote.DOWNVOTE.
-     * Caller should use Map.getOrDefault(Object, Object)
-     */
-    public LiveData<Map<String, Vote>> getAnswerVoteLiveData() {
-        return answerVoteLiveData;
+    public LiveData<List<Post>> getPostLiveData() {
+        return postLiveData;
     }
 }
