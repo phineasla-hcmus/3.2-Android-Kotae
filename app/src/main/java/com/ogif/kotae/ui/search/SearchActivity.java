@@ -4,9 +4,7 @@ import static android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN;
 import static android.view.WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE;
 
-import android.animation.TimeInterpolator;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
@@ -28,8 +25,8 @@ import com.ogif.kotae.databinding.ActivitySearchBinding;
 import com.ogif.kotae.ui.SearchViewModel;
 import com.ogif.kotae.ui.main.FilterQuestionActivity;
 import com.ogif.kotae.ui.search.adapter.SearchAdapter;
-import com.ogif.kotae.utils.ui.AnimationUtils;
 import com.ogif.kotae.utils.DataProvider;
+import com.ogif.kotae.utils.ui.AnimationUtils;
 import com.ogif.kotae.utils.ui.HeaderedRecyclerViewListener;
 import com.ogif.kotae.utils.ui.VerticalSpacingItemDecorator;
 import com.paulrybitskyi.commons.ktx.NumberUtils;
@@ -116,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         persistentSearchView.showRightButton();
         persistentSearchView.setVoiceRecognitionDelegate(new VoiceRecognitionDelegate(this));
         OnSearchConfirmedListener mOnSearchConfirmedListener = (searchView, query) -> {
-            SearchActivity.this.saveSearchQueryIfNecessary(query);
+            SearchActivity.this.saveSearchQuery(query);
             searchView.collapse();
 
             SearchActivity.this.performSearch(query);
@@ -136,7 +133,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onSuggestionPicked(SuggestionItem suggestion) {
                 String query = suggestion.getItemModel().getText();
-                saveSearchQueryIfNecessary(query);
+                saveSearchQuery(query);
                 setSuggestions(dataProvider.getSuggestionsForQuery(query), false);
                 performSearch(query);
             }
@@ -166,29 +163,29 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initRecyclerView() {
-        binding.rvSearch.setLayoutManager((RecyclerView.LayoutManager) this.initLayoutManager());
+        binding.rvSearch.setLayoutManager(this.initLayoutManager());
         binding.rvSearch.setAdapter(this.initAdapter());
-        binding.rvSearch.addItemDecoration((RecyclerView.ItemDecoration) this.initVerticalSpacingItemDecorator());
-        binding.rvSearch.addOnScrollListener((RecyclerView.OnScrollListener) this.initHeaderedRecyclerViewListener());
+        binding.rvSearch.addItemDecoration(this.initVerticalSpacingItemDecorator());
+        binding.rvSearch.addOnScrollListener(this.initHeaderedRecyclerViewListener());
     }
 
     private LinearLayoutManager initLayoutManager() {
-        return new LinearLayoutManager((Context) this);
+        return new LinearLayoutManager(this);
     }
 
     private SearchAdapter initAdapter() {
-        SearchAdapter adapter = new SearchAdapter((Context) this, this.items);
+        SearchAdapter adapter = new SearchAdapter(this, this.items);
         this.adapter = adapter;
 
         return adapter;
     }
 
     private VerticalSpacingItemDecorator initVerticalSpacingItemDecorator() {
-        return new VerticalSpacingItemDecorator(NumberUtils.dpToPx(2, (Context) this), NumberUtils.dpToPx(2, (Context) this));
+        return new VerticalSpacingItemDecorator(NumberUtils.dpToPx(2, this), NumberUtils.dpToPx(2, this));
     }
 
     private HeaderedRecyclerViewListener initHeaderedRecyclerViewListener() {
-        return (HeaderedRecyclerViewListener) (new HeaderedRecyclerViewListener((Context) this) {
+        return new HeaderedRecyclerViewListener(this) {
             public void showHeader() {
                 AnimationUtils.INSTANCE.showHeader(binding.persistentSearchView);
             }
@@ -196,10 +193,10 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             public void hideHeader() {
                 AnimationUtils.INSTANCE.hideHeader(binding.persistentSearchView);
             }
-        });
+        };
     }
 
-    private void saveSearchQueryIfNecessary(String query) {
+    private void saveSearchQuery(String query) {
         this.dataProvider.saveSearchQuery(query);
     }
 
@@ -220,9 +217,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void performSearch(String query) {
-        ViewUtils.makeGone((View) binding.llSearchEmptyView);
+        ViewUtils.makeGone(binding.llSearchEmptyView);
         binding.rvSearch.setAlpha(0.0F);
-        ViewUtils.makeVisible((View) binding.pbSearch);
+        ViewUtils.makeVisible(binding.pbSearch);
         this.adapter.clear();
 
         this.viewModel.getQuestions(query);
@@ -258,8 +255,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             persistentSearchView.showLeftButton();
             adapter.setItems(items);
 //            adapter.notifyItemRangeInserted(0, items.size());
-            ViewUtils.makeGone((View) binding.pbSearch);
-            binding.rvSearch.animate().alpha(1.0F).setInterpolator((TimeInterpolator) (new LinearInterpolator())).setDuration(300L).start();
+            ViewUtils.makeGone(binding.pbSearch);
+            binding.rvSearch.animate().alpha(1.0F).setInterpolator(new LinearInterpolator()).setDuration(300L).start();
         };
         (new Handler()).postDelayed(runnable, 1000L);
         binding.persistentSearchView.hideLeftButton(false);
