@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Comment;
+import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.utils.model.CommentUtils;
 
@@ -20,14 +21,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private final List<Comment> comments;
-    private final Context context;
+public class CommentAdapter extends RecordAdapter<Comment> {
 
     public CommentAdapter(Context context) {
-        this.context = context;
-        this.comments = new ArrayList<>();
+        super(context);
     }
 
     private static class CommentHolder extends RecyclerView.ViewHolder {
@@ -53,27 +50,20 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Comment comment = comments.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
+        Comment comment = items.get(position);
 
-        CommentHolder commentHolder = (CommentHolder) holder;
-        commentHolder.avatar.setImageResource(R.drawable.ic_placeholder_user);
-        commentHolder.content.setText(comment.getContent());
-        commentHolder.username.setText(comment.getAuthor());
-        commentHolder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), comment.getVoteState());
+        CommentHolder holder = (CommentHolder) viewHolder;
+        holder.avatar.setImageResource(R.drawable.ic_placeholder_user);
+        holder.content.setText(comment.getContent());
+        holder.username.setText(comment.getAuthor());
+        holder.vote.setHolder(comment);
+        holder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), comment.getVoteState());
+
     }
 
     @Override
-    public int getItemCount() {
-        return comments.size();
-    }
-
-    public void setData(@NonNull List<Comment> comments) {
-        CommentUtils.ListComparator listComparator = new CommentUtils.ListComparator(this.comments, comments);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(listComparator);
-
-        this.comments.clear();
-        this.comments.addAll(comments);
-        diffResult.dispatchUpdatesTo(this);
+    public void setItems(@NonNull List<Comment> items) {
+        setItems(items, new CommentUtils.ListComparator(items, this.items));
     }
 }

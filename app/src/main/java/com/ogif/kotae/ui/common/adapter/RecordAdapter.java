@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.common.view.VoteView;
-import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 import com.ogif.kotae.utils.model.RecordUtils;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import java.util.List;
 public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected final Context context;
     protected final List<T> items;
-    private OnVoteChangeListener voteChangeListener;
+    protected OnVoteChangeListener voteChangeListener;
 
     /**
      * Wrapper for {@link VoteView.OnStateChangeListener} to add position
@@ -38,6 +37,14 @@ public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapt
         return items.size();
     }
 
+    public T getItem(int position) {
+        return this.items.get(position);
+    }
+
+    public void setItem(int position, @NonNull T item) {
+        this.items.set(position, item);
+    }
+
     public <U extends RecordUtils.ListComparator<T>> void setItems(@NonNull List<T> items, U comparator) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(comparator);
         this.items.clear();
@@ -46,6 +53,21 @@ public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapt
     }
 
     public abstract void setItems(@NonNull List<T> items);
+
+    public void addItem(@NonNull T item) {
+        this.items.add(item);
+        notifyItemInserted(this.items.size() - 1);
+    }
+
+    public void addItems(@NonNull List<? extends T> items) {
+        int start = this.items.size();
+        this.items.addAll(items);
+        notifyItemRangeInserted(start, items.size());
+    }
+
+    public OnVoteChangeListener getVoteChangeListener() {
+        return voteChangeListener;
+    }
 
     public void setOnVoteChangeListener(@Nullable OnVoteChangeListener listener) {
         this.voteChangeListener = listener;
