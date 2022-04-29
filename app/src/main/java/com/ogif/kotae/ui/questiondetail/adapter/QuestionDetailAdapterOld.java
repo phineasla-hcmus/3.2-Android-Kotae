@@ -21,7 +21,7 @@ import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
-import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;

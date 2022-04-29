@@ -7,10 +7,15 @@
         android:contentDescription="@string/all_bookmark"
         android:icon="@drawable/ic_baseline_bookmark_border"
         android:title="@string/all_bookmark"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_report"
         android:icon="@drawable/ic_outline_report"
-        android:title="@string/all_report" />
+        android:title="@string/menu_report_question" />
+
+    <item
+        android:id="@+id/menu_refresh"
+        android:title="@string/menu_refresh"
+        app:showAsAction="never" />
 </menu>

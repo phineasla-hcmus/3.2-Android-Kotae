@@ -83,7 +83,7 @@
     <string name="question_all">Tất cả</string>
     <string name="question_answered">Đã trã lời</string>
     <string name="question_detail_comment">Bình luận</string>
-    <string name="all_report">Báo cáo</string>
+    <string name="menu_report_question">Báo cáo</string>
     <string name="question_sort">Sắp xếp</string>
     <string name="question_sort_most_view">Xem nhiều nhất</string>
     <string name="question_sort_top_month">Xem nhiều nhất tháng</string>

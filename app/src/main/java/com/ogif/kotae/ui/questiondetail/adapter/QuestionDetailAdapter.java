@@ -12,9 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,7 +22,7 @@ import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Vote;
-import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
@@ -40,7 +37,6 @@ import java.util.Locale;
 /**
  * @implSpec <ul>
  * <li>Question will always at position 0</li>
- * <li>{@link Vote#NONE is represented by null value}</li>
  * </ul>
  * @see <a href="https://stackoverflow.com/questions/26245139/how-to-create-recyclerview-with-multiple-view-types">
  * Multiple ViewHolder
@@ -67,7 +63,6 @@ public class QuestionDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     private abstract static class PostHolder extends RecyclerView.ViewHolder {
-        // Views...
         protected final TextView content;
         protected final GridView images;
         protected final AuthorView author;

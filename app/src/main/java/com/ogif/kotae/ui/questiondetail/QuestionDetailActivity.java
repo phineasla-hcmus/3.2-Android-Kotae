@@ -16,13 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.ogif.kotae.R;
-import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
-import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.fcm.Notification;
-import com.ogif.kotae.ui.VoteView;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 
@@ -71,6 +68,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
         QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(questionFromExtra);
         questionDetailViewModel = new ViewModelProvider(this, factory)
                 .get(QuestionDetailViewModel.class);
+
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> {
+            // questionDetailViewModel
+        });
 
         // questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
         //     if (question == null) {

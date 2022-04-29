@@ -16,7 +16,7 @@
     <string name="all_upvote" translatable="false">Upvote</string>
     <string name="all_user">User</string>
     <string name="all_username">Username</string>
-    <string name="all_report">Report question</string>
+    <string name="menu_report_question">Report question</string>
     <string name="app_name" translatable="false">Kotae</string>
     <string name="bottom_nav_admin">Admin</string>
     <string name="bottom_nav_home">Home</string>
@@ -119,4 +119,5 @@
     <string name="channel_upvote_downvote_description">To show notification about upvote, down vote of your questions</string>
     <string name="channel_comment_name">Comment channel</string>
     <string name="channel_comment_description">To show notification about comments of your questions</string>
+    <string name="menu_refresh">Refresh</string>
 </resources>

@@ -3,5 +3,5 @@
     <item
         android:id="@+id/menu_report"
         android:icon="@drawable/ic_outline_report"
-        android:title="@string/all_report" />
+        android:title="@string/menu_report_question" />
 </menu>

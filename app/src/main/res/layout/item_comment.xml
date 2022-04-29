@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_comment_username"
         tools:text="@tools:sample/lorem/random" />
 
-    <com.ogif.kotae.ui.VoteView
+    <com.ogif.kotae.ui.common.view.VoteView
         android:id="@+id/tv_comment_vote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

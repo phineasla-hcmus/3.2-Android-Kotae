@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_answer_content" />
 
-    <com.ogif.kotae.ui.VoteView
+    <com.ogif.kotae.ui.common.view.VoteView
         android:id="@+id/vote_view_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

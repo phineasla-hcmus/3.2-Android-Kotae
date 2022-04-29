@@ -115,7 +115,7 @@
             tools:text="Lớp 5" />
     </com.google.android.material.chip.ChipGroup>
 
-    <com.ogif.kotae.ui.VoteView
+    <com.ogif.kotae.ui.common.view.VoteView
         android:id="@+id/vote_view_question_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

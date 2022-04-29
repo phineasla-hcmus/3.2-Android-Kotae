@@ -21,7 +21,7 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.QuestionViewModel;
-import com.ogif.kotae.ui.VerticalVoteView;
+import com.ogif.kotae.ui.common.view.VerticalVoteView;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.utils.DateUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;

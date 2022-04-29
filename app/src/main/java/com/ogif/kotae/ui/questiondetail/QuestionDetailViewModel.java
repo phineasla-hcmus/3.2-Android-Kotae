@@ -23,6 +23,7 @@ import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +36,7 @@ public class QuestionDetailViewModel extends ViewModel {
     // Increment/decrement counter for both answer and question
     private final VoteCounterRepository voteCounterRepository;
 
+    private final List<Post> posts;
     private final MutableLiveData<List<Post>> postLiveData;
 
     public QuestionDetailViewModel() {
@@ -46,7 +48,8 @@ public class QuestionDetailViewModel extends ViewModel {
         this.answerRepository = new AnswerRepository(this.voteRepository);
         this.voteCounterRepository = new VoteCounterRepository();
 
-        this.postLiveData = new MutableLiveData<>(new ArrayList<>());
+        this.posts = new ArrayList<>();
+        this.postLiveData = new MutableLiveData<>();
     }
 
     public QuestionDetailViewModel(Question question) {
@@ -139,12 +142,14 @@ public class QuestionDetailViewModel extends ViewModel {
     }
 
     public List<Post> getLocalPosts() {
-        List<Post> posts = this.postLiveData.getValue();
-        assert posts != null : "postLiveData should never be null";
-        return posts;
+        return Collections.unmodifiableList(posts);
     }
 
     public LiveData<List<Post>> getPostLiveData() {
         return postLiveData;
+    }
+
+    public void clear() {
+
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Comment;
-import com.ogif.kotae.data.model.Vote;
-import com.ogif.kotae.ui.VoteView;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.utils.model.CommentUtils;
 
 import java.util.ArrayList;
