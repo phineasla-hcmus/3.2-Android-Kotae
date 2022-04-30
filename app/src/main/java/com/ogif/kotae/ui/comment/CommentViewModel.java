@@ -11,9 +11,10 @@ import com.google.android.gms.tasks.Task;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.repository.CommentRepository;
+import com.ogif.kotae.data.repository.VoteCounterRepository;
+import com.ogif.kotae.data.repository.VoteRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -21,13 +22,19 @@ import java.util.List;
 public class CommentViewModel extends ViewModel {
     private static final String TAG = "CommentViewModel";
     private final CommentRepository commentRepository;
+    private final VoteRepository voteRepository;
+    private final VoteCounterRepository voteCounterRepository;
+
     private final List<Comment> comments;
     // null indicates as initial value or query error
-    // Empty list indicates as query successful but no comment
+    // Empty list indicates as successful but no data
     private final MutableLiveData<List<Comment>> commentLiveData;
 
     public CommentViewModel(String userId, String username, String postId) {
         this.commentRepository = new CommentRepository(userId, username, postId);
+        this.voteRepository = new VoteRepository(userId);
+        this.voteCounterRepository = new VoteCounterRepository();
+
         this.comments = new ArrayList<>();
         this.commentLiveData = new MutableLiveData<>();
     }
@@ -35,11 +42,12 @@ public class CommentViewModel extends ViewModel {
     public void getComments() {
         Task<List<Comment>> task;
         if (comments.isEmpty())
-            task = commentRepository.getListWithVotes(Global.QUERY_LIMIT);
+            task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT);
+            // task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT, new OrderByDate());
         else {
             Date lastDate = comments.get(comments.size() - 1).getPostTime();
-            // Log.d(TAG, "getComments lastId: " + lastId);
-            task = commentRepository.getListWithVotesAfter(lastDate, Global.QUERY_LIMIT);
+            task = commentRepository.getListByParentWithVotesAfter(lastDate, Global.QUERY_LIMIT);
+            // task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT, new StartAfterDate(lastDate));
         }
         task.addOnSuccessListener(result -> {
             if (result.isEmpty())

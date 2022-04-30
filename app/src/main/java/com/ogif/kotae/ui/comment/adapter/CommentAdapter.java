@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ogif.kotae.R;
@@ -16,7 +15,6 @@ import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.utils.model.CommentUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,12 +52,12 @@ public class CommentAdapter extends RecordAdapter<Comment> {
         Comment comment = items.get(position);
 
         CommentHolder holder = (CommentHolder) viewHolder;
-        holder.avatar.setImageResource(R.drawable.ic_placeholder_user);
         holder.content.setText(comment.getContent());
         holder.username.setText(comment.getAuthor());
         holder.vote.setHolder(comment);
         holder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), comment.getVoteState());
-
+        // TODO user avatar
+        holder.avatar.setImageResource(R.drawable.ic_placeholder_user);
     }
 
     @Override

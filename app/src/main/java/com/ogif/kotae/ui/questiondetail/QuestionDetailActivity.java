@@ -51,7 +51,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnVoteChangeListener((voteView, position, previous, current) -> {
+        adapter.setOnVoteChangeListener((position, voteView, previous, current) -> {
             Post holder = (Post) voteView.getHolder();
             if (holder == null) {
                 Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");

@@ -29,24 +29,30 @@ import java.util.Objects;
 
 public class QuestionDetailViewModel extends ViewModel {
     private static final String TAG = "QuestionDetailViewModel";
-    // Create new vote
-    private final VoteRepository voteRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    // Create new vote
+    private final VoteRepository voteRepository;
     // Increment/decrement counter for both answer and question
     private final VoteCounterRepository voteCounterRepository;
 
     private final List<Post> posts;
+    // null indicates as initial value or query error
+    // Empty list indicates as successful but no data
     private final MutableLiveData<List<Post>> postLiveData;
+    // private final MutableLiveData<Question> questionMutableLiveData;
+    // private final MutableLiveData<List<Answer>> answerMutableLiveData;
 
     public QuestionDetailViewModel() {
         AuthRepository userRepository = new AuthRepository();
         String userId = Objects.requireNonNull(userRepository.getCurrentFirebaseUser()).getUid();
 
         this.voteRepository = new VoteRepository(userId);
+        this.voteCounterRepository = new VoteCounterRepository();
         this.questionRepository = new QuestionRepository(this.voteRepository);
         this.answerRepository = new AnswerRepository(this.voteRepository);
-        this.voteCounterRepository = new VoteCounterRepository();
+
+        this.answerRepository.setOrderByField(Answer.Field.UPVOTE);
 
         this.posts = new ArrayList<>();
         this.postLiveData = new MutableLiveData<>();
@@ -59,27 +65,27 @@ public class QuestionDetailViewModel extends ViewModel {
         this.postLiveData.setValue(posts);
     }
 
-    /**
-     * Fetch question from Database, should only be used to check for update, otherwise use Question
-     * passed from Home Activity
-     */
-    public void getQuestion(String id) {
-        questionRepository.get(id, new TaskListener.State<Question>() {
-            @Override
-            public void onSuccess(@Nullable Question result) {
-                if (result == null)
-                    return;
-                List<Post> posts = getLocalPosts();
-                posts.set(0, result);
-                postLiveData.postValue(posts);
-            }
-
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "getQuestion: Failed with" + e.getMessage());
-            }
-        });
-    }
+    // /**
+    //  * Fetch question from Database, should only be used to check for update, otherwise use Question
+    //  * passed from Home Activity
+    //  */
+    // public void getQuestion(String id) {
+    //     questionRepository.get(id, new TaskListener.State<Question>() {
+    //         @Override
+    //         public void onSuccess(@Nullable Question result) {
+    //             if (result == null)
+    //                 return;
+    //             List<Post> posts = getLocalPosts();
+    //             posts.set(0, result);
+    //             postLiveData.postValue(posts);
+    //         }
+    //
+    //         @Override
+    //         public void onFailure(@NonNull Exception e) {
+    //             Log.d(TAG, "getQuestion: Failed with" + e.getMessage());
+    //         }
+    //     });
+    // }
 
     public void getAnswers() {
         List<Post> posts = postLiveData.getValue();
@@ -147,9 +153,5 @@ public class QuestionDetailViewModel extends ViewModel {
 
     public LiveData<List<Post>> getPostLiveData() {
         return postLiveData;
-    }
-
-    public void clear() {
-
     }
 }

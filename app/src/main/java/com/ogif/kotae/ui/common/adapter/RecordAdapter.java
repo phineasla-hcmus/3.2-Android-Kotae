@@ -24,7 +24,7 @@ public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapt
      * Wrapper for {@link VoteView.OnStateChangeListener} to add position
      */
     public interface OnVoteChangeListener {
-        void onChange(VoteView view, int position, @Vote.State int previous, @Vote.State int current);
+        void onChange(int position, VoteView view, @Vote.State int previous, @Vote.State int current);
     }
 
     public RecordAdapter(Context context) {
@@ -45,7 +45,7 @@ public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapt
         this.items.set(position, item);
     }
 
-    public <U extends RecordUtils.ListComparator<T>> void setItems(@NonNull List<T> items, U comparator) {
+    protected <U extends RecordUtils.ListComparator<T>> void setItems(@NonNull List<T> items, U comparator) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(comparator);
         this.items.clear();
         this.items.addAll(items);
@@ -54,18 +54,28 @@ public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapt
 
     public abstract void setItems(@NonNull List<T> items);
 
+    public void addItem(int position, @NonNull T item) {
+        this.items.add(position, item);
+        notifyItemInserted(position);
+    }
+
     public void addItem(@NonNull T item) {
         this.items.add(item);
         notifyItemInserted(this.items.size() - 1);
     }
 
     public void addItems(@NonNull List<? extends T> items) {
-        int start = this.items.size();
+        int from = this.items.size();
         this.items.addAll(items);
-        notifyItemRangeInserted(start, items.size());
+        notifyItemRangeInserted(from, items.size());
     }
 
-    public OnVoteChangeListener getVoteChangeListener() {
+    protected void onVoteChangeListenerIfNotNull(int position, VoteView view, @Vote.State int previous, @Vote.State int current) {
+        if (voteChangeListener != null)
+            voteChangeListener.onChange(position, view, previous, current);
+    }
+
+    public OnVoteChangeListener getOnVoteChangeListener() {
         return voteChangeListener;
     }
 

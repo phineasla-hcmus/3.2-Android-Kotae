@@ -9,7 +9,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
-import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Comment;
 
 import java.util.Date;
@@ -57,7 +56,16 @@ public class CommentRepository extends RecordRepository<Comment> {
         return create(postId, getAuthorId(), authorName, content);
     }
 
-    public Task<List<Comment>> getListWithVotes(int limit) {
+    /**
+     * Experimental
+     */
+    public Task<List<Comment>> getListByParentWithVotes(int limit, @NonNull PagingOption option) {
+        Query query = collectionRef.whereEqualTo(Comment.Field.PARENT_ID, postId);
+        query = option.inject(query).limit(limit);
+        return getListWithVotes(query);
+    }
+
+    public Task<List<Comment>> getListByParentWithVotes(int limit) {
         Task<QuerySnapshot> query = collectionRef
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
                 .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
@@ -66,7 +74,7 @@ public class CommentRepository extends RecordRepository<Comment> {
         return getListWithVotes(query);
     }
 
-    public Task<List<Comment>> getListWithVotesAfter(Date previousDate, int limit) {
+    public Task<List<Comment>> getListByParentWithVotesAfter(Date previousDate, int limit) {
         Task<QuerySnapshot> query = collectionRef
                 .whereEqualTo(Comment.Field.PARENT_ID, postId)
                 .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
@@ -76,11 +84,11 @@ public class CommentRepository extends RecordRepository<Comment> {
         return getListWithVotes(query);
     }
 
-    @Deprecated
-    public void getListWithVotes(int limit, @NonNull TaskListener.State<List<Comment>> callback) {
-        getListWithVotes(limit).addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
-    }
+    // @Deprecated
+    // public void getListWithVotes(int limit, @NonNull TaskListener.State<List<Comment>> callback) {
+    //     getListWithVotes(limit).addOnSuccessListener(callback::onSuccess)
+    //             .addOnFailureListener(callback::onFailure);
+    // }
 
     public void setAuthor(@NonNull String authorId, @NonNull String authorName) {
         voteRepository.setAuthorId(authorId);

@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -169,8 +168,7 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         holder.vote.setHolder(post);
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), post.getVoteState());
         holder.vote.setOnStateChangeListener((view, previous, current) -> {
-            if (voteChangeListener != null)
-                voteChangeListener.onChange(view, position, previous, current);
+            onVoteChangeListenerIfNotNull(position, view, previous, current);
         });
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
         holder.comment.setOnClickListener(v -> {

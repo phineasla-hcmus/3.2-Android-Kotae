@@ -11,11 +11,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public abstract class RecordRepository<T extends Record> {
@@ -116,10 +116,12 @@ public abstract class RecordRepository<T extends Record> {
     }
 
     public void setAuthorId(@NonNull String authorId) {
+        assert voteRepository != null : "voteRepository was not initialized, are you sure you want to use empty constructor RecordRepository()?";
         voteRepository.setAuthorId(authorId);
     }
 
     public String getAuthorId() {
+        assert voteRepository != null : "voteRepository was not initialized, are you sure you want to use empty constructor RecordRepository()?";
         return voteRepository.getAuthorId();
     }
 }
