@@ -17,6 +17,10 @@
     <string name="all_user">User</string>
     <string name="all_username">Username</string>
     <string name="menu_report_question">Report question</string>
+    <string name="all_report">Report question</string>
+    <string name="all_old_password">Old password</string>
+    <string name="all_new_password">New password</string>
+    <string name="all_confirm_password">Confirm password</string>
     <string name="app_name" translatable="false">Kotae</string>
     <string name="bottom_nav_admin">Admin</string>
     <string name="bottom_nav_home">Home</string>
@@ -62,6 +66,7 @@
     <string name="create_question_title">Title</string>
     <string name="comment_hint">Enter your comment</string>
     <string name="comment_empty">Please enter your comment</string>
+    <string name="change_password_header">Change password</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>

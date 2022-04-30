@@ -83,6 +83,8 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileChangePassword.setOnClickListener(view -> {
             // Launch change password activity
+            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
+            startActivity(intent);
         });
 
         binding.tvProfileLogout.setOnClickListener(view -> {

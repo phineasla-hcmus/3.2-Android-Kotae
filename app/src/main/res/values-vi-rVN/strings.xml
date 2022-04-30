@@ -11,6 +11,9 @@
     <string name="all_password">Mật khẩu</string>
     <string name="all_sign_up">Đăng ký</string>
     <string name="all_username">Tên người dùng</string>
+    <string name="all_old_password">Mật khẩu cũ</string>
+    <string name="all_new_password">Mật khẩu mới</string>
+    <string name="all_confirm_password">Nhập lại mật khẩu</string>
     <string name="bottom_nav_admin">Quản trị</string>
     <string name="bottom_nav_home">Trang chủ</string>
     <string name="bottom_nav_noti">Thông báo</string>
@@ -53,6 +56,7 @@
     <string name="create_question_title">Tiêu đề</string>
     <string name="comment_hint">Nhập bình luận của bạn</string>
     <string name="comment_empty">Vui lòng nhập bình luận của bạn</string>
+    <string name="change_password_header">Đổi mật khẩu</string>
     <string name="et_error_email">Email không hợp lệ</string>
     <string name="et_error_email_existed">Email đã tồn tại</string>
     <string name="et_error_password">Mật khẩu phải từ 6 đến 16 ký tự</string>
