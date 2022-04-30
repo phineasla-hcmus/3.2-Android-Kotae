@@ -1,6 +1,5 @@
 package com.ogif.kotae.ui.leaderboard;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.databinding.ActivityLeaderboardBinding;
@@ -40,7 +38,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         this.setSupportActionBar(binding.tbLeaderboard);
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("Leaderboard");
-        this.adapter = new LeaderboardAdapter((Context) this, this.items);
+        this.adapter = new LeaderboardAdapter(this, this.items);
 
         initRecyclerView();
 
@@ -102,12 +100,12 @@ public class LeaderboardActivity extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
-        binding.rvLeaderboard.setLayoutManager((RecyclerView.LayoutManager) this.initLayoutManager());
+        binding.rvLeaderboard.setLayoutManager(this.initLayoutManager());
         binding.rvLeaderboard.setAdapter(this.adapter);
     }
 
     private LinearLayoutManager initLayoutManager() {
-        return new LinearLayoutManager((Context) this);
+        return new LinearLayoutManager(this);
     }
 
     @Override
