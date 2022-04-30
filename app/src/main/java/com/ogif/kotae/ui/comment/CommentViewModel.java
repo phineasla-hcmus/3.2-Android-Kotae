@@ -42,11 +42,11 @@ public class CommentViewModel extends ViewModel {
     public void getComments() {
         Task<List<Comment>> task;
         if (comments.isEmpty())
-            task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT);
+            task = commentRepository.getListByParentWithVote(Global.QUERY_LIMIT);
             // task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT, new OrderByDate());
         else {
             Date lastDate = comments.get(comments.size() - 1).getPostTime();
-            task = commentRepository.getListByParentWithVotesAfter(lastDate, Global.QUERY_LIMIT);
+            task = commentRepository.getListByParentWithVoteAfter(lastDate, Global.QUERY_LIMIT);
             // task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT, new StartAfterDate(lastDate));
         }
         task.addOnSuccessListener(result -> {

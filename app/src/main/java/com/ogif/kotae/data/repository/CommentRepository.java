@@ -10,6 +10,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.model.Comment;
+import com.ogif.kotae.data.model.Comment.Field;
+import com.ogif.kotae.utils.repository.QueryOption;
 
 import java.util.Date;
 import java.util.List;
@@ -59,25 +61,25 @@ public class CommentRepository extends RecordRepository<Comment> {
     /**
      * Experimental
      */
-    public Task<List<Comment>> getListByParentWithVotes(int limit, @NonNull PagingOption option) {
+    public Task<List<Comment>> getListByParentWithVote(int limit, @NonNull QueryOption option) {
         Query query = collectionRef.whereEqualTo(Comment.Field.PARENT_ID, postId);
         query = option.inject(query).limit(limit);
         return getListWithVotes(query);
     }
 
-    public Task<List<Comment>> getListByParentWithVotes(int limit) {
+    public Task<List<Comment>> getListByParentWithVote(int limit) {
         Task<QuerySnapshot> query = collectionRef
-                .whereEqualTo(Comment.Field.PARENT_ID, postId)
-                .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
+                .whereEqualTo(Field.PARENT_ID, postId)
+                .orderBy(Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)
                 .get();
         return getListWithVotes(query);
     }
 
-    public Task<List<Comment>> getListByParentWithVotesAfter(Date previousDate, int limit) {
+    public Task<List<Comment>> getListByParentWithVoteAfter(Date previousDate, int limit) {
         Task<QuerySnapshot> query = collectionRef
-                .whereEqualTo(Comment.Field.PARENT_ID, postId)
-                .orderBy(Comment.Field.POST_TIME, Query.Direction.DESCENDING)
+                .whereEqualTo(Field.PARENT_ID, postId)
+                .orderBy(Field.POST_TIME, Query.Direction.DESCENDING)
                 .limit(limit)
                 .startAfter(previousDate)
                 .get();

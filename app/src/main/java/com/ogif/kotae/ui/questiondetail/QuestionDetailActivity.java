@@ -81,7 +81,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         //     adapter.setQuestion(question);
         // });
         questionDetailViewModel.getPostLiveData().observe(this, posts -> {
-            adapter.setData(posts);
+            adapter.setItems(posts);
         });
 
         questionDetailViewModel.getAnswers();

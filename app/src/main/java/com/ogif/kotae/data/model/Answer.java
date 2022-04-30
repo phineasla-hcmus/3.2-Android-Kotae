@@ -27,8 +27,7 @@ public final class Answer extends Post {
      * Firestore
      */
     public static class Field extends Post.Field {
-        public static final String questionId = "questionId";
-        public static final String imageIds = "imageIds";
+        public static final String QUESTION_ID = "questionId";
     }
 
     public static class Builder extends Post.Builder<Builder> {
@@ -82,7 +81,7 @@ public final class Answer extends Post {
         Answer answer = Post.fromDocument(document, Answer.class);
         if (answer == null)
             return null;
-        answer.questionId = document.getString(Field.questionId);
+        answer.questionId = document.getString(Field.QUESTION_ID);
         return answer;
     }
 

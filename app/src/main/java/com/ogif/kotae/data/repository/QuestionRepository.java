@@ -19,10 +19,9 @@ import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.main.FilterQuestionActivity;
+import com.ogif.kotae.utils.DateUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -52,21 +51,6 @@ public class QuestionRepository extends RecordRepository<Question> {
         return snapshots.toObjects(Question.class);
     }
 
-    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
-        query.addOnSuccessListener(queryDocumentSnapshots -> {
-            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                questions.add(document.toObject(Question.class));
-            }
-            callback.onSuccess(questions);
-        }).addOnFailureListener(callback::onFailure);
-    }
-
-    public void get(@NonNull String id, @NonNull TaskListener.State<Question> callback) {
-        get(id).addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
-    }
-
     public void createQuestion(@NonNull String authorId, @NonNull String authorName, @NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
         Question question = new Question.Builder().title(title)
                 .author(authorId, authorName)
@@ -79,6 +63,17 @@ public class QuestionRepository extends RecordRepository<Question> {
                         .getId()))
                 .addOnFailureListener(e -> Log.w(TAG, "Error adding document", e));
     }
+
+    private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Question>> callback) {
+        query.addOnSuccessListener(queryDocumentSnapshots -> {
+            List<Question> questions = new ArrayList<>(queryDocumentSnapshots.size());
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                questions.add(document.toObject(Question.class));
+            }
+            callback.onSuccess(questions);
+        }).addOnFailureListener(callback::onFailure);
+    }
+
 
     public Query getHomeQuestions() {
         return collectionRef.whereEqualTo("blocked", false)
@@ -134,7 +129,6 @@ public class QuestionRepository extends RecordRepository<Question> {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("AAA", e.toString());
                         callback.onFailure(e);
                     }
                 });
@@ -156,46 +150,32 @@ public class QuestionRepository extends RecordRepository<Question> {
         return questions;
     }
 
-    private Timestamp getFirstDayOfWeek(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return new Timestamp(calendar.getTime());
-    }
-
-    private Timestamp getFirstDayOfMonth(Date date) {
-        return new Timestamp(new Date(date.getYear(), date.getMonth(), 1));
-    }
-
     private ArrayList<Question> sortQuestionByUpvote(ArrayList<Question> questions, String sort) {
         ArrayList<Question> newQuestions = new ArrayList<Question>();
-
-        if (sort.equals(FilterQuestionActivity.SORT_MOST_VIEW)) {
-            // Get all
-            // Default : Order by vote desc
-            return questions;
-        } else if (sort.equals(FilterQuestionActivity.SORT_TOP_WEEK)) {
-            Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
-
-            for (Question question : questions) {
-                if (question.getPostTime().compareTo(firstDayOfWeek.toDate()) != -1) {
-                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
-                    newQuestions.add(question);
+        switch (sort) {
+            case FilterQuestionActivity.SORT_MOST_VIEW:
+                // Get all
+                // Default : Order by vote desc
+                return questions;
+            case FilterQuestionActivity.SORT_TOP_WEEK:
+                Timestamp firstDayOfWeek = new Timestamp(DateUtils.firstDayOfWeek());
+                for (Question question : questions) {
+                    if (question.getPostTime().compareTo(firstDayOfWeek.toDate()) != -1) {
+                        // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
+                        newQuestions.add(question);
+                    }
                 }
-            }
+                return newQuestions;
+            case FilterQuestionActivity.SORT_TOP_MONTH:
+                Timestamp firstDayOfMonth = new Timestamp(DateUtils.firstDayOfMonth());
 
-            return newQuestions;
-        } else if (sort.equals(FilterQuestionActivity.SORT_TOP_MONTH)) {
-            Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
-
-            for (Question question : questions) {
-                if (question.getPostTime().compareTo(firstDayOfMonth.toDate()) != -1) {
-                    // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
-                    newQuestions.add(question);
+                for (Question question : questions) {
+                    if (question.getPostTime().compareTo(firstDayOfMonth.toDate()) != -1) {
+                        // Log.d("AAA", String.valueOf(question.getPostTime().toString()));
+                        newQuestions.add(question);
+                    }
                 }
-            }
-
-            return newQuestions;
+                return newQuestions;
         }
         // ELSE => Get all (Do nothing)
         return questions;
@@ -331,13 +311,13 @@ public class QuestionRepository extends RecordRepository<Question> {
                 break;
             }
             case FilterQuestionActivity.SORT_TOP_WEEK: {
-                Timestamp firstDayOfWeek = getFirstDayOfWeek(new Date());
+                Timestamp firstDayOfWeek = new Timestamp(DateUtils.firstDayOfWeek());
                 query = query.whereGreaterThanOrEqualTo("postTime", firstDayOfWeek);
 //                query = query.orderBy("upvote", Query.Direction.DESCENDING);
                 break;
             }
             case FilterQuestionActivity.SORT_TOP_MONTH: {
-                Timestamp firstDayOfMonth = getFirstDayOfMonth(new Date());
+                Timestamp firstDayOfMonth = new Timestamp(DateUtils.firstDayOfMonth());
 //                query = query.orderBy("upvote", Query.Direction.DESCENDING);
                 query = query.whereGreaterThanOrEqualTo("postTime", firstDayOfMonth);
                 break;

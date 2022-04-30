@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.ogif.kotae.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -28,5 +29,19 @@ public class DateUtils {
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
         return dateFormat.format(postTime);
+    }
+
+    @NonNull
+    public static Date firstDayOfMonth() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        return calendar.getTime();
+    }
+
+    @NonNull
+    public static Date firstDayOfWeek() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return calendar.getTime();
     }
 }

@@ -1,12 +1,11 @@
-package com.ogif.kotae.utils.query;
+package com.ogif.kotae.utils.repository;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.Query;
 import com.ogif.kotae.data.model.Record;
-import com.ogif.kotae.data.repository.PagingOption;
 
-public class OrderByVote implements PagingOption {
+public class OrderByVote implements QueryOption {
     @Override
     public Query inject(@NonNull Query query) {
         return query.orderBy(Record.Field.UPVOTE, Query.Direction.DESCENDING)

@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.ogif.kotae.Global;
@@ -21,6 +23,7 @@ import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
+import com.ogif.kotae.utils.repository.OrderByVote;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +43,7 @@ public class QuestionDetailViewModel extends ViewModel {
     // null indicates as initial value or query error
     // Empty list indicates as successful but no data
     private final MutableLiveData<List<Post>> postLiveData;
+    private final MutableLiveData<Boolean> stateLiveData;
     // private final MutableLiveData<Question> questionMutableLiveData;
     // private final MutableLiveData<List<Answer>> answerMutableLiveData;
 
@@ -52,10 +56,9 @@ public class QuestionDetailViewModel extends ViewModel {
         this.questionRepository = new QuestionRepository(this.voteRepository);
         this.answerRepository = new AnswerRepository(this.voteRepository);
 
-        this.answerRepository.setOrderByField(Answer.Field.UPVOTE);
-
         this.posts = new ArrayList<>();
         this.postLiveData = new MutableLiveData<>();
+        this.stateLiveData = new MutableLiveData<>();
     }
 
     public QuestionDetailViewModel(Question question) {
@@ -65,46 +68,35 @@ public class QuestionDetailViewModel extends ViewModel {
         this.postLiveData.setValue(posts);
     }
 
-    // /**
-    //  * Fetch question from Database, should only be used to check for update, otherwise use Question
-    //  * passed from Home Activity
-    //  */
-    // public void getQuestion(String id) {
-    //     questionRepository.get(id, new TaskListener.State<Question>() {
-    //         @Override
-    //         public void onSuccess(@Nullable Question result) {
-    //             if (result == null)
-    //                 return;
-    //             List<Post> posts = getLocalPosts();
-    //             posts.set(0, result);
-    //             postLiveData.postValue(posts);
-    //         }
-    //
-    //         @Override
-    //         public void onFailure(@NonNull Exception e) {
-    //             Log.d(TAG, "getQuestion: Failed with" + e.getMessage());
-    //         }
-    //     });
-    // }
+    public void getAll(String questionId) {
+        Task<Question> questionTask = questionRepository.getWithVote(questionId);
+        Task<List<Answer>> answersTask = answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, new OrderByVote());
+        Tasks.whenAllSuccess(questionTask, answersTask).addOnSuccessListener(objects -> {
+            Question question = (Question) objects.get(0);
+            // I'm sure 100% that answersTask only returns a list of Answers.
+            @SuppressWarnings("unchecked") List<Answer> answers = (List<Answer>) objects.get(1);
+            
+        }).addOnFailureListener(e -> stateLiveData.postValue(false));
+    }
 
     public void getAnswers() {
         List<Post> posts = postLiveData.getValue();
         assert posts != null : "postLiveData should never be null";
         String questionId = posts.get(0).getId();
-        answerRepository.getListByQuestion(questionId, Global.QUERY_LIMIT, new TaskListener.State<List<Answer>>() {
-            @Override
-            public void onSuccess(List<Answer> result) {
-                List<Post> posts = postLiveData.getValue();
-                assert posts != null : "postLiveData should never be null";
-                posts.addAll(result);
-                postLiveData.postValue(posts);
-            }
-
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "getAnswer(): Failed with" + e.getMessage());
-            }
-        });
+        // answerRepository.getListByQuestion(questionId, Global.QUERY_LIMIT, new TaskListener.State<List<Answer>>() {
+        //     @Override
+        //     public void onSuccess(List<Answer> result) {
+        //         List<Post> posts = postLiveData.getValue();
+        //         assert posts != null : "postLiveData should never be null";
+        //         posts.addAll(result);
+        //         postLiveData.postValue(posts);
+        //     }
+        //
+        //     @Override
+        //     public void onFailure(@NonNull Exception e) {
+        //         Log.w(TAG, "getAnswer(): Failed with" + e.getMessage());
+        //     }
+        // });
     }
 
     public void updateVote(@NonNull Post holder, int position, @Vote.State int previousState, @Vote.State int currentState) {

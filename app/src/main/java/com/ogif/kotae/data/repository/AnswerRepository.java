@@ -13,15 +13,13 @@ import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Answer.Field;
+import com.ogif.kotae.utils.repository.QueryOption;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AnswerRepository extends RecordRepository<Answer> {
     private static final String TAG = "AnswerRepository";
-
-    private String orderBy = Answer.Field.UPVOTE;
-    private Query.Direction orderByDirection = Query.Direction.DESCENDING;
 
     public AnswerRepository() {
         super(Global.COLLECTION_ANSWER);
@@ -46,6 +44,32 @@ public class AnswerRepository extends RecordRepository<Answer> {
         return snapshots.toObjects(Answer.class);
     }
 
+    /**
+     * Experimental
+     */
+    public Task<List<Answer>> getListByQuestionWithVote(@NonNull String questionId, int limit, @NonNull QueryOption option) {
+        Query query = collectionRef.whereEqualTo(Field.QUESTION_ID, questionId);
+        query = option.inject(query).limit(limit);
+        return getListWithVotes(query);
+    }
+
+    public Task<List<Answer>> getListByQuestionWithVote(@NonNull String questionId, int limit) {
+        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.QUESTION_ID, questionId)
+                .orderBy(Field.UPVOTE, Query.Direction.DESCENDING)
+                .orderBy(Field.DOWNVOTE).limit(limit).get();
+        return getListWithVotes(query);
+    }
+
+    public Task<List<Answer>> getListByQuestionWithVoteAfter(@NonNull String questionId, int previousUpvote, int previousDownvote, String previousId, int limit) {
+        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.QUESTION_ID, questionId)
+                .orderBy(Field.UPVOTE, Query.Direction.DESCENDING)
+                .orderBy(Field.DOWNVOTE)
+                .startAfter(previousUpvote, previousDownvote, previousId)
+                .limit(limit)
+                .get();
+        return getListWithVotes(query);
+    }
+
     private void onQueryListComplete(@NonNull Task<QuerySnapshot> query, @NonNull TaskListener.State<List<Answer>> callback) {
         query.addOnSuccessListener(queryDocumentSnapshots -> {
             List<Answer> answers = new ArrayList<>(queryDocumentSnapshots.size());
@@ -56,35 +80,23 @@ public class AnswerRepository extends RecordRepository<Answer> {
         }).addOnFailureListener(callback::onFailure);
     }
 
-    public void get(@NonNull String id, @NonNull TaskListener.State<Answer> callback) {
-        get(id).addOnSuccessListener(callback::onSuccess).addOnFailureListener(callback::onFailure);
-    }
-
-    public void getListByQuestion(@NonNull String questionId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
-        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.questionId, questionId)
-                .orderBy(orderBy, orderByDirection)
-                .limit(limit)
-                .get();
-        onQueryListComplete(query, callback);
-    }
-
-    public void getListByQuestion(@NonNull String questionId, @NonNull String afterId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
-        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.questionId, questionId)
-                .startAfter(afterId)
-                .limit(limit)
-                .get();
-        onQueryListComplete(query, callback);
-    }
+    // public void getListByQuestion(@NonNull String questionId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
+    //     Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.QUESTION_ID, questionId)
+    //             .orderBy(Field.UPVOTE, Query.Direction.DESCENDING)
+    //             .limit(limit)
+    //             .get();
+    //     onQueryListComplete(query, callback);
+    // }
 
     public void getListByAuthor(@NonNull String authorId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
-        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.questionId, authorId)
+        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.AUTHOR_ID, authorId)
                 .limit(limit)
                 .get();
         onQueryListComplete(query, callback);
     }
 
-    public void getListByAuthor(@NonNull String authorId, @NonNull String afterId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
-        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.questionId, authorId)
+    public void getListByAuthorAfter(@NonNull String authorId, @NonNull String afterId, int limit, @NonNull TaskListener.State<List<Answer>> callback) {
+        Task<QuerySnapshot> query = collectionRef.whereEqualTo(Field.AUTHOR_ID, authorId)
                 .startAfter(afterId)
                 .limit(limit)
                 .get();
@@ -95,29 +107,5 @@ public class AnswerRepository extends RecordRepository<Answer> {
         collectionRef.add(answer)
                 .addOnSuccessListener(callback::onSuccess)
                 .addOnFailureListener(callback::onFailure);
-    }
-
-    public String getOrderByField() {
-        return orderBy;
-    }
-
-    public AnswerRepository setOrderByField(String orderBy) {
-        this.orderBy = orderBy;
-        return this;
-    }
-
-    public AnswerRepository setOrderByField(String orderBy, Query.Direction direction) {
-        this.orderBy = orderBy;
-        this.orderByDirection = direction;
-        return this;
-    }
-
-    public Query.Direction getOrderByDirection() {
-        return orderByDirection;
-    }
-
-    public AnswerRepository setOrderByDirection(Query.Direction direction) {
-        this.orderByDirection = direction;
-        return this;
     }
 }

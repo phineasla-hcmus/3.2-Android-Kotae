@@ -1,13 +1,12 @@
-package com.ogif.kotae.utils.query;
+package com.ogif.kotae.utils.repository;
 
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.Query;
-import com.ogif.kotae.data.repository.PagingOption;
 
 import java.util.Date;
 
-public class StartAfterDate implements PagingOption {
+public class StartAfterDate implements QueryOption {
     OrderByDate orderByDate;
     Date previous;
 
