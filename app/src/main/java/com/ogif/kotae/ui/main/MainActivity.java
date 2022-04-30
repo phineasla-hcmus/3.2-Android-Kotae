@@ -26,8 +26,6 @@ import com.ogif.kotae.ui.leaderboard.LeaderboardActivity;
 import com.ogif.kotae.ui.search.SearchActivity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -146,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
     }
 
     // For Testing

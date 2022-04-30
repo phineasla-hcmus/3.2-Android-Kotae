@@ -41,6 +41,10 @@ public class UserUtils {
         return Year.now().getValue() - age;
     }
 
+    public static int getAge(int yob) {
+        return Year.now().getValue() - yob;
+    }
+
     public static void cache(@NonNull String userId, @NonNull String username, @NonNull Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor prefsEditor = prefs.edit();

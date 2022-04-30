@@ -67,6 +67,8 @@
     <string name="comment_hint">Enter your comment</string>
     <string name="comment_empty">Please enter your comment</string>
     <string name="change_password_header">Change password</string>
+    <string name="change_password_error">Invalid confirm password</string>
+    <string name="edit_profile_header">Edit profile</string>
     <string name="et_error_email">Invalid email address</string>
     <string name="et_error_email_existed">Email existed</string>
     <string name="et_error_password">Password must be between 6 to 16 characters</string>

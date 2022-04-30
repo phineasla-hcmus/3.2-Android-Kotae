@@ -1,5 +1,6 @@
 package com.ogif.kotae.ui.main;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +27,7 @@ import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.utils.LocaleHelper;
 import com.ogif.kotae.utils.model.UserUtils;
+import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import java.util.Objects;
 
@@ -34,6 +38,9 @@ public class ProfileFragment extends Fragment {
     private ProfileViewModel profileViewModel;
     private SharedPreferences prefs;
     private SharedPreferences.Editor prefsEditor;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+    private String username, job;
+    private int age;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -47,6 +54,10 @@ public class ProfileFragment extends Fragment {
         profileViewModel.getUserLiveData().observe(requireActivity(), user -> {
             if (user == null)
                 return;
+            // get content for edit profile
+            username = user.getUsername();
+            job = user.getJob();
+            age = UserUtils.getAge(user.getYob());
             binding.tvProfileUsername.setText(user.getUsername());
             binding.tvProfileXp.setText(String.valueOf(user.getXp()));
             if (user.getRole().equals(User.ROLE_ADMIN))
@@ -77,8 +88,24 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // There are no request codes
+                        Intent data = result.getData();
+                    }
+                });
+
         binding.tvProfileEdit.setOnClickListener(view -> {
             // Launch change profile info activity
+//            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            intent.putExtra("EDIT_USERNAME", username);
+            intent.putExtra("EDIT_JOB", job);
+            intent.putExtra("EDIT_AGE", age);
+            activityResultLauncher.launch(intent);
         });
 
         binding.tvProfileChangePassword.setOnClickListener(view -> {

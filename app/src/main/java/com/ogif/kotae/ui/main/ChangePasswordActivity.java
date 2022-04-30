@@ -18,5 +18,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         binding = ActivityChangePasswordBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        binding.tbChangePassword.setOnClickListener(v -> this.finish());
     }
 }

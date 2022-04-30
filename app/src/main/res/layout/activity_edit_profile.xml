@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.ChangePasswordActivity">
+    tools:context=".ui.main.EditProfileActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/abl_change_password"
+        android:id="@+id/abl_edit_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_change_password"
+            android:id="@+id/tb_edit_profile"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_baseline_arrow_back"
@@ -23,108 +23,129 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/tv_change_password_header"
+        android:id="@+id/tv_edit_profile_header"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans"
         android:paddingHorizontal="@dimen/margin_x"
-        android:text="@string/change_password_header"
+        android:text="@string/edit_profile_header"
         android:textAlignment="center"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/abl_change_password" />
+        app:layout_constraintTop_toBottomOf="@+id/abl_edit_profile" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_old_password"
+        android:id="@+id/til_edit_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y"
         android:layout_marginTop="16dp"
         android:paddingHorizontal="@dimen/margin_x"
-        app:layout_constraintBottom_toTopOf="@+id/til_new_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_password_header"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_profile_header">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_old_password"
+            android:id="@+id/et_edit_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/all_old_password"
-            android:inputType="textPassword"
+            android:hint="@string/all_username"
             android:singleLine="true"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/til_edit_email"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginVertical="@dimen/margin_between_y"-->
+<!--        android:paddingHorizontal="@dimen/margin_x"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/til_edit_username">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/et_edit_email"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="@string/all_email"-->
+<!--            android:inputType="textEmailAddress"-->
+<!--            android:singleLine="true"-->
+<!--            tools:ignore="TextContrastCheck" />-->
+
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_new_password"
-        android:layout_width="match_parent"
+        android:id="@+id/til_edit_job"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y"
-        android:paddingHorizontal="@dimen/margin_x"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/margin_between_x"
+        android:paddingLeft="@dimen/margin_x"
+        app:layout_constraintEnd_toStartOf="@+id/til_edit_age"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_old_password"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintTop_toBottomOf="@+id/til_edit_username">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_new_password"
+        <AutoCompleteTextView
+            android:id="@+id/et_edit_job"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/all_new_password"
-            android:inputType="textPassword"
-            android:singleLine="true"
+            android:hint="@string/all_job"
+            android:inputType="none"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_confirm_password"
-        android:layout_width="match_parent"
+        android:id="@+id/til_edit_age"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/margin_between_y"
-        android:paddingHorizontal="@dimen/margin_x"
+        android:layout_marginStart="@dimen/margin_between_x"
+        android:paddingRight="@dimen/margin_x"
+        app:layout_constraintBottom_toBottomOf="@+id/til_edit_job"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_new_password"
-        app:passwordToggleEnabled="true">
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/til_edit_job"
+        app:layout_constraintTop_toTopOf="@+id/til_edit_job"
+        app:layout_constraintVertical_bias="0.0">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_confirm_password"
+            android:id="@+id/et_edit_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/all_confirm_password"
-            android:inputType="textPassword"
+            android:hint="@string/all_age"
+            android:inputType="numberDecimal"
             android:singleLine="true"
             tools:ignore="TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/tv_change_password_error"
+        android:id="@+id/tv_edit_profile_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_between_y_sm"
         android:paddingHorizontal="@dimen/margin_x"
-        android:text="@string/change_password_error"
+        android:text="@string/login_error"
         android:textColor="?attr/colorError"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/btn_change_password"
+        app:layout_constraintBottom_toTopOf="@+id/btn_edit_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_confirm_password" />
+        app:layout_constraintTop_toBottomOf="@+id/til_edit_job" />
 
     <Button
-        android:id="@+id/btn_change_password"
+        android:id="@+id/btn_edit_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_x"
-        android:text="@string/change_password_header"
+        android:text="@string/filter_submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_password_error" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_edit_profile_error" />
 </androidx.constraintlayout.widget.ConstraintLayout>

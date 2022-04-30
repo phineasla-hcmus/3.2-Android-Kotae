@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotae">
         <activity
+            android:name=".ui.main.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.ChangePasswordActivity"
             android:exported="false" />
 
