@@ -27,7 +27,6 @@ import com.ogif.kotae.ui.ProfileViewModel;
 import com.ogif.kotae.ui.auth.LoginActivity;
 import com.ogif.kotae.utils.LocaleHelper;
 import com.ogif.kotae.utils.model.UserUtils;
-import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import java.util.Objects;
 
@@ -99,8 +98,6 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileEdit.setOnClickListener(view -> {
             // Launch change profile info activity
-//            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-//            startActivity(intent);
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             intent.putExtra("EDIT_USERNAME", username);
             intent.putExtra("EDIT_JOB", job);
@@ -110,8 +107,9 @@ public class ProfileFragment extends Fragment {
 
         binding.tvProfileChangePassword.setOnClickListener(view -> {
             // Launch change password activity
-            Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-            startActivity(intent);
+            Intent intent = new Intent(getActivity(), ReEnterPasswordActivity.class);
+            intent.putExtra("CURRENT_USERNAME", username);
+            activityResultLauncher.launch(intent);
         });
 
         binding.tvProfileLogout.setOnClickListener(view -> {

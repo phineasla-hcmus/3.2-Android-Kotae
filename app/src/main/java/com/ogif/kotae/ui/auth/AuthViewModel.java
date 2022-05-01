@@ -20,11 +20,13 @@ public class AuthViewModel extends ViewModel {
     private final AuthRepository authRepository;
     private final DeviceRepository deviceRepository;
     private final MutableLiveData<FirebaseUser> userMutableLiveData;
+    private final MutableLiveData<Boolean> authenticatedLiveData;
 
     public AuthViewModel() {
         this.authRepository = new AuthRepository();
         this.deviceRepository = new DeviceRepository();
         this.userMutableLiveData = new MutableLiveData<>();
+        this.authenticatedLiveData = new MutableLiveData<>();
     }
 
     public void login(@NonNull String email, @NonNull String password) {
@@ -70,6 +72,32 @@ public class AuthViewModel extends ViewModel {
         });
     }
 
+    public void reAuthenticate(String password) {
+        authRepository.reAuthenticate(password, new TaskListener.State<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                authenticatedLiveData.postValue(result);
+            }
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                authenticatedLiveData.postValue(false);
+            }
+        });
+    }
+
+    public void updatePassword(String password) {
+        authRepository.updatePassword(password, new TaskListener.State<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+
+            }
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
     public boolean isLoggedIn() {
         return authRepository.isLoggedIn();
     }
@@ -81,4 +109,6 @@ public class AuthViewModel extends ViewModel {
     public LiveData<FirebaseUser> getUserLiveData() {
         return userMutableLiveData;
     }
+
+    public LiveData<Boolean> getAuthenticatedLiveData() {return authenticatedLiveData;}
 }

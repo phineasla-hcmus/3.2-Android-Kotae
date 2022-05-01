@@ -14,6 +14,8 @@
     <string name="all_old_password">Mật khẩu cũ</string>
     <string name="all_new_password">Mật khẩu mới</string>
     <string name="all_confirm_password">Nhập lại mật khẩu</string>
+    <string name="all_cancel">Hủy</string>
+    <string name="all_submit">Xác nhận</string>
     <string name="bottom_nav_admin">Quản trị</string>
     <string name="bottom_nav_home">Trang chủ</string>
     <string name="bottom_nav_noti">Thông báo</string>
@@ -97,6 +99,8 @@
     <string name="question_status">Trạng thái</string>
     <string name="question_title_hint">Tiêu đề câu hỏi</string>
     <string name="question_unanswered">Chưa trã lời</string>
+    <string name="re_enter_password_header">Vui lòng nhập lại mật khẩu</string>
+    <string name="re_enter_password_desc">Để bảo mật, bạn phải nhập lại mật khẩu của mình để tiếp tục</string>
     <string name="sign_up_error_existed">Người dùng đã tồn tại</string>
     <string name="sign_up_to_login">Đăng nhập</string>
     <string name="all_user">Người dùng</string>

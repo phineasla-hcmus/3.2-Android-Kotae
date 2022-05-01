@@ -52,7 +52,7 @@ public class UserRepository {
     }
 
     public void getLeaderboard(@NonNull String category, int limit, @NonNull TaskListener.State<List<User>> callback) {
-        Task<QuerySnapshot> query = usersRef.whereEqualTo(User.Field.BLOCKED, true)
+        Task<QuerySnapshot> query = usersRef.whereEqualTo(User.Field.BLOCKED, false)
                 .orderBy(category.equals("day")
                         ? User.Field.XP_DAILY
                         : User.Field.XP, Query.Direction.DESCENDING)

@@ -13,6 +13,8 @@
     <string name="all_password">Password</string>
     <string name="all_sign_up">Sign up</string>
     <string name="all_save_content" translatable="false">Save content</string>
+    <string name="all_cancel">Cancel</string>
+    <string name="all_submit">Submit</string>
     <string name="all_upvote" translatable="false">Upvote</string>
     <string name="all_user">User</string>
     <string name="all_username">Username</string>
@@ -115,6 +117,8 @@
     <string name="question_status">Status</string>
     <string name="question_title_hint">Question title</string>
     <string name="question_unanswered">Unanswered</string>
+    <string name="re_enter_password_header">Please re-enter your password</string>
+    <string name="re_enter_password_desc">For your security, you must re-enter your password to continue</string>
     <string name="sign_up_error_existed">User existed</string>
     <string name="sign_up_header" translatable="false">Here\'s your first step with us</string>
     <string name="sign_up_to_login">I\'m already a member</string>
