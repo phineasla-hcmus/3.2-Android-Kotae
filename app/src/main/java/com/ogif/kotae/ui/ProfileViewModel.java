@@ -10,17 +10,20 @@ import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.DeviceRepository;
 import com.ogif.kotae.data.repository.UserRepository;
-import com.ogif.kotae.utils.model.UserUtils;
 
 public class ProfileViewModel extends ViewModel {
     private final AuthRepository authRepository;
     private final DeviceRepository deviceRepository;
+    private final UserRepository userRepository;
     private final MutableLiveData<User> userLiveData;
+    private final MutableLiveData<Boolean> updatedLiveData;
 
     public ProfileViewModel() {
         authRepository = new AuthRepository();
         deviceRepository = new DeviceRepository();
+        userRepository = new UserRepository();
         userLiveData = new MutableLiveData<>();
+        updatedLiveData = new MutableLiveData<>();
     }
 
     public void getCurrentUser() {
@@ -42,7 +45,25 @@ public class ProfileViewModel extends ViewModel {
         authRepository.logout();
     }
 
+    public void updateUser(String username, String job, int age) {
+        userRepository.updateUser(username, job, age, new TaskListener.State<Boolean>() {
+            @Override
+            public void onSuccess(Boolean result) {
+                updatedLiveData.postValue(result);
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                updatedLiveData.postValue(false);
+            }
+        });
+    }
+
     public LiveData<User> getUserLiveData() {
         return userLiveData;
+    }
+
+    public LiveData<Boolean> getUpdatedLiveData() {
+        return updatedLiveData;
     }
 }

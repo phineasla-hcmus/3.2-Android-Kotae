@@ -78,6 +78,7 @@ public class AuthViewModel extends ViewModel {
             public void onSuccess(Boolean result) {
                 authenticatedLiveData.postValue(result);
             }
+
             @Override
             public void onFailure(@NonNull Exception e) {
                 authenticatedLiveData.postValue(false);
@@ -91,11 +92,16 @@ public class AuthViewModel extends ViewModel {
             public void onSuccess(Boolean result) {
 
             }
+
             @Override
             public void onFailure(@NonNull Exception e) {
 
             }
         });
+    }
+
+    public void updateUser() {
+
     }
 
     public boolean isLoggedIn() {
@@ -110,5 +116,7 @@ public class AuthViewModel extends ViewModel {
         return userMutableLiveData;
     }
 
-    public LiveData<Boolean> getAuthenticatedLiveData() {return authenticatedLiveData;}
+    public LiveData<Boolean> getAuthenticatedLiveData() {
+        return authenticatedLiveData;
+    }
 }

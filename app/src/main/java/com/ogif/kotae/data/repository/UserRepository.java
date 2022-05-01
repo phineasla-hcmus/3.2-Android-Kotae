@@ -2,10 +2,12 @@ package com.ogif.kotae.data.repository;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,9 +16,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.utils.model.UserUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UserRepository {
     private static final String TAG = "UserRepository";
@@ -86,6 +91,21 @@ public class UserRepository {
             @Override
             public void onFailure(@NonNull Exception e) {
                 callback.onFailure(e);
+            }
+        });
+    }
+
+    public void updateUser(String username, String job, int age, TaskListener.State<Boolean> callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("username", username);
+        updates.put("job", job);
+        updates.put("yob", UserUtils.getYearOfBirth(age));
+        usersRef.document(user.getUid()).update(updates).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                callback.onSuccess(true);
             }
         });
     }
