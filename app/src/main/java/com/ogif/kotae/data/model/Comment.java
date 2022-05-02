@@ -49,7 +49,7 @@ public final class Comment extends Record {
 
     @Global.Collection
     @Exclude
-    public static String getCollectionName() {
+    public String getCollectionName() {
         return Global.COLLECTION_COMMENT;
     }
 }

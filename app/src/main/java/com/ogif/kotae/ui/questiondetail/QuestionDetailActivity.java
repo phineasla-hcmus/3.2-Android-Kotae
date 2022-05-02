@@ -29,7 +29,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
     private ActivityQuestionDetailBinding binding;
     private QuestionDetailAdapter adapter;
-    private QuestionDetailViewModel questionDetailViewModel;
+    private QuestionDetailViewModel viewModel;
     private RecyclerView recyclerView;
     private String questionId;
 
@@ -59,23 +59,23 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
             Notification notification = new Notification();
             notification.pushUpvoteNotification(getApplicationContext(), holder);
-            questionDetailViewModel.updateVote(holder, position, previous, current);
+            viewModel.updateVote(holder, position, previous, current);
         });
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);
         this.questionId = questionFromExtra.getId();
 
         QuestionDetailViewModelFactory factory = new QuestionDetailViewModelFactory(questionFromExtra);
-        questionDetailViewModel = new ViewModelProvider(this, factory)
+        viewModel = new ViewModelProvider(this, factory)
                 .get(QuestionDetailViewModel.class);
 
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            questionDetailViewModel.getAll(questionFromExtra.getId());
+            viewModel.getAll(questionFromExtra.getId());
         });
 
-        questionDetailViewModel.getPostsLiveData().observe(this, latestPosts -> {
+        viewModel.getPostsLiveData().observe(this, latestPosts -> {
             binding.swipeRefreshLayout.setRefreshing(false);
-            adapter.setItems(questionDetailViewModel.getImmutableLocalPosts());
+            adapter.setItems(viewModel.getImmutableLocalPosts());
         });
     }
 
@@ -94,7 +94,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel.getLocalQuestion());
+        savedInstanceState.putParcelable(BUNDLE_QUESTION, viewModel.getLocalQuestion());
     }
 
     @NonNull

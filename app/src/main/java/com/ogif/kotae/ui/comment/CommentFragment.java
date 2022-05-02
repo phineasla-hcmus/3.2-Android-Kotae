@@ -3,6 +3,7 @@ package com.ogif.kotae.ui.comment;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -20,13 +21,17 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
+import com.ogif.kotae.ui.common.adapter.RecordAdapter;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
 
 
 public class CommentFragment extends BottomSheetDialogFragment {
+    public static final String TAG = "CommentFragment";
     public static final String BUNDLE_POST_ID = "postId";
     public static final String BUNDLE_POST_AUTHOR_ID = "postAuthorId";
 
@@ -75,6 +80,15 @@ public class CommentFragment extends BottomSheetDialogFragment {
             }
         });
 
+        adapter.setOnVoteChangeListener((position, voteView, previous, current) -> {
+            Comment holder = (Comment) voteView.getHolder();
+            if (holder == null) {
+                Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
+                return;
+            }
+            // viewModel.
+        });
+
         // Observe LiveData
         viewModel.getCommentLiveData().observe(this, comments -> {
             // null indicates as initial value or query error
@@ -97,7 +111,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
             dialog.hide();
             inputComment.setText("");
         });
-
 
         dialog.setOnShowListener(dialog1 -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog1;

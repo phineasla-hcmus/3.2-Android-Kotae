@@ -155,7 +155,7 @@ public final class Question extends Post {
 
     @Global.Collection
     @Exclude
-    public static String getCollectionName() {
+    public String getCollectionName() {
         return Global.COLLECTION_QUESTION;
     }
 }

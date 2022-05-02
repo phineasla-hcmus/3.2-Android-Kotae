@@ -13,7 +13,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 
 import java.util.ArrayList;
@@ -64,17 +67,6 @@ public class VoteRepository {
         return get(authorId, recordId);
     }
 
-    @Deprecated
-    public void get(@NonNull String authorId, @NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
-        get(authorId, recordId).addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
-    }
-
-    @Deprecated
-    public void get(@NonNull String recordId, @NonNull TaskListener.State<@Nullable Vote> callback) {
-        get(authorId, recordId, callback);
-    }
-
     /**
      * @param recordIds if <code>size() > 10</code>, it will be processed in batches
      * @return return type is a map of record ID and Vote that is in either state:
@@ -114,29 +106,28 @@ public class VoteRepository {
         return getList(authorId, recordIds);
     }
 
-    /**
-     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
-     * @param callback  return type is a map of record ID and Vote that is in either state:
-     *                  {@link Vote#UPVOTE} or {@link Vote#DOWNVOTE}.
-     *                  Caller should use {@link Map#getOrDefault(Object, Object)} as
-     *                  {@link Vote#NONE} are not present.
-     */
-    @Deprecated
-    public void getList(@NonNull String authorId, @NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
-        getList(authorId, recordIds).addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
+    Transaction create(@NonNull Transaction transaction, @NonNull String authorId, @NonNull String recordId, boolean isUpvote) {
+        Vote vote = new Vote().setAuthorId(authorId).setRecordId(recordId).setVote(isUpvote);
+        return transaction.set(votesRef.document(), vote);
     }
 
-    /**
-     * @param recordIds if <code>size() > 10</code>, it will be processed in batches
-     * @param callback  return type is a map of record ID and Vote that is in either state: {@link
-     *                  Vote#UPVOTE}
-     *                  or {@link Vote#DOWNVOTE}. Caller should use {@link Map#getOrDefault(Object,
-     *                  Object)}
-     */
-    @Deprecated
-    public void getList(@NonNull List<String> recordIds, @NonNull TaskListener.State<Map<String, Vote>> callback) {
-        getList(authorId, recordIds, callback);
+    Transaction create(@NonNull Transaction transaction, @NonNull String recordId, boolean isUpvote) {
+        Vote vote = new Vote().setAuthorId(this.authorId).setRecordId(recordId).setVote(isUpvote);
+        return transaction.set(votesRef.document(), vote);
+    }
+
+    WriteBatch create(@NonNull WriteBatch batch, @NonNull String authorId, @NonNull String recordId, boolean isUpvote) {
+        Vote vote = new Vote().setAuthorId(this.authorId).setRecordId(recordId).setVote(isUpvote);
+        return batch.set(votesRef.document(), vote);
+    }
+
+    WriteBatch create(@NonNull WriteBatch batch, @NonNull String recordId, boolean isUpvote) {
+        Vote vote = new Vote().setAuthorId(authorId).setRecordId(recordId).setVote(isUpvote);
+        return batch.set(votesRef.document(), vote);
+    }
+
+    WriteBatch deleteById(@NonNull WriteBatch batch, @NonNull String voteId) {
+        return batch.delete(votesRef.document(voteId));
     }
 
     /**
