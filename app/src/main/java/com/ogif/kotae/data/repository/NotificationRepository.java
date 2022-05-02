@@ -51,7 +51,7 @@ public class NotificationRepository {
                     notifications.add(notification);
                 }
                 ArrayList<NotificationBlock> notificationBlocks = getNotificationBlocks(notifications);
-//                printNotificationBlock(notificationBlocks);
+                printNotificationBlock(notificationBlocks);
                 callback.onSuccess(notificationBlocks);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -68,7 +68,8 @@ public class NotificationRepository {
             Log.d("AAA", notificationBlock.getQuestionId() + ","
                     + String.valueOf(notificationBlock.getNumber()) + ","
                     + String.valueOf(notificationBlock.getAction()) + ","
-                    + String.valueOf(notificationBlock.getLastUserDoAction()));
+                    + String.valueOf(notificationBlock.getLastUserDoAction()) + ","
+                    + String.valueOf(notificationBlock.getTimestamp().toDate()));
         }
     }
 
@@ -86,15 +87,10 @@ public class NotificationRepository {
             if (!isExist) {
                 notificationBlocks.add(new NotificationBlock(notification.getQuestionId(),
                         notification.getUserId(),
-                        notification.getUserAction()));
+                        notification.getUserAction(), notification.getTime()));
             }
         }
         return notificationBlocks;
-    }
-
-    private boolean notificationBlockIsExist(NotificationBlock notificationBlock, Notification notification) {
-        return notificationBlock.getQuestionId().equals(notification.getQuestionId())
-                && notificationBlock.getAction().equals(notification.getUserAction());
     }
 
     public void addNotification(Record record, String action) {
@@ -210,5 +206,10 @@ public class NotificationRepository {
             result = "COMMENT";
         }
         return result;
+    }
+
+    private boolean notificationBlockIsExist(NotificationBlock notificationBlock, Notification notification) {
+        return notificationBlock.getQuestionId().equals(notification.getQuestionId())
+                && notificationBlock.getAction().equals(notification.getUserAction());
     }
 }

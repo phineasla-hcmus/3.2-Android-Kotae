@@ -1,17 +1,34 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.TaskListener;
+import com.ogif.kotae.data.model.NotificationBlock;
+import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.NotificationRepository;
+import com.ogif.kotae.data.repository.QuestionRepository;
+import com.ogif.kotae.data.repository.UserRepository;
 import com.ogif.kotae.databinding.ActivityMainBinding;
+import com.ogif.kotae.ui.admin.AdminUserAdapter;
+import com.ogif.kotae.ui.noti.adapter.NotificationBlockAdapter;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +36,11 @@ import com.ogif.kotae.databinding.ActivityMainBinding;
  * create an instance of this fragment.
  */
 public class NotiFragment extends Fragment {
+    private ArrayList<NotificationBlock> notificationBlockArrayList;
+    private ListView lvNotification;
+    private NotificationBlockAdapter notificationBlockAdapter;
+    private NotificationRepository notificationRepository;
+    private QuestionRepository questionRepository;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +86,46 @@ public class NotiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_noti, container, false);
+        View view = inflater.inflate(R.layout.fragment_noti, container, false);
+        lvNotification = (ListView) view.findViewById(R.id.lv_notification);
+        notificationBlockArrayList = new ArrayList<NotificationBlock>();
+        notificationRepository = new NotificationRepository();
+        questionRepository = new QuestionRepository();
+
+        notificationRepository.getNotificationBlocks(new TaskListener.State<ArrayList<NotificationBlock>>() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("AAA", e.toString());
+            }
+
+            @Override
+            public void onSuccess(ArrayList<NotificationBlock> result) {
+                notificationBlockArrayList.addAll(result);
+                notificationBlockAdapter = new NotificationBlockAdapter(getActivity(), R.layout.item_notification, notificationBlockArrayList);
+                lvNotification.setAdapter(notificationBlockAdapter);
+                lvNotification.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Log.d("AAA", "onItemClick: " + notificationBlockArrayList.get(i).getQuestionId());
+                        questionRepository.getQuestionById(notificationBlockArrayList.get(i).getQuestionId(), new TaskListener.State<Question>() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("AAA", "onFailure: " + e.toString());
+                            }
+
+                            @Override
+                            public void onSuccess(Question result) {
+                                if (result != null) {
+                                    Intent intent = QuestionDetailActivity.newInstance(getActivity(), result);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        return view;
     }
 
     @Override
