@@ -96,10 +96,16 @@ public class QuestionRepository {
         return mutableLiveData;
     }
 
-    public Query getHomeQuestions() {
-        return questionsRef.whereEqualTo("blocked", false)
+    public void getHomeQuestions(@NonNull TaskListener.State<List<Question>> callback) {
+        Task<QuerySnapshot> query =  questionsRef.whereEqualTo("blocked", false)
                 .orderBy("postTime", Query.Direction.DESCENDING)
-                .limit(Global.QUERY_LIMIT);
+                .limit(Global.QUERY_LIMIT).get();
+        onQueryListComplete(query,callback);
+    }
+    public Query getHomeQuestionsQuery() {
+        return  questionsRef.whereEqualTo("blocked", false)
+                .orderBy("postTime", Query.Direction.DESCENDING)
+               ;
     }
 
     public void searchQuestionByKeyword(@NonNull String keyword, int limit, @NonNull TaskListener.State<List<Question>> callback) {
@@ -372,6 +378,7 @@ public class QuestionRepository {
         if (lstGrades.size() != 0) {
             query = query.whereEqualTo("gradeId", lstGrades.get(0));
         }
+        Log.d(TAG, query.toString());
         return query;
     }
 }

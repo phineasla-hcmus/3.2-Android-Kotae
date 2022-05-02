@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
+import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.google.android.material.chip.Chip;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
@@ -28,14 +30,13 @@ import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder> {
+public class HomeAdapter extends FirestorePagingAdapter<Question, HomeAdapter.ViewHolder> {
     private final Context context;
 
-    public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options, @NonNull Context context) {
+    public HomeAdapter(@NonNull FirestorePagingOptions<Question> options, @NonNull Context context) {
         super(options);
         this.context = context;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
