@@ -46,7 +46,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Question model) {
-        Log.d("question: ", model.getAuthor() + " " + model.getAuthorId());
+        // Log.d("question: ", model.getAuthor() + " " + model.getAuthorId());
         //holder.content.setText(model.getContent());
         holder.report.setVisibility(View.INVISIBLE);
         holder.reportCounter.setVisibility(View.INVISIBLE);
@@ -67,7 +67,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
             Intent intent = QuestionDetailActivity.newInstance(context, model);
             context.startActivity(intent);
         });
-        QuestionRepository questionRepository= new QuestionRepository();
+        QuestionRepository questionRepository = new QuestionRepository();
 //        holder.upvote.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
@@ -123,7 +123,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView title, content, author, postTime, upvoteCounter, downvoteCounter, reportCounter;
-        ImageButton  report;
+        ImageButton report;
         Button upvote, downvote;
         VerticalVoteView verticalVoteView;
         Chip grade, subject;
@@ -141,7 +141,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 //            upvoteCounter = (TextView) itemView.findViewById(R.id.tv_up);
 //            downvoteCounter = (TextView) itemView.findViewById(R.id.tv_down);
             reportCounter = (TextView) itemView.findViewById(R.id.tv_report);
-                verticalVoteView = (VerticalVoteView) itemView.findViewById(R.id.verticalVoteView);
+            verticalVoteView = (VerticalVoteView) itemView.findViewById(R.id.verticalVoteView);
 //            upvote = (Button) itemView.findViewById(R.id.ib_up);
 //            downvote = (Button) itemView.findViewById(R.id.ib_down);
             report = (ImageButton) itemView.findViewById(R.id.ib_report);
@@ -152,7 +152,6 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
             grade = (Chip) itemView.findViewById(R.id.chip_grade);
             subject = (Chip) itemView.findViewById(R.id.chip_subject);
-
 
 
             QuestionViewModel questionViewModel = new QuestionViewModel();

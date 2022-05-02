@@ -4,6 +4,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -70,6 +71,7 @@ public class Vote {
         return upvote;
     }
 
+    @Exclude
     public boolean isDownvote() {
         return !upvote;
     }

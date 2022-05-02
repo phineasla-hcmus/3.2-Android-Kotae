@@ -64,12 +64,17 @@ public abstract class RecordRepository<T extends Record> {
         TaskCompletionSource<T> taskCompletionSource = new TaskCompletionSource<>();
         getDocumentSnapshot(id).addOnSuccessListener(snapshot -> {
             T record = toObject(snapshot);
-            if (record == null)
+            if (record == null) {
+                taskCompletionSource.setResult(null);
                 return;
+            }
             voteRepository.get(record.getId()).addOnSuccessListener(vote -> {
-                if (vote == null)
+                if (vote == null) {
+                    taskCompletionSource.setResult(record);
                     return;
+                }
                 record.setVoteState(vote.getId(), vote.isUpvote() ? Vote.UPVOTE : Vote.DOWNVOTE);
+                taskCompletionSource.setResult(record);
             }).addOnFailureListener(taskCompletionSource::setException);
         }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();

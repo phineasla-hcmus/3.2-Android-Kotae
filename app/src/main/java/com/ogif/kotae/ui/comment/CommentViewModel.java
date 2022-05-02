@@ -57,7 +57,7 @@ public class CommentViewModel extends ViewModel {
                 commentLiveData.postValue(comments);
             }
         }).addOnFailureListener(e -> {
-            Log.w(TAG, "getComments: Failed with " + e.getMessage());
+            Log.w(TAG, "getComments: ", e);
             commentLiveData.postValue(null);
         });
     }
@@ -74,7 +74,7 @@ public class CommentViewModel extends ViewModel {
         return commentRepository.getPostId();
     }
 
-    public List<Comment> getLocalComments() {
+    public List<Comment> getImmutableLocalComments() {
         return Collections.unmodifiableList(comments);
     }
 

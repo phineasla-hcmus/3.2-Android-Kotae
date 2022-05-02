@@ -80,7 +80,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
             // null indicates as initial value or query error
             // Empty list indicates as query successful but no comment
             if (comments != null)
-                adapter.setItems(viewModel.getLocalComments());
+                adapter.setItems(viewModel.getImmutableLocalComments());
         });
 
         // Initial fetch

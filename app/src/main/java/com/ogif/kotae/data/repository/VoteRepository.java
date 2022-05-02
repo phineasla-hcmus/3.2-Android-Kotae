@@ -183,10 +183,6 @@ public class VoteRepository {
         return taskCompletionSource.getTask();
     }
 
-    public Task<Void> delete(@NonNull String recordId) {
-        return delete(authorId, recordId);
-    }
-
     public Task<String> shift(@NonNull String voteId, boolean isUpvoteToDownvote) {
         TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
         DocumentReference ref = votesRef.document(voteId);

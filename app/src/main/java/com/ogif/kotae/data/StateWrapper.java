@@ -13,20 +13,20 @@ public class StateWrapper<T> {
     @Nullable
     private final T data;
     @Nullable
-    private final String message;
+    private final Exception exception;
 
-    public StateWrapper(int status, @Nullable T data, @Nullable String msg) {
+    public StateWrapper(int status, @Nullable T data, @Nullable Exception exception) {
         this.status = status;
         this.data = data;
-        this.message = msg;
+        this.exception = exception;
     }
 
     public static <T> StateWrapper<T> success(T data) {
         return new StateWrapper<T>(SUCCESS, data, null);
     }
 
-    public static <T> StateWrapper<T> fail(String message) {
-        return new StateWrapper<T>(FAIL, null, message);
+    public static <T> StateWrapper<T> fail(Exception exception) {
+        return new StateWrapper<T>(FAIL, null, exception);
     }
 
     public boolean isSuccessful() {
@@ -43,7 +43,7 @@ public class StateWrapper<T> {
     }
 
     @Nullable
-    public String getMessage() {
-        return message;
+    public Exception getException() {
+        return exception;
     }
 }

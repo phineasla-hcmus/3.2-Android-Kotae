@@ -70,21 +70,13 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 .get(QuestionDetailViewModel.class);
 
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            // questionDetailViewModel
+            questionDetailViewModel.getAll(questionFromExtra.getId());
         });
 
-        // questionDetailViewModel.getQuestionLiveData().observe(this, question -> {
-        //     if (question == null) {
-        //         // TODO fetch question failed
-        //         return;
-        //     }
-        //     adapter.setQuestion(question);
-        // });
-        questionDetailViewModel.getPostLiveData().observe(this, posts -> {
-            adapter.setItems(posts);
+        questionDetailViewModel.getPostsLiveData().observe(this, latestPosts -> {
+            binding.swipeRefreshLayout.setRefreshing(false);
+            adapter.setItems(questionDetailViewModel.getImmutableLocalPosts());
         });
-
-        questionDetailViewModel.getAnswers();
     }
 
     private void startCreateAnswerActivity() {
@@ -102,9 +94,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        // savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel
-        //         .getQuestionLiveData()
-        //         .getValue());
+        savedInstanceState.putParcelable(BUNDLE_QUESTION, questionDetailViewModel.getLocalQuestion());
     }
 
     @NonNull
