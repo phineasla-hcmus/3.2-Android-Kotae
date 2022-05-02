@@ -28,7 +28,7 @@ public abstract class Post extends Record implements Parcelable {
     protected int xp;
     protected List<String> imageIds;
 
-    public abstract static class Builder<T extends Builder<T>> extends Record.Builder<T> {
+    public abstract static class Builder<T> extends Record.Builder<T> {
         private int xp;
         private List<String> imageIds;
 
@@ -37,16 +37,15 @@ public abstract class Post extends Record implements Parcelable {
 
         public abstract T getThis();
 
-        public Builder<T> authorXp(int xp) {
+        public T authorXp(int xp) {
             this.xp = xp;
             return getThis();
         }
 
-        public Builder<T> imageIds(List<String> ids) {
+        public T imageIds(List<String> ids) {
             this.imageIds = ids;
             return getThis();
         }
-
     }
 
     /**
