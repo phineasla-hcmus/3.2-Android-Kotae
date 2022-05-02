@@ -45,7 +45,6 @@ public class CreateAnswerActivity extends AppCompatActivity {
         binding.etContent.setOnClickListener(v -> startAnswerContentActivity());
 
         binding.fabPostAnswer.setOnClickListener(v -> {
-            String content = Objects.requireNonNull(binding.etContent.getText()).toString();
             if (TextUtils.isEmpty(content)) {
                 Toast.makeText(this, getResources().getString(R.string.missing_answer_content), Toast.LENGTH_SHORT).show();
                 return;

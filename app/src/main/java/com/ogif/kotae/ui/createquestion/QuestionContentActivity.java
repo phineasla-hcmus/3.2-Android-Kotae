@@ -4,16 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.tabs.TabLayout;
 import com.ogif.kotae.R;
 import com.ogif.kotae.databinding.ActivityQuestionContentBinding;
@@ -64,10 +61,10 @@ public class QuestionContentActivity extends AppCompatActivity {
         String text = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (!TextUtils.isEmpty(text)) {
             binding.etMarkdown.setText(text);
-            MarkdownUtils.setMarkdown(getApplicationContext(), text, binding.tvPreview);
+            MarkdownUtils.setMarkdown(this, text, binding.tvPreview);
         }
 
-        buildButtonsScroll();
+        MarkdownUtils.buildButtonsScroll(getResources(), this, binding.llBtnEdit, binding.etMarkdown);
 
         KeyboardVisibilityEvent.setEventListener(this, isOpen -> {
             if (isOpen && binding.etMarkdown.hasFocus()) {
@@ -79,6 +76,7 @@ public class QuestionContentActivity extends AppCompatActivity {
     // pass answer content to CreateQuestionActivity
     private void saveDraftContent() {
         String content = Objects.requireNonNull(binding.etMarkdown.getText()).toString();
+        Log.d("DRAFT", content);
         // put the String to pass back into an Intent and close this activity
         Intent intent = new Intent();
         intent.putExtra(Intent.EXTRA_TEXT, content);
@@ -123,38 +121,11 @@ public class QuestionContentActivity extends AppCompatActivity {
         }
     }
 
-    private void insertText(String text) {
-        Objects.requireNonNull(binding.etMarkdown.getText()).insert(binding.etMarkdown.getSelectionStart(), text);
-    }
-
-    private void buildButtonsScroll() {
-        int width = (int) getResources().getDimension(R.dimen.btn_edit_width);
-        int height = (int) getResources().getDimension(R.dimen.btn_edit_height);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
-
-        String[] labels = {"B", "I", "`", "h1", "h2", "<>", "{}", "[]", "()", "li"};
-        String[] mds = {"**bold**", "_italic_", "\n> blockquote", "\n# h1", "\n## h2", "$${a \\bangle b}$$", "$${c \\brace d}$$", "$${e \\brack f}$$", "$${g \\choose h}$$", "\n- item"};
-
-        for (int i = 0; i < labels.length; i++) {
-            final Button btnEdit = new Button(QuestionContentActivity.this);
-            btnEdit.setText(labels[i]);
-            btnEdit.setTextSize(12f);
-            btnEdit.setAllCaps(false);
-            btnEdit.setBackgroundColor(MaterialColors.getColor(btnEdit, R.attr.colorPrimary));
-            btnEdit.setTextColor(ContextCompat.getColor(this, android.R.color.white));
-            btnEdit.setLayoutParams(layoutParams);
-            btnEdit.setTag(i);
-            int finalI = i;
-            btnEdit.setOnClickListener(view -> insertText(mds[finalI]));
-            binding.llBtnEdit.addView(btnEdit);
-        }
-    }
-
     private void refreshPreview() {
         if (TextUtils.isEmpty(Objects.requireNonNull(binding.etMarkdown.getText()).toString())) {
             binding.tvPreview.setText(R.string.no_preview);
         } else {
-            MarkdownUtils.setMarkdown(getApplicationContext(), binding.etMarkdown.getText().toString(), binding.tvPreview);
+            MarkdownUtils.setMarkdown(this, binding.etMarkdown.getText().toString(), binding.tvPreview);
         }
     }
 
