@@ -12,17 +12,19 @@ import com.ogif.kotae.data.StateWrapper;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.AnswerCounterRepository;
 import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
-import java.util.ArrayList;
-
 public class AnswerViewModel extends ViewModel {
+    public static final String TAG = "AnswerViewModel";
     private final AnswerRepository answerRepository;
+    private final AnswerCounterRepository answerCounterRepository;
     private final UserRepository userRepository;
     private final MutableLiveData<StateWrapper<Answer>> mutableLiveData;
 
     public AnswerViewModel() {
+        this.answerCounterRepository = new AnswerCounterRepository();
         this.answerRepository = new AnswerRepository();
         this.userRepository = new UserRepository();
         this.mutableLiveData = new MutableLiveData<>();
@@ -42,21 +44,10 @@ public class AnswerViewModel extends ViewModel {
                 Answer answer = new Answer.Builder().question(questionId)
                         .author(authorId, authorName).content(content)
                         .build();
-                answerRepository.createAnswer(answer, new TaskListener.State<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference result) {
-                        Log.d("data", "DocumentSnapshot written with ID: " + result.getId());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("data", "Error adding document", e);
-                        Answer answer1 = new Answer.Builder().content("bc")
-                                .imageIds(new ArrayList<>())
-                                .content("abc")
-                                .build();
-                    }
-                });
+                answerCounterRepository.increment(questionId);
+                answerRepository.createAnswer(answer).addOnSuccessListener(answerId -> {
+                    Log.d(TAG, "DocumentSnapshot written with ID: " + answerId);
+                }).addOnFailureListener(e -> Log.w(TAG, "Error adding answer", e));
             }
         });
 

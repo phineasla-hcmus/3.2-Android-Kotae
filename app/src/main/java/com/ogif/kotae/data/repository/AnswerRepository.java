@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Answer;
@@ -103,9 +105,11 @@ public class AnswerRepository extends RecordRepository<Answer> {
         onQueryListComplete(query, callback);
     }
 
-    public void createAnswer(@NonNull Answer answer, @NonNull TaskListener.State<DocumentReference> callback) {
-        collectionRef.add(answer)
-                .addOnSuccessListener(callback::onSuccess)
-                .addOnFailureListener(callback::onFailure);
+    public Task<String> createAnswer(@NonNull Answer answer) {
+        TaskCompletionSource<String> taskCompletionSource = new TaskCompletionSource<>();
+        collectionRef.add(answer).addOnSuccessListener(documentReference -> {
+            taskCompletionSource.setResult(documentReference.getId());
+        }).addOnFailureListener(taskCompletionSource::setException);
+        return taskCompletionSource.getTask();
     }
 }
