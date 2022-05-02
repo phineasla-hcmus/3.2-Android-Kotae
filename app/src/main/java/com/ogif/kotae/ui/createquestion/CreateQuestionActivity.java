@@ -167,7 +167,6 @@ public class CreateQuestionActivity extends AppCompatActivity {
                         .show();
                 return;
             }
-            String content = Objects.requireNonNull(binding.etContent.getText()).toString();
             if (!QuestionUtils.isContentValid(content)) {
                 Toast.makeText(this, getResources().getString(R.string.invalid_question_content_length), Toast.LENGTH_SHORT)
                         .show();
