@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/contentContainerColor"
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -74,26 +72,19 @@
         android:paddingEnd="4dp"
         android:paddingRight="4dp"
         app:areSuggestionsDisabled="false"
-        app:cardBackgroundColor="?attr/colorOnPrimary"
+        app:cardBackgroundColor="?attr/colorOnSurfaceInverse"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
         app:clearInputButtonDrawable="@drawable/ic_close"
-        app:dividerColor="@color/dividerColor"
         app:isClearInputButtonEnabled="true"
         app:isDismissableOnTouchOutside="true"
         app:isProgressBarEnabled="true"
         app:isVoiceInputButtonEnabled="true"
         app:leftButtonDrawable="@drawable/ic_arrow_left"
         app:progressBarColor="@color/colorAccent"
-        app:queryInputBarIconColor="@color/iconColor"
         app:queryInputCursorColor="@color/colorAccent"
-        app:queryInputHintColor="@color/secondaryTextColor"
-        app:queryInputTextColor="@color/primaryTextColor"
         app:rightButtonDrawable="@drawable/ic_baseline_filter_list"
         app:shouldDimBehind="true"
-        app:suggestionIconColor="@color/suggestionIconColor"
-        app:suggestionRecentSearchIconColor="@color/suggestionIconColor"
-        app:suggestionSearchSuggestionIconColor="@color/suggestionIconColor"
         app:suggestionSelectedTextColor="@color/suggestionSelectedTextColor"
         app:suggestionTextColor="@color/suggestionTextColor" />
 
