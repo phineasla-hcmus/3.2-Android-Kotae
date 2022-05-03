@@ -24,16 +24,13 @@ import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.ui.comment.adapter.CommentAdapter;
-import com.ogif.kotae.ui.common.adapter.RecordAdapter;
-import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
 
 
 public class CommentFragment extends BottomSheetDialogFragment {
     public static final String TAG = "CommentFragment";
-    public static final String BUNDLE_POST_ID = "postId";
-    public static final String BUNDLE_POST_AUTHOR_ID = "postAuthorId";
+    public static final String BUNDLE_POST = "post";
 
     private RecyclerView recyclerView;
     private CommentAdapter adapter;
@@ -50,8 +47,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
         Bundle args = this.getArguments();
         assert args != null;
 
-        String postId = args.getString(BUNDLE_POST_ID);
-        String postAuthorId = args.getString(BUNDLE_POST_AUTHOR_ID);
+        Post post = args.getParcelable(BUNDLE_POST);
         String userId = UserUtils.getCachedUserId(requireActivity());
         String username = UserUtils.getCachedUsername(requireActivity());
 
@@ -65,7 +61,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
         assert sendComment != null;
         assert inputComment != null;
 
-        CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, postId);
+        CommentViewModelFactory commentViewModelFactory = new CommentViewModelFactory(userId, username, post);
         this.viewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
         // Set adapter and LazyLoadScrollListener
@@ -95,6 +91,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
             // Empty list indicates as query successful but no comment
             if (comments != null)
                 adapter.setItems(viewModel.getImmutableLocalComments());
+            inputComment.setText("");
         });
 
         // Initial fetch
@@ -108,8 +105,6 @@ public class CommentFragment extends BottomSheetDialogFragment {
                 return;
             }
             createComment(inputComment.getText().toString());
-            dialog.hide();
-            inputComment.setText("");
         });
 
         dialog.setOnShowListener(dialog1 -> {
@@ -132,11 +127,10 @@ public class CommentFragment extends BottomSheetDialogFragment {
     }
 
     @NonNull
-    public static CommentFragment newInstance(@NonNull Post holder) {
+    public static CommentFragment newInstance(@NonNull Post parent) {
         CommentFragment fragment = new CommentFragment();
         Bundle args = new Bundle();
-        args.putString(BUNDLE_POST_ID, holder.getId());
-        args.putString(BUNDLE_POST_AUTHOR_ID, holder.getAuthorId());
+        args.putParcelable(BUNDLE_POST, parent);
         fragment.setArguments(args);
         return fragment;
     }

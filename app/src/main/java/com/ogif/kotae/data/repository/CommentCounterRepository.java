@@ -10,28 +10,27 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
 import com.ogif.kotae.Global;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 
 public class CommentCounterRepository {
     private final FirebaseFirestore db;
-    private final CollectionReference postsRef;
+    private final DocumentReference postRef;
 
-    public CommentCounterRepository(@Global.Collection String collectionPath) {
+    public CommentCounterRepository(Post parent) {
         db = FirebaseFirestore.getInstance();
-        postsRef = db.collection(collectionPath);
+        postRef = db.collection(parent.getCollectionName()).document(parent.getId());
     }
 
-    public WriteBatch increment(@NonNull WriteBatch batch, @NonNull String postId) {
-        DocumentReference questionRef = postsRef.document(postId);
-        return batch.update(questionRef, Question.Field.ANSWER, FieldValue.increment(1));
+    public WriteBatch increment(@NonNull WriteBatch batch) {
+        return batch.update(postRef, Question.Field.COMMENT, FieldValue.increment(1));
     }
 
-    public Transaction increment(@NonNull Transaction transaction, @NonNull String postId) {
-        DocumentReference questionRef = postsRef.document(postId);
-        return transaction.update(questionRef, Question.Field.ANSWER, FieldValue.increment(1));
+    public Transaction increment(@NonNull Transaction transaction) {
+        return transaction.update(postRef, Question.Field.COMMENT, FieldValue.increment(1));
     }
 
-    public Task<Void> increment(@NonNull String postId) {
-        return postsRef.document(postId).update(Question.Field.ANSWER, FieldValue.increment(1));
+    public Task<Void> increment() {
+        return postRef.update(Question.Field.COMMENT, FieldValue.increment(1));
     }
 }
