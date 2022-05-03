@@ -9,6 +9,7 @@
         android:id="@+id/recycler_view_bottom_sheet"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="?attr/colorSurface"
         android:padding="@dimen/padding_y_md"
         app:layout_constraintBottom_toTopOf="@+id/et_comment_input"
         app:layout_constraintEnd_toEndOf="parent"
