@@ -66,12 +66,15 @@ public class MainActivity extends AppCompatActivity {
 
         binding.includedToolBar.btnLeaderBoard.setOnClickListener(v -> startLeaderboardActivity());
 
+        BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
+        bottomNav.setSelectedItemId(R.id.page_home);
+
         // Initialize home screen
-        loadFragment(new HomeFragment());
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+        }
 
         // AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
-        BottomNavigationView bottomNav = (BottomNavigationView) binding.includedBottomNav.bottomNav;
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             switch (item.getItemId()) {
