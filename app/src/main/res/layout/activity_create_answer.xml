@@ -24,8 +24,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/abl_create_answer">
 
@@ -38,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_x"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/margin_y"
                 android:fontFamily="@font/roboto"
                 android:text="@string/create_answer_content_title"
@@ -62,7 +64,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="300dp"
                     android:clickable="true"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -100,8 +102,32 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_answer_images_title"
                 app:tint="?attr/colorPrimary"
                 tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+            <LinearLayout
+                android:id="@+id/hsv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_y_md"
+                android:layout_marginStart="@dimen/margin_x"
+                android:layout_marginEnd="@dimen/margin_x"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_answer_images">
 
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp">
 
+                    <GridView
+                        android:id="@+id/gv_question_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:numColumns="3">
+
+                    </GridView>
+                </ScrollView>
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
