@@ -10,10 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.google.firebase.Timestamp;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.NotificationBlock;
 import com.ogif.kotae.data.model.User;
+import com.ogif.kotae.data.repository.NotificationRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -22,11 +24,13 @@ public class NotificationBlockAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private ArrayList<NotificationBlock> notificationBlockList;
+    private NotificationRepository notificationRepository;
 
     public NotificationBlockAdapter(Context context, int layout, ArrayList<NotificationBlock> notificationBlockList) {
         this.context = context;
         this.layout = layout;
         this.notificationBlockList = notificationBlockList;
+        this.notificationRepository = new NotificationRepository();
     }
 
     @Override
@@ -53,7 +57,8 @@ public class NotificationBlockAdapter extends BaseAdapter {
         TextView txtTime = (TextView) view.findViewById(R.id.tv_noti_time);
 
         NotificationBlock notificationBlock = notificationBlockList.get(i);
-        txtTime.setText(String.valueOf(notificationBlock.getTimestamp().toDate()));
+//        txtTime.setText(String.valueOf(notificationBlock.getTimestamp().toDate()));
+        txtTime.setText(notificationRepository.convertTimestampToRemaining(notificationBlock.getTimestamp()));
 
         UserRepository userRepository = new UserRepository();
         userRepository.getById(notificationBlock.getLastUserDoAction(), new TaskListener.State<User>() {
@@ -79,7 +84,6 @@ public class NotificationBlockAdapter extends BaseAdapter {
                 }
             }
         });
-
         return view;
     }
 }

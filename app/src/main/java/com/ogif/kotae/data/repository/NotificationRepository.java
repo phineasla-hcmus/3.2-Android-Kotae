@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -211,5 +212,61 @@ public class NotificationRepository {
     private boolean notificationBlockIsExist(NotificationBlock notificationBlock, Notification notification) {
         return notificationBlock.getQuestionId().equals(notification.getQuestionId())
                 && notificationBlock.getAction().equals(notification.getUserAction());
+    }
+
+    public String convertTimestampToRemaining(Timestamp timestamp) {
+        String result = "";
+        long remainingSeconds = Timestamp.now().getSeconds() - timestamp.getSeconds();
+        if (remainingSeconds * 1.0 / (365 * 24 * 60 * 60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (365 * 24 * 60 * 60));
+            if (n > 1) {
+                result = String.valueOf(n) + " years ago";
+            } else {
+                result = String.valueOf(n) + " year ago";
+            }
+        } else if (remainingSeconds * 1.0 / (30 * 24 * 60 * 60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (30 * 24 * 60 * 60));
+            if (n > 1) {
+                result = String.valueOf(n) + " months ago";
+            } else {
+                result = String.valueOf(n) + " month ago";
+            }
+        } else if (remainingSeconds * 1.0 / (7 * 24 * 60 * 60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (7 * 24 * 60 * 60));
+            if (n > 1) {
+                result = String.valueOf(n) + " weeks ago";
+            } else {
+                result = String.valueOf(n) + " week ago";
+            }
+        } else if (remainingSeconds * 1.0 / (24 * 60 * 60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (24 * 60 * 60));
+            if (n > 1) {
+                result = String.valueOf(n) + " days ago";
+            } else {
+                result = String.valueOf(n) + " day ago";
+            }
+        } else if (remainingSeconds * 1.0 / (60 * 60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (60 * 60));
+            if (n > 1) {
+                result = String.valueOf(n) + " hours ago";
+            } else {
+                result = String.valueOf(n) + " hour ago";
+            }
+        } else if (remainingSeconds * 1.0 / (60) > 1.0) {
+            int n = (int) (remainingSeconds * 1.0 / (60));
+            if (n > 1) {
+                result = String.valueOf(n) + " minutes ago";
+            } else {
+                result = String.valueOf(n) + " minute ago";
+            }
+        } else {
+            int n = (int) remainingSeconds;
+            if (n > 1) {
+                result = String.valueOf(n) + " seconds ago";
+            } else {
+                result = String.valueOf(n) + " second ago";
+            }
+        }
+        return result;
     }
 }

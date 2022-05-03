@@ -16,9 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.chip.Chip;
+import com.google.firebase.Timestamp;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.repository.NotificationRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
@@ -30,12 +32,15 @@ public class AdminQuestionAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private ArrayList<Question> questionArrayList;
+    private NotificationRepository notificationRepository;
+
 
 
     public AdminQuestionAdapter(Context context, int layout, ArrayList<Question> questionArrayList) {
         this.context = context;
         this.layout = layout;
         this.questionArrayList = questionArrayList;
+        this.notificationRepository = new NotificationRepository();
     }
 
     @Override
@@ -73,6 +78,7 @@ public class AdminQuestionAdapter extends BaseAdapter {
         Question question = questionArrayList.get(i);
         tvQuestionTitle.setText(question.getTitle());
         tvQuestionContent.setText(question.getContent());
+        tvQuestionPosttime.setText(notificationRepository.convertTimestampToRemaining(new Timestamp(question.getPostTime())));
 //        tvQuestionPosttime.setText(question.getPostTime().toString());
 //        tvUpvote.setText(String.valueOf(question.getUpvote()));
 //        tvDownvote.setText(String.valueOf(question.getDownvote()));
