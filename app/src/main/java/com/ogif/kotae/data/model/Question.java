@@ -101,7 +101,6 @@ public final class Question extends Post {
         subject = parcel.readString();
         gradeId = parcel.readString();
         grade = parcel.readString();
-        imageIds = new ArrayList<>();
     }
 
     @Override
