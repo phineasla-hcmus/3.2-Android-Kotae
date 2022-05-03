@@ -16,6 +16,8 @@ import com.ogif.kotae.data.repository.AnswerCounterRepository;
 import com.ogif.kotae.data.repository.AnswerRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
+import java.util.List;
+
 public class AnswerViewModel extends ViewModel {
     public static final String TAG = "AnswerViewModel";
     private final AnswerRepository answerRepository;
@@ -30,7 +32,7 @@ public class AnswerViewModel extends ViewModel {
         this.mutableLiveData = new MutableLiveData<>();
     }
 
-    public void createAnswer(@NonNull String questionId, @NonNull String content) {
+    public void createAnswer(@NonNull String questionId, @NonNull String content, List<String> imgIds) {
         userRepository.getCurrentUser(new TaskListener.State<User>() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -42,6 +44,7 @@ public class AnswerViewModel extends ViewModel {
                 String authorId = result.getId();
                 String authorName = result.getUsername();
                 Answer answer = new Answer.Builder().question(questionId)
+                        .imageIds(imgIds)
                         .author(authorId, authorName).content(content)
                         .build();
                 answerCounterRepository.increment(questionId);
