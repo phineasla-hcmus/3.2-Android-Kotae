@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Comment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
@@ -56,6 +57,12 @@ public class CommentAdapter extends RecordAdapter<Comment> {
         holder.username.setText(comment.getAuthor());
         holder.vote.setHolder(comment);
         holder.vote.setVoteState(comment.getUpvote(), comment.getDownvote(), comment.getVoteState());
+        holder.vote.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
+            @Override
+            public void onDebouncedStateChange(VoteView view, int previous, int current) {
+                onVoteChangeListenerIfNotNull(viewHolder.getBindingAdapterPosition(), view, previous, current);
+            }
+        });
         // TODO user avatar
         holder.avatar.setImageResource(R.drawable.ic_placeholder_user);
     }

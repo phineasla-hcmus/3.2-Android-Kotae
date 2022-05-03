@@ -105,7 +105,7 @@ public class QuestionDetailViewModel extends ViewModel {
         });
     }
 
-    public void updateVote(@NonNull Post holder, int position, @Vote.State int previousState, @Vote.State int currentState) {
+    public void updateVote(@NonNull Post holder, @Vote.State int previousState, @Vote.State int currentState) {
         Task<?> voteTask = null;
         Task<Void> counterTask;
 
@@ -130,8 +130,7 @@ public class QuestionDetailViewModel extends ViewModel {
             Task<?> counterResult = tasks.get(1);
             if (voteResult.isSuccessful() && counterResult.isSuccessful()) {
                 @Nullable String voteId = (String) voteResult.getResult();
-                Post post = posts.get(position);
-                post.setVoteState(voteId, currentState);
+                holder.setVoteState(voteId, currentState);
             }
             if (!tasks.get(0).isSuccessful() && tasks.get(1).isSuccessful()) {
                 // TODO revert counterTask

@@ -86,7 +86,7 @@ public class CommentFragment extends BottomSheetDialogFragment {
                 Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
                 return;
             }
-            // viewModel.
+            viewModel.updateVote(holder, previous, current);
         });
 
         // Observe LiveData

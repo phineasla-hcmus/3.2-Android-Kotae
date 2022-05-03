@@ -59,7 +59,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
             }
             Notification notification = new Notification();
             notification.pushUpvoteNotification(getApplicationContext(), holder);
-            viewModel.updateVote(holder, position, previous, current);
+            viewModel.updateVote(holder, previous, current);
         });
 
         Question questionFromExtra = getIntent().getExtras().getParcelable(BUNDLE_QUESTION);

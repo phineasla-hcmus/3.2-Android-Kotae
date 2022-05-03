@@ -12,7 +12,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.model.Comment;
-import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.data.repository.CommentRepository;
 import com.ogif.kotae.data.repository.VoteCounterRepository;
@@ -74,7 +73,7 @@ public class CommentViewModel extends ViewModel {
         });
     }
 
-    public void updateVote(@NonNull Comment holder, int position, @Vote.State int previousState, @Vote.State int currentState) {
+    public void updateVote(@NonNull Comment holder, @Vote.State int previousState, @Vote.State int currentState) {
         Task<?> voteTask = null;
         Task<Void> counterTask;
 
@@ -99,13 +98,7 @@ public class CommentViewModel extends ViewModel {
             Task<?> counterResult = tasks.get(1);
             if (voteResult.isSuccessful() && counterResult.isSuccessful()) {
                 @Nullable String voteId = (String) voteResult.getResult();
-                Comment comment = comments.get(position);
-                comment.setVoteState(voteId, currentState);
-            }
-            if (!tasks.get(0).isSuccessful() && tasks.get(1).isSuccessful()) {
-                // TODO revert counterTask
-            } else if (!tasks.get(1).isSuccessful() && tasks.get(0).isSuccessful()) {
-                // TODO revert voteTask
+                holder.setVoteState(voteId, currentState);
             }
         });
     }

@@ -171,7 +171,7 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         holder.vote.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
             @Override
             public void onDebouncedStateChange(VoteView view, int previous, int current) {
-                onVoteChangeListenerIfNotNull(position, view, previous, current);
+                onVoteChangeListenerIfNotNull(viewHolder.getBindingAdapterPosition(), view, previous, current);
             }
         });
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
