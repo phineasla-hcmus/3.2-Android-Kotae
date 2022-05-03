@@ -58,6 +58,7 @@ public class GridViewAdapter extends BaseAdapter {
 
         ivGallery = (ImageView) itemView.findViewById(R.id.iv_image);
             Picasso.get().load(mArrayUrl.get(position)).into(ivGallery);
+
         return itemView;
     }
 }

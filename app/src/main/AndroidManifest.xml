@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Kotae">
         <activity
+            android:name=".ui.questiondetail.ClickedImageActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.main.ReEnterPasswordActivity"
             android:exported="false" />
         <activity

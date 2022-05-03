@@ -1,11 +1,13 @@
 package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.main.ImageAdapter;
+import com.ogif.kotae.ui.questiondetail.ClickedImageActivity;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 import com.ogif.kotae.utils.model.PostUtils;
@@ -181,18 +184,26 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         });
         // TODO bind author avatar
 
-        List<String> images = new ArrayList<>();
-        images.add(  "https://firebasestorage.googleapis.com/v0/b/android-kotae.appspot.com/o/questions%2Fimage%3A12122UShL1GRmoQdKh7PVrMZGIWryJ8R203-May-202201%3A160.jpg?alt=media&token=8d3eabfc-eed5-4a9b-bbdf-c6c40f79d098");
+
+
         if (!post.getImageIds().isEmpty())
             Log.i("TAG", post.getImageIds().toString());
         else
             Log.i("TAG", "EMPTY");
-        GridViewAdapter adapter = new GridViewAdapter(context,images);
+        GridViewAdapter adapter = new GridViewAdapter(context, post.getImageIds());
         holder.images.setAdapter(adapter);
         holder.images.setVerticalSpacing(holder.images.getHorizontalSpacing());
         ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) holder.images
                 .getLayoutParams();
         mlp.setMargins(0, holder.images.getHorizontalSpacing(), 0, 0);
+
+        holder.images.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                context.startActivity(new Intent(context,ClickedImageActivity.class).putExtra("image",post.getImageId(position)));
+            }
+        });
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder, @NonNull Question question) {
@@ -200,10 +211,6 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         holder.subject.setText(question.getSubject());
         holder.grade.setText(question.getGrade());
 
-        if (!question.getImageIds().isEmpty())
-            Log.i("TAG", question.getImageIds().toString());
-        else
-            Log.i("TAG", "EMPTY");
     }
 
     public void bindAnswer(@NonNull AnswerHolder holder, @NonNull Answer answer) {
