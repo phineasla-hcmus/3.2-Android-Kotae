@@ -1,5 +1,6 @@
 package com.ogif.kotae.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -52,9 +53,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
             if (UserUtils.isPasswordValid(newPass) == UserUtils.OK && newPass.equals(confirmPass)) {
                 viewModel.updatePassword(newPass);
                 Toast.makeText(this, "Update password successfully", Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(this, MainActivity.class);
+                startActivity(intent1);
                 finish();
             }
-
+            else {
+                binding.tvChangePasswordError.setText("Invalid password");
+                binding.tvChangePasswordError.setVisibility(View.VISIBLE);
+            }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent1 = new Intent(this, MainActivity.class);
+        startActivity(intent1);
+        finish();
     }
 }

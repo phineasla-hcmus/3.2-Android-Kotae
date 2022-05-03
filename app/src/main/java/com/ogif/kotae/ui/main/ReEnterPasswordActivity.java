@@ -36,7 +36,8 @@ public class ReEnterPasswordActivity extends AppCompatActivity {
             viewModel.reAuthenticate(binding.etEnterPassword.getText().toString());
             viewModel.getAuthenticatedLiveData().observe(this, (Boolean authenticated) -> {
                 if (!authenticated) {
-                    Toast.makeText(this, "Invalid password", Toast.LENGTH_SHORT).show();
+                    binding.tvReEnterPasswordError.setText("Invalid password");
+                    binding.tvReEnterPasswordError.setVisibility(View.VISIBLE);
                     return;
                 }
                 Intent intent1 = new Intent(this, ChangePasswordActivity.class);
