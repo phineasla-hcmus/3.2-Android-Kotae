@@ -14,8 +14,10 @@ import com.google.firebase.Timestamp;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.TaskListener;
 import com.ogif.kotae.data.model.NotificationBlock;
+import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.model.User;
 import com.ogif.kotae.data.repository.NotificationRepository;
+import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -25,12 +27,14 @@ public class NotificationBlockAdapter extends BaseAdapter {
     private int layout;
     private ArrayList<NotificationBlock> notificationBlockList;
     private NotificationRepository notificationRepository;
+    private QuestionRepository questionRepository;
 
     public NotificationBlockAdapter(Context context, int layout, ArrayList<NotificationBlock> notificationBlockList) {
         this.context = context;
         this.layout = layout;
         this.notificationBlockList = notificationBlockList;
         this.notificationRepository = new NotificationRepository();
+        this.questionRepository = new QuestionRepository();
     }
 
     @Override
@@ -57,7 +61,6 @@ public class NotificationBlockAdapter extends BaseAdapter {
         TextView txtTime = (TextView) view.findViewById(R.id.tv_noti_time);
 
         NotificationBlock notificationBlock = notificationBlockList.get(i);
-//        txtTime.setText(String.valueOf(notificationBlock.getTimestamp().toDate()));
         txtTime.setText(notificationRepository.convertTimestampToRemaining(notificationBlock.getTimestamp()));
 
         UserRepository userRepository = new UserRepository();
@@ -70,17 +73,31 @@ public class NotificationBlockAdapter extends BaseAdapter {
             @Override
             public void onSuccess(User result) {
                 if (result != null) {
-                    String notiContent = notiContent = result.getUsername() + " ";
-                    if (notificationBlock.getNumber() > 1) {
-                        notiContent += "and " + String.valueOf(notificationBlock.getNumber()) + " others ";
-                    }
-                    notiContent += notificationBlock.getAction().toLowerCase();
-                    if (notificationBlock.getAction().equals("COMMENT")) {
-                        notiContent += "ed your question.";
-                    } else {
-                        notiContent += "d your question.";
-                    }
-                    txtContent.setText(notiContent);
+                    questionRepository.getQuestionById(notificationBlock.getQuestionId(), new TaskListener.State<Question>() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("AAA", e.toString());
+                        }
+
+                        @Override
+                        public void onSuccess(Question question) {
+                            if (question != null) {
+                                String notiContent = notiContent = result.getUsername() + " ";
+                                if (notificationBlock.getNumber() > 1) {
+                                    notiContent += "and " + String.valueOf(notificationBlock.getNumber()) + " others ";
+                                }
+                                notiContent += notificationBlock.getAction().toLowerCase();
+                                if (notificationBlock.getAction().equals("COMMENT")) {
+                                    notiContent += "ed your question \"";
+                                } else {
+                                    notiContent += "d your question \"";
+                                }
+                                notiContent += question.getTitle() + "\".";
+                                txtContent.setText(notiContent);
+                            }
+                        }
+                    });
+
                 }
             }
         });
