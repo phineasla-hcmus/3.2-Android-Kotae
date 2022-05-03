@@ -50,7 +50,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         //holder.content.setText(model.getContent());
         holder.report.setVisibility(View.INVISIBLE);
         holder.reportCounter.setVisibility(View.INVISIBLE);
-        MarkdownUtils.setMarkdown(context, model.getContent(), holder.content);
+            MarkdownUtils.setMarkdown(context, model.getContent(), holder.content);
         // holder.postTime.setText((int) questionList.get(position).getPostTime());
         holder.postTime.setText(DateUtils.formatDate(model.getPostTime(), context));
         // TODO support avatar

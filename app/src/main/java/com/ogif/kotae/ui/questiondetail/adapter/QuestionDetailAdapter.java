@@ -1,6 +1,7 @@
 package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,11 +23,14 @@ import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
+import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 import com.ogif.kotae.utils.model.PostUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -176,12 +180,30 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
             showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
         });
         // TODO bind author avatar
+
+        List<String> images = new ArrayList<>();
+        images.add(  "https://firebasestorage.googleapis.com/v0/b/android-kotae.appspot.com/o/questions%2Fimage%3A12122UShL1GRmoQdKh7PVrMZGIWryJ8R203-May-202201%3A160.jpg?alt=media&token=8d3eabfc-eed5-4a9b-bbdf-c6c40f79d098");
+        if (!post.getImageIds().isEmpty())
+            Log.i("TAG", post.getImageIds().toString());
+        else
+            Log.i("TAG", "EMPTY");
+        GridViewAdapter adapter = new GridViewAdapter(context,images);
+        holder.images.setAdapter(adapter);
+        holder.images.setVerticalSpacing(holder.images.getHorizontalSpacing());
+        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) holder.images
+                .getLayoutParams();
+        mlp.setMargins(0, holder.images.getHorizontalSpacing(), 0, 0);
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder, @NonNull Question question) {
         holder.title.setText(question.getTitle());
         holder.subject.setText(question.getSubject());
         holder.grade.setText(question.getGrade());
+
+        if (!question.getImageIds().isEmpty())
+            Log.i("TAG", question.getImageIds().toString());
+        else
+            Log.i("TAG", "EMPTY");
     }
 
     public void bindAnswer(@NonNull AnswerHolder holder, @NonNull Answer answer) {

@@ -1,4 +1,4 @@
-package com.ogif.kotae.ui.main;
+package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -14,32 +14,32 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter {
     private Context ctx;
     private int pos;
     private LayoutInflater inflater;
     private ImageView ivGallery;
-    private ArrayList<Uri> mArrayUri;
+    private List<String> mArrayUrl;
 
 
-    public ImageAdapter(Context ctx, ArrayList<Uri> mArrayUri) {
+    public GridViewAdapter(Context ctx, List<String> mArrayUrl) {
 
         this.ctx = ctx;
-        this.mArrayUri = mArrayUri;
+        this.mArrayUrl = mArrayUrl;
     }
 
 
 
     @Override
     public int getCount() {
-        if ( mArrayUri!= null|| !mArrayUri.isEmpty())
-            return mArrayUri.size();
+        if ( mArrayUrl!= null|| !mArrayUrl.isEmpty())
+            return mArrayUrl.size();
         return 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return mArrayUri.get(position);
+        return mArrayUrl.get(position);
     }
 
     @Override
@@ -57,9 +57,7 @@ public class ImageAdapter extends BaseAdapter {
         View itemView = inflater.inflate(R.layout.item_question_image, parent, false);
 
         ivGallery = (ImageView) itemView.findViewById(R.id.iv_image);
-
-            //ivGallery.setImageURI(mArrayUri.get(position));
-            Picasso.get().load(mArrayUri.get(position)).into(ivGallery);
+            Picasso.get().load(mArrayUrl.get(position)).into(ivGallery);
         return itemView;
     }
 }

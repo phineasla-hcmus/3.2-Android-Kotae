@@ -18,6 +18,8 @@ import com.ogif.kotae.data.repository.AuthRepository;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.UserRepository;
 
+import java.util.List;
+
 public class QuestionViewModel extends ViewModel {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
@@ -29,7 +31,7 @@ public class QuestionViewModel extends ViewModel {
         this.mutableLiveData = new MutableLiveData<>();
     }
 
-    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade) {
+    public void createQuestion(@NonNull String title, @NonNull String content, @NonNull String subjectId, @NonNull String gradeId, @NonNull String subject, @NonNull String grade,@NonNull List<String> imgIds) {
         userRepository.getCurrentUser(new TaskListener.State<User>() {
             @Override
             public void onFailure(@NonNull Exception e) {
@@ -40,7 +42,7 @@ public class QuestionViewModel extends ViewModel {
             public void onSuccess(User result) {
                 String authorId = result.getId();
                 String authorName = result.getUsername();
-                questionRepository.createQuestion(authorId, authorName, title, content, subjectId, gradeId, subject, grade);
+                questionRepository.createQuestion(authorId, authorName, title, content, subjectId, gradeId, subject, grade,imgIds);
             }
         });
     }
