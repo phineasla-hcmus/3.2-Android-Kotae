@@ -49,4 +49,6 @@ public class Global {
     public static final String SHARED_PREF_USERNAME = "username";
 
     public static final String DEFAULT_USER_AVATAR = "ic_avatar_3.png";
+
+    public static final int DEBOUNCE_MILLIS = 250;
 }

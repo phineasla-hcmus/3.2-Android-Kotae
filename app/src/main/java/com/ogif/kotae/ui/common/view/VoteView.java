@@ -1,7 +1,9 @@
 package com.ogif.kotae.ui.common.view;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.IdRes;
@@ -15,6 +17,8 @@ import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 public class VoteView extends ConstraintLayout {
     @IdRes
@@ -49,6 +53,33 @@ public class VoteView extends ConstraintLayout {
      */
     public interface OnStateChangeListener {
         void onChange(VoteView view, @Vote.State int previous, @Vote.State int current);
+    }
+
+    public abstract static class DebouncedOnStateChangeListener implements VoteView.OnStateChangeListener {
+        private final long minimumIntervalMillis;
+        private final Map<View, Long> lastClickMap;
+
+        public abstract void onDebouncedStateChange(VoteView view, @Vote.State int previous, @Vote.State int current);
+
+        /**
+         * @param minimumIntervalMillis The minimum allowed time between clicks - any click sooner
+         *                              than this after a previous click will be rejected
+         */
+        public DebouncedOnStateChangeListener(long minimumIntervalMillis) {
+            this.minimumIntervalMillis = minimumIntervalMillis;
+            this.lastClickMap = new WeakHashMap<>();
+        }
+
+        @Override
+        public void onChange(VoteView view, @Vote.State int previous, @Vote.State int current) {
+            Long previousClickTimestamp = lastClickMap.get(view);
+            long currentTimestamp = SystemClock.uptimeMillis();
+
+            lastClickMap.put(view, currentTimestamp);
+            if (previousClickTimestamp == null || Math.abs(currentTimestamp - previousClickTimestamp) > minimumIntervalMillis) {
+                onDebouncedStateChange(view, previous, current);
+            }
+        }
     }
 
     public VoteView(@NonNull Context context) {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
@@ -167,8 +168,11 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         holder.author.setReputation(post.getXp());
         holder.vote.setHolder(post);
         holder.vote.setVoteState(post.getUpvote(), post.getDownvote(), post.getVoteState());
-        holder.vote.setOnStateChangeListener((view, previous, current) -> {
-            onVoteChangeListenerIfNotNull(position, view, previous, current);
+        holder.vote.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
+            @Override
+            public void onDebouncedStateChange(VoteView view, int previous, int current) {
+                onVoteChangeListenerIfNotNull(position, view, previous, current);
+            }
         });
         holder.comment.setText(String.format(Locale.getDefault(), "%d", post.getComment()));
         holder.comment.setOnClickListener(v -> {
