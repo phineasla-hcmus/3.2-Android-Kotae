@@ -19,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -59,10 +61,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private Uri imageUri;
     private ArrayList<Uri> imageList = new ArrayList<>();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
+    private StorageReference storageRef = storage.getReference().child("questions");
     private int uploadCount = 0;
     private ImageAdapter imageAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,12 +189,11 @@ public class CreateQuestionActivity extends AppCompatActivity {
             }
             binding.fabPostQuestion.setEnabled(false);
             List<String> imgIds = new ArrayList<>();
-            if (!imageList.isEmpty()) {
-                uploadImage(imgIds);
-                Log.d("ADD IMGIDS", imgIds.get(0));
 
-            }
-            this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
+                uploadImage(imgIds, title);
+               // System.out.println(imgIds.get(0));
+
+           // this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
 
 
             this.finish();
@@ -240,7 +240,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     }
 
-    public void uploadImage( List<String> imgIds) {
+    public void uploadImage( List<String> imgIds, String title) {
         String currentDate,currentTime;
         Calendar calendarDate = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
@@ -254,8 +254,20 @@ public class CreateQuestionActivity extends AppCompatActivity {
         String name = userId+currentDate+currentTime+ Integer.toString(uploadCount) ;
 
         StorageRepository storageRepository = new StorageRepository();
-        storageRepository.uploadQuestionImages(imageList, uploadCount,
-                CreateQuestionActivity.this, imageAdapter,name,imgIds);
+         storageRepository.uploadQuestionImages(imageList, uploadCount,
+                CreateQuestionActivity.this, imageAdapter,name).addOnSuccessListener(new OnSuccessListener<List<String>>() {
+             @Override
+             public void onSuccess(List<String> strings) {
+                 imgIds.addAll(strings);
+                 // call update question to database here
+                 viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
+             }
+         }).addOnFailureListener(new OnFailureListener() {
+             @Override
+             public void onFailure(@NonNull Exception e) {
+
+             }
+         });
 
     }
 
