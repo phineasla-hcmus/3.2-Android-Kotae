@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_x"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="@dimen/margin_y"
                 android:fontFamily="@font/roboto"
                 android:text="@string/create_answer_content_title"
@@ -63,7 +64,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_content"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="300dp"
                     android:clickable="true"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -115,7 +116,8 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp">
 
                     <GridView
                         android:id="@+id/gv_question_image"
