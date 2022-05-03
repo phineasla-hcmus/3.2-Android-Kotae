@@ -1,10 +1,13 @@
 package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -23,11 +26,15 @@ import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
+import com.ogif.kotae.ui.main.ImageAdapter;
+import com.ogif.kotae.ui.questiondetail.ClickedImageActivity;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 import com.ogif.kotae.utils.model.PostUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -180,12 +187,34 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
             showBottomSheetDialogFragment(bottomSheetDialogCommentFragment);
         });
         // TODO bind author avatar
+
+
+
+        if (!post.getImageIds().isEmpty())
+            Log.i("TAG", post.getImageIds().toString());
+        else
+            Log.i("TAG", "EMPTY");
+        GridViewAdapter adapter = new GridViewAdapter(context, post.getImageIds());
+        holder.images.setAdapter(adapter);
+        holder.images.setVerticalSpacing(holder.images.getHorizontalSpacing());
+        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) holder.images
+                .getLayoutParams();
+        mlp.setMargins(0, holder.images.getHorizontalSpacing(), 0, 0);
+
+        holder.images.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                context.startActivity(new Intent(context,ClickedImageActivity.class).putExtra("image",post.getImageId(position)));
+            }
+        });
     }
 
     public void bindQuestion(@NonNull QuestionDetailHolder holder, @NonNull Question question) {
         holder.title.setText(question.getTitle());
         holder.subject.setText(question.getSubject());
         holder.grade.setText(question.getGrade());
+
     }
 
     public void bindAnswer(@NonNull AnswerHolder holder, @NonNull Answer answer) {

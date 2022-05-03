@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -34,10 +37,13 @@ import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.main.adapter.GradeAdapter;
 import com.ogif.kotae.ui.main.adapter.SubjectAdapter;
 import com.ogif.kotae.utils.model.QuestionUtils;
+import com.ogif.kotae.utils.model.UserUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 import com.ogif.kotae.utils.text.TextValidator;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +61,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private Uri imageUri;
     private ArrayList<Uri> imageList = new ArrayList<>();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
+    private StorageReference storageRef = storage.getReference().child("questions");
     private int uploadCount = 0;
     private ImageAdapter imageAdapter;
 
@@ -183,11 +189,10 @@ public class CreateQuestionActivity extends AppCompatActivity {
                 return;
             }
             binding.fabPostQuestion.setEnabled(false);
-            this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName);
+            List<String> imgIds = new ArrayList<>();
 
-            if (!imageList.isEmpty()) {
-                uploadImage();
-            }
+            uploadImage(imgIds, title);
+            // this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
             this.finish();
         });
 
@@ -232,16 +237,34 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     }
 
-    public void uploadImage() {
-//        ProgressDialog progressDialog
-//                = new ProgressDialog(CreateQuestionActivity.this);
-//        progressDialog.setMessage("The process may take a little long");
-//        progressDialog.show();
-//        LoadingDialog loadingDialog = new LoadingDialog(CreateQuestionActivity.this);
-//        loadingDialog.startLoadingDialog();
+    public void uploadImage(List<String> imgIds, String title) {
+        String currentDate, currentTime;
+        Calendar calendarDate = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        currentDate = simpleDateFormat.format(calendarDate.getTime());
+
+        Calendar calendarTime = Calendar.getInstance();
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        currentTime = timeFormat.format(calendarTime.getTime());
+
+        String userId = UserUtils.getCachedUserId(CreateQuestionActivity.this);
+        String name = userId + currentDate + currentTime + Integer.toString(uploadCount);
+
         StorageRepository storageRepository = new StorageRepository();
         storageRepository.uploadQuestionImages(imageList, uploadCount,
-                CreateQuestionActivity.this, imageAdapter);
+                CreateQuestionActivity.this, imageAdapter, name).addOnSuccessListener(new OnSuccessListener<List<String>>() {
+            @Override
+            public void onSuccess(List<String> strings) {
+                imgIds.addAll(strings);
+                // call update question to database here
+                viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName, imgIds);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
     }
 
@@ -256,7 +279,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
                     imageUri = data.getData();
                     imageList.add(imageUri);
 
-                    imageAdapter = new ImageAdapter(getApplicationContext(), imageList, null);
+                    imageAdapter = new ImageAdapter(getApplicationContext(), imageList);
                     binding.gvQuestionImage.setAdapter(imageAdapter);
                     binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
                     ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
@@ -273,13 +296,18 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             imageList.add(imageUri);
                             currentImageSelect++;
                         }
+                        if (imageList.size() > 3) {
+                            Toast.makeText(getApplicationContext(), "Only choose under 3 pictures", Toast.LENGTH_SHORT);
+                            imageList.clear();
+                        } else {
+                            imageAdapter = new ImageAdapter(getApplicationContext(), imageList);
+                            binding.gvQuestionImage.setAdapter(imageAdapter);
+                            binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
+                            ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
+                                    .getLayoutParams();
+                            mlp.setMargins(0, binding.gvQuestionImage.getHorizontalSpacing(), 0, 0);
+                        }
 
-                        imageAdapter = new ImageAdapter(getApplicationContext(), imageList, null);
-                        binding.gvQuestionImage.setAdapter(imageAdapter);
-                        binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());
-                        ViewGroup.MarginLayoutParams mlp = (ViewGroup.MarginLayoutParams) binding.gvQuestionImage
-                                .getLayoutParams();
-                        mlp.setMargins(0, binding.gvQuestionImage.getHorizontalSpacing(), 0, 0);
                     }
                 }
             }
