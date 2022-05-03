@@ -64,6 +64,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private StorageReference storageRef = storage.getReference().child("questions");
     private int uploadCount = 0;
     private ImageAdapter imageAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,12 +191,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
             binding.fabPostQuestion.setEnabled(false);
             List<String> imgIds = new ArrayList<>();
 
-                uploadImage(imgIds, title);
-               // System.out.println(imgIds.get(0));
-
-           // this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
-
-
+            uploadImage(imgIds, title);
+            // this.viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
             this.finish();
         });
 
@@ -240,8 +237,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     }
 
-    public void uploadImage( List<String> imgIds, String title) {
-        String currentDate,currentTime;
+    public void uploadImage(List<String> imgIds, String title) {
+        String currentDate, currentTime;
         Calendar calendarDate = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
         currentDate = simpleDateFormat.format(calendarDate.getTime());
@@ -250,24 +247,24 @@ public class CreateQuestionActivity extends AppCompatActivity {
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
         currentTime = timeFormat.format(calendarTime.getTime());
 
-        String userId= UserUtils.getCachedUserId(CreateQuestionActivity.this);
-        String name = userId+currentDate+currentTime+ Integer.toString(uploadCount) ;
+        String userId = UserUtils.getCachedUserId(CreateQuestionActivity.this);
+        String name = userId + currentDate + currentTime + Integer.toString(uploadCount);
 
         StorageRepository storageRepository = new StorageRepository();
-         storageRepository.uploadQuestionImages(imageList, uploadCount,
-                CreateQuestionActivity.this, imageAdapter,name).addOnSuccessListener(new OnSuccessListener<List<String>>() {
-             @Override
-             public void onSuccess(List<String> strings) {
-                 imgIds.addAll(strings);
-                 // call update question to database here
-                 viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName,imgIds);
-             }
-         }).addOnFailureListener(new OnFailureListener() {
-             @Override
-             public void onFailure(@NonNull Exception e) {
+        storageRepository.uploadQuestionImages(imageList, uploadCount,
+                CreateQuestionActivity.this, imageAdapter, name).addOnSuccessListener(new OnSuccessListener<List<String>>() {
+            @Override
+            public void onSuccess(List<String> strings) {
+                imgIds.addAll(strings);
+                // call update question to database here
+                viewModel.createQuestion(title, content, selectedSubjectId, selectedGradeId, selectedSubjectName, selectedGradeName, imgIds);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
 
-             }
-         });
+            }
+        });
 
     }
 
@@ -299,11 +296,10 @@ public class CreateQuestionActivity extends AppCompatActivity {
                             imageList.add(imageUri);
                             currentImageSelect++;
                         }
-                        if (imageList.size()>3){
-                            Toast.makeText(getApplicationContext(),"Only choose under 3 pictures",Toast.LENGTH_SHORT);
+                        if (imageList.size() > 3) {
+                            Toast.makeText(getApplicationContext(), "Only choose under 3 pictures", Toast.LENGTH_SHORT);
                             imageList.clear();
-                        }
-                        else{
+                        } else {
                             imageAdapter = new ImageAdapter(getApplicationContext(), imageList);
                             binding.gvQuestionImage.setAdapter(imageAdapter);
                             binding.gvQuestionImage.setVerticalSpacing(binding.gvQuestionImage.getHorizontalSpacing());

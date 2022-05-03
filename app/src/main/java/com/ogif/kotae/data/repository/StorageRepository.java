@@ -29,14 +29,15 @@ import java.util.List;
 
 import javax.xml.transform.Result;
 
-public  class StorageRepository {
-    private  FirebaseStorage storage ;
-    private  StorageReference storageRef ;
-    private StorageReference ref ;
-    private List<String> url= new ArrayList<>();
-    public StorageRepository(){
+public class StorageRepository {
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private StorageReference ref;
+    private List<String> url = new ArrayList<>();
+
+    public StorageRepository() {
         this.storage = FirebaseStorage.getInstance();
-        this. storageRef = storage.getReference();
+        this.storageRef = storage.getReference();
         this.ref = storageRef.child("questions/");
     }
 
@@ -49,18 +50,18 @@ public  class StorageRepository {
         List<StorageReference> imageRefs = new ArrayList<>();
         TaskCompletionSource<List<String>> taskCompletionSource = new TaskCompletionSource<>();
         for (uploadCount = 0; uploadCount < imageList.size(); uploadCount++) {
-            Uri IndividualImage = imageList.get(uploadCount);
-            String file = IndividualImage.getLastPathSegment() + name + ".jpg";
+            Uri individualImage = imageList.get(uploadCount);
+            String file = individualImage.getLastPathSegment() + name + ".jpg";
 
             StorageReference imageName = ref.child(file);
-            tasks.add(imageName.putFile(IndividualImage));
+            tasks.add(imageName.putFile(individualImage));
             imageRefs.add(imageName);
         }
         Tasks.whenAllSuccess(tasks).addOnSuccessListener(new OnSuccessListener<List<Object>>() {
             @Override
             public void onSuccess(List<Object> objects) {
                 List<Task<Uri>> uriTasks = new ArrayList<>();
-                for(int i = 0; i < objects.size(); i++) {
+                for (int i = 0; i < objects.size(); i++) {
                     UploadTask.TaskSnapshot snapshot = (UploadTask.TaskSnapshot) objects.get(i);
                     uriTasks.add(imageRefs.get(i).getDownloadUrl());
                 }
@@ -68,7 +69,7 @@ public  class StorageRepository {
                     @Override
                     public void onSuccess(List<Object> objects) {
                         List<String> uris = new ArrayList<>();
-                        for (Object object: objects) {
+                        for (Object object : objects) {
                             Uri uri = (Uri) object;
                             uris.add(uri.toString());
                         }
@@ -78,35 +79,7 @@ public  class StorageRepository {
             }
         }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
-//            ImageName.putFile(IndividualImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-//                    if (task.isSuccessful()){
-//                            ImageName.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    System.out.println(e);
-//                                }
-//                            }).addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                                @Override
-//                                public void onSuccess(Uri uri) {
-//                                    System.out.println(uri.toString());
-//                                }
-//                            });
-//                        Toast.makeText(context,
-//                                        "Uploaded!!",
-//                                        Toast.LENGTH_SHORT)
-//                                .show();
-//                        imageList.clear();
-//                        imageAdapter.notifyDataSetChanged();
-//                    }
-//                    else
-//                    {
-//                        imageList.clear();
-//                        imageAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            });
+
     }
 
 }
