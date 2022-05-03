@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
@@ -24,6 +24,7 @@ import com.ogif.kotae.data.model.Answer;
 import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.ui.comment.CommentFragment;
+import com.ogif.kotae.ui.common.ReportDialogFragment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.main.ImageAdapter;
@@ -219,6 +220,7 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
 
     public void bindAnswer(@NonNull AnswerHolder holder, @NonNull Answer answer) {
         PopupMenu popup = new PopupMenu(context, holder.more);
+        popup.inflate(R.menu.menu_answer);
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.menu_report) {
                 showReportDialog(answer);
@@ -227,8 +229,6 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
             return false;
         });
         holder.more.setOnClickListener(view -> {
-            MenuInflater inflater = popup.getMenuInflater();
-            inflater.inflate(R.menu.menu_answer, popup.getMenu());
             popup.show();
         });
     }
@@ -240,7 +240,8 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         }
     }
 
-    public void showReportDialog(Post post) {
-
+    public void showReportDialog(@NonNull Post post) {
+        ReportDialogFragment reportDialog = ReportDialogFragment.newInstance(post.getId());
+        reportDialog.show(((AppCompatActivity) context).getSupportFragmentManager(), "report");
     }
 }

@@ -91,7 +91,7 @@
     <string name="question_all">Tất cả</string>
     <string name="question_answered">Đã trã lời</string>
     <string name="question_detail_comment">Bình luận</string>
-    <string name="menu_report_question">Báo cáo</string>
+    <string name="menu_report_question">Báo cáo câu hỏi</string>
     <string name="question_sort">Sắp xếp</string>
     <string name="question_sort_most_view">Xem nhiều nhất</string>
     <string name="question_sort_top_month">Xem nhiều nhất tháng</string>
@@ -120,4 +120,10 @@
     <string name="channel_upvote_downvote_description">Hiển thị thông báo về lượt upvote, downvote cho các câu hỏi của bạn.</string>
     <string name="channel_comment_name">Kênh bình luận, trã lời câu hỏi</string>
     <string name="channel_comment_description">Để hiển thị thông báo về những câu trã lời cho câu hỏi của bạn.</string>
+    <string name="menu_refresh">Làm mới</string>
+    <string name="report">Báo cáo</string>
+    <string name="report_reason_spam">Spam</string>
+    <string name="report_reason_personal">Chứa thông tin cá nhân</string>
+    <string name="report_reason_toxic">Ngôn từ độc hại</string>
+    <string name="report_reason_photo">Hình ảnh nhạy cảm</string>
 </resources>

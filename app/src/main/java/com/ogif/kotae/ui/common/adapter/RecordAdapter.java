@@ -1,12 +1,15 @@
 package com.ogif.kotae.ui.common.adapter;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Record;
 import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.common.view.VoteView;
@@ -15,10 +18,22 @@ import com.ogif.kotae.utils.model.RecordUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    protected static final int ITEM_FOOTER = Integer.MAX_VALUE;
     protected final Context context;
     protected final List<T> items;
     protected OnVoteChangeListener voteChangeListener;
+
+    private static class FooterHolder extends RecyclerView.ViewHolder {
+        final TextView textView;
+
+        public FooterHolder(@NonNull View itemView) {
+            super(itemView);
+            this.textView = itemView.findViewById(R.id.tv_empty_list);
+        }
+    }
 
     /**
      * Wrapper for {@link VoteView.OnStateChangeListener} to add position

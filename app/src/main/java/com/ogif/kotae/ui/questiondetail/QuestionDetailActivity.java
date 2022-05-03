@@ -22,6 +22,7 @@ import com.ogif.kotae.databinding.ActivityQuestionDetailBinding;
 import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
+import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String TAG = "QuestionDetailActivity";
@@ -46,10 +47,17 @@ public class QuestionDetailActivity extends AppCompatActivity {
 
         binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         adapter = new QuestionDetailAdapter(this);
         recyclerView = binding.recyclerViewQuestionDetail;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new LazyLoadScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                viewModel.getAnswers();
+            }
+        });
 
         adapter.setOnVoteChangeListener((position, voteView, previous, current) -> {
             Post holder = (Post) voteView.getHolder();

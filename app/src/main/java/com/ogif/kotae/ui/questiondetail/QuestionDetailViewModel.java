@@ -159,7 +159,7 @@ public class QuestionDetailViewModel extends ViewModel {
 
     @Nullable
     public Answer getLastAnswer() {
-        return isAnswersEmpty() ? (Answer) posts.get(posts.size() - 1) : null;
+        return isAnswersEmpty() ? null : (Answer) posts.get(posts.size() - 1);
     }
 
     public boolean isQuestionEmpty() {

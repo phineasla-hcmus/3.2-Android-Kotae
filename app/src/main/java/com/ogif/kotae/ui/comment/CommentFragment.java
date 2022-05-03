@@ -65,9 +65,9 @@ public class CommentFragment extends BottomSheetDialogFragment {
         this.viewModel = new ViewModelProvider(this, commentViewModelFactory).get(CommentViewModel.class);
 
         // Set adapter and LazyLoadScrollListener
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         adapter = new CommentAdapter(requireActivity());
         recyclerView.setAdapter(adapter);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addOnScrollListener(new LazyLoadScrollListener(linearLayoutManager) {
             @Override

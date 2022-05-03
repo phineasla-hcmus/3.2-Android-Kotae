@@ -18,8 +18,6 @@
     <string name="all_upvote" translatable="false">Upvote</string>
     <string name="all_user">User</string>
     <string name="all_username">Username</string>
-    <string name="menu_report_question">Report question</string>
-    <string name="all_report">Report question</string>
     <string name="all_old_password">Old password</string>
     <string name="all_new_password">New password</string>
     <string name="all_confirm_password">Confirm password</string>
@@ -131,4 +129,18 @@
     <string name="channel_comment_name">Comment channel</string>
     <string name="channel_comment_description">To show notification about comments of your questions</string>
     <string name="menu_refresh">Refresh</string>
+    <string name="menu_report_question">Report question</string>
+    <string name="report">Report</string>
+    <string name="report_reason_spam">Spam</string>
+    <string name="report_reason_personal">Personal Details</string>
+    <string name="report_reason_photo">Sensitive Photos</string>
+    <string name="report_reason_toxic">Toxic</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string-array name="report_reasons">
+        <item>@string/report_reason_spam</item>
+        <item>@string/report_reason_personal</item>
+        <item>@string/report_reason_photo</item>
+        <item>@string/report_reason_toxic</item>
+    </string-array>
 </resources>
