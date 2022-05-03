@@ -12,7 +12,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.data.model.Comment;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Vote;
+import com.ogif.kotae.data.repository.CommentCounterRepository;
 import com.ogif.kotae.data.repository.CommentRepository;
 import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
@@ -25,6 +27,7 @@ import java.util.List;
 public class CommentViewModel extends ViewModel {
     private static final String TAG = "CommentViewModel";
     private final CommentRepository commentRepository;
+    private final CommentCounterRepository commentCounterRepository;
     private final VoteRepository voteRepository;
     private final VoteCounterRepository voteCounterRepository;
 
@@ -33,8 +36,11 @@ public class CommentViewModel extends ViewModel {
     // Empty list indicates as successful but no data
     private final MutableLiveData<List<Comment>> commentLiveData;
 
-    public CommentViewModel(String userId, String username, String postId) {
-        this.commentRepository = new CommentRepository(userId, username, postId);
+    public CommentViewModel(String userId, String username, Post parent) {
+        this.commentRepository = new CommentRepository(userId, username, parent.getId());
+        Log.d(TAG, "CommentViewModel: " + parent.getCollectionName());
+        Log.d(TAG, "CommentViewModel: " + parent.getId());
+        this.commentCounterRepository = new CommentCounterRepository(parent);
         this.voteRepository = new VoteRepository(userId);
         this.voteCounterRepository = new VoteCounterRepository();
 
@@ -66,11 +72,12 @@ public class CommentViewModel extends ViewModel {
     }
 
     public void createComment(@NonNull String content) {
-        commentRepository.create(content).addOnSuccessListener(comment -> {
-            comments.add(comment);
-            commentLiveData.postValue(Collections.singletonList(comment));
-            // TODO update counter
-        });
+        Tasks.whenAllSuccess(commentRepository.create(content), commentCounterRepository.increment())
+                .addOnSuccessListener(objects -> {
+                    Comment comment = (Comment) objects.get(0);
+                    comments.add(comment);
+                    commentLiveData.postValue(Collections.singletonList(comment));
+                }).addOnFailureListener(e -> Log.w(TAG, "createComment: ", e));
     }
 
     public void updateVote(@NonNull Comment holder, @Vote.State int previousState, @Vote.State int currentState) {

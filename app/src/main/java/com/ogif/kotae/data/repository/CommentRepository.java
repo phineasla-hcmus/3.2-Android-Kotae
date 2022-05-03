@@ -86,12 +86,6 @@ public class CommentRepository extends RecordRepository<Comment> {
         return getListWithVotes(query);
     }
 
-    // @Deprecated
-    // public void getListWithVotes(int limit, @NonNull TaskListener.State<List<Comment>> callback) {
-    //     getListWithVotes(limit).addOnSuccessListener(callback::onSuccess)
-    //             .addOnFailureListener(callback::onFailure);
-    // }
-
     public void setAuthor(@NonNull String authorId, @NonNull String authorName) {
         voteRepository.setAuthorId(authorId);
         this.authorName = authorName;
