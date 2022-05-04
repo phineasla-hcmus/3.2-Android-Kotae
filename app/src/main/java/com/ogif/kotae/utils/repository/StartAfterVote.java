@@ -16,6 +16,7 @@ public class StartAfterVote implements QueryOption {
 
     @Override
     public Query inject(@NonNull Query query) {
-        return orderByVote.inject(query).startAfter(previous.getUpvote(), previous.getDownvote(),previous.getId());
+        return orderByVote.inject(query)
+                .startAfter(previous.getUpvote(), previous.getDownvote(), previous.getPostTime());
     }
 }

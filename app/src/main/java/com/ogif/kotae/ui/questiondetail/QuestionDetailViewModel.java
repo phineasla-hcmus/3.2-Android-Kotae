@@ -1,5 +1,6 @@
 package com.ogif.kotae.ui.questiondetail;
 
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.data.repository.VoteCounterRepository;
 import com.ogif.kotae.data.repository.VoteRepository;
 import com.ogif.kotae.utils.repository.OrderByVote;
+import com.ogif.kotae.utils.repository.QueryOption;
 import com.ogif.kotae.utils.repository.StartAfterVote;
 
 import java.util.ArrayList;
@@ -65,8 +67,6 @@ public class QuestionDetailViewModel extends ViewModel {
         this();
         posts.set(0, question);
         postsLiveData.setValue(getImmutableLocalPosts());
-
-        getAnswers();
     }
 
     public void getAll(String questionId) {
@@ -93,16 +93,33 @@ public class QuestionDetailViewModel extends ViewModel {
             return;
         }
         String questionId = getLocalQuestion().getId();
-        Task<List<Answer>> task = isAnswersEmpty() ?
-                answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, new OrderByVote()) :
-                answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, new StartAfterVote(getLastAnswer()));
-        task.addOnSuccessListener(answers -> {
-            posts.addAll(answers);
-            postsLiveData.postValue(answers);
-        }).addOnFailureListener(e -> {
-            Log.w(TAG, "getAnswers: ", e);
-            postsLiveData.postValue(null);
-        });
+        QueryOption option = isAnswersEmpty() ?
+                new OrderByVote() :
+                new StartAfterVote(getLastAnswer());
+        // Task<List<Answer>> task = answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, option);
+        // task.addOnSuccessListener(answers -> {
+        //     posts.addAll(answers);
+        //     postsLiveData.postValue(answers);
+        // }).addOnFailureListener(e -> {
+        //     Log.w(TAG, "getAnswers: ", e);
+        //     postsLiveData.postValue(null);
+        // });
+        if (isAnswersEmpty()) {
+            answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, new OrderByVote())
+                    .addOnSuccessListener(answers -> {
+                        Log.d(TAG, "getAnswers: " + (Looper.myLooper() == Looper.getMainLooper() ?
+                                "UI thread" :
+                                "NOPE"));
+                        posts.addAll(answers);
+                        postsLiveData.postValue(answers);
+                    });
+        } else {
+            answerRepository.getListByQuestionWithVote(questionId, Global.QUERY_LIMIT, new StartAfterVote(getLastAnswer()))
+                    .addOnSuccessListener(answers -> {
+                        posts.addAll(answers);
+                        postsLiveData.postValue(answers);
+                    });
+        }
     }
 
     public void updateVote(@NonNull Post holder, @Vote.State int previousState, @Vote.State int currentState) {

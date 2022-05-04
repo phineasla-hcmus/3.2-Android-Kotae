@@ -12,6 +12,7 @@ public class OrderByVote implements QueryOption {
     @Override
     public Query inject(@NonNull Query query) {
         return query.orderBy(Record.Field.UPVOTE, Query.Direction.DESCENDING)
-                .orderBy(Record.Field.DOWNVOTE, Query.Direction.ASCENDING).orderBy(FieldPath.documentId());
+                .orderBy(Record.Field.DOWNVOTE, Query.Direction.ASCENDING)
+                .orderBy(Record.Field.POST_TIME, Query.Direction.DESCENDING);
     }
 }
