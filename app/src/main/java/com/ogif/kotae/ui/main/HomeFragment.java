@@ -15,15 +15,19 @@ import android.view.ViewGroup;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.databinding.FragmentHomeBinding;
+import com.ogif.kotae.fcm.Notification;
+import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.createquestion.CreateQuestionActivity;
 
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
+    public static final String TAG = "QuestionDetailActivity";
 
     // private View homeView;
     private FloatingActionButton fabAddQuestion;
@@ -31,7 +35,7 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout swipeLayout;
     private QuestionRepository questionRepository;
     private HomeAdapter adapter;
-
+    private QuestionViewModel viewModel;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -51,6 +55,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         questionRepository = new QuestionRepository();
+        viewModel = new QuestionViewModel();
 
         setUpRecyclerView();
         fabAddQuestion = (FloatingActionButton) binding.fabAddQuestion;
@@ -69,6 +74,17 @@ public class HomeFragment extends Fragment {
                 adapter.notifyDataSetChanged();
                 swipeLayout.setRefreshing(false);
             }
+        });
+
+        adapter.setOnVoteChangeListener((position, voteView, previous, current) -> {
+            Post holder = (Post) voteView.getHolder();
+            if (holder == null) {
+                Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
+                return;
+            }
+            Notification notification = new Notification();
+            notification.pushUpvoteNotification(getContext(), holder);
+            viewModel.updateVote(holder, previous, current);
         });
         return binding.getRoot();
     }

@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,10 @@ import com.google.android.material.chip.Chip;
 import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.QuestionViewModel;
+import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VerticalVoteView;
 import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
@@ -30,14 +33,31 @@ import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder> {
+public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder>{
     private final Context context;
+
+    protected RecordAdapter.OnVoteChangeListener voteChangeListener;
+    public interface OnVoteChangeListener {
+        void onChange(int position, VoteView view, @Vote.State int previous, @Vote.State int current);
+    }
+
+    public RecordAdapter.OnVoteChangeListener getOnVoteChangeListener() {
+        return voteChangeListener;
+    }
+
+    public void setOnVoteChangeListener(@Nullable RecordAdapter.OnVoteChangeListener listener) {
+        this.voteChangeListener = listener;
+    }
 
     public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options, @NonNull Context context) {
         super(options);
         this.context = context;
     }
 
+    protected void onVoteChangeListenerIfNotNull(int position, VoteView view, @Vote.State int previous, @Vote.State int current) {
+        if (voteChangeListener != null)
+            voteChangeListener.onChange(position, view, previous, current);
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,8 +80,6 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
 
         holder.author.setText(model.getAuthor());
         holder.title.setText(model.getTitle());
-//        holder.upvoteCounter.setText(Integer.toString(model.getUpvote()));
-//        holder.downvoteCounter.setText(Integer.toString(model.getDownvote()));
         holder.reportCounter.setText(Integer.toString(model.getReport()));
         holder.subject.setText(model.getSubject());
         holder.grade.setText(model.getGrade());
@@ -71,7 +89,7 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         holder.verticalVoteView.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
             @Override
             public void onDebouncedStateChange(VoteView view, int previous, int current) {
-
+                onVoteChangeListenerIfNotNull(holder.getBindingAdapterPosition(), view, previous, current);
             }
         });
         holder.layout.setOnClickListener(view -> {
