@@ -99,7 +99,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     private void startFilterActivity() {
         if (this.items.size() == 0) {
-            Toast.makeText(this, getResources().getString(R.string.filter_empty_list), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.filter_empty_list), Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
         Intent intent = new Intent(getApplicationContext(), FilterQuestionActivity.class);
@@ -273,7 +274,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             adapter.setItems(items);
 //            adapter.notifyItemRangeInserted(0, items.size());
             ViewUtils.makeGone(binding.pbSearch);
-            binding.rvSearch.animate().alpha(1.0F).setInterpolator(new LinearInterpolator()).setDuration(300L).start();
+            binding.rvSearch.animate()
+                    .alpha(1.0F)
+                    .setInterpolator(new LinearInterpolator())
+                    .setDuration(300L)
+                    .start();
         };
         (new Handler()).postDelayed(runnable, 1000L);
         binding.persistentSearchView.hideLeftButton(false);
@@ -282,19 +287,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.leftBtnIv:
-                onLeftButtonClicked();
-                break;
-            case R.id.clearInputBtnIv:
-                onClearInputButtonClicked();
-                break;
-            case R.id.rightBtnIv:
-                onRightButtonClicked();
-                break;
-            default:
-                break;
-        }
+        int id = view.getId();
+        if (id == R.id.leftBtnIv)
+            onLeftButtonClicked();
+        else if (id == R.id.clearInputBtnIv)
+            onClearInputButtonClicked();
+        else if (id == R.id.rightBtnIv)
+            onRightButtonClicked();
     }
 
     @Override
@@ -321,7 +320,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private boolean shouldExpandSearchView() {
-        return ((persistentSearchView.isInputQueryEmpty() && (adapter.getItemCount() == 0)) || persistentSearchView.isExpanded());
+        return ((persistentSearchView.isInputQueryEmpty() && (adapter.getItemCount() == 0)) || persistentSearchView
+                .isExpanded());
     }
 
 

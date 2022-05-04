@@ -128,4 +128,5 @@
     <string name="report_reason_photo">Hình ảnh nhạy cảm</string>
     <string name="no_answer">Lá lành đùm lá rách.</string>
     <string name="dialog_cancel">Huỷ</string>
+    <string name="question_detail_better_answer">Có câu trả lời hay hơn? Trả lời ngay</string>
 </resources>

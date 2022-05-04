@@ -109,6 +109,7 @@
     <string name="question_all">All</string>
     <string name="question_answered">Answered</string>
     <string name="question_detail_comment">Comment</string>
+    <string name="question_detail_better_answer">Tap on the pencil to write answer</string>
     <string name="question_sort">Sort</string>
     <string name="question_sort_most_view">Most view</string>
     <string name="question_sort_top_month">Top month</string>
@@ -138,7 +139,6 @@
     <string name="report_reason_toxic">Toxic</string>
     <string name="dialog_ok" translatable="false">OK</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="question_detail_better_answer">Tap on the pencil to write answer</string>
     <string-array name="report_reasons">
         <item>@string/report_reason_spam</item>
         <item>@string/report_reason_personal</item>
