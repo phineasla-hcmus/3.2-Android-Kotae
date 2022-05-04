@@ -84,6 +84,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
         viewModel.getPostsLiveData().observe(this, latestPosts -> {
             binding.swipeRefreshLayout.setRefreshing(false);
             adapter.setItems(viewModel.getImmutableLocalPosts());
+            adapter.forceUpdateFooter();
         });
     }
 

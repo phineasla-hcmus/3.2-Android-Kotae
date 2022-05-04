@@ -2,7 +2,6 @@ package com.ogif.kotae.ui.questiondetail.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,15 +26,12 @@ import com.ogif.kotae.ui.comment.CommentFragment;
 import com.ogif.kotae.ui.common.ReportDialogFragment;
 import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VoteView;
-import com.ogif.kotae.ui.main.ImageAdapter;
 import com.ogif.kotae.ui.questiondetail.ClickedImageActivity;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.questiondetail.view.AuthorView;
 import com.ogif.kotae.utils.model.PostUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -117,6 +113,9 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
             case ITEM_TYPE_ANSWER:
                 return new AnswerHolder(inflater
                         .inflate(R.layout.item_answer, parent, false));
+            case ITEM_TYPE_FOOTER:
+                return new FooterHolder(inflater
+                        .inflate(R.layout.item_empty_list, parent, false));
         }
         throw new IllegalStateException("Missing item type in QuestionDetailAdapter#onCreateViewHolder");
     }
@@ -132,19 +131,33 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
                 break;
             }
             case ITEM_TYPE_ANSWER: {
-                // Because question always at position 0
                 Answer answer = (Answer) items.get(position);
                 bindCommonView(viewHolder, answer, position);
                 bindAnswer((AnswerHolder) viewHolder, answer);
+                break;
+            }
+            case ITEM_TYPE_FOOTER: {
+                FooterHolder holder = (FooterHolder) viewHolder;
+                if (items.size() == 1)
+                    holder.textView.setText(R.string.no_answer);
+                else
+                    holder.textView.setText(R.string.question_detail_better_answer);
                 break;
             }
         }
     }
 
     @Override
+    public int getItemCount() {
+        return items.size() + 1;
+    }
+
+    @Override
     public int getItemViewType(int position) {
         // ITEM_TYPE_QUESTION always on top
-        return position == 0 ? ITEM_TYPE_QUESTION : ITEM_TYPE_ANSWER;
+        if (position == 0) return ITEM_TYPE_QUESTION;
+        else if (position == items.size()) return ITEM_TYPE_FOOTER;
+        else return ITEM_TYPE_ANSWER;
     }
 
     @Override
@@ -162,6 +175,10 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
 
     public void addAnswers(@NonNull List<Answer> answers) {
         addItems(answers);
+    }
+
+    public void forceUpdateFooter() {
+        notifyItemChanged(items.size());
     }
 
     /**
@@ -189,7 +206,6 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         });
         // TODO bind author avatar
 
-
         GridViewAdapter adapter = new GridViewAdapter(context, post.getImageIds());
         holder.images.setAdapter(adapter);
         holder.images.setVerticalSpacing(holder.images.getHorizontalSpacing());
@@ -201,7 +217,8 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                context.startActivity(new Intent(context,ClickedImageActivity.class).putExtra("image",post.getImageId(position)));
+                context.startActivity(new Intent(context, ClickedImageActivity.class).putExtra("image", post
+                        .getImageId(position)));
             }
         });
     }

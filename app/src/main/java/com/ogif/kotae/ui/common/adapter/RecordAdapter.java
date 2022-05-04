@@ -21,13 +21,13 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public abstract class RecordAdapter<T extends Record> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    protected static final int ITEM_FOOTER = Integer.MAX_VALUE;
+    protected static final int ITEM_TYPE_FOOTER = Integer.MAX_VALUE;
     protected final Context context;
     protected final List<T> items;
     protected OnVoteChangeListener voteChangeListener;
 
-    private static class FooterHolder extends RecyclerView.ViewHolder {
-        final TextView textView;
+    protected static class FooterHolder extends RecyclerView.ViewHolder {
+        public final TextView textView;
 
         public FooterHolder(@NonNull View itemView) {
             super(itemView);

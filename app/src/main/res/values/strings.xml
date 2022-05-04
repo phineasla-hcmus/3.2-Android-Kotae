@@ -96,6 +96,7 @@
     <string name="missing_selected_grade">PLease select your grade</string>
     <string name="missing_selected_subject">PLease select your subject</string>
     <string name="invalid_question_content_length">Question content must have at least 30 characters</string>
+    <string name="no_answer">Be the first one to answer</string>
     <string name="no_preview">No preview available</string>
     <string name="post_image">Post image</string>
     <string name="preview">Preview</string>
@@ -135,8 +136,9 @@
     <string name="report_reason_personal">Personal Details</string>
     <string name="report_reason_photo">Sensitive Photos</string>
     <string name="report_reason_toxic">Toxic</string>
-    <string name="dialog_ok">OK</string>
+    <string name="dialog_ok" translatable="false">OK</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="question_detail_better_answer">Tap on the pencil to write answer</string>
     <string-array name="report_reasons">
         <item>@string/report_reason_spam</item>
         <item>@string/report_reason_personal</item>
