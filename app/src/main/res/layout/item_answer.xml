@@ -54,8 +54,8 @@
     <!--    app:layout_constraintTop_toBottomOf="@+id/tv_answer_content"-->
     <!--    tools:itemCount="3" />-->
 
-    <GridView
-        android:id="@+id/img_answer"
+    <LinearLayout
+        android:id="@+id/img_answer_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_between_y_md"
@@ -63,7 +63,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_answer_content" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_answer_content" >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <GridView
+                android:id="@+id/img_answer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:numColumns="3">
+
+            </GridView>
+        </ScrollView>
+
+    </LinearLayout>
 
     <com.ogif.kotae.ui.common.view.VoteView
         android:id="@+id/vote_view_answer"
@@ -71,7 +85,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_answer" />
+        app:layout_constraintTop_toBottomOf="@+id/img_answer_layout" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_answer_comment"

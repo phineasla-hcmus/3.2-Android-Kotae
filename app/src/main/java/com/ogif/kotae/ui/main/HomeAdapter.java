@@ -17,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.chip.Chip;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.data.repository.QuestionRepository;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.common.view.VerticalVoteView;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.utils.DateUtils;
 import com.ogif.kotae.utils.text.MarkdownUtils;
@@ -63,6 +65,15 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         holder.reportCounter.setText(Integer.toString(model.getReport()));
         holder.subject.setText(model.getSubject());
         holder.grade.setText(model.getGrade());
+
+        holder.verticalVoteView.setHolder(model);
+        holder.verticalVoteView.setVoteState(model.getUpvote(), model.getDownvote(), model.getVoteState());
+        holder.verticalVoteView.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
+            @Override
+            public void onDebouncedStateChange(VoteView view, int previous, int current) {
+
+            }
+        });
         holder.layout.setOnClickListener(view -> {
             Intent intent = QuestionDetailActivity.newInstance(context, model);
             context.startActivity(intent);

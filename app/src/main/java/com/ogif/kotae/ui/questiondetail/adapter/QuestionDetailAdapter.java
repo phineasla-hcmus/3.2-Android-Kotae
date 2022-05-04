@@ -190,11 +190,6 @@ public class QuestionDetailAdapter extends RecordAdapter<Post> {
         // TODO bind author avatar
 
 
-
-        if (!post.getImageIds().isEmpty())
-            Log.i("TAG", post.getImageIds().toString());
-        else
-            Log.i("TAG", "EMPTY");
         GridViewAdapter adapter = new GridViewAdapter(context, post.getImageIds());
         holder.images.setAdapter(adapter);
         holder.images.setVerticalSpacing(holder.images.getHorizontalSpacing());
