@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -20,8 +21,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ogif.kotae.R;
+import com.ogif.kotae.data.model.Post;
 import com.ogif.kotae.data.model.Question;
 import com.ogif.kotae.databinding.ActivitySearchBinding;
+import com.ogif.kotae.fcm.Notification;
+import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.SearchViewModel;
 import com.ogif.kotae.ui.main.FilterQuestionActivity;
 import com.ogif.kotae.ui.search.adapter.SearchAdapter;
@@ -51,6 +55,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private SearchAdapter adapter;
     private SearchViewModel viewModel;
+    private QuestionViewModel questionViewModel;
+    public static final String TAG = "SearchActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +82,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 });
 
         this.viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-
+        this.questionViewModel = new ViewModelProvider(this).get(QuestionViewModel.class);
         init();
+
+        adapter.setOnVoteChangeListener((position, voteView, previous, current) -> {
+            Post holder = (Post) voteView.getHolder();
+            if (holder == null) {
+                Log.w(TAG, "Unidentified holder for VoteView, did you forget to setHolder()?");
+                return;
+            }
+            Notification notification = new Notification();
+            notification.pushUpvoteNotification(this, holder);
+            questionViewModel.updateVote(holder, previous, current);
+        });
     }
 
     private void startFilterActivity() {

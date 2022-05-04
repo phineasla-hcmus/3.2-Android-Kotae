@@ -19,10 +19,14 @@ import com.arthurivanets.adapster.listeners.OnItemClickListener;
 import com.arthurivanets.adapster.markers.ItemResources;
 import com.arthurivanets.adapster.model.BaseItem;
 import com.google.android.material.chip.Chip;
+import com.ogif.kotae.Global;
 import com.ogif.kotae.R;
 import com.ogif.kotae.data.model.Question;
+import com.ogif.kotae.data.model.Vote;
 import com.ogif.kotae.ui.QuestionViewModel;
+import com.ogif.kotae.ui.common.adapter.RecordAdapter;
 import com.ogif.kotae.ui.common.view.VerticalVoteView;
+import com.ogif.kotae.ui.common.view.VoteView;
 import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 import com.ogif.kotae.ui.search.adapter.SearchAdapter;
 import com.ogif.kotae.utils.DateUtils;
@@ -34,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @SuppressWarnings("rawtypes")
 public final class SearchItem extends BaseItem {
     private Context context;
+
 
     @NonNull
     public SearchItem.ViewHolder init(@Nullable Adapter adapter, @NonNull ViewGroup parent, @NonNull LayoutInflater inflater) {
@@ -64,15 +69,28 @@ public final class SearchItem extends BaseItem {
 
         holder.author.setText(model.getAuthor());
         holder.title.setText(model.getTitle());
-//        holder.upvoteCounter.setText(Integer.toString(model.getUpvote()));
-//        holder.downvoteCounter.setText(Integer.toString(model.getDownvote()));
         holder.reportCounter.setText(Integer.toString(model.getReport()));
         holder.subject.setText(model.getSubject());
         holder.grade.setText(model.getGrade());
+
+        holder.verticalVoteView.setHolder(model);
+        holder.verticalVoteView.setVoteState(model.getUpvote(), model.getDownvote(), model.getVoteState());
+        holder.verticalVoteView.setOnStateChangeListener(new VoteView.DebouncedOnStateChangeListener(Global.DEBOUNCE_MILLIS) {
+            @Override
+            public void onDebouncedStateChange(VoteView view, int previous, int current) {
+                onVoteChangeListenerIfNotNull(holder.getBindingAdapterPosition(), view, previous, current, (SearchAdapter) adapter);
+            }
+        });
+
         this.setOnItemClickListener((ViewHolder) viewHolder, (view, item, position) -> {
             Intent intent = QuestionDetailActivity.newInstance(view.getContext(), model);
             view.getContext().startActivity(intent);
         });
+    }
+
+    protected void onVoteChangeListenerIfNotNull(int position, VoteView view, @Vote.State int previous, @Vote.State int current, SearchAdapter adapter) {
+        if (adapter.getOnVoteChangeListener() != null)
+            adapter.getOnVoteChangeListener().onChange(position, view, previous, current);
     }
 
     public final void setOnItemClickListener(@NonNull SearchItem.ViewHolder viewHolder, @Nullable OnItemClickListener onItemClickListener) {
