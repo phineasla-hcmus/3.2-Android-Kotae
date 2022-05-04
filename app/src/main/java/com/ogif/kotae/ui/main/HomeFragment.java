@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    public static final String TAG = "QuestionDetailActivity";
+    public static final String TAG = "Home";
 
     // private View homeView;
     private FloatingActionButton fabAddQuestion;
