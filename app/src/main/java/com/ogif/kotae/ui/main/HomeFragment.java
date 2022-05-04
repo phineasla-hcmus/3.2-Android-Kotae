@@ -3,6 +3,9 @@ package com.ogif.kotae.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +25,7 @@ import com.ogif.kotae.databinding.FragmentHomeBinding;
 import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.QuestionViewModel;
 import com.ogif.kotae.ui.createquestion.CreateQuestionActivity;
+import com.ogif.kotae.ui.questiondetail.QuestionDetailActivity;
 
 import java.util.ArrayList;
 
@@ -29,13 +33,14 @@ public class HomeFragment extends Fragment {
 
     public static final String TAG = "Home";
 
-    // private View homeView;
+    private ActivityResultLauncher<Intent> questionDetailResultLauncher;
     private FloatingActionButton fabAddQuestion;
     private FragmentHomeBinding binding;
     private SwipeRefreshLayout swipeLayout;
     private QuestionRepository questionRepository;
     private HomeAdapter adapter;
     private QuestionViewModel viewModel;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -43,13 +48,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         // homeView = inflater.inflate(R.layout.fragment_home, container, false);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -70,7 +73,7 @@ public class HomeFragment extends Fragment {
                 FirestoreRecyclerOptions<Question> options = new FirestoreRecyclerOptions.Builder<Question>()
                         .setQuery(questionRepository.getHomeQuestions(), Question.class)
                         .build();
-                adapter = new HomeAdapter(options, getActivity().getApplicationContext());
+                adapter = new HomeAdapter(options, requireActivity());
                 adapter.notifyDataSetChanged();
                 swipeLayout.setRefreshing(false);
             }
@@ -101,7 +104,7 @@ public class HomeFragment extends Fragment {
         //adapter = new HomeAdapter(questionList(), this.getContext());
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity().getApplicationContext(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireActivity(), 1));
 
         FirestoreRecyclerOptions<Question> options;
 
@@ -118,35 +121,14 @@ public class HomeFragment extends Fragment {
                     .setQuery(questionRepository.getHomeQuestions(), Question.class)
                     .build();
         }
-        adapter = new HomeAdapter(options, this.getContext());
+        adapter = new HomeAdapter(options, requireActivity());
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
     }
 
-    //    private List<Question> questionList() {
-//        List<Question> questionList = new ArrayList<>();
-//        questionsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-//                if (error != null){
-//                    Log.e("Firestore error", error.getMessage() );
-//                    return;
-//                }
-//                for (DocumentChange dc : value.getDocumentChanges()){
-//                    if (dc.getType()== DocumentChange.Type.ADDED){
-//                        questionList.add(dc.getDocument().toObject(Question.class));
-//                    }
-//                    adapter.notifyDataSetChanged();
-//                }
-//            }
-//        });
-//        return questionList;
-//    }
-
     @Override
     public void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     @Override

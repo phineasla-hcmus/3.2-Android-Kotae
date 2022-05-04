@@ -152,6 +152,10 @@ public final class Question extends Post {
         return grade;
     }
 
+    public int getAnswer() {
+        return answer;
+    }
+
     @Global.Collection
     @Exclude
     public String getCollectionName() {

@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.lifecycle.ViewModelProvider;
@@ -23,6 +24,8 @@ import com.ogif.kotae.fcm.Notification;
 import com.ogif.kotae.ui.createanswer.CreateAnswerActivity;
 import com.ogif.kotae.ui.questiondetail.adapter.QuestionDetailAdapter;
 import com.ogif.kotae.utils.ui.LazyLoadScrollListener;
+
+import java.util.Objects;
 
 public class QuestionDetailActivity extends AppCompatActivity {
     public static final String TAG = "QuestionDetailActivity";
@@ -42,8 +45,14 @@ public class QuestionDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         MaterialToolbar toolbar = binding.toolbarQuestionDetail;
-        toolbar.setNavigationOnClickListener(nav -> NavUtils.navigateUpFromSameTask(this));
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(nav -> {
+            NavUtils.navigateUpFromSameTask(this);
+            // Intent intent = new Intent();
+            // intent.putExtra(BUNDLE_QUESTION, viewModel.getLocalQuestion());
+            // setResult(RESULT_OK, intent);
+            // finish();
+        });
 
         binding.btnQuestionAnswer.setOnClickListener(v -> startCreateAnswerActivity());
 
@@ -78,7 +87,7 @@ public class QuestionDetailActivity extends AppCompatActivity {
                 .get(QuestionDetailViewModel.class);
 
         binding.swipeRefreshLayout.setOnRefreshListener(() -> {
-            viewModel.getAll(questionFromExtra.getId());
+            refresh();
         });
 
         viewModel.getPostsLiveData().observe(this, latestPosts -> {
@@ -86,6 +95,25 @@ public class QuestionDetailActivity extends AppCompatActivity {
             adapter.setItems(viewModel.getImmutableLocalPosts());
             adapter.forceUpdateFooter();
         });
+    }
+
+    /**
+     * Obtain an {@link Intent} that will launch an explicit target activity
+     * specified by sourceActivity's {@link NavUtils#PARENT_ACTIVITY} &lt;meta-data&gt;
+     * element in the application's manifest. If the device is running
+     * Jellybean or newer, the android:parentActivityName attribute will be preferred
+     * if it is present.
+     *
+     * @return a new Intent targeting the defined parent activity of sourceActivity
+     */
+    @Nullable
+    @Override
+    public Intent getSupportParentActivityIntent() {
+        Intent intent = super.getSupportParentActivityIntent();
+        if (intent != null)
+            intent.putExtra(BUNDLE_QUESTION, viewModel.getLocalQuestion());
+        setResult(RESULT_OK, intent);
+        return intent;
     }
 
     private void startCreateAnswerActivity() {
@@ -104,6 +132,10 @@ public class QuestionDetailActivity extends AppCompatActivity {
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putParcelable(BUNDLE_QUESTION, viewModel.getLocalQuestion());
+    }
+
+    public void refresh() {
+        viewModel.getAll(Objects.requireNonNull(viewModel.getLocalQuestion()).getId());
     }
 
     @NonNull

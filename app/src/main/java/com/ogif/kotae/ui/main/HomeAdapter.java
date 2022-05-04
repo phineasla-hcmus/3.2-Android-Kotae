@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -33,20 +34,13 @@ import com.ogif.kotae.utils.text.MarkdownUtils;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder>{
+public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.ViewHolder> {
     private final Context context;
 
     protected RecordAdapter.OnVoteChangeListener voteChangeListener;
+
     public interface OnVoteChangeListener {
         void onChange(int position, VoteView view, @Vote.State int previous, @Vote.State int current);
-    }
-
-    public RecordAdapter.OnVoteChangeListener getOnVoteChangeListener() {
-        return voteChangeListener;
-    }
-
-    public void setOnVoteChangeListener(@Nullable RecordAdapter.OnVoteChangeListener listener) {
-        this.voteChangeListener = listener;
     }
 
     public HomeAdapter(@NonNull FirestoreRecyclerOptions<Question> options, @NonNull Context context) {
@@ -54,10 +48,6 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
         this.context = context;
     }
 
-    protected void onVoteChangeListenerIfNotNull(int position, VoteView view, @Vote.State int previous, @Vote.State int current) {
-        if (voteChangeListener != null)
-            voteChangeListener.onChange(position, view, previous, current);
-    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -187,6 +177,19 @@ public class HomeAdapter extends FirestoreRecyclerAdapter<Question, HomeAdapter.
             questionViewModel.hideReport(report, reportCounter);
 
         }
+    }
+
+    protected void onVoteChangeListenerIfNotNull(int position, VoteView view, @Vote.State int previous, @Vote.State int current) {
+        if (voteChangeListener != null)
+            voteChangeListener.onChange(position, view, previous, current);
+    }
+
+    public RecordAdapter.OnVoteChangeListener getOnVoteChangeListener() {
+        return voteChangeListener;
+    }
+
+    public void setOnVoteChangeListener(@Nullable RecordAdapter.OnVoteChangeListener listener) {
+        this.voteChangeListener = listener;
     }
 }
 

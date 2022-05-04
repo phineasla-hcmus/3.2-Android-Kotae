@@ -60,6 +60,7 @@ public abstract class Post extends Record implements Parcelable {
 
     public Post() {
         super();
+        imageIds = new ArrayList<>();
     }
 
     public Post(@NonNull Builder<?> builder) {

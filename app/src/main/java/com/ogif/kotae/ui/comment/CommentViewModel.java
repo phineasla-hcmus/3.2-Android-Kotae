@@ -59,12 +59,10 @@ public class CommentViewModel extends ViewModel {
             // task = commentRepository.getListByParentWithVotes(Global.QUERY_LIMIT, new StartAfterDate(lastDate));
         }
         task.addOnSuccessListener(result -> {
-            if (result.isEmpty())
-                commentLiveData.postValue(result);
-            else {
+            if (!result.isEmpty()) {
                 comments.addAll(result);
-                commentLiveData.postValue(comments);
             }
+            commentLiveData.postValue(result);
         }).addOnFailureListener(e -> {
             Log.w(TAG, "getComments: ", e);
             commentLiveData.postValue(null);

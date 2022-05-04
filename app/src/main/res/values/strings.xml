@@ -97,6 +97,7 @@
     <string name="missing_selected_subject">PLease select your subject</string>
     <string name="invalid_question_content_length">Question content must have at least 30 characters</string>
     <string name="no_answer">Be the first one to answer</string>
+    <string name="no_comment">Be the first one to comment</string>
     <string name="no_preview">No preview available</string>
     <string name="post_image">Post image</string>
     <string name="preview">Preview</string>

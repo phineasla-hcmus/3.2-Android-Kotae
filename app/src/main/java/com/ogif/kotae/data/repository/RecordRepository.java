@@ -91,27 +91,35 @@ public abstract class RecordRepository<T extends Record> {
         return getList(query.get());
     }
 
+    protected Task<List<T>> getListWithVotes(@NonNull List<T> records) {
+        TaskCompletionSource<List<T>> taskCompletionSource = new TaskCompletionSource<>();
+        List<String> recordIds = new ArrayList<>();
+        for (T record : records) {
+            recordIds.add(record.getId());
+        }
+        voteRepository.getList(recordIds).addOnSuccessListener(map -> {
+            // Map all Vote objects to Record objects
+            records.replaceAll(record -> {
+                Vote vote = map.get(record.getId());
+                if (vote != null) {
+                    record.setVoteState(vote.getId(), vote.isUpvote() ?
+                            Vote.UPVOTE :
+                            Vote.DOWNVOTE);
+                }
+                return record;
+            });
+            taskCompletionSource.setResult(records);
+        }).addOnFailureListener(taskCompletionSource::setException);
+        return taskCompletionSource.getTask();
+    }
+
     protected Task<List<T>> getListWithVotes(@NonNull Task<QuerySnapshot> task) {
         assert voteRepository != null : "voteRepository was not initialized, are you sure you want to use empty constructor RecordRepository()?";
         TaskCompletionSource<List<T>> taskCompletionSource = new TaskCompletionSource<>();
         getList(task).addOnSuccessListener(records -> {
-            List<String> recordIds = new ArrayList<>();
-            for (T record : records) {
-                recordIds.add(record.getId());
-            }
-            voteRepository.getList(recordIds).addOnSuccessListener(map -> {
-                // Map all Vote objects to Record objects
-                records.replaceAll(record -> {
-                    Vote vote = map.get(record.getId());
-                    if (vote != null) {
-                        record.setVoteState(vote.getId(), vote.isUpvote() ?
-                                Vote.UPVOTE :
-                                Vote.DOWNVOTE);
-                    }
-                    return record;
-                });
-                taskCompletionSource.setResult(records);
-            }).addOnFailureListener(taskCompletionSource::setException);
+            getListWithVotes(records)
+                    .addOnSuccessListener(taskCompletionSource::setResult)
+                    .addOnFailureListener(taskCompletionSource::setException);
         }).addOnFailureListener(taskCompletionSource::setException);
         return taskCompletionSource.getTask();
     }
